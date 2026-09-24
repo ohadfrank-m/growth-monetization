@@ -1,6 +1,7 @@
 ---
 name: improve-conversion-surfaces-copy
 description: Ground persuasive writing in a real reason people buy, not a feature description. Use when writing or editing copy meant to make someone buy, subscribe, sign up, or act — landing pages, ads, offers, positioning, pricing pages, upgrade prompts, email CTAs. Also use when auditing a draft that reads as feature-speak, when someone asks "why would anyone buy this?", "make this benefit-led", "what's the hook?", "this copy feels flat", or "sharpen this pitch."
+version: 0.1.0
 ---
 
 # Improve Conversion Surfaces Copy

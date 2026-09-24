@@ -32,17 +32,19 @@ When input is minimal (just a surface name), run the brief intake before proceed
 
 Identify the surface type first. It determines which reference file and which spec sections are mandatory.
 
-| # | Surface | When it appears | Reference |
-|---|---------|----------------|-----------|
-| 1 | **Pricing page** | Public or in-app plan comparison | [pricing-pages.md](references/pricing-pages.md) |
-| 2 | **Paywall / feature gate** | User tries to access a locked feature | [paywalls.md](references/paywalls.md) |
-| 3 | **Promotion** | Discount, limited-time offer, upsell banner/modal | [promotions.md](references/promotions.md) |
-| 4 | **Tier upgrade trigger** | Usage limit hit, seat expansion, plan upgrade nudge | [upgrade-triggers.md](references/upgrade-triggers.md) |
-| 5 | **Credit / consumption UI** | Running low on credits, credit meter, top-up flow | [credit-ui.md](references/credit-ui.md) |
-| 6 | **Cancellation flow** | User initiates cancel or downgrade | [cancellation.md](references/cancellation.md) |
-| 7 | **Trial flow** | Trial start, mid-trial nudge, trial expiry | [trial-flows.md](references/trial-flows.md) |
+| # | Surface | When it appears | Reference | Playbook (CRO rationale, benchmarks, examples) |
+|---|---------|----------------|-----------|-----------|
+| 1 | **Pricing page** | Public or in-app plan comparison | [pricing-pages.md](references/pricing-pages.md) | [pricing-pages.md](../../playbooks/pricing-pages.md) |
+| 2 | **Paywall / feature gate** | User tries to access a locked feature | [paywalls.md](references/paywalls.md) | [paywalls.md](../../playbooks/paywalls.md) |
+| 3 | **Promotion** | Discount, limited-time offer, upsell banner/modal | [promotions.md](references/promotions.md) | [promotions.md](../../playbooks/promotions.md) |
+| 4 | **Tier upgrade trigger** | Usage limit hit, seat expansion, plan upgrade nudge | [upgrade-triggers.md](references/upgrade-triggers.md) | [upgrade-triggers.md](../../playbooks/upgrade-triggers.md) |
+| 5 | **Credit / consumption UI** | Running low on credits, credit meter, top-up flow | [credit-ui.md](references/credit-ui.md) | [credit-ui.md](../../playbooks/credit-ui.md) |
+| 6 | **Cancellation flow** | User initiates cancel or downgrade | [cancellation.md](references/cancellation.md) | [cancellation.md](../../playbooks/cancellation.md) |
+| 7 | **Trial flow** | Trial start, mid-trial nudge, trial expiry | [trial-flows.md](references/trial-flows.md) | none yet — see [surface-types.md](references/surface-types.md) |
 
 If the surface type is ambiguous, ask — one question.
+
+The reference file per type covers what to put *in the spec*. The playbook covers *why* — read it before drafting; don't skip to the reference file alone.
 
 ---
 
@@ -151,7 +153,8 @@ Read [context/monday-context.md](../../context/monday-context.md) before every s
 ## Additional references
 
 - Brief intake protocol: [brief-intake.md](references/brief-intake.md)
-- Surface-type specific guidance: in `references/` per surface type
+- Surface-type specific guidance (what goes in the spec): in `references/` per surface type
+- CRO rationale, benchmarks, and best-in-class examples per surface type (shared with `monetization-design-reviewer` — owned once, cited here, never duplicated): [../../playbooks/](../../playbooks/)
 - Wireframe patterns and best-in-class examples: [wireframe-patterns.md](references/wireframe-patterns.md)
 - Copy hooks per surface type: [copy-hooks.md](references/copy-hooks.md)
 - Anti-patterns and edge cases: [spec-checklist.md](references/spec-checklist.md)

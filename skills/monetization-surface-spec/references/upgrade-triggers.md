@@ -2,6 +2,8 @@
 
 Surface type 4: usage limit hit, seat expansion, plan upgrade nudge.
 
+CRO rationale, benchmarks, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/upgrade-triggers.md](../../../playbooks/upgrade-triggers.md). This file covers only what's specific to *writing the spec*. If the trigger is a credit/consumption limit rather than a tier/seat limit, use [credit-ui.md](credit-ui.md) instead.
+
 ## When it appears
 - Automation or integration cap reached (e.g. Standard's monthly action limit)
 - Seat bundle full when inviting a teammate
@@ -19,13 +21,8 @@ Current limits per tier: [monday-context.md](../../../context/monday-context.md#
 - **IC vs. admin:** "Notify admin" path
 - **Dismiss and frequency cap**
 
-## Patterns
+## Wireframe pattern
 See [wireframe-patterns.md](wireframe-patterns.md) — Tier upgrade trigger, Pattern A (usage limit) and Pattern B (seat expansion).
-
-## Anti-patterns specific to upgrade triggers
-- "You've hit your limit" with no number or consequence
-- Upgrade CTA with no view of what the next tier changes
-- Surprise hard stop with no warning threshold
 
 ## Copy hook
 Primary reason: save time / avoid effort. See [copy-hooks.md](copy-hooks.md#tier-upgrade-trigger-surface-4).

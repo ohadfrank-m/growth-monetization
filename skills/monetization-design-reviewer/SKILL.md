@@ -1,6 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
+version: 0.1.0
 ---
 
 # Monetization Design Reviewer
@@ -57,13 +58,16 @@ Always identify the **surface type** first (see Surface Types), then apply the c
 | 6 | **Cancellation Flow** | User initiates cancel or downgrade |
 | 7 | **Downgrade Experience** | Plan reduction confirmation, loss framing |
 
-Reference files:
-- Pricing pages → `references/pricing-pages.md`
-- Paywalls & feature gates → `references/paywalls.md`
-- Promotions → `references/promotions.md`
-- Upgrade triggers (tier + consumption/credits/metering/top-ups) → `references/upgrade-triggers.md`
-- Cancellation & downgrade → `references/cancellation.md`
-- **Scoring anchors & weighting (read for every review)** → `references/scoring-rubric.md`
+**Known gap:** this table has no row for a trial-flow surface (start / mid-trial / expiry), and `references/scoring-rubric.md`'s weighting matrix has no matching column. `monetization-surface-spec` covers trial flow as its own surface type 7. Don't force a trial-expiry review into "Downgrade Experience" — flag the gap to the user and score against the closest matrix column (usually Paywall / Gate, since a trial-expiry screen is functionally a paywall) until this is reconciled.
+
+CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com application) for each surface type is owned once, in the shared playbook — not duplicated here. Read the matching file before scoring:
+- Pricing pages → [../../playbooks/pricing-pages.md](../../playbooks/pricing-pages.md)
+- Paywalls & feature gates → [../../playbooks/paywalls.md](../../playbooks/paywalls.md)
+- Promotions → [../../playbooks/promotions.md](../../playbooks/promotions.md)
+- Tier upgrade triggers (seats, features, automations — not credits) → [../../playbooks/upgrade-triggers.md](../../playbooks/upgrade-triggers.md)
+- Consumption / credit upgrade (meters, forecasting, top-ups) → [../../playbooks/credit-ui.md](../../playbooks/credit-ui.md)
+- Cancellation & downgrade → [../../playbooks/cancellation.md](../../playbooks/cancellation.md)
+- **Scoring anchors & weighting (read for every review — this stays reviewer-owned, no other skill needs it)** → `references/scoring-rubric.md`
 
 ---
 

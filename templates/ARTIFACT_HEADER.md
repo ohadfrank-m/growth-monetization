@@ -7,7 +7,7 @@ Every artifact produced by this plugin opens with this block. Copy it, fill it, 
 plugin: growth-monetization
 skill: {skill-name}
 feature / topic: {feature name or research subject}
-surface type: {pricing-page | paywall | upgrade-trigger | credit-ui | trial | cancellation | research | landscape}
+surface type: {pricing-page | paywall | promotion | upgrade-trigger | credit-ui | trial | cancellation | research | landscape}
 cohort: {new-user | existing-user | both | n/a}
 author: {name}
 date: {YYYY-MM-DD}

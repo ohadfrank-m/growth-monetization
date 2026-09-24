@@ -2,6 +2,8 @@
 
 Surface type 6: user initiates cancel or downgrade.
 
+CRO rationale, benchmarks, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/cancellation.md](../../../playbooks/cancellation.md). This file covers only what's specific to *writing the spec*.
+
 ## When it appears
 - Billing page "Cancel subscription"
 - Downgrade attempt to a lower tier
@@ -17,13 +19,6 @@ Surface type 6: user initiates cancel or downgrade.
 - **Post-cancel state:** access end date, data retention, export options
 - **Win-back:** what re-activation looks like and when it's offered
 - **Enterprise:** route to CSM rather than self-serve cancel
-
-## Anti-patterns specific to cancellation
-- Hidden or buried cancel button
-- More than one "Are you sure?" step
-- Guilt-trip copy
-- Offering the same discount regardless of reason
-- No downgrade option — only "stay" or "cancel"
 
 Check local regulations (e.g. click-to-cancel rules) with legal before shipping any change to this flow.
 

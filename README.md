@@ -209,6 +209,8 @@ growth-monetization/
 ├── CLAUDE.md                          ← plugin-wide rules and conventions
 ├── context/
 │   └── monday-context.md              ← monday.com source of truth (owned, versioned)
+├── playbooks/                         ← CRO knowledge source of truth, one file per surface type
+│   └── ...                            ← benchmarks, best-in-class examples, anti-patterns — cited by spec + reviewer, never duplicated
 ├── templates/                         ← artifact header + research and spec templates
 ├── skills/
 │   ├── monetization/                  ← router
@@ -222,7 +224,8 @@ growth-monetization/
 ## Contributing
 
 - **Updating monday.com facts:** edit `context/monday-context.md`, bump `last-updated`, add a changelog row
-- **Changing a skill:** keep `SKILL.md` lean; put detail in the skill's `references/`
+- **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never re-derive or copy it into a skill's own `references/`. See [playbooks/README.md](playbooks/README.md).
+- **Changing a skill:** keep `SKILL.md` lean; put mechanics specific to that skill in the skill's `references/`; put anything a second skill would also need in `playbooks/` instead
 - **Adding a skill:** add a folder under `skills/`, then add it to the router table in `skills/monetization/SKILL.md` and to this README
 
 ## Coming in Wave 2

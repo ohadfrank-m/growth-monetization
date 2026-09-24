@@ -21,6 +21,11 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 - Never quote a monday.com price, limit, or credit amount from memory — cite the context file
 - If research reveals the context file is out of date, say so and suggest the specific update to the file's owner
 
+[playbooks/](playbooks/) holds the CRO knowledge (benchmarks, best-in-class examples, anti-patterns) for each surface type — the *why*, as opposed to `monday-context.md`'s facts.
+
+- `monetization-surface-spec` and `monetization-design-reviewer` both need this knowledge for the same surface types. It is owned once, here, and cited — never copied into a skill's own `references/`. This folder exists because it wasn't: credit/consumption UI ended up with two independently-written deep-dives, with different benchmarks, before the fork was caught.
+- Adding a benchmark, example, or anti-pattern for a surface type that already exists elsewhere in the plugin (a skill reference, another skill's notes) means moving it here and citing it from both places — not leaving the second copy in place.
+
 ---
 
 ## Skills

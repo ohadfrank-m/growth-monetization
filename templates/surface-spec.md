@@ -16,7 +16,7 @@ Every spec artifact follows this structure. The spec is the contract between PM 
 plugin: growth-monetization
 skill: monetization-surface-spec
 feature / topic: {surface name} — {tier or context}
-surface type: {pricing-page | paywall | upgrade-trigger | credit-ui | trial | cancellation}
+surface type: {pricing-page | paywall | promotion | upgrade-trigger | credit-ui | trial | cancellation}
 cohort: {new-user | existing-user | both}
 author: {name}
 date: {YYYY-MM-DD}

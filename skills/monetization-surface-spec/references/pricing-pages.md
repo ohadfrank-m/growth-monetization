@@ -2,6 +2,8 @@
 
 Surface type 1: public or in-app plan comparison.
 
+CRO rationale, benchmarks, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/pricing-pages.md](../../../playbooks/pricing-pages.md). This file covers only what's specific to *writing the spec*.
+
 ## When it appears
 - Direct navigation to the pricing page
 - In-app "See plans" / "Compare plans" entry points
@@ -18,14 +20,8 @@ Surface type 1: public or in-app plan comparison.
 - **CTA per tier:** each tier has its own label ("Start free", "Try Pro", "Contact sales")
 - **Mobile:** how columns collapse (stacked cards vs. swipeable)
 
-## Patterns
+## Wireframe pattern
 See [wireframe-patterns.md](wireframe-patterns.md) — Pricing page, Pattern A and B.
-
-## Anti-patterns specific to pricing pages
-- Credit amounts shown without task translation
-- Seat minimum hidden until checkout (users feel tricked)
-- All tiers with identical "Get started" CTAs
-- Feature table fully expanded above the fold
 
 ## Copy hook
 Primary reason: make money / save time. See [copy-hooks.md](copy-hooks.md#pricing-page-surface-1).
