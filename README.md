@@ -18,19 +18,25 @@ Skills follow a deliberate sequence. Run `/monetization` to be guided through au
 ```
 /monetization                    ← start here if unsure — routes to the right skill
       │
-      ├── /pricing-intelligence  ← research: how competitors price, what models dominate
+      ├── /pricing-intelligence         ← research: how competitors price, what models dominate
       │         │
       │         ▼
-      ├── /monetization-surface-spec  ← spec + wireframe any surface from a brief or design
+      ├── /monetization-surface-spec    ← writes the spec: brief, hook, reason, direction (01-spec.md)
       │         │
       │         ▼
-      └── /monetization-design-reviewer  ← CRO rubric score + prioritised fix list
+      ├── /improve-conversion-surfaces-copy  ← writes the real headline/CTA copy from that reason (02-copy.md)
+      │         │
+      │         ▼
+      ├── /monetization-surface-spec    ← builds the wireframe from that real copy, not placeholders (03-wireframe.html)
+      │         │
+      │         ▼
+      └── /monetization-design-reviewer ← CRO rubric score of the real thing (04-review.md)
                 │
-                ▼
-          /improve-conversion-surfaces-copy  ← benefit-led copy rewrites
+                ▼ (only if a copy line gets flagged)
+          /improve-conversion-surfaces-copy  ← revision pass on the flagged line(s) — 02-copy-v2.md
 ```
 
-Run them in sequence or start anywhere. Each skill reads what the previous one produced.
+Run them in sequence or start anywhere. Each skill reads what the previous one produced. Copy runs *before* the wireframe, not after the review — so the wireframe you look at and the review that scores it both reflect real language, not bracketed placeholder text.
 
 ---
 
@@ -73,16 +79,19 @@ Add as a custom skill or copy skill content into your project context. Skills wo
 
 ---
 
-## Required MCP connections
+## MCP connections (all optional)
 
-| MCP | Used by | How to connect |
-|-----|---------|---------------|
-| **monday.com** | All skills — board logging | Add `https://mcp.monday.com/mcp` as a remote MCP server |
-| **PricingSaaS** | `pricing-intelligence` | Add `https://mcp.pricingsaas.com` — see [mcp-setup.md](mcp-setup.md) |
-| **Figma** | `monetization-surface-spec`, `monetization-design-reviewer` | Add `https://mcp.figma.com/mcp` |
-| **Web search** | All skills — enrichment, benchmarks | Native to Claude — no setup needed |
+None of these are required to use the plugin — every skill still produces a real artifact without them, using web search and screenshots instead. Connect an MCP when you want the higher-fidelity path it unlocks; skip it and the skill tells you what's reduced, not just that something failed.
 
-Skills degrade gracefully when an MCP is unavailable and tell you what's affected.
+| MCP | What it unlocks | Without it | How to connect |
+|-----|-----------------|-----------|----------------|
+| **monday.com** | Every artifact this plugin produces (research, specs, reviews, copy) logs automatically to boards on monday.com — so the work compounds in one shared place instead of living only in local files or scattered Slack threads. | Skills still write every artifact to `.monetization/` locally — you just log it manually if you want it on a board. | Add `https://mcp.monday.com/mcp` as a remote MCP server |
+| **PricingSaaS** | Structured, current competitor pricing data — live plans, historical change diffs, watchlists, pricing-news feed. This is what makes `pricing-intelligence` fast and precise instead of a slow manual Google-and-guess exercise, and it's the only source with real historical diffs (before/after a pricing change, dated). | Falls back to enrichment-only research — Wayback Machine, changelogs, sentiment, job postings. Still usable, but slower and with no structured change history. | Add `https://mcp.pricingsaas.com` — see [mcp-setup.md](mcp-setup.md) |
+| **Figma** | Pull a design directly from a Figma link or frame — layer structure, exact copy text (not read off pixels), and variable bindings, so `monetization-design-reviewer` can catch hardcoded colors/spacing that have drifted from Vibe design tokens. | Paste a screenshot instead — full visual review still works, you just lose token-binding checks and have to transcribe copy by eye instead of reading it exactly. | Add `https://mcp.figma.com/mcp` |
+| **Slack** | The weekly pricing digest (`pricing-intelligence`) posts straight to a channel your team already watches, instead of living only in a chat session. | Digest is delivered directly in chat — same content, you copy it over yourself. | See your Slack app's MCP setup |
+| **Web search** | Enrichment sources for `pricing-intelligence` — Wayback Machine snapshots, product changelogs, earnings-call commentary, sentiment from Reddit/G2/HN. This is what grounds research in evidence beyond whatever PricingSaaS alone returns. | Research is limited to PricingSaaS/monday.com MCP data alone — meaningfully reduced coverage on anything PricingSaaS doesn't track. | Native to Claude — no setup needed |
+
+Skills degrade gracefully when an MCP is unavailable and tell you what's affected — they never fail silently.
 
 ---
 
@@ -119,7 +128,7 @@ All outputs log to the **Pricing Intelligence** board on monday.com automaticall
 
 ### `/monetization-surface-spec` — Spec and wireframe
 
-Produce a complete spec and low-fi HTML wireframe for any monetization surface. Works from a brief ("I need a credit depletion modal for Pro users"), a Figma link, or a screenshot of an existing design.
+Produce a complete spec and low-fi HTML wireframe for any monetization surface. Works from a brief ("I need a credit depletion modal for Pro users"), a Figma link, or a screenshot of an existing design. **Runs twice per surface** — once to write the spec, again after copy exists to build the wireframe around it. Don't collapse these into one pass.
 
 **Requires:** Figma MCP (when working from an existing design)
 
@@ -135,30 +144,31 @@ Produce a complete spec and low-fi HTML wireframe for any monetization surface. 
 | 6 | Cancellation flow | User initiates cancel or downgrade |
 | 7 | Trial flow | Trial start, mid-trial nudge, expiry |
 
-**What you get for every surface:**
+**What you get:**
 
-- `01-spec.md` — full structured spec: trigger condition, user cohort, section-by-section layout table, copy strategy, success metrics, edge cases (credit debt, admin-gated purchase, mobile, repeat exposure, enterprise)
-- `02-wireframe.html` — low-fi interactive wireframe, all states, annotated
-
-Copy writing is explicitly handed off to `/improve-conversion-surfaces-copy` — the spec names the reason and direction, the copy skill writes the options.
-
----
-
-### `/monetization-design-reviewer` — CRO design review
-
-Score any monetization design, screenshot, Figma frame, or wireframe against an 8-dimension CRO rubric (value clarity, timing, copy, friction, trust, escape hatch, hierarchy, mobile), weighted by surface type. Delivers a verdict and a single ranked punch list with severity, category, and effort for every fix.
-
-**Requires:** Figma MCP (optional — screenshots work too)
-
-**What you get:** `03-review.md` — weighted score out of 100, ship / don't-ship verdict, ranked improvement table, one benchmark example. Optional low-fi prototype of the fixed version.
+- `01-spec.md` (first invocation) — full structured spec: trigger condition, user cohort, section-by-section layout table, copy strategy (names the reason and direction, doesn't write final copy), success metrics, edge cases (credit debt, admin-gated purchase, mobile, repeat exposure, enterprise)
+- `03-wireframe.html` (second invocation, after copy) — low-fi interactive wireframe, all states, annotated, built with the real copy from `02-copy.md` — not bracketed placeholder text
 
 ---
 
 ### `/improve-conversion-surfaces-copy` — Conversion copy
 
-Rewrite persuasive copy so every line maps to a real reason people buy, not a feature description. Works on headlines, CTAs, upgrade prompts, pricing tiers, and email. Picks up the reason and direction named in a spec or review automatically.
+Rewrite persuasive copy so every line maps to a real reason people buy, not a feature description. Works on headlines, CTAs, upgrade prompts, pricing tiers, and email. Picks up the reason and direction named in a spec automatically. **Runs twice per surface** — a first pass right after the spec (this is what the wireframe gets built from), and a revision pass if the design review flags a specific line.
 
-**What you get:** `04-copy.md` — 2–3 options per element, varied by angle, with one marked ★ Recommended and why.
+**What you get:**
+
+- `02-copy.md` (first pass) — 2–3 options per element, varied by angle, with one marked ★ Recommended and why. Real, ship-ready lines — the wireframe is built from these, not from a placeholder.
+- `02-copy-v2.md` (revision pass, only if review flags something) — targeted fix to the flagged line(s), not a fresh draft
+
+---
+
+### `/monetization-design-reviewer` — CRO design review
+
+Score any monetization design, screenshot, Figma frame, or wireframe against an 8-dimension CRO rubric (value clarity, timing, copy, friction, trust, escape hatch, hierarchy, mobile), weighted by surface type. Delivers a verdict and a single ranked punch list with severity, category, and effort for every fix. Inside the plugin's own pipeline, this scores the *real* spec, copy, and wireframe together — not a wireframe built from placeholder text.
+
+**Requires:** Figma MCP (optional — screenshots work too)
+
+**What you get:** `04-review.md` — weighted score out of 100, ship / don't-ship verdict, ranked improvement table, one benchmark example. Optional low-fi prototype of the fixed version. A flagged copy line routes back to `/improve-conversion-surfaces-copy` as a revision, not a first draft.
 
 ---
 
@@ -169,13 +179,14 @@ Every artifact lands in `.monetization/` in your working directory, numbered in 
 ```
 .monetization/
 ├── credit-depletion-modal/
-│   ├── 01-spec.md          ← /monetization-surface-spec
-│   ├── 02-wireframe.html   ← /monetization-surface-spec
-│   ├── 03-review.md        ← /monetization-design-reviewer
-│   └── 04-copy.md          ← /improve-conversion-surfaces-copy
+│   ├── 01-spec.md          ← /monetization-surface-spec (names the reason, hands off)
+│   ├── 02-copy.md          ← /improve-conversion-surfaces-copy (real copy — wireframe built from this)
+│   ├── 03-wireframe.html   ← /monetization-surface-spec (re-invoked, built from 02-copy.md)
+│   ├── 04-review.md        ← /monetization-design-reviewer (scores the real thing)
+│   └── 02-copy-v2.md       ← /improve-conversion-surfaces-copy (only if 04-review.md flagged a line)
 ├── trial-expiry-screen/
 │   ├── 01-spec.md
-│   └── 02-wireframe.html
+│   └── 02-copy.md
 └── research/
     ├── notion-pricing-2026-09.md
     └── ai-credits-benchmark-2026-09.md
@@ -195,7 +206,7 @@ Every file uses the same header block (plugin, skill, feature, cohort, date, sta
 
 **One source of truth for monday.com facts.** Plans, prices, AI credit packages, gating, and trial terms live in [`context/monday-context.md`](context/monday-context.md). Skills cite it instead of guessing. It has a named owner and a changelog — see the file header for how to update it.
 
-**Copy is always handed off.** No skill writes final copy. The spec names the persuasion angle and the reason from the 15 reasons people buy — then explicitly routes to `/improve-conversion-surfaces-copy` for the actual rewrite with options.
+**Copy is always handed off — and it runs before the wireframe, not after the review.** No skill but `/improve-conversion-surfaces-copy` writes final copy. The spec names the persuasion angle and the reason from the 15 reasons people buy; the copy skill writes the actual lines next, before any wireframe exists. The wireframe is built from that real copy, and the design review scores the real thing — not a placeholder that gets swapped out later.
 
 ---
 

@@ -63,13 +63,22 @@ Full copy framework: [copy-hooks.md](copy-hooks.md#credit--consumption-ui-surfac
 ## Output files
 
 - Spec: `.monetization/{feature-slug}/01-spec.md`
-- Wireframe: `.monetization/{feature-slug}/02-wireframe.html`
-- Include all meter states in wireframe (healthy, warning, critical, depleted)
+- Copy (write before the wireframe): `.monetization/{feature-slug}/02-copy.md`
+- Wireframe (built from that copy): `.monetization/{feature-slug}/03-wireframe.html`
+- Include all meter states in wireframe (healthy, warning, critical, depleted), each with its real copy — the meter's task-translation text and the depletion banner's line are exactly the kind of copy that shouldn't ship as a placeholder
 
 ## Next step
 
+After the spec:
 ```
 ---
-→ Next step: monetization-design-reviewer — score the credit UI spec and wireframe before design
-→ Prompt: "Review the credit UI spec in .monetization/{feature-slug}/"
+→ Next step: improve-conversion-surfaces-copy — write the actual meter/depletion/top-up copy from the reason and direction named above
+→ Prompt: "Write copy for .monetization/{feature-slug}/01-spec.md"
+```
+
+After the wireframe (built once copy exists):
+```
+---
+→ Next step: monetization-design-reviewer — score the credit UI spec, copy, and wireframe together
+→ Prompt: "Review .monetization/{feature-slug}/"
 ```

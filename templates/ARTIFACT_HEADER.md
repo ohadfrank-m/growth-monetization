@@ -34,17 +34,17 @@ All artifacts land in `.monetization/` in the working directory:
 ```
 .monetization/
 ├── {feature-slug}/
-│   ├── 01-spec.md
-│   ├── 02-wireframe.html
-│   ├── 03-review.md
-│   └── 04-copy.md
+│   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
+│   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — the wireframe is built from this)
+│   ├── 03-wireframe.html   ← monetization-surface-spec (built from 02-copy.md, not placeholders)
+│   └── 04-review.md        ← monetization-design-reviewer (scores the real thing; flags → 02-copy-v2.md)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md
 ```
 
 **Folder naming:** lowercase, hyphenated, descriptive. `credit-depletion-modal`, `trial-upgrade-nudge`, `notion-pricing-2026`.
 
-**File numbering:** fixed per skill — 01 spec, 02 wireframe, 03 review, 04 copy. Iterations get a version suffix (`01-spec-v2.md`).
+**File numbering:** fixed per skill — 01 spec, 02 copy, 03 wireframe, 04 review. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
 ## Next step block (required at end of every artifact)
 
@@ -57,6 +57,6 @@ All artifacts land in `.monetization/` in the working directory:
 Example:
 ```
 ---
-→ Next step: monetization-design-reviewer — score the wireframe against the CRO rubric before it goes to design
-→ Prompt: "Review the wireframe in .monetization/credit-depletion-modal/02-wireframe.html"
+→ Next step: monetization-design-reviewer — score the spec, copy, and wireframe together
+→ Prompt: "Review .monetization/credit-depletion-modal/"
 ```

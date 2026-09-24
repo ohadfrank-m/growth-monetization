@@ -85,4 +85,14 @@ Read `references/sources.md` when the top-level guidance isn't enough — it enc
 
 ## Plugin output
 
-When running inside the growth-monetization plugin, save rewrites to `.monetization/{feature-slug}/04-copy.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md). If a spec (`01-spec.md`) or review (`03-review.md`) exists in the folder, start from its named reason and copy direction instead of re-deriving them.
+This skill runs at two different points in the plugin's pipeline — which one determines the file and the framing. Check what's already in `.monetization/{feature-slug}/` before writing anything.
+
+**First pass — right after the spec, before the wireframe exists.** If `01-spec.md` exists and there's no `02-copy.md` yet, this is a first pass. Start from the spec's named reason and direction instead of re-deriving them. This is the copy the wireframe gets built from, so write real, ship-ready lines — not more placeholders for someone to fix later. Save to `.monetization/{feature-slug}/02-copy.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md), and end with:
+
+```
+---
+→ Next step: monetization-surface-spec — build the wireframe using the ★ Recommended copy above
+→ Prompt: "Build the wireframe in .monetization/{feature-slug}/ using the copy in 02-copy.md"
+```
+
+**Revision pass — after `04-review.md` flags a specific line.** `02-copy.md` already exists; this isn't a fresh draft. Start from the reason `04-review.md` names for the flagged line (the review already did the diagnosis) and revise only what was flagged — don't re-litigate lines the review didn't call out. Save as `.monetization/{feature-slug}/02-copy-v2.md` — version it, per the plugin's iteration convention, rather than overwriting the first pass. No next-step block needed; this is normally the last artifact in the chain.
