@@ -102,3 +102,4 @@ If the folder exists, detect what's there and continue from the next number. Whe
 - Always state the user cohort (new vs. existing) for any surface
 - Copy is written only by `improve-conversion-surfaces-copy`; other skills name the reason and direction, then hand off — and copy runs *before* the wireframe is built, never after, so nothing ships or gets reviewed with placeholder text standing in for real language
 - Cite sources with URLs; never present web findings as MCP data
+- Respect the playbooks' evidence tags when citing a competitor claim: `[Verified]` can be stated as fact, `[Reported]` needs the caveat inline, `[Teardown needed]` is never presented as fact, and figures in sections marked as pre-dating the evidence-tag standard are directional — never quoted as a target. See [playbooks/README.md](playbooks/README.md)
