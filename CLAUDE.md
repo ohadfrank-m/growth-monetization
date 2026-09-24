@@ -32,7 +32,7 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
+| `monetization-pm-router` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | Writing persuasive copy (1st call, drives the wireframe) or revising a flagged line (2nd call, after review) | `02-copy.md`, then `02-copy-v2.md` if revised |

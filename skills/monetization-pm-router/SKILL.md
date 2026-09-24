@@ -1,5 +1,5 @@
 ---
-name: monetization
+name: monetization-pm-router
 description: This skill should be used when the user's intent is unclear or spans multiple monetization skills, or when they say "monetization copilot", "help me with monetization", "where do I start", "not sure which skill to use", "I'm working on [any monetization surface or research task]". This is the router — it reads intent, maps to the right skill, and orchestrates multi-skill workflows. It produces no artifact of its own.
 version: 0.1.0
 ---
