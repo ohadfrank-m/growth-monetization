@@ -1,0 +1,14 @@
+{
+  "name": "growth-monetization",
+  "owner": {
+    "name": "monday.com Growth Monetization"
+  },
+  "plugins": [
+    {
+      "name": "growth-monetization",
+      "source": "./",
+      "description": "Monetization copilot for growth squads: pricing intelligence, surface specs, CRO design review, and conversion copy.",
+      "version": "0.1.0"
+    }
+  ]
+}

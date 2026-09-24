@@ -1,0 +1,10 @@
+{
+  "name": "growth-monetization",
+  "version": "0.1.0",
+  "description": "Monetization copilot for growth squads: research competitor pricing, spec and wireframe monetization surfaces, score designs against a CRO rubric, and write benefit-led conversion copy.",
+  "author": {
+    "name": "monday.com Growth Monetization"
+  },
+  "repository": "https://github.com/ohadfrank-m/growth-monetization",
+  "keywords": ["monetization", "pricing", "paywall", "upgrade", "conversion", "CRO", "SaaS", "PLG", "growth"]
+}
