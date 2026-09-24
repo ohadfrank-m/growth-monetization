@@ -8,6 +8,8 @@ version: 0.1.0
 
 Produce a complete spec artifact and low-fi HTML wireframe for any monetization surface. The spec is the contract between PM and design — specific enough that two designers produce the same surface from it.
 
+This skill is invoked twice per surface, not once: first to write the spec (names the reason and hands off for copy), then again — after `improve-conversion-surfaces-copy` has written the real headline/CTA copy — to build the wireframe around that real copy. Don't collapse these into one pass; a wireframe built before copy exists ships with placeholder text nobody ever comes back to fix.
+
 This skill covers both modes:
 - **From brief:** "I need a paywall for AI Agents on Free tier" → generates full spec + wireframe
 - **From existing design:** "Here's our current credit modal, turn it into a proper spec" → reverse-engineers spec from design, identifies gaps
@@ -32,17 +34,19 @@ When input is minimal (just a surface name), run the brief intake before proceed
 
 Identify the surface type first. It determines which reference file and which spec sections are mandatory.
 
-| # | Surface | When it appears | Reference |
-|---|---------|----------------|-----------|
-| 1 | **Pricing page** | Public or in-app plan comparison | [pricing-pages.md](references/pricing-pages.md) |
-| 2 | **Paywall / feature gate** | User tries to access a locked feature | [paywalls.md](references/paywalls.md) |
-| 3 | **Promotion** | Discount, limited-time offer, upsell banner/modal | [promotions.md](references/promotions.md) |
-| 4 | **Tier upgrade trigger** | Usage limit hit, seat expansion, plan upgrade nudge | [upgrade-triggers.md](references/upgrade-triggers.md) |
-| 5 | **Credit / consumption UI** | Running low on credits, credit meter, top-up flow | [credit-ui.md](references/credit-ui.md) |
-| 6 | **Cancellation flow** | User initiates cancel or downgrade | [cancellation.md](references/cancellation.md) |
-| 7 | **Trial flow** | Trial start, mid-trial nudge, trial expiry | [trial-flows.md](references/trial-flows.md) |
+| # | Surface | When it appears | Reference | Playbook (CRO rationale, benchmarks, examples) |
+|---|---------|----------------|-----------|-----------|
+| 1 | **Pricing page** | Public or in-app plan comparison | [pricing-pages.md](references/pricing-pages.md) | [pricing-pages.md](../../playbooks/pricing-pages.md) |
+| 2 | **Paywall / feature gate** | User tries to access a locked feature | [paywalls.md](references/paywalls.md) | [paywalls.md](../../playbooks/paywalls.md) |
+| 3 | **Promotion** | Discount, limited-time offer, upsell banner/modal | [promotions.md](references/promotions.md) | [promotions.md](../../playbooks/promotions.md) |
+| 4 | **Tier upgrade trigger** | Usage limit hit, seat expansion, plan upgrade nudge | [upgrade-triggers.md](references/upgrade-triggers.md) | [upgrade-triggers.md](../../playbooks/upgrade-triggers.md) |
+| 5 | **Credit / consumption UI** | Running low on credits, credit meter, top-up flow | [credit-ui.md](references/credit-ui.md) | [credit-ui.md](../../playbooks/credit-ui.md) |
+| 6 | **Cancellation flow** | User initiates cancel or downgrade | [cancellation.md](references/cancellation.md) | [cancellation.md](../../playbooks/cancellation.md) |
+| 7 | **Trial flow** | Trial start, mid-trial nudge, trial expiry | [trial-flows.md](references/trial-flows.md) | none yet — see [surface-types.md](references/surface-types.md) |
 
 If the surface type is ambiguous, ask — one question.
+
+The reference file per type covers what to put *in the spec*. The playbook covers *why* — read it before drafting; don't skip to the reference file alone.
 
 ---
 
@@ -103,30 +107,40 @@ Apply monday.com context from [monday-context.md](../../context/monday-context.m
 
 **Edge cases:** Address every edge case in [spec-checklist.md](references/spec-checklist.md) — credit debt, admin-gated purchase, mobile, repeat exposure, enterprise. Mark non-applicable ones as N/A with one-line rationale — no silent omissions.
 
-### Step 5: Build the wireframe
+### Step 5: Deliver the spec, then hand off for copy — before the wireframe
+
+Write the spec to: `.monetization/{feature-slug}/01-spec.md`
+
+Do **not** build the wireframe yet. The wireframe gets built from the real headline/CTA copy `improve-conversion-surfaces-copy` writes next — not from placeholder text. Building it now and rewriting it later wastes a pass and means the wireframe never actually reflects the words it'll ship with.
+
+Always end the spec with the next step block:
+```
+---
+→ Next step: improve-conversion-surfaces-copy — write the actual headline/CTA copy from the reason and direction named above
+→ Prompt: "Write copy for .monetization/{feature-slug}/01-spec.md"
+```
+
+### Step 6: Build the wireframe — re-entry point, after copy exists
+
+This is a separate invocation of this skill, triggered once `.monetization/{feature-slug}/02-copy.md` exists (the user asks to build the wireframe, or continues the chain from copy's own next-step prompt). If `02-copy.md` doesn't exist yet when this is invoked, stop and hand off to `improve-conversion-surfaces-copy` first — don't build a wireframe with bracketed placeholder text when real copy is one skill call away.
 
 Produce a low-fi HTML wireframe that shows:
 - Visual hierarchy of sections (top to bottom)
-- CTA placement and label direction
+- CTA placement, using the **★ Recommended** copy option from `02-copy.md` — not a generic label
 - Escape hatch (always present)
 - Mobile consideration (note if layout changes at mobile breakpoint)
 
-Keep it low-fi — this communicates structure and hierarchy, not final design. Use Vibe color tokens as references, not hardcoded hex values.
+Keep it low-fi — this communicates structure and hierarchy, not final visual design. Use Vibe color tokens as references, not hardcoded hex values. The copy in it should be real and ship-ready even though the visual treatment isn't.
 
-Output: `.monetization/{feature-slug}/02-wireframe.html`
+Output: `.monetization/{feature-slug}/03-wireframe.html`
 
-Build the wireframe by default. Skip it only if the user asks for the spec doc alone.
-
-### Step 6: Deliver
-
-Write the spec to: `.monetization/{feature-slug}/01-spec.md`
-Write the wireframe to: `.monetization/{feature-slug}/02-wireframe.html`
+Build the wireframe by default once copy exists. Skip it only if the user asks for the spec and copy alone.
 
 Always end with the next step block:
 ```
 ---
-→ Next step: monetization-design-reviewer — score the spec and wireframe before it goes to design
-→ Prompt: "Review the spec and wireframe in .monetization/{feature-slug}/"
+→ Next step: monetization-design-reviewer — score the spec, copy, and wireframe together
+→ Prompt: "Review .monetization/{feature-slug}/"
 ```
 
 ---
@@ -136,9 +150,10 @@ Always end with the next step block:
 - Use the artifact template: [../../templates/surface-spec.md](../../templates/surface-spec.md)
 - Header block on every file
 - Surface structure table is non-negotiable — no prose layout descriptions
-- Copy strategy names the reason, states the direction, hands off — never writes final copy
+- Copy strategy names the reason, states the direction, hands off — never writes final copy in the spec itself
 - Edge cases addressed even when N/A
 - Wireframe always delivered as `.html` file, never inline
+- Wireframe is always built *after* `improve-conversion-surfaces-copy` has run — never with bracketed placeholder text when real copy exists one skill call away
 
 ---
 
@@ -151,7 +166,8 @@ Read [context/monday-context.md](../../context/monday-context.md) before every s
 ## Additional references
 
 - Brief intake protocol: [brief-intake.md](references/brief-intake.md)
-- Surface-type specific guidance: in `references/` per surface type
+- Surface-type specific guidance (what goes in the spec): in `references/` per surface type
+- CRO rationale, benchmarks, and best-in-class examples per surface type (shared with `monetization-design-reviewer` — owned once, cited here, never duplicated): [../../playbooks/](../../playbooks/)
 - Wireframe patterns and best-in-class examples: [wireframe-patterns.md](references/wireframe-patterns.md)
 - Copy hooks per surface type: [copy-hooks.md](references/copy-hooks.md)
 - Anti-patterns and edge cases: [spec-checklist.md](references/spec-checklist.md)

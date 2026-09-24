@@ -2,6 +2,8 @@
 
 Surface type 2: user tries to access a locked feature.
 
+CRO rationale, benchmarks, timing rules, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/paywalls.md](../../../playbooks/paywalls.md). This file covers only what's specific to *writing the spec*.
+
 ## When it appears
 - Click on a locked feature, view, or column type
 - Attempt to exceed a feature-level entitlement (e.g. private boards on Standard)
@@ -17,13 +19,8 @@ Surface type 2: user tries to access a locked feature.
 - **IC vs. admin:** "Notify admin" path for users who can't purchase
 - **Dismiss and frequency cap**
 
-## Patterns
+## Wireframe pattern
 See [wireframe-patterns.md](wireframe-patterns.md) — Paywall, Pattern A (preview + gate) and Pattern B (inline gate).
-
-## Anti-patterns specific to paywalls
-- Gate with no feature preview
-- Pushing a higher tier than needed to unlock the feature
-- Generic "This feature requires Pro" with no outcome named
 
 ## Copy hook
 New users: alleviate fear of missing out. Existing users: capability gain. See [copy-hooks.md](copy-hooks.md#paywall--feature-gate-surface-2).

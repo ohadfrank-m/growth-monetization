@@ -1,11 +1,13 @@
-# Pricing Pages — CRO Reference
+# Pricing pages — CRO playbook
 
-## What Makes a Pricing Page Convert
+Surface type 1. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks).
 
-### The Job
+## What makes a pricing page convert
+
+### The job
 A pricing page has one job: make the right plan feel obvious for the right user. Confusion kills conversion. Every element should reduce cognitive load, not add to it.
 
-### Page Structure (proven order)
+### Page structure (proven order)
 1. **Headline** — outcome-focused, not feature-focused ("Everything your team needs to move faster" not "Compare our plans")
 2. **Toggle** — Monthly / Annual with savings callout (show $ saved, not just %)
 3. **Plan cards** — 3–4 max. More than 4 creates paralysis.
@@ -15,9 +17,7 @@ A pricing page has one job: make the right plan feel obvious for the right user.
 7. **FAQ** — address top 3 objections (cancellation, seat limits, billing)
 8. **CTA repeat** — sticky or repeated at bottom
 
----
-
-## Plan Card Anatomy
+## Plan card anatomy
 
 **Must-haves:**
 - Plan name (short, memorable)
@@ -33,25 +33,30 @@ A pricing page has one job: make the right plan feel obvious for the right user.
 - CTA identical across all plans → no signal on what's recommended
 - "Contact sales" as only Enterprise CTA without a self-serve option → loses mid-market
 
----
-
-## Pricing Presentation Patterns
+## Pricing presentation patterns
 
 ### Anchoring
 - Show the most expensive plan first (left-to-right reading) or make it visible — it anchors perception
 - Cross out monthly price on annual toggle
 - "Most popular" badge on the plan you want to sell
 
-### Freemium / Free Tier
+### Freemium / free tier
 - If you have a free tier, make its limits clear — vague free tiers create churn, not activation
 - "Free forever" vs "Free trial" must be unambiguous
 
-### Per-Seat vs Flat vs Usage
+### Per-seat vs. flat vs. usage
 - Per-seat: show "starting at X users" with a calculator if possible
 - Usage-based: show example usage tiers ("~500 AI actions/month")
 - Hybrid: simplify — don't show both dimensions simultaneously unless unavoidable
 
----
+## Anti-patterns
+
+| Anti-pattern | Why it fails |
+|---|---|
+| Credit amounts shown without task translation | Meaningless without context |
+| Seat minimum hidden until checkout | Users feel tricked |
+| All tiers with identical "Get started" CTAs | No signal on what's recommended |
+| Feature table fully expanded above the fold | Adds cognitive load instead of reducing it |
 
 ## Benchmarks (B2B SaaS)
 
@@ -61,9 +66,7 @@ A pricing page has one job: make the right plan feel obvious for the right user.
 | Annual toggle usage | <20% | 30–40% | 50%+ |
 | Time on page before CTA click | >3 min | 1–2 min | <60s |
 
----
-
-## Best-in-Class Examples
+## Best-in-class examples
 
 **Linear** — Extreme clarity. 3 plans, one recommended, feature list that actually differentiates. No fluff.
 
@@ -73,9 +76,7 @@ A pricing page has one job: make the right plan feel obvious for the right user.
 
 **Intercom** — Anchoring via add-ons. Base price looks reasonable; upsells are modular. Reduces sticker shock.
 
----
-
-## monday.com Specific Notes
+## monday.com-specific notes
 
 - Enterprise tier should always have a clear "talk to us" path but *also* a self-serve option for smaller enterprise teams
 - The AI credit model needs its own section on the pricing page — credits as a dimension confuse users if not explained with examples

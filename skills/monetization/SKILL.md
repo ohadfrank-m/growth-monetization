@@ -42,15 +42,16 @@ Handoff: "I'll start with the benchmark research. Once that's done, I'll use the
 
 ---
 
-### Spec → Review → Copy
+### Spec → Copy → Wireframe → Review
 > "I need to build a paywall for AI Agents on Free tier, get it reviewed, and write the copy"
 
 Sequence:
-1. `monetization-surface-spec` → paywall spec + wireframe
-2. `monetization-design-reviewer` → CRO score + improvement list
-3. `improve-conversion-surfaces-copy` → copy options for flagged elements
+1. `monetization-surface-spec` → paywall spec (`01-spec.md`) — names the reason and direction, doesn't write final copy
+2. `improve-conversion-surfaces-copy` → the actual headline/CTA copy from that reason (`02-copy.md`)
+3. `monetization-surface-spec` (re-invoked) → wireframe built with the real copy, not placeholders (`03-wireframe.html`)
+4. `monetization-design-reviewer` → CRO score of the real thing (`04-review.md`) — a flagged copy line is a revision request against `02-copy.md`, not a first draft
 
-Handoff: "I'll spec the paywall first, then score it against the CRO rubric, then write the copy for any elements the review flags as weak. Three artifacts by the end."
+Handoff: "I'll spec the paywall, write the actual copy from that spec's reason, build the wireframe around that real copy, then score the whole thing. Four artifacts by the end, and the review will be scoring real language, not placeholder text."
 
 ---
 
@@ -60,6 +61,7 @@ Handoff: "I'll spec the paywall first, then score it against the CRO rubric, the
 Sequence:
 1. `monetization-design-reviewer` → score the existing design, identify root cause
 2. `monetization-surface-spec` → re-spec the surface with fixes applied
+3. If the fix touches copy: `improve-conversion-surfaces-copy` → the actual replacement lines, then `monetization-surface-spec` rebuilds the wireframe with them — same rule as a fresh spec, real copy before the wireframe, not after
 
 Handoff: "I'll start by scoring the existing design to pinpoint what's failing, then produce a revised spec. You'll see exactly what's wrong before we design the fix."
 

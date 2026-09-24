@@ -21,6 +21,11 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 - Never quote a monday.com price, limit, or credit amount from memory — cite the context file
 - If research reveals the context file is out of date, say so and suggest the specific update to the file's owner
 
+[playbooks/](playbooks/) holds the CRO knowledge (benchmarks, best-in-class examples, anti-patterns) for each surface type — the *why*, as opposed to `monday-context.md`'s facts.
+
+- `monetization-surface-spec` and `monetization-design-reviewer` both need this knowledge for the same surface types. It is owned once, here, and cited — never copied into a skill's own `references/`. This folder exists because it wasn't: credit/consumption UI ended up with two independently-written deep-dives, with different benchmarks, before the fork was caught.
+- Adding a benchmark, example, or anti-pattern for a surface type that already exists elsewhere in the plugin (a skill reference, another skill's notes) means moving it here and citing it from both places — not leaving the second copy in place.
+
 ---
 
 ## Skills
@@ -29,9 +34,9 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 |-------|---------|---------|
 | `monetization` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
-| `monetization-surface-spec` | Speccing or wireframing a surface | `01-spec.md` + `02-wireframe.html` |
-| `monetization-design-reviewer` | Scoring an existing design or wireframe | `03-review.md` — scored rubric + ranked fix list |
-| `improve-conversion-surfaces-copy` | Writing or rewriting persuasive copy | `04-copy.md` — 2–3 options per element, one recommended |
+| `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
+| `improve-conversion-surfaces-copy` | Writing persuasive copy (1st call, drives the wireframe) or revising a flagged line (2nd call, after review) | `02-copy.md`, then `02-copy-v2.md` if revised |
+| `monetization-design-reviewer` | Scoring the real spec + copy + wireframe together | `04-review.md` — scored rubric + ranked fix list |
 
 ---
 
@@ -60,15 +65,17 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 ```
 .monetization/
 ├── {feature-slug}/
-│   ├── 01-spec.md          ← monetization-surface-spec
-│   ├── 02-wireframe.html   ← monetization-surface-spec
-│   ├── 03-review.md        ← monetization-design-reviewer
-│   └── 04-copy.md          ← improve-conversion-surfaces-copy
+│   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
+│   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — wireframe built from this)
+│   ├── 03-wireframe.html   ← monetization-surface-spec (re-invoked, built from 02-copy.md)
+│   └── 04-review.md        ← monetization-design-reviewer (scores the real thing)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md   ← pricing-intelligence
 ```
 
-If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`01-spec-v2.md`) rather than overwriting.
+Copy runs before the wireframe, not after the review — the wireframe and the review should both reflect real language, never bracketed placeholder text. If a review flags a copy line, that's a revision (`02-copy-v2.md`), not a first draft.
+
+If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
 
 ### Next step block — end of every artifact
 
@@ -93,5 +100,5 @@ If the folder exists, detect what's there and continue from the next number. Whe
 - The artifact is the deliverable — never substitute a chat summary
 - State PricingSaaS credit costs and wait for confirmation before any paid call
 - Always state the user cohort (new vs. existing) for any surface
-- Copy is written only by `improve-conversion-surfaces-copy`; other skills name the reason and direction, then hand off
+- Copy is written only by `improve-conversion-surfaces-copy`; other skills name the reason and direction, then hand off — and copy runs *before* the wireframe is built, never after, so nothing ships or gets reviewed with placeholder text standing in for real language
 - Cite sources with URLs; never present web findings as MCP data

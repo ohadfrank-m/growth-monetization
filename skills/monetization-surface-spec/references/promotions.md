@@ -2,6 +2,8 @@
 
 Surface type 3: discount, limited-time offer, upsell banner or modal.
 
+CRO rationale, benchmarks, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/promotions.md](../../../playbooks/promotions.md). This file covers only what's specific to *writing the spec*.
+
 ## When it appears
 - Campaign windows (seasonal, launch, end of quarter)
 - Lifecycle moments (trial expiry, pre-renewal, lapsed account)
@@ -15,12 +17,6 @@ Surface type 3: discount, limited-time offer, upsell banner or modal.
 - **Placement:** banner, modal, email, pricing page badge
 - **Dismiss and frequency cap**
 - **Measurement:** holdout group, incrementality metric (not just redemption rate)
-
-## Anti-patterns specific to promotions
-- Fake countdown timers or deadlines that reset
-- Discount with no anchor to the original price
-- Offer shown to users who already converted without it
-- No holdout, so lift can't be measured
 
 ## Copy hook
 Primary reason: save money; secondary: alleviate fear of missing out. See [copy-hooks.md](copy-hooks.md#promotion-surface-3).

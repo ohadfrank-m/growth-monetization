@@ -198,7 +198,7 @@ Always deliver wireframes as single-file HTML:
 - Annotated: small labels explaining each element's purpose
 - Mobile note at top: "Mobile: {what stacks or collapses}"
 
-File: `.monetization/{feature-slug}/02-wireframe.html`
+File: `.monetization/{feature-slug}/03-wireframe.html` — built after `02-copy.md` exists, using its recommended copy in place of any placeholder text below
 
 Reference the pattern used in the wireframe's opening comment:
 ```html

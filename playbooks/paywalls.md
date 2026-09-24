@@ -1,13 +1,13 @@
-# Paywalls & Feature Gates — CRO Reference
+# Paywalls & feature gates — CRO playbook
 
-## Core Principle
+Surface type 2. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks).
+
+## Core principle
 A paywall is a value conversation, not a wall. The best paywalls feel like a natural offer, not an interruption. Users should leave thinking "that makes sense" not "I got blocked."
 
----
+## Paywall trigger types
 
-## Paywall Trigger Types
-
-| Trigger | Context | Key Design Constraint |
+| Trigger | Context | Key design constraint |
 |---------|---------|----------------------|
 | Feature gate | User clicks locked feature | Must show the feature value *before* the ask |
 | Usage cap | User hits limit (seats, items, actions) | Show progress toward limit proactively — not just at 100% |
@@ -15,9 +15,7 @@ A paywall is a value conversation, not a wall. The best paywalls feel like a nat
 | Time-based nudge | N days of free use | Lowest urgency — must be dismissible, never recurring |
 | Aha moment upsell | After key activation milestone | Highest intent — convert here |
 
----
-
-## Paywall Screen Components (Ranked by Importance)
+## Paywall screen components (ranked by importance)
 
 1. **Headline** — benefit-led, not feature-led. "Get unlimited automations" > "Upgrade to Pro"
 2. **Feature preview** — screenshot, animation, or description of what they're unlocking. Never skip this.
@@ -27,20 +25,16 @@ A paywall is a value conversation, not a wall. The best paywalls feel like a nat
 6. **Secondary path** — downgrade, continue free, or "remind me later" — must be visible
 7. **Social proof** (optional but lifts) — "Used by 50,000+ teams"
 
----
+## Modal vs. full-page vs. inline
 
-## Modal vs Full-Page vs Inline
-
-| Format | When to Use | Conversion Notes |
+| Format | When to use | Conversion notes |
 |--------|------------|-----------------|
 | Modal | Feature gate, usage cap | High intent context — converts well if triggered correctly |
 | Full page | Trial expiry, plan comparison | More deliberate — use when user has time to decide |
 | Inline nudge | Low-urgency upsell, approaching limit | Non-blocking — lower CVR but lower annoyance |
 | Tooltip / hover | Discovery of locked features | Awareness, not conversion — don't over-optimize here |
 
----
-
-## Copy Patterns That Work
+## Copy patterns that work
 
 **Headline formulas:**
 - "Unlock [Feature] to [Outcome]"
@@ -58,9 +52,7 @@ A paywall is a value conversation, not a wall. The best paywalls feel like a nat
 - "Go Premium" — meaningless without context
 - "Subscribe" — transactional, cold
 
----
-
-## Timing Rules
+## Timing rules
 
 - **Do not show** during onboarding (first session, before activation)
 - **Do not show** mid-task if the task doesn't require the locked feature
@@ -68,7 +60,13 @@ A paywall is a value conversation, not a wall. The best paywalls feel like a nat
 - **Session cap:** max 1 paywall per session (excluding feature gates triggered by user intent)
 - **Best moment:** immediately after the user has completed something meaningful (just created their first board, just ran their first automation, etc.)
 
----
+## Anti-patterns
+
+| Anti-pattern | Why it fails |
+|---|---|
+| Gate with no feature preview | User can't tell what they'd gain |
+| Pushing a higher tier than needed to unlock the feature | Friction, feels like a bait-and-switch |
+| Generic "This feature requires Pro" with no outcome named | Functional, not motivating |
 
 ## Benchmarks
 
@@ -78,9 +76,7 @@ A paywall is a value conversation, not a wall. The best paywalls feel like a nat
 | Trial expiry paywall CVR | <10% | 15–25% | 30%+ |
 | Feature gate CTR (high intent) | <8% | 12–18% | 25%+ |
 
----
-
-## Best-in-Class Examples
+## Best-in-class examples
 
 **Notion** — Feature gate paywalls show a live preview of the blocked content blurred behind the modal. User can see exactly what they're missing. CVR benchmark: ~18–22% on database-related gates.
 
@@ -90,9 +86,7 @@ A paywall is a value conversation, not a wall. The best paywalls feel like a nat
 
 **Loom** — "You've watched this 3x" re-engagement paywall on high-value content. Intent signal used to time the ask.
 
----
-
-## monday.com Specific Notes
+## monday.com-specific notes
 
 - AI Agents paywall: must show a preview of what the agent would *do* — not just that it exists. Show the output.
 - Credit gates: "You've used X of Y AI credits" is not a paywall headline — it's a metric. Lead with what stops working when credits run out.

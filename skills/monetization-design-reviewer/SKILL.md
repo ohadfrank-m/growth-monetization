@@ -1,6 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
+version: 0.1.0
 ---
 
 # Monetization Design Reviewer
@@ -17,7 +18,9 @@ This skill is used by monday.com's monetization teams — designers, PMs, and pr
 
 This skill scores and flags copy quality as one of eight rubric dimensions — that's a diagnosis, not a rewrite. When a "Copy / CRO" issue is identified, name the problem and the reason it's failing on (which of the 15 reasons people buy, per the copy skill's framework, is missing or buried), but don't write the replacement line here. Hand off to `improve-conversion-surfaces-copy` for the actual rewrite options — that skill's whole job is producing 2–3 copy options with one recommended, and duplicating that logic here means two skills maintaining the same judgment calls separately.
 
-In practice: score "Copy quality" honestly against the rubric anchors, and in the improvement list, format copy items as `[Severity · Effort] Issue → Reason it's failing → Rewrite with improve-conversion-surfaces-copy`. Every other category (UI, Structure, Timing/Trigger) still needs a specific, shippable fix in this skill's own output — the handoff is copy-only.
+**This is a revision request, not a first draft.** By the time a review runs in the plugin's own pipeline, `improve-conversion-surfaces-copy` has already written the real copy (`02-copy.md`) and it's already in the wireframe you're reviewing — you're scoring actual language, not placeholder text. A flagged Copy/CRO row is asking for a targeted fix to a specific line that already exists, not an from-scratch draft. Say so in the handoff. (If you're reviewing a design from outside this plugin's chain — a screenshot with no `02-copy.md` behind it — this distinction doesn't apply; treat it as a first draft.)
+
+In practice: score "Copy quality" honestly against the rubric anchors, and in the improvement list, format copy items as `[Severity · Effort] Issue → Reason it's failing → Revise with improve-conversion-surfaces-copy`. Every other category (UI, Structure, Timing/Trigger) still needs a specific, shippable fix in this skill's own output — the handoff is copy-only.
 
 ---
 
@@ -57,13 +60,16 @@ Always identify the **surface type** first (see Surface Types), then apply the c
 | 6 | **Cancellation Flow** | User initiates cancel or downgrade |
 | 7 | **Downgrade Experience** | Plan reduction confirmation, loss framing |
 
-Reference files:
-- Pricing pages → `references/pricing-pages.md`
-- Paywalls & feature gates → `references/paywalls.md`
-- Promotions → `references/promotions.md`
-- Upgrade triggers (tier + consumption/credits/metering/top-ups) → `references/upgrade-triggers.md`
-- Cancellation & downgrade → `references/cancellation.md`
-- **Scoring anchors & weighting (read for every review)** → `references/scoring-rubric.md`
+**Known gap:** this table has no row for a trial-flow surface (start / mid-trial / expiry), and `references/scoring-rubric.md`'s weighting matrix has no matching column. `monetization-surface-spec` covers trial flow as its own surface type 7. Don't force a trial-expiry review into "Downgrade Experience" — flag the gap to the user and score against the closest matrix column (usually Paywall / Gate, since a trial-expiry screen is functionally a paywall) until this is reconciled.
+
+CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com application) for each surface type is owned once, in the shared playbook — not duplicated here. Read the matching file before scoring:
+- Pricing pages → [../../playbooks/pricing-pages.md](../../playbooks/pricing-pages.md)
+- Paywalls & feature gates → [../../playbooks/paywalls.md](../../playbooks/paywalls.md)
+- Promotions → [../../playbooks/promotions.md](../../playbooks/promotions.md)
+- Tier upgrade triggers (seats, features, automations — not credits) → [../../playbooks/upgrade-triggers.md](../../playbooks/upgrade-triggers.md)
+- Consumption / credit upgrade (meters, forecasting, top-ups) → [../../playbooks/credit-ui.md](../../playbooks/credit-ui.md)
+- Cancellation & downgrade → [../../playbooks/cancellation.md](../../playbooks/cancellation.md)
+- **Scoring anchors & weighting (read for every review — this stays reviewer-owned, no other skill needs it)** → `references/scoring-rubric.md`
 
 ---
 
@@ -102,7 +108,7 @@ Column rules:
 - **Severity**: 🔴 Critical (revenue-losing) · 🟠 Major · 🟡 Minor. This drives the row order — sort by severity first, and within a tie, put the cheaper fix (lower effort) first, since it's the more pragmatic thing to do next.
 - **Category**: UI (visual hierarchy, layout, spacing, component/token issues, mobile) · Copy / CRO · Structure (flow, step count, information architecture, what's shown when) · Timing / Trigger (right moment, dismiss logic, frequency caps, agentic momentum).
 - **Issue**: name the problem in as few words as possible — this is context for the recommendation, not a second explanation of it.
-- **Recommendation**: the single most important cell. It must be the actual instruction, worded so specifically that two different people acting on it would produce the same result — not a direction to go think about it. "Change the CTA from 'Upgrade' to 'Unlock AI Agents'" is a recommendation; "make the CTA more benefit-driven" is not, and should be rewritten before the table goes out. **Exception:** Copy/CRO rows name the missing/buried reason and read "Rewrite with `improve-conversion-surfaces-copy` — reason: [X]" per Scope and handoff above; that skill owns producing the actual line, so don't draft copy in this cell.
+- **Recommendation**: the single most important cell. It must be the actual instruction, worded so specifically that two different people acting on it would produce the same result — not a direction to go think about it. "Change the CTA from 'Upgrade' to 'Unlock AI Agents'" is a recommendation; "make the CTA more benefit-driven" is not, and should be rewritten before the table goes out. **Exception:** Copy/CRO rows name the missing/buried reason and read "Revise with `improve-conversion-surfaces-copy` — reason: [X]" per Scope and handoff above; that skill owns producing the actual line, so don't draft copy in this cell.
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
 
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
@@ -181,10 +187,10 @@ Before returning the review, verify all of the following. If any fail, fix befor
 
 ## Plugin output
 
-When running inside the growth-monetization plugin, save the review to `.monetization/{feature-slug}/03-review.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md), and end with:
+When running inside the growth-monetization plugin, save the review to `.monetization/{feature-slug}/04-review.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md), and end with:
 
 ```
 ---
-→ Next step: improve-conversion-surfaces-copy — rewrite the Copy / CRO rows flagged above
-→ Prompt: "Rewrite the flagged copy in .monetization/{feature-slug}/03-review.md"
+→ Next step: improve-conversion-surfaces-copy — revise the Copy / CRO rows flagged above (02-copy.md already exists — this is a targeted fix, not a first draft)
+→ Prompt: "Revise the flagged copy in .monetization/{feature-slug}/02-copy.md per the flags in 04-review.md, save as 02-copy-v2.md"
 ```

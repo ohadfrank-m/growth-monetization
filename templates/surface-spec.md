@@ -16,7 +16,7 @@ Every spec artifact follows this structure. The spec is the contract between PM 
 plugin: growth-monetization
 skill: monetization-surface-spec
 feature / topic: {surface name} — {tier or context}
-surface type: {pricing-page | paywall | upgrade-trigger | credit-ui | trial | cancellation}
+surface type: {pricing-page | paywall | promotion | upgrade-trigger | credit-ui | trial | cancellation}
 cohort: {new-user | existing-user | both}
 author: {name}
 date: {YYYY-MM-DD}
@@ -96,17 +96,17 @@ Address each that applies:
 - AI agent flows: non-blocking preferred, always preserve task state
 - Notify admin path required for IC-facing surfaces where purchase is admin-gated
 
-## Wireframe [required]
-Low-fi wireframe as HTML — sections, hierarchy, CTA placement, escape hatch. Not pixel-perfect.
-Output as: `.monetization/{feature-slug}/02-wireframe.html`
+## Wireframe [built in a later pass — not part of this document]
+Not built yet. `improve-conversion-surfaces-copy` writes the real headline/CTA copy from the Copy strategy section above first — the wireframe is built from that real copy, not from placeholder text. Once `02-copy.md` exists, re-invoke `monetization-surface-spec` to build it: low-fi HTML, sections, hierarchy, CTA placement using the ★ Recommended copy, escape hatch. Not pixel-perfect.
+Output as: `.monetization/{feature-slug}/03-wireframe.html`
 
 ## References [conditional]
 Include benchmark examples only when they directly informed a structural decision:
 - {Company}: {URL} — {one sentence on what it does well and why it applies here}
 
 ---
-→ Next step: monetization-design-reviewer — score this spec and wireframe before it goes to design
-→ Prompt: "Review the spec and wireframe in .monetization/{feature-slug}/"
+→ Next step: improve-conversion-surfaces-copy — write the actual headline/CTA copy from the reason and direction named above
+→ Prompt: "Write copy for .monetization/{feature-slug}/01-spec.md"
 ```
 
 ---
@@ -117,4 +117,4 @@ Include benchmark examples only when they directly informed a structural decisio
 - Surface structure table is non-negotiable — no prose descriptions of layout
 - Copy strategy names the reason and hands off — never writes final copy
 - Edge cases are addressed even when the answer is "not applicable, because..." — no silent omissions
-- Wireframe is always HTML, always low-fi, always delivered as a file
+- Wireframe is always HTML, always low-fi, always delivered as a file — and always built *after* copy exists, never before
