@@ -13,10 +13,10 @@ Built for: pricing pages · paywalls · upgrade flows · credit/consumption UI �
 
 ## The flow
 
-Skills follow a deliberate sequence. Run `/monetization` to be guided through automatically, or invoke any skill individually.
+Skills follow a deliberate sequence. Run `/monetization-pm-router` to be guided through automatically, or invoke any skill individually.
 
 ```
-/monetization                    ← start here if unsure — routes to the right skill
+/monetization-pm-router          ← start here if unsure — routes to the right skill
       │
       ├── /pricing-intelligence         ← research: how competitors price, what models dominate
       │         │
@@ -49,7 +49,7 @@ Run them in sequence or start anywhere. Each skill reads what the previous one p
 /plugin install growth-monetization@growth-monetization
 ```
 
-Skills load automatically. Invoke by name or let `/monetization` route for you.
+Skills load automatically. Invoke by name or let `/monetization-pm-router` route for you.
 
 To try locally before installing:
 
@@ -97,7 +97,7 @@ Skills degrade gracefully when an MCP is unavailable and tell you what's affecte
 
 ## The skills
 
-### `/monetization` — Router
+### `/monetization-pm-router` — Router
 
 The entry point. Reads your intent and routes to the right skill. Sequences multi-skill workflows automatically. Start here when you're not sure which skill applies, or when a task spans multiple skills ("research how competitors price this, then spec our version").
 
@@ -235,9 +235,10 @@ growth-monetization/
 ## Contributing
 
 - **Updating monday.com facts:** edit `context/monday-context.md`, bump `last-updated`, add a changelog row
-- **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never re-derive or copy it into a skill's own `references/`. See [playbooks/README.md](playbooks/README.md).
+- **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never re-derive or copy it into a skill's own `references/`. Tag every claim `[Verified]` / `[Reported]` / `[Teardown needed]` and date your sources — the skills are instructed to cite according to those tags. See [playbooks/README.md](playbooks/README.md).
+- **Adding a playbook** (e.g. trial flows): it isn't finished until it carries the mandatory AI-native reference set — Clay, Figma, ClickUp, and Claude teardowns in the standard shape, an at-a-glance comparison, a copy bank, and dated sources. A skill shouldn't cite a playbook that's missing it. See [playbooks/README.md](playbooks/README.md).
 - **Changing a skill:** keep `SKILL.md` lean; put mechanics specific to that skill in the skill's `references/`; put anything a second skill would also need in `playbooks/` instead
-- **Adding a skill:** add a folder under `skills/`, then add it to the router table in `skills/monetization/SKILL.md` and to this README
+- **Adding a skill:** add a folder under `skills/`, then add it to the router table in `skills/monetization-pm-router/SKILL.md` and to this README
 
 ## Coming in Wave 2
 

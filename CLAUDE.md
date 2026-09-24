@@ -32,7 +32,7 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
+| `monetization-pm-router` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | Writing persuasive copy (1st call, drives the wireframe) or revising a flagged line (2nd call, after review) | `02-copy.md`, then `02-copy-v2.md` if revised |
@@ -102,3 +102,4 @@ If the folder exists, detect what's there and continue from the next number. Whe
 - Always state the user cohort (new vs. existing) for any surface
 - Copy is written only by `improve-conversion-surfaces-copy`; other skills name the reason and direction, then hand off — and copy runs *before* the wireframe is built, never after, so nothing ships or gets reviewed with placeholder text standing in for real language
 - Cite sources with URLs; never present web findings as MCP data
+- Respect the playbooks' evidence tags when citing a competitor claim: `[Verified]` can be stated as fact, `[Reported]` needs the caveat inline, `[Teardown needed]` is never presented as fact, and figures in sections marked as pre-dating the evidence-tag standard are directional — never quoted as a target. See [playbooks/README.md](playbooks/README.md)

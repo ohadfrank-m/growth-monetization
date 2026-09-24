@@ -109,6 +109,8 @@ The 1,500-credit dual-gated trial structure gates on both time and credits. The 
 
 ## Benchmarks
 
+*Directional only — these figures pre-date the evidence-tag standard and carry no source. Don't cite them as fact in a review; the sourced material is in the AI-native reference set below.*
+
 | Metric | Poor | Average | Good |
 |--------|------|---------|------|
 | Credit depletion → purchase CVR | <10% | 15–25% | 30%+ |
@@ -120,9 +122,11 @@ The 1,500-credit dual-gated trial structure gates on both time and credits. The 
 
 ## Best-in-class metering references
 
+*Pre-dates the evidence-tag standard — the patterns are sound, but any figures here are unsourced. Tagged teardowns are in the AI-native reference set below.*
+
 **OpenAI API dashboard** — burn-rate projection ("at this rate, runs out in X days") is the model for forecasting. Rate framing drives top-ups better than raw balance.
 
-**Anthropic / Claude usage** — plain-language remaining-usage framing tied to the current session, not abstract token counts.
+**Anthropic / Claude usage** — two-window meter (session + weekly) with reset times, and pay-to-continue under a spending cap. Full teardown in the AI-native reference set below.
 
 **Vercel** — usage dashboard with per-resource meters and clear overage pricing shown *before* the overage happens; no surprise bills.
 
@@ -145,6 +149,98 @@ The 1,500-credit dual-gated trial structure gates on both time and credits. The 
 | No IC → admin path | IC dead-ends, admin never knows | "Notify admin" button always present |
 | Post-purchase no resume path | User has credits, doesn't know how to continue | Auto-resume or explicit "Resume task" CTA |
 | Credit expiry not communicated | Surprise at month end | Show expiry prominently if credits don't roll over |
+
+## AI-native reference set: Clay · Figma · ClickUp · Claude
+
+Mandatory reference set for every playbook — and the most important one for this surface. Evidence tags: **[Verified]** vendor docs, **[Reported]** third-party, **[Teardown needed]** capture before citing in a review.
+
+### At a glance — the credit UI stack, pattern by pattern
+
+| Pattern | Clay | Figma | ClickUp | Claude |
+|---|---|---|---|---|
+| Pre-action cost estimate | **Best-in-class** — total, per-column, rows affected | Published per-task ranges in Help Center | — | — |
+| Big-spend warning | Yes — warns when a run uses a large share of monthly budget | — | — | — |
+| Persistent meter | Credit dashboard (time-series balance) | User + admin usage views, CSV export on Org/Ent | [Teardown needed] | Settings → Usage: session + weekly bars with reset times |
+| Warning before wall | Via budget warning | [Teardown needed] | [Teardown needed] | "Approaching 5-hour limit" |
+| Depletion behavior | Auto top-up keeps runs going | Paid AI off until reset; free AI stays on; daily cap on Starter/View | Automatic AI features pause | Blocking message + reset time |
+| Continue-past-limit | Auto top-ups (admin, card on file) | Shared pool + PAYG to a spend limit | Credit packs ($10 / 10k) | Usage credits at API rates, monthly cap, auto-reload, alerts |
+| Rollover | Up to 2x monthly allocation | None | None (trial credits don't reset) | Usage credits generally don't expire |
+| Admin controls | Auto top-up threshold + amount | Pool purchase; per-user caps not available (as of Mar 2026) | Workspace-level | Spend caps: org / seat tier / member, MTD spend column |
+
+### Clay — cost transparency before the spend
+
+**What they ship [Verified].**
+- **Pre-run estimate:** when a column run would trigger downstream columns, Clay shows total estimated credits, a per-column breakdown, and the number of rows affected. It applies to manual runs *and* automated ones (scheduled imports, auto-update).
+- **Variable pricing honesty:** variable-cost models show a per-row estimate marked with a tilde (~); final cost is set after the run.
+- **Budget warning:** a warning fires before a run that would use a significant portion of the workspace's monthly credit budget.
+- **History:** Overview tab charts credit balance as a time series so you can see when credits were spent; CSV export on all views.
+- **Auto top-ups:** admins on paid self-serve plans set a trigger threshold (at least 15% of plan credits) and an amount (min 250 credits); charged to the card on file so a run in progress keeps going instead of stopping.
+- **Rollover:** unused credits roll over up to 2x the monthly allocation. One-time top-ups carry a 30% premium.
+
+**Why it works.** Clay moves the anxiety from *after* the spend to *before* it. The user commits to a known cost for a known number of rows — the same mental model as a checkout. Auto top-up solves mid-run depletion structurally.
+
+**Where it breaks.** Failed lookups still consume credits (paying for three providers that return nothing) — the most-cited trust complaint in third-party coverage. Estimates are non-binding for variable models.
+
+**Steal for monday.com.** This is the pattern for agents and AI Blocks:
+- Before an AI Block runs on a column: "~[X] credits · [N] items · ≈[Y]% of this month's balance" with Run / Run on 10 items first.
+- Before scheduling a recurring agent: "~[X] credits per run · [Z] runs/month ≈ [total]."
+- Big-run warning above a threshold (e.g., >20% of remaining balance).
+- Auto top-up for admins, framed as "keep agents running."
+- Decide explicitly whether failed/empty AI outputs consume credits — and say so in the estimate.
+
+### Figma — per-person allowance, graceful degradation, pooled rescue
+
+**What they ship [Verified].** Credits belong to individual seats, reset monthly, no rollover, not shareable. Starter and View seats also have a 150-credit daily cap. When credits run out, paid AI features are disabled until the next reset while free features stay available, and an admin-purchased shared pool acts as a buffer (subscription at a better rate + pay-as-you-go up to a spend limit). Users and admins can track usage; Org/Enterprise admins export CSV history. Per-user caps weren't available at enforcement (March 2026) **[Verified at the time — recheck]**.
+
+**Why it works.** Free AI features staying live means depletion degrades the product rather than breaking it. The shared pool is the right fix for per-seat limits: the heavy user draws from the account, not from a colleague.
+
+**Where it breaks.** At enforcement (Mar 18, 2026) users reported running out within hours of real Figma Make work; the forum thread is a case study in launching limits on a feature people had used unmetered. Model selection changes cost up to ~8x for the same action **[Reported]**, and the meter can't warn about that unless cost is shown at model choice.
+
+**Steal for monday.com.** (1) Classify every AI capability as credit-consuming vs. free (monday already keeps an AI Feature Catalog — per [monday-context.md](../context/monday-context.md)) and keep the free ones live at zero balance. (2) If a cheaper model/mode exists, show the credit delta at the selector. (3) Never enforce a new limit without a comms ramp and a ready purchase path (Figma had one week between add-on launch and enforcement — take more).
+
+### ClickUp — credits under a seat subscription
+
+**What they ship [Verified].** AI Super Credits power automatic AI features (Super Agents, Autopilot Agents, AI Fields, AI Cards). Allowances: Brain 1,500 per user/mo, Everything AI 5,000 per user/mo; Free 500 per workspace and paid-without-AI 1,000 per user, both one-time. When trial credits run out, automatic features pause until an add-on or credit pack is bought. Extra credits $10 per 10,000. Subject to a fair-use policy.
+
+**Why it works.** Splitting "chat/writing = unlimited in the seat" from "automatic agents = metered" is a clear mental model: humans typing are flat-rate, machines running are metered.
+
+**Where it breaks.** Automatic features fail quietly — a paused AI Field looks like missing data. Seat price + credits stack makes the bill hard to predict (the top theme in third-party reviews).
+
+**Steal for monday.com.** Adopt the "interactive = included, autonomous = metered" split in how credit UI *explains* consumption, even if pricing differs. For any autonomous feature, the paused state is designed first: inline marker on every affected item, a board-level banner, and an owner notification.
+
+### Claude — the two-window meter and the pay-to-continue exit
+
+**What they ship [Verified].**
+- **Meter:** Settings → Usage shows progress for the five-hour session and the weekly limit, each with its reset time.
+- **Progression:** "Approaching 5-hour limit" warning → blocking message stating when usage is available again.
+- **Continue path:** paid plans can turn on usage credits — billed separately at API rates, under a monthly spending cap you set (or unlimited), with auto-reload below a threshold and alerts when approaching limits. Real-time consumption and month-to-date spend are shown in Settings → Usage.
+- **Team:** owners set limits org-wide, by seat tier, or per member; a member who hits their cap is paused until reset.
+- **Education:** Help Center explains what burns usage (long threads, higher effort, attachments) and what doesn't (reused project content is cached).
+
+**Why it works.** The reset time turns depletion into a wait-or-pay decision instead of a dead end. Spending caps make pay-as-you-go safe to enable. Teaching users *why* usage burns reduces "the limits are unfair" sentiment.
+
+**Where it breaks.** Two stacked windows are harder to reason about than one balance. Third-party reports say a promotional credit claim enabled usage credits by default for some users, who were then charged past plan limits **[Reported]** — continue-past-limit billing must always be an explicit opt-in.
+
+**Steal for monday.com.** (1) Show the *refill date* on every depletion surface. (2) Top-up with a monthly cap as the default admin setting. (3) A "why did this cost so much?" explainer on the usage page, per capability. (4) Overage is always opt-in; the admin sees a confirmation of the cap they set.
+
+### Copy bank — credit UI
+
+| Moment | Pattern | Example for monday.com |
+|---|---|---|
+| Pre-run estimate | Cost + scope + share of balance | "~450 credits · 300 items · about 15% of your remaining balance" |
+| Big-run warning | Name the share | "This run uses about half of what's left this month. Try it on 10 items first?" |
+| Persistent meter | Balance + translation + refill | "2,140 credits left ≈ 40 agent runs · refills [date]" |
+| Forecast | Rate + deadline | "At this pace you'll run out around [date], before your cycle refills" |
+| Depleted (interactive) | What stopped + resume | "Sidekick needs more credits to answer — top up or wait until [date]" |
+| Depleted (autonomous) | Where it stopped | "AI stopped updating 'Sentiment' on 120 items · Top up to resume" |
+| Overage opt-in | Cap is the headline | "Keep agents running past your balance — up to $[cap]/month. You'll get an alert at 80%." |
+
+### Sources (checked 2026-09-24)
+
+- Clay: https://university.clay.com/docs/credit-usage · https://university.clay.com/docs/actions-data-credits · https://www.clay.com/blog/introducing-clay-pricing-3-0-the-most-flexible-credit-system-on-the-market · https://www.cleanlist.ai/blog/2026-03-12-clay-pricing-changes-2026
+- Figma: https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work · https://www.vibecodingacademy.ai/blog/figma-ai-credits-everything-you-need-to-know · https://forum.figma.com/share-your-feedback-26/figma-make-ai-credit-limits-not-feasible-51713/index4.html · https://www.appshot.app/posts/2026-07-09-figma-ai-credits-explained/
+- ClickUp: https://help.clickup.com/hc/en-us/articles/20686299081879-ClickUp-Brain-AI-feature-availability-and-limits · https://www.rock.so/blog/clickup-pricing
+- Claude: https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans · https://support.claude.com/en/articles/12005970-manage-usage-credits-for-team-and-seat-based-enterprise-plans · https://www.ai-toolbox.co/claude-management-and-productivity/claude-usage-limits-2026 · https://ccforeveryone.com/guides/claude-code-limits-and-pricing
 
 ## monday.com-specific notes
 

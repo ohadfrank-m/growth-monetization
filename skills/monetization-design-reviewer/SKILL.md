@@ -113,7 +113,9 @@ Column rules:
 
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
-End with **one benchmark example** from pricingsaas.com, pricingpages.com, or a best-in-class SaaS — and explain *why* it works, not just who does it.
+End with **one benchmark example** — and explain *why* it works, not just who does it. Take it from this surface's playbook first (the AI-native reference set there is sourced and dated); fall back to pricingsaas.com, pricingpages.com, or another best-in-class SaaS only when the playbook has nothing that fits.
+
+**Respect the evidence tags.** The playbooks tag every claim — `[Verified]` (vendor docs), `[Reported]` (third-party), `[Teardown needed]` (pattern known, UI not captured). A review may state a `[Verified]` claim as fact; a `[Reported]` claim must carry the caveat inline ("reported by a third party, not vendor-confirmed"); a `[Teardown needed]` claim must never be presented as fact — say the UI hasn't been captured. Figures in a playbook section marked as pre-dating the evidence-tag standard are directional only — don't cite them as a number the team should hit. Full rules: [../../playbooks/README.md](../../playbooks/README.md).
 
 ### 3. Optional low-fi prototype
 
@@ -182,6 +184,7 @@ Before returning the review, verify all of the following. If any fail, fix befor
 8. **Nothing was scored on a screen you couldn't actually see.** If input was a description only, say the visual review is pending and don't fabricate hierarchy/mobile scores.
 9. **The single highest-impact fix is row 1** of the table.
 10. **Anything unassessable got its own row** (Recommendation: "Pending — needs [X] to assess") rather than being silently omitted.
+11. **Every competitor claim or figure cited respects its evidence tag** — `[Verified]` stated as fact, `[Reported]` carries the caveat inline, `[Teardown needed]` never presented as fact, and figures from pre-evidence-tag sections flagged as directional rather than quoted as targets.
 
 ---
 
