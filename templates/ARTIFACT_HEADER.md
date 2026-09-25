@@ -37,16 +37,17 @@ All artifacts land in `.monetization/` in the working directory:
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — the wireframe is built from this)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (built from 02-copy.md, not placeholders)
-│   └── 04-review.md        ← monetization-design-reviewer (scores the real thing; flags → 02-copy-v2.md)
+│   ├── 04-review.md        ← monetization-design-reviewer (scores the real thing; flags → 02-copy-v2.md)
+│   └── 05-requirements.md  ← monetization-pm-router synthesis (final copy, design specs, build order)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md
 ```
 
 **Folder naming:** lowercase, hyphenated, descriptive. `credit-depletion-modal`, `trial-upgrade-nudge`, `notion-pricing-2026`.
 
-**File numbering:** fixed per skill — 01 spec, 02 copy, 03 wireframe, 04 review. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
+**File numbering:** fixed per skill — 01 spec, 02 copy, 03 wireframe, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
-## Next step block (required at end of every artifact)
+## Next step block (standalone runs only — omitted inside a router chain)
 
 ```
 ---

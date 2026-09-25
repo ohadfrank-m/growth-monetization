@@ -1,7 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Monetization Design Reviewer
@@ -75,7 +75,7 @@ CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com app
 
 ## Review Output Format
 
-Always produce **both** parts. Then offer the optional prototype.
+Always produce **both** parts. On review-only runs, then offer the optional prototype.
 
 ### 1. Scored Rubric
 
@@ -93,6 +93,8 @@ Score each dimension 1–5 using the anchor definitions in `references/scoring-r
 | Mobile readiness | | |
 
 **Weighted overall: X/100** — followed by a one-line verdict. (Would you ship it or not. Say it plainly.)
+
+**Projected: Y/100 if 🔴 + 🟠 ship** — re-score each dimension using the same anchors, assuming every Critical and Major fix in the table below is implemented. This is a rubric projection, not a conversion forecast.
 
 ### 2. Prioritized Improvements — one table, ranked
 
@@ -118,6 +120,8 @@ End with **one benchmark example** — and explain *why* it works, not just who 
 **Respect the evidence tags.** The playbooks tag every claim — `[Verified]` (vendor docs), `[Reported]` (third-party), `[Teardown needed]` (pattern known, UI not captured). A review may state a `[Verified]` claim as fact; a `[Reported]` claim must carry the caveat inline ("reported by a third party, not vendor-confirmed"); a `[Teardown needed]` claim must never be presented as fact — say the UI hasn't been captured. Figures in a playbook section marked as pre-dating the evidence-tag standard are directional only — don't cite them as a number the team should hit. Full rules: [../../playbooks/README.md](../../playbooks/README.md).
 
 ### 3. Optional low-fi prototype
+
+Review-only runs only. In a chain, skip this offer entirely — the router makes it once, after `05-requirements.md`, so the chain doesn't stall on a question.
 
 After delivering the review, offer to visualize the recommended fixes as a low-fidelity prototype, and let the reviewer pick the format:
 
@@ -185,6 +189,7 @@ Before returning the review, verify all of the following. If any fail, fix befor
 9. **The single highest-impact fix is row 1** of the table.
 10. **Anything unassessable got its own row** (Recommendation: "Pending — needs [X] to assess") rather than being silently omitted.
 11. **Every competitor claim or figure cited respects its evidence tag** — `[Verified]` stated as fact, `[Reported]` carries the caveat inline, `[Teardown needed]` never presented as fact, and figures from pre-evidence-tag sections flagged as directional rather than quoted as targets.
+12. **Projected score is present**, re-scored with the same anchors assuming every 🔴 and 🟠 fix ships.
 
 ---
 
@@ -192,26 +197,13 @@ Before returning the review, verify all of the following. If any fail, fix befor
 
 Save the review to `.monetization/{feature-slug}/04-review.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md).
 
-**After saving, determine which mode this review is running in:**
+Then continue — a review is never the last step unless the user asked for one:
 
-### Chain mode (router declared a multi-step sequence before this review started)
-Proceed immediately — do not pause for the user:
-
-1. **Run `improve-conversion-surfaces-copy`** for each Copy/CRO row in the review. For each row:
-   - State the element (headline, CTA, trust signal, etc.)
-   - State the reason it's failing (from the review row)
-   - Invoke the copy skill to produce 2–3 options with one ★ recommended
-   - Save all copy output to `.monetization/{feature-slug}/02-copy-v2.md` (versioned from any existing `02-copy.md`)
-
-2. After all Copy/CRO items are written, **return to `monetization-pm-router` synthesis phase** and produce `05-requirements.md`.
-
-No next-step block needed — the chain continues automatically.
-
-### Standalone mode (design reviewer invoked directly, not as part of a router chain)
-End the review with:
+- **Default (including when this skill was invoked directly, not via the router):** hand off to the Review → Fix → Synthesize chain in [monetization-pm-router](../monetization-pm-router/SKILL.md) and follow its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run.
+- **Review only** (the user said "just score it", "review only", or equivalent): end with the prototype offer above and this block:
 
 ```
 ---
-→ Next step: improve-conversion-surfaces-copy — revise the Copy / CRO rows flagged above (treat as revision, not first draft)
-→ Prompt: "Revise the flagged copy in .monetization/{feature-slug}/04-review.md, save as 02-copy-v2.md, then run monetization-pm-router synthesis to produce 05-requirements.md"
+→ Next step: improve-conversion-surfaces-copy — rewrite the Copy / CRO rows flagged above
+→ Prompt: "Rewrite the flagged copy in .monetization/{feature-slug}/04-review.md, then synthesize into 05-requirements.md"
 ```

@@ -13,30 +13,31 @@ Built for: pricing pages · paywalls · upgrade flows · credit/consumption UI �
 
 ## The flow
 
-Skills follow a deliberate sequence. Run `/monetization-pm-router` to be guided through automatically, or invoke any skill individually.
+Run `/monetization-pm-router` and describe what you need, or share a screenshot / Figma link. The router picks the chain, runs every step without asking you to re-prompt, and ends with one requirements doc. Every skill is still invokable on its own.
+
+**Reviewing an existing design** (the most common case):
 
 ```
-/monetization-pm-router          ← start here if unsure — routes to the right skill
-      │
-      ├── /pricing-intelligence         ← research: how competitors price, what models dominate
-      │         │
-      │         ▼
-      ├── /monetization-surface-spec    ← writes the spec: brief, hook, reason, direction (01-spec.md)
-      │         │
-      │         ▼
-      ├── /improve-conversion-surfaces-copy  ← writes the real headline/CTA copy from that reason (02-copy.md)
-      │         │
-      │         ▼
-      ├── /monetization-surface-spec    ← builds the wireframe from that real copy, not placeholders (03-wireframe.html)
-      │         │
-      │         ▼
-      └── /monetization-design-reviewer ← CRO rubric score of the real thing (04-review.md)
-                │
-                ▼ (only if a copy line gets flagged)
-          /improve-conversion-surfaces-copy  ← revision pass on the flagged line(s) — 02-copy-v2.md
+/monetization-pm-router  + screenshot
+      ├── monetization-design-reviewer      ← scored rubric + ranked fixes (04-review.md)
+      ├── improve-conversion-surfaces-copy  ← real replacement copy for every flagged line (02-copy.md)
+      └── synthesis                         ← final copy, design specs, build order (05-requirements.md)
 ```
 
-Run them in sequence or start anywhere. Each skill reads what the previous one produced. Copy runs *before* the wireframe, not after the review — so the wireframe you look at and the review that scores it both reflect real language, not bracketed placeholder text.
+**Building a new surface:**
+
+```
+/monetization-pm-router  + brief
+      ├── [pricing-intelligence]            ← optional research first
+      ├── monetization-surface-spec         ← brief, hook, reason, direction (01-spec.md)
+      ├── improve-conversion-surfaces-copy  ← real headline/CTA copy from that reason (02-copy.md)
+      ├── monetization-surface-spec         ← wireframe built from that copy (03-wireframe.html)
+      ├── monetization-design-reviewer      ← CRO score of the real thing (04-review.md)
+      ├── improve-conversion-surfaces-copy  ← revise flagged lines, if any (02-copy-v2.md)
+      └── synthesis                         ← 05-requirements.md
+```
+
+Copy runs *before* the wireframe, not after the review — so the wireframe you look at and the review that scores it both reflect real language, not bracketed placeholder text.
 
 ---
 
@@ -99,9 +100,11 @@ Skills degrade gracefully when an MCP is unavailable and tell you what's affecte
 
 ### `/monetization-pm-router` — Router
 
-The entry point. Reads your intent and routes to the right skill. Sequences multi-skill workflows automatically. Start here when you're not sure which skill applies, or when a task spans multiple skills ("research how competitors price this, then spec our version").
+The entry point. Reads your intent, runs the right skills in sequence without pausing between them, and — for any chain that includes a review — synthesizes everything into one doc a designer and engineer can build from.
 
-Produces no artifact of its own — it orchestrates.
+**What you get:** `05-requirements.md` — final copy strings (verbatim ★ picks, each next to the line it replaces), design changes specified precisely enough to build, open items with owners, and a sorted build order. Every row traces back to the review row it came from, so nothing gets dropped between skills.
+
+Claude's `/` menu lists each skill separately — there's no plugin-level command — so `/monetization-pm-router` is the one to remember. Sharing a design with `/monetization-design-reviewer` directly also runs the full chain unless you say "review only".
 
 ---
 
@@ -168,7 +171,7 @@ Score any monetization design, screenshot, Figma frame, or wireframe against an 
 
 **Requires:** Figma MCP (optional — screenshots work too)
 
-**What you get:** `04-review.md` — weighted score out of 100, ship / don't-ship verdict, ranked improvement table, one benchmark example. Optional low-fi prototype of the fixed version. A flagged copy line routes back to `/improve-conversion-surfaces-copy` as a revision, not a first draft.
+**What you get:** `04-review.md` — weighted score out of 100, projected score if the Critical and Major fixes ship, ship / don't-ship verdict, ranked improvement table, one benchmark example. Continues straight into copy rewrites and `05-requirements.md` unless you ask for the review only.
 
 ---
 
@@ -183,10 +186,12 @@ Every artifact lands in `.monetization/` in your working directory, numbered in 
 │   ├── 02-copy.md          ← /improve-conversion-surfaces-copy (real copy — wireframe built from this)
 │   ├── 03-wireframe.html   ← /monetization-surface-spec (re-invoked, built from 02-copy.md)
 │   ├── 04-review.md        ← /monetization-design-reviewer (scores the real thing)
-│   └── 02-copy-v2.md       ← /improve-conversion-surfaces-copy (only if 04-review.md flagged a line)
-├── trial-expiry-screen/
-│   ├── 01-spec.md
-│   └── 02-copy.md
+│   ├── 02-copy-v2.md       ← /improve-conversion-surfaces-copy (only if 04-review.md flagged a line)
+│   └── 05-requirements.md  ← /monetization-pm-router synthesis (what design + eng build from)
+├── trial-expiry-screen/    ← existing design reviewed from a screenshot
+│   ├── 04-review.md
+│   ├── 02-copy.md
+│   └── 05-requirements.md
 └── research/
     ├── notion-pricing-2026-09.md
     └── ai-credits-benchmark-2026-09.md
@@ -200,7 +205,7 @@ Every file uses the same header block (plugin, skill, feature, cohort, date, sta
 
 **Artifacts over answers.** Every skill produces a real deliverable — a spec doc, a wireframe, a research report — not a chat response. The artifact is what you hand to design or engineering.
 
-**Skills chain.** Every artifact ends with a `→ Next step` block pointing to the logical next skill and a copy-pasteable prompt to trigger it. You shouldn't need to know the workflow — it's embedded in the output.
+**Skills chain.** Through the router, skills run back to back with no re-prompting and end in one requirements doc. Run a skill on its own and its artifact ends with a `→ Next step` block and a copy-pasteable prompt instead.
 
 **monday.com context always applied.** AI credits, Vibe design tokens, tier structure, cohort differences (new user vs. existing), B2B PLG dynamics (IC hits the wall, admin buys) — all applied automatically without being asked.
 
@@ -224,7 +229,7 @@ growth-monetization/
 │   └── ...                            ← benchmarks, best-in-class examples, anti-patterns — cited by spec + reviewer, never duplicated
 ├── templates/                         ← artifact header + research and spec templates
 ├── skills/
-│   ├── monetization/                  ← router
+│   ├── monetization-pm-router/        ← router + synthesis
 │   ├── pricing-intelligence/
 │   ├── monetization-surface-spec/
 │   ├── monetization-design-reviewer/

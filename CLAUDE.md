@@ -32,11 +32,11 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization-pm-router` | **Start here.** Intent unclear, spans several skills, or you're sharing a design for review. Runs full chain automatically + synthesizes into one requirements doc. | `05-requirements.md` (synthesis); routing for everything else |
+| `monetization-pm-router` | **Start here.** Intent unclear, spans several skills, or a design is shared. Runs the chain without re-prompting and synthesizes it. | `05-requirements.md` (synthesis); routing for everything else |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
-| `improve-conversion-surfaces-copy` | Writing persuasive copy (1st call, drives the wireframe) or revising a flagged line (2nd call, after review) | `02-copy.md`, then `02-copy-v2.md` if revised |
-| `monetization-design-reviewer` | Scoring the real spec + copy + wireframe together | `04-review.md` — scored rubric + ranked fix list |
+| `improve-conversion-surfaces-copy` | First pass after a spec, first pass after a review of an existing design, or revising a line a review flagged | `02-copy.md`, then `02-copy-v2.md` if revised |
+| `monetization-design-reviewer` | Scoring a design — continues into the router's Review → Fix → Synthesize chain unless "review only" is asked | `04-review.md` — scored rubric, projected score, ranked fix list |
 
 ---
 
@@ -81,9 +81,9 @@ Copy runs before the wireframe, not after the review — the wireframe and the r
 
 If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
 
-### Next step block — end of every artifact (standalone mode only)
+### Next step block — standalone runs only
 
-The next step block is for standalone skill invocations where the user will re-prompt manually. It is **not** written when the skill is running inside a router-orchestrated chain — in that case, the chain continues automatically and a next step block would be misleading.
+End a standalone artifact with:
 
 ```
 ---
@@ -91,7 +91,7 @@ The next step block is for standalone skill invocations where the user will re-p
 → Prompt: "{copy-pasteable prompt}"
 ```
 
-When in chain mode, omit this block entirely. The router owns sequencing; individual skills just deliver their artifact and stop.
+Omit it inside a router chain — the router runs the next step itself, and a re-prompt block tells the model to stop and wait. Chain mode rules live once, in [skills/monetization-pm-router/SKILL.md](skills/monetization-pm-router/SKILL.md); skills cite them rather than restating them.
 
 ### Quality gate — before delivering
 
@@ -99,7 +99,7 @@ When in chain mode, omit this block entirely. The router owns sequencing; indivi
 - Specific enough that two people acting on it produce the same result
 - monday.com facts cited from the context file, not memory
 - No empty sections or "N/A" padding (except the spec edge-case list, where N/A needs a reason)
-- Next step block present
+- Next step block present on standalone runs, absent inside a chain
 
 ---
 
