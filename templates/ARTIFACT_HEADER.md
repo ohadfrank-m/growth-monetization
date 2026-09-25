@@ -12,6 +12,10 @@ cohort: {new-user | existing-user | both | n/a}
 author: {name}
 date: {YYYY-MM-DD}
 status: {draft | review | approved}
+# optional — add when they apply:
+reviewer: {independent (subagent) | inline (self-graded)}   # review + requirements artifacts
+fix-loop pass: {1 | 2 | 3}                                  # revisions written by the fix loop
+revises: {file} for {review rows}                           # any -v2/-v3 file
 ---
 ```
 
@@ -26,6 +30,11 @@ status: {draft | review | approved}
 | `author` | Yes | Person who ran the skill |
 | `date` | Yes | ISO date — auto-filled when possible |
 | `status` | Yes | Start as `draft`, move to `review` before sharing |
+| `reviewer` | Review and requirements artifacts | `inline (self-graded)` whenever no independent subagent ran the review |
+| `fix-loop pass` | Fix-loop revisions | Which pass wrote this version |
+| `revises` | Any `-vN` file | Which file and which review rows it revises |
+
+Wireframes carry the same fields in their HTML header comment, plus `Built from:` (which spec and copy versions). The requirements doc also carries the final ledger line.
 
 ## Output folder convention
 
@@ -38,7 +47,7 @@ All artifacts land in `.monetization/` in the working directory:
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — the wireframe is built from this)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (built from 02-copy.md, not placeholders)
 │   ├── 04-review.md        ← monetization-design-reviewer (scores the real thing; flags → 02-copy-v2.md)
-│   └── 05-requirements.md  ← monetization-pm-router synthesis (final copy, design specs, build order)
+│   └── 05-requirements.md  ← monetization-growth-pm synthesis (final copy, design specs, build order)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md
 ```
@@ -47,7 +56,7 @@ All artifacts land in `.monetization/` in the working directory:
 
 **File numbering:** fixed per skill — 01 spec, 02 copy, 03 wireframe, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
-## Next step block (standalone runs only — omitted inside a router chain)
+## Next step block (standalone runs only — omitted inside a Growth PM chain)
 
 ```
 ---

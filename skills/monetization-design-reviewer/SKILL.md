@@ -1,7 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Monetization Design Reviewer
@@ -18,7 +18,7 @@ This skill is used by monday.com's monetization teams — designers, PMs, and pr
 
 This skill scores and flags copy quality as one of eight rubric dimensions — that's a diagnosis, not a rewrite. When a "Copy / CRO" issue is identified, name the problem and the reason it's failing on (which of the 15 reasons people buy, per the copy skill's framework, is missing or buried), but don't write the replacement line here. Hand off to `improve-conversion-surfaces-copy` for the actual rewrite options — that skill's whole job is producing 2–3 copy options with one recommended, and duplicating that logic here means two skills maintaining the same judgment calls separately.
 
-**This is a revision request, not a first draft.** By the time a review runs in the plugin's own pipeline, `improve-conversion-surfaces-copy` has already written the real copy (`02-copy.md`) and it's already in the wireframe you're reviewing — you're scoring actual language, not placeholder text. A flagged Copy/CRO row is asking for a targeted fix to a specific line that already exists, not an from-scratch draft. Say so in the handoff. (If you're reviewing a design from outside this plugin's chain — a screenshot with no `02-copy.md` behind it — this distinction doesn't apply; treat it as a first draft.)
+**This is a revision request, not a first draft — in a new-surface chain.** By the time a review runs there, `improve-conversion-surfaces-copy` has already written the real copy (`02-copy.md`) and it's already in the wireframe you're reviewing — you're scoring actual language, not placeholder text. A flagged Copy/CRO row is asking for a targeted fix to a specific line that already exists, not an from-scratch draft. Say so in the handoff. (Reviewing a live design — the existing-design chain, or a screenshot with no `02-copy.md` behind it — review runs first, so copy rows are a first draft for the copy skill.)
 
 In practice: score "Copy quality" honestly against the rubric anchors, and in the improvement list, format copy items as `[Severity · Effort] Issue → Reason it's failing → Revise with improve-conversion-surfaces-copy`. Every other category (UI, Structure, Timing/Trigger) still needs a specific, shippable fix in this skill's own output — the handoff is copy-only.
 
@@ -33,6 +33,19 @@ Accept any of the following as input:
 - **Uploaded image/screenshot** — analyze directly.
 - **Verbal description** — work with what's given, flag that visual review would sharpen recommendations.
 - **Multiple screens** — review the full flow, not just individual screens.
+
+### Required context
+
+Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — standalone runs"): check this table, infer what's obvious, ask every real gap in one message, then run. Inside a Growth PM chain, skip it.
+
+| Field | Why it changes the output | Infer from |
+|-------|--------------------------|-----------|
+| The design itself | Nothing can be scored without seeing it — a description alone means visual dimensions stay Pending | Attached image, Figma link, URL (a public URL can be captured) |
+| Surface type | Picks the rubric weights and the playbook | What's on screen |
+| Cohort (new vs existing) | Changes which hook and urgency lever are right | Surface type, copy on screen ("trial", "your plan") |
+| Goal or metric | "Fix conversion" vs "fix complaints" re-ranks the fix list | The prompt's problem statement |
+| Single screen vs full flow | Timing and friction can't be judged from one screen | Number of screens shared; ask for the rest only if timing is the question |
+| Review only vs fix + requirements | Whether the Review → Fix → Synthesize chain runs after | "just score", "review only" → review only; otherwise the chain |
 
 ### Figma ingestion (preferred path)
 
@@ -112,7 +125,7 @@ Column rules:
 - **Issue**: name the problem in as few words as possible — this is context for the recommendation, not a second explanation of it.
 - **Recommendation**: the single most important cell. It must be the actual instruction, worded so specifically that two different people acting on it would produce the same result — not a direction to go think about it. "Change the CTA from 'Upgrade' to 'Unlock AI Agents'" is a recommendation; "make the CTA more benefit-driven" is not, and should be rewritten before the table goes out. **Exception:** Copy/CRO rows name the missing/buried reason and read "Revise with `improve-conversion-surfaces-copy` — reason: [X]" per Scope and handoff above; that skill owns producing the actual line, so don't draft copy in this cell.
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
-- **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The router's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
+- **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The Growth PM's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
 
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
@@ -122,7 +135,7 @@ End with **one benchmark example** — and explain *why* it works, not just who 
 
 ### 3. Optional low-fi prototype
 
-Review-only runs only. In a chain, skip this offer entirely — the router makes it once, after `05-requirements.md`, so the chain doesn't stall on a question.
+Review-only runs only. In a chain, skip this offer entirely — the Growth PM makes it once, after `05-requirements.md`, so the chain doesn't stall on a question.
 
 After delivering the review, offer to visualize the recommended fixes as a low-fidelity prototype, and let the reviewer pick the format:
 
@@ -132,9 +145,9 @@ Only build it if they say yes. Build the *improved* version, not a copy of the o
 
 ---
 
-## Re-review mode — inside the router's fix loop
+## Re-review mode — inside the Growth PM's fix loop
 
-When an earlier review exists and revised artifacts (`-v2`/`-v3`) have been written in response to it, this is a re-review, not a fresh review. Save as `04-review-v2.md` (or `-v3`). It's run in a fresh subagent that sees only the files — see the router's [Fix loop](../monetization-pm-router/SKILL.md).
+When an earlier review exists and revised artifacts (`-v2`/`-v3`) have been written in response to it, this is a re-review, not a fresh review. Save as `04-review-v2.md` (or `-v3`). It's run in a fresh subagent that sees only the files — see the Growth PM's [Fix loop](../monetization-growth-pm/SKILL.md).
 
 1. **Verify every fixable row** from the previous review — one table, nothing skipped:
 
@@ -144,13 +157,13 @@ When an earlier review exists and revised artifacts (`-v2`/`-v3`) have been writ
 
    Judge against the row's Recommendation, not against taste. Resolved means a second designer would agree the Recommendation was carried out. Don't re-open rows marked Resolved on a later pass.
 
-2. **New issues** the fixes introduced or exposed — same ranked table and columns as a first review, numbered `R2.1`, `R2.2`… Only 🔴/🟠 feed another loop pass; 🟡 go to synthesis.
+2. **New issues** the fixes introduced or exposed — same ranked table and columns as a first review, numbered `R2.1`, `R2.2`… Only 🔴/🟠 feed another loop pass — except at Thorough depth, where 🟡 loop too; otherwise 🟡 go to synthesis.
 
 3. **Rescore** the full rubric on the new version, plus the projected score.
 
 4. **Blocked rows** from earlier reviews: list them once with their owner. Don't re-score them as failures of the fix pass.
 
-End with a one-line verdict for the router: `Exit loop` (every fixable row Resolved, no new 🔴/🟠) or `Another pass: {row list}`.
+End with a one-line verdict for the Growth PM, applying the exit rule for the depth named in the brief (the depth table in the Growth PM's [Fix loop](../monetization-growth-pm/SKILL.md)): `Exit loop` or `Another pass: {row list}`. Standard exits when every fixable 🔴/🟠 row is Resolved and no new 🔴/🟠 appeared; Thorough also needs the score at ≥85 and every fixable 🟡 Resolved, unless everything left is `blocked`.
 
 ---
 
@@ -223,9 +236,9 @@ Save the review to `.monetization/{feature-slug}/04-review.md` with the header f
 
 Then continue — a review is never the last step unless the user asked for one:
 
-- **Router review** (the brief opens with `Mode: router review`): write the file named in the brief, end with the verdict line, and stop. The router decides what runs next — never hand off, add a next-step block, or offer a prototype in this mode.
-- **Inside a new-surface chain:** the router's fix loop runs next — it routes each fixable row by its Fix path. No next-step block, no prototype offer.
-- **Default (including when this skill was invoked directly, not via the router):** hand off to the Review → Fix → Synthesize chain in [monetization-pm-router](../monetization-pm-router/SKILL.md) and follow its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run.
+- **Growth PM review** (the brief opens with `Mode: Growth PM review`): write the file named in the brief, end with the verdict line, and stop. If you're running inline rather than as a fresh subagent (no subagent tool), set `reviewer: inline (self-graded)` in the header, score from a fresh read of the artifact files before re-reading any reasoning behind them, and write every score as "{score} (self-graded)" — never claim the "Ship it" band on a self-graded score. The Growth PM decides what runs next — never hand off, add a next-step block, or offer a prototype in this mode.
+- **Inside a new-surface chain:** the Growth PM's fix loop runs next — it routes each fixable row by its Fix path. No next-step block, no prototype offer.
+- **Default (including when this skill was invoked directly, not via the Growth PM):** print that preset's announcement from [monetization-growth-pm](../monetization-growth-pm/SKILL.md), then continue into its Review → Fix → Synthesize chain under its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run.
 - **Review only** (the user said "just score it", "review only", or equivalent): end with the prototype offer above and this block:
 
 ```
