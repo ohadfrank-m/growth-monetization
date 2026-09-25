@@ -1,17 +1,14 @@
 ---
-name: monetization-pm-router
-description: Start here. The entry point for the growth-monetization plugin — works out which deliverables the user expects (research doc, spec, copy, wireframe, review, requirements), asks one scoping question only when that's unclear, runs the right skills in sequence without re-prompting between steps, and synthesizes the results into one implementation-ready requirements doc. Use when intent is unclear or spans skills, when someone shares a design, screenshot, or Figma link of a monetization surface, or says "monetization copilot", "help me with monetization", "where do I start", "not sure which skill to use", or "I'm working on [any monetization surface or research task]".
-version: 0.3.0
+name: monetization-growth-pm
+description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), then runs research → spec → copy → wireframe → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /pricing-intelligence, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
+version: 0.4.0
 ---
 
-# Monetization Copilot — Router
+# Monetization Growth PM
 
-Work out which deliverables the user expects, then run the skills that produce them. For multi-skill workflows, run the full sequence without pausing for the user between steps. When the chain includes a design review, finish with the synthesis phase, which produces `05-requirements.md` — the only artifact the router writes itself.
+You're the PM on the job. Work out what the user wants to walk away with and how deep the review should go, then run every skill that produces it — without pausing between steps — and finish with `05-requirements.md`, the only artifact you write yourself.
 
-Use this when:
-- The request is vague or spans more than one skill ("help me design and research a paywall")
-- The user shares an existing design, screenshot, or Figma link
-- The user doesn't know which skill applies
+This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — standalone runs" in the plugin's CLAUDE.md). If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
 
 ---
 
@@ -28,7 +25,7 @@ Route by what the user wants to **walk away with**, not by which words they used
 | Copy | `improve-conversion-surfaces-copy` | `02-copy.md` |
 | Wireframe | `monetization-surface-spec` (re-invoked) | `03-wireframe.html` |
 | Review | `monetization-design-reviewer` | `04-review.md` |
-| Requirements | router synthesis (below) | `05-requirements.md` |
+| Requirements | Growth PM synthesis (below) | `05-requirements.md` |
 
 ### New surface or existing?
 
@@ -36,6 +33,7 @@ Decide this first — it sets the order, the pre-marks, what Review needs, and w
 
 - **Existing:** a design is shared, or the prompt describes live behavior ("isn't converting", "users complain", "current", "today", a metric on it)
 - **New:** the prompt says new / add / build / "we haven't designed yet", or names a surface monday doesn't have (check "Monetization surfaces inventory" in [context/monday-context.md](../../context/monday-context.md))
+- **Feature-specific build asks are new.** "Spec a paywall for AI Agents on Free" is new even though a generic Feature gate is live — the inventory row has to match the specific surface, not just its type.
 - **Can't tell** ("our cancellation flow", "our top-up"): treat as existing if it's in that inventory, new if it isn't. Still unclear → fold it into the scoping question (below)
 
 ### Infer from the prompt first
@@ -55,7 +53,7 @@ When the set is clear, don't ask — go to Step 2.
 
 ### Scoping question — only when ambiguous
 
-Two pick-one questions in **one** message — it counts as one ask. Deliverables are cumulative (a wireframe needs spec + copy, requirements need a review), so "how far" is one choice, not a set of checkboxes. Use `AskUserQuestion` with both questions in a single call if available; otherwise send them as two numbered lists with "reply e.g. 2 / yes".
+Up to three pick-one questions in **one** message — it counts as one ask. Deliverables are cumulative (a wireframe needs spec + copy, requirements need a review), so "how far" is one choice, not a set of checkboxes. Use `AskUserQuestion` with all questions in a single call if available; otherwise send them as numbered lists with "reply e.g. 2 / yes / standard".
 
 **Q1 — "How far should this go?"** (pick one; mark the recommended option by signal)
 
@@ -67,6 +65,8 @@ Two pick-one questions in **one** message — it counts as one ask. Deliverables
 | | Redesign all the way — new spec, copy, wireframe, fix loop, requirements |
 
 **Q2 — "Start with a competitor research doc for inspiration?"** Yes / No — recommend Yes only if the prompt names competitors or asks how others do it.
+
+**Q3 — "How thorough should the review be?"** — ask only when Q1's recommended or likely answer includes a review of a wireframe the chain builds (new surface to requirements, or a redesign). Options, from the depth table under Fix loop: **Standard** *(recommended)* · **Quick** · **Thorough**. Skip Q3 on existing-design reviews — there's no fix loop there, so depth doesn't apply. If Q1's answer turns out to stop before the review, ignore Q3.
 
 If the surface is existing (or can't tell) and no design was shared: if it's publicly reachable (e.g. monday.com/pricing), don't ask — capture it yourself at 1440px and 375px into `.monetization/{feature-slug}/input/` (see Capturing screens below). If it's behind login, add one line to the same message: "Paste a screenshot or Figma link of the current version." If the user picked a review option and none arrives, that's a real blocker — ask once more; only treat the surface as new if they say it doesn't exist yet.
 
@@ -99,11 +99,15 @@ Name every added prerequisite and default in the announcement, so the user sees 
 **Deliverables:** {list}{ — added: {item} ({prerequisite for X / default with wireframe})}
 **Sequence:** {skill} → {skill} → …
 **Artifacts:** {file list}
+{**Depth:** Standard | Quick | Thorough — only on chains that review a wireframe they built; add ' — say "quick" or "thorough" to change' when Q3 wasn't asked}
 **No re-prompting between steps.**
+{self-graded notice — see Independent review, only when no subagent tool}
 {research nudge — see below}
 
 Starting now →
 ```
+
+**Depth when Q3 wasn't asked:** Standard. The review runs late in the chain, so the "say quick or thorough" line gives the user time to change it; apply a change whenever it arrives, as long as the review hasn't started.
 
 Then immediately begin the first skill. Don't wait for the user to confirm.
 
@@ -113,11 +117,12 @@ Then immediately begin the first skill. Don't wait for the user to confirm.
 
 ## Chain mode rules
 
-A chain is any sequence the router announced before the first skill started. While a chain is running:
+A chain is any sequence the Growth PM announced before the first skill started. While a chain is running:
 
-- **The router owns sequencing.** Each skill delivers its artifact, then control returns here for the next step. Skills don't decide what runs next.
+- **The Growth PM owns sequencing.** Each skill delivers its artifact, then control returns here for the next step. Skills don't decide what runs next.
 - **No next-step blocks.** Skills omit their `→ Next step` block — it's a prompt for a human to re-type, and in a chain nobody needs to.
 - **No optional offers mid-chain.** Skip "want me to mock this up?" and similar questions. Offer them once, after the final artifact.
+- **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
 - **External writes wait for the end.** Logging to monday.com or posting anywhere is offered once after the final artifact, never done mid-chain.
 - **Only stop for a real blocker:** a missing input the skill can't work without (one question, per that skill's intake rules), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
 
@@ -134,12 +139,12 @@ The common deliverable sets, pre-assembled. Anything else is built from Step 1's
 2. `improve-conversion-surfaces-copy` → 2–3 options with one ★ recommended for **every** Copy/CRO row in `04-review.md`. File: `02-copy.md` if none exists (review-first pass), otherwise `02-copy-v2.md`
 3. **Synthesis** → `05-requirements.md`
 
-Announce before starting:
+Announce with the Step 2 template (no Depth line — there's no fix loop on a live design; keep the self-graded notice if it applies). Filled in for this preset:
 ```
 **Deliverables:** review, copy rewrites, requirements
 **Sequence:** design review → copy rewrites → requirements synthesis
 **Artifacts:** 04-review.md, 02-copy.md, 05-requirements.md
-**One requirements doc at the end — no re-prompting between steps.**
+**No re-prompting between steps.**
 
 Starting now →
 ```
@@ -151,7 +156,7 @@ Starting now →
 2. `improve-conversion-surfaces-copy` → `02-copy.md` from the spec's reason
 3. `monetization-surface-spec` (re-invoked) → `03-wireframe.html` built with the real copy
 4. `monetization-design-reviewer` (independent) → `04-review.md`, every row tagged fixable or blocked
-5. **Fix loop** → fixable rows go back to the skill that owns them, then an independent re-review (`04-review-v2.md`). Max 2 passes — see Fix loop below
+5. **Fix loop** → fixable rows go back to the skill that owns them, then an independent re-review (`04-review-v2.md`). How many passes depends on the depth (Quick 0 · Standard ≤2 · Thorough ≤3, aiming for 85) — see Fix loop below
 6. **Synthesis** → `05-requirements.md`, describing the approved wireframe version
 
 ### Spec → Copy ← spec requested, no wireframe
@@ -191,18 +196,34 @@ Run each review pass — first review, every re-review, and the review in the ex
 The subagent can't see the chain, so the brief must start with a mode line, or the reviewer will pick its standalone branch and run the rest of the chain itself:
 
 ```
-Mode: router review — {first review | re-review, pass N}. Write {file name} and return the verdict line. Then stop: no handoff, no next-step block, no prototype offer.
+Mode: Growth PM review — {first review | re-review, pass N}{ · depth Quick | Standard | Thorough — fix-loop chains only}. Write {file name} and return the verdict line. Then stop: no handoff, no next-step block, no prototype offer.
 ```
 
-No subagent tool available → run the review inline and set `reviewer: inline (not independent)` in the review's header.
+**No subagent tool available** (e.g. a chat session) — independence is the whole point of the review, so this is never silent:
+
+1. **Say it up front.** The announcement carries: `Independent review isn't available here, so the review is self-graded — treat the score as a floor check, not a verdict.`
+2. **Score from the files, first.** Before scoring, re-read only the artifacts under review (and the rubric, playbook, context file) as if seeing them fresh. Write the rubric scores before re-reading any of your own spec reasoning or earlier chat.
+3. **Label it everywhere.** `reviewer: inline (self-graded)` goes in the header of every review version and of `05-requirements.md`.
+4. **Never claim the "Ship it" band on a self-graded score.** Report it as "{score} (self-graded)". A self-graded ≥85 still exits Thorough's loop — reported as "≥85 (self-graded)" — and the requirements doc recommends one independent review before build.
+5. **No screenshots either?** Without a way to render (no browser, no filesystem), the reviewer scores from the wireframe's HTML source, says so in the review, and marks Visual hierarchy and Mobile readiness **Pending** rather than guessing them.
 
 ### Capturing screens for a review
 
-The reviewer can only score what it can see, so the router hands it rendered images — of a live page (captured per the Scoping question rule) or of every state of a chain-built wireframe (`renders/v{N}-{state}.png`, both widths).
+The reviewer can only score what it can see, so the Growth PM hands it rendered images — of a live page (captured per the Scoping question rule) or of every state of a chain-built wireframe (`renders/v{N}-{state}.png`, both widths).
 
 - **Desktop:** a 1440px (live page) or 1280px (wireframe) window.
 - **Mobile — never trust a narrow window.** Headless Chrome won't render narrower than 500px; a "375px" screenshot is a 500px page cropped, and every cropped edge looks like horizontal overflow. Render mobile inside a 375px-wide iframe in a wider window, so the page gets a true 375px viewport. Tell the reviewer the grey strip beside the iframe is the harness. A live site that refuses to be framed (X-Frame-Options) gets a device-emulated capture (DevTools/Playwright device mode) instead; if neither is available, say so in the brief and have the reviewer mark mobile Pending rather than score a crop.
 - **Wireframe states:** the wireframe opens the state named in its URL hash (`03-wireframe.html#critical`), so every state renders without clicking.
+
+### Depth — how far the loop goes
+
+| Depth | What loops | Exit when | Cap |
+|-------|-----------|-----------|-----|
+| **Quick** | Nothing — one review | Straight to synthesis. Run `improve-conversion-surfaces-copy` once for every row that needs a string (any severity), then synthesize. Build target: the v1 wireframe plus Design changes. Offer the fixed wireframe once, after the doc | — |
+| **Standard** *(default)* | 🔴 and 🟠 fixable rows | Every fixable 🔴/🟠 row Resolved and no new 🔴/🟠 on re-review | 2 passes |
+| **Thorough** | Every fixable row, 🟡 included | Score **≥85** (the rubric's "Ship it" band) **and** every fixable row Resolved. Exit early if every remaining gap is `blocked` — say so in the doc | 3 passes |
+
+Hitting the cap never means another pass: whatever's left goes to synthesis as an Open item with the reviewer's reason, and on Thorough the doc states the final score and why it stopped short of 85. Synthesis names the depth used and the number of passes run.
 
 ### The loop
 
@@ -220,15 +241,15 @@ The reviewer can only score what it can see, so the router hands it rendered ima
 
 2. **Re-review, independently** → `04-review-v2.md`. The reviewer verifies each fixable row (Resolved / Partly / Not resolved / Regressed) and checks the new version for issues the fixes introduced.
 
-3. **Exit when** every fixable row is Resolved and the re-review found no new 🔴 or 🟠. New 🟡 found on re-review don't loop — they go to synthesis as Design changes, so the loop never turns into nitpicking.
+3. **Exit per the depth table.** On Standard, new 🟡 found on re-review don't loop — they go to synthesis as Design changes, so the loop never turns into nitpicking. On Thorough they're fixable rows like any other.
 
-4. **Otherwise run a second pass** on what's left (Not resolved, Partly, Regressed, new 🔴/🟠) → next-version artifacts → next review version.
+4. **Otherwise run another pass** on what's left (Not resolved, Partly, Regressed, and new rows that loop at this depth) → next-version artifacts → next review version.
 
-5. **Hard cap: 2 fix passes.** Anything still open after pass 2 goes to synthesis as an Open item with the reviewer's reason. Never a third pass — at that point it needs a human.
+5. **Stop at the depth's cap** (Standard 2, Thorough 3). Anything still open goes to synthesis as an Open item with the reviewer's reason — at that point it needs a human.
 
-6. **Copy for the 🟡 rows, once, after exit.** 🟡 rows skip the loop, but synthesis can't write copy — so a 🟡 row that needs new words would reach dev with no string. After the loop exits, run `improve-conversion-surfaces-copy` once for every 🟡 row (from any review version) whose recommendation needs a string, as a next-version copy file. No re-review: 🟡 is polish. Synthesis then quotes those strings like any other.
+6. **Copy for the 🟡 rows, once, after exit (Standard only — Thorough already fixed them, Quick does it for every row).** 🟡 rows skip the loop, but synthesis can't write copy — so a 🟡 row that needs new words would reach dev with no string. After the loop exits, run `improve-conversion-surfaces-copy` once for every 🟡 row (from any review version) whose recommendation needs a string, as a next-version copy file. No re-review: 🟡 is polish. Synthesis then quotes those strings like any other.
 
-**Exit is "all fixable rows resolved", not a score.** Blocked rows hold the score down however many passes run, so a score threshold would loop forever on questions only Product can answer.
+**Standard exits on "all fixable rows resolved", not a score.** Blocked rows hold the score down however many passes run, so a pure score threshold would loop forever on questions only Product can answer — which is why Thorough's 85 always comes with the early-exit-when-blocked rule and a cap.
 
 ---
 
@@ -238,7 +259,7 @@ Runs last in any chain that includes a review. Its reader is the designer and en
 
 ### Inputs
 
-Read the **latest version** of each numbered artifact in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
+Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
 
 ### Rules
 
@@ -252,12 +273,13 @@ Read the **latest version** of each numbered artifact in `.monetization/{feature
 
 ### `05-requirements.md` format
 
-Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md) (`skill: monetization-pm-router`, `status: review`).
+Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md) (`skill: monetization-growth-pm`, `status: review`).
 
 ```markdown
 # Requirements: {surface name}
 
-**Surface:** {type} · **Cohort:** {new / existing} · **Current score:** {X}/100 · **Projected score:** {Y}/100 if 🔴 + 🟠 ship
+**Surface:** {type} · **Cohort:** {new / existing} · **Current score:** {X}/100{ (self-graded)} · **Projected score:** {Y}/100 if 🔴 + 🟠 ship · **Depth:** {Quick | Standard | Thorough}, {N} fix passes
+**Ledger:** {final ledger line}
 {**Build target:** latest 03-wireframe version — omit when no wireframe was built} · **Built from:** {every artifact version read}
 
 ## Final copy
@@ -312,7 +334,7 @@ After delivering, one line only — existing-design chains: offer to build a wir
 
 ---
 
-## Output from the router
+## Output from the Growth PM
 
 **Single skill** (the deliverable set maps to one skill, e.g. Research doc only, Copy only, Review only):
 ```

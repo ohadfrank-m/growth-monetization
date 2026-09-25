@@ -1,7 +1,7 @@
 {
   "name": "growth-monetization",
-  "version": "0.2.0",
-  "description": "Monetization copilot for growth squads: research competitor pricing, spec and wireframe monetization surfaces, score designs against a CRO rubric, and write benefit-led conversion copy.",
+  "version": "0.3.0",
+  "description": "Monetization copilot for growth squads. The Monetization Growth PM takes a surface end to end (research, spec, copy, wireframe, independent review with a fix loop, requirements), and every skill also works on its own.",
   "author": {
     "name": "monday.com Growth Monetization"
   },

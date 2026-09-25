@@ -1,7 +1,7 @@
 ---
 name: monetization-surface-spec
 description: This skill should be used when the user wants to "spec out a paywall", "wireframe a credit depletion modal", "design brief for an upgrade flow", "create a spec for a pricing page", "build a trial expiry screen", "spec a cancellation flow", "what should a credit meter look like", "create an upgrade trigger for [feature]", "write a design brief for a monetization surface", "I need a spec for [any of — paywall, feature gate, upgrade prompt, credit top-up, trial flow, cancellation screen, pricing page]". Produces a structured spec artifact and low-fi HTML wireframe. Connects to Figma MCP when a design already exists.
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Monetization Surface Spec
@@ -74,8 +74,9 @@ Required fields:
 - **User cohort** — new-user (urgency lever) or existing-user (capability lever)
 - **Tier context** — which tier(s) this applies to
 - **Primary objective** — the single conversion outcome
+- **Existing design, if any** — a live version changes the spec from greenfield to redesign (read it first)
 
-For missing fields: infer from context where obvious (a "credit depletion modal" is surface type 5, existing-user cohort). Ask only when genuinely ambiguous.
+For missing fields: infer from context where obvious (a "credit depletion modal" is surface type 5, existing-user cohort). Ask every genuinely ambiguous one together, in one message — the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — standalone runs"). Inside a Growth PM chain, skip it.
 
 Full intake protocol: [brief-intake.md](references/brief-intake.md)
 
@@ -89,13 +90,11 @@ Read the reference file for the identified surface type. It contains:
 
 ### Step 3: Research (optional but recommended)
 
-For each major surface, offer to pull benchmark patterns before speccing:
+Standalone, offer benchmark research **inside the intake message** (one more question, not a second round trip): "Pull 3 best-in-class examples of this surface before I write the spec?" — recommended Yes for a new surface.
 
-> "Want me to pull 3 best-in-class examples of this surface type from pricingsaas.com and similar tools before I write the spec? Takes 2 minutes and usually surfaces a pattern worth stealing."
+If yes, start from the surface's playbook examples in [../../playbooks/](../../playbooks/), then run web research for current ones. Results feed directly into the References section of the spec.
 
-If yes, run web research using [wireframe-patterns.md](references/wireframe-patterns.md) as a guide. Results feed directly into the References section of the spec.
-
-In a router chain, don't ask. If the chain produced a research artifact (`.monetization/research/{topic-slug}-{YYYY-MM}.md`, path passed by the router), read it: cite its competitor examples in the References section and use its "So what for monday.com" section to shape the copy direction — no fresh web research. Without one, use the surface's playbook examples for References.
+In a Growth PM chain, don't ask. If the chain produced a research artifact (`.monetization/research/{topic-slug}-{YYYY-MM}.md`, path passed by the Growth PM), read it: cite its competitor examples in the References section and use its "So what for monday.com" section to shape the copy direction — no fresh web research. Without one, use the surface's playbook examples for References.
 
 ### Step 4: Write the spec
 
@@ -115,7 +114,7 @@ Write the spec to: `.monetization/{feature-slug}/01-spec.md`
 
 Do **not** build the wireframe yet. The wireframe gets built from the real headline/CTA copy `improve-conversion-surfaces-copy` writes next — not from placeholder text. Building it now and rewriting it later wastes a pass and means the wireframe never actually reflects the words it'll ship with.
 
-End the spec with the next step block — unless this is running in a router chain, in which case omit it and let the router continue (see chain mode rules in [monetization-pm-router](../monetization-pm-router/SKILL.md)):
+End the spec with the next step block — unless this is running in a Growth PM chain, in which case omit it and let the Growth PM continue (see chain mode rules in [monetization-growth-pm](../monetization-growth-pm/SKILL.md)):
 ```
 ---
 → Next step: improve-conversion-surfaces-copy — write the actual headline/CTA copy from the reason and direction named above
@@ -126,14 +125,24 @@ End the spec with the next step block — unless this is running in a router cha
 
 This is a separate invocation of this skill, triggered once `.monetization/{feature-slug}/02-copy.md` exists (the user asks to build the wireframe, or continues the chain from copy's own next-step prompt). If `02-copy.md` doesn't exist yet when this is invoked, stop and hand off to `improve-conversion-surfaces-copy` first — don't build a wireframe with bracketed placeholder text when real copy is one skill call away.
 
-Produce a low-fi HTML wireframe that shows:
-- Visual hierarchy of sections (top to bottom)
-- CTA placement, using the **★ Recommended** copy option from `02-copy.md` — not a generic label
-- Escape hatch (always present)
-- Mobile consideration (note if layout changes at mobile breakpoint)
-- Every state reachable from a state switcher **and** from the URL hash (`03-wireframe.html#depleted` opens that state) — the router renders each state for the reviewer without clicking
+Produce a low-fi HTML wireframe that follows the **wireframe contract** below. The contract lives here, in the skill, so every run — and every environment, including one without the `references/` folder — produces the same shape. [wireframe-patterns.md](references/wireframe-patterns.md) adds per-surface layouts on top; it never overrides the contract.
 
-Keep it low-fi — this communicates structure and hierarchy, not final visual design. A standalone HTML file can't load Vibe's tokens, so use neutral grey placeholders and name the intended Vibe component or token in an annotation — only names confirmed via Figma variables or the Vibe MCP, otherwise "token TBD". The copy in it should be real and ship-ready even though the visual treatment isn't.
+#### Wireframe contract
+
+| Element | Rule |
+|---------|------|
+| **File** | One self-contained `.html` — inline CSS and JS, no external assets, readable in light and dark mode |
+| **Header comment** | The artifact header fields, plus `Built from:` (which spec and copy versions) and, in revision mode, `fix-loop pass:` and `Fixes:` (the review rows applied) |
+| **Copy** | Every visible string is the ★ Recommended option from the latest copy version, verbatim. Slots stay as `{slot}`; sample values (names, counts) are allowed only if the annotation panel says they're samples |
+| **States** | Every state the spec defines (e.g. healthy / warning / critical / depleted, default / non-admin / trial-used), each reachable from a **state switcher** row of buttons at the top **and** from the URL hash — `03-wireframe.html#critical` opens that state, so each can be rendered for review without clicking |
+| **Hierarchy** | Sections in the spec's top-to-bottom order; the primary CTA is the only filled button on screen |
+| **Escape hatch** | Always visible in every state that asks for anything |
+| **Pins** | A small numbered/lettered circle on each annotated element: spec section letters (`A`, `D6`), review rows it fixes (`R1.3`, `R2.1`), and a **dashed** pin for anything blocked on an open item (`O3`) |
+| **Annotation panel** | A side panel (stacked below on mobile) listing every pin: what the element does, trigger/dismiss rules, and what each dashed pin waits on. In revision mode, a "What changed in vN" list first |
+| **Tokens** | Neutral greys, declared as CSS variables named for the Vibe token each stands in for (`--vibe-warning`). Name a real Vibe token only if confirmed via Figma variables or the Vibe MCP; otherwise "token TBD". States must differ without color too (pattern, glyph, border weight) |
+| **Mobile** | At ≤600px: single column, the state's main banner or CTA first, persistent chrome (meters, sidebars) collapsed to a header row. No horizontal overflow at a true 375px viewport |
+
+Keep it low-fi — structure and hierarchy, not final visual design. The copy is real and ship-ready even though the visual treatment isn't.
 
 Output: `.monetization/{feature-slug}/03-wireframe.html`
 
@@ -148,9 +157,9 @@ Build the wireframe by default once copy exists. Skip it only if the user asks f
 
 Follow the exact HTML/CSS pattern in [references/wireframe-patterns.md](references/wireframe-patterns.md#annotation-panel--mandatory-pattern) — structure, CSS classes, toggle script, and open-item control are all specified there. Do not invent an alternative.
 
-### Step 7: Revision mode — inside the router's fix loop
+### Step 7: Revision mode — inside the Growth PM's fix loop
 
-Triggered when the router passes review rows with Fix path `wireframe` or `spec` (see the router's [Fix loop](../monetization-pm-router/SKILL.md)). This revises the chain's own design; it isn't a fresh spec.
+Triggered when the Growth PM passes review rows with Fix path `wireframe` or `spec` (see the Growth PM's [Fix loop](../monetization-growth-pm/SKILL.md)). This revises the chain's own design; it isn't a fresh spec.
 
 - **Apply only the rows passed in.** Don't re-litigate the rest of the design — unflagged sections stay exactly as they were.
 - **`spec` rows first:** write `01-spec-v{N}.md` (next free number) with only the flagged sections changed, then rebuild the wireframe from it.
@@ -159,7 +168,7 @@ Triggered when the router passes review rows with Fix path `wireframe` or `spec`
 - **Partly-blocked rows:** build the fixable part with a visibly marked `{slot}` or a prototype switch between the possible answers; never guess the missing fact.
 - Never overwrite an earlier version.
 
-End with the next step block — omitted in a router chain, same as above:
+End with the next step block — omitted in a Growth PM chain, same as above:
 ```
 ---
 → Next step: monetization-design-reviewer — score the spec, copy, and wireframe together
@@ -175,7 +184,7 @@ End with the next step block — omitted in a router chain, same as above:
 - Surface structure table is non-negotiable — no prose layout descriptions
 - Copy strategy names the reason, states the direction, hands off — never writes final copy in the spec itself
 - Edge cases addressed even when N/A
-- Wireframe always delivered as `.html` file, never inline
+- Wireframe always delivered as an `.html` file, never inline — without a filesystem (a chat session), deliver the same self-contained HTML as a code block or artifact, and name it in the ledger
 - Wireframe is always built *after* `improve-conversion-surfaces-copy` has run — never with bracketed placeholder text when real copy exists one skill call away
 
 ---

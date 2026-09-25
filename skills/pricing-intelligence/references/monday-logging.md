@@ -1,6 +1,6 @@
 # Monday.com logging workflow
 
-After every pricing intelligence output, log the result to the **Pricing Intelligence** board on monday.com. This runs automatically at the end of every workflow — no user prompt needed.
+After every pricing intelligence output, offer to log the result to the **Pricing Intelligence** board on monday.com — one line, e.g. "Log this to the Pricing Intelligence board?" — and log it on a yes. Posting to a shared board needs the user's go-ahead; inside a Growth PM chain the offer is made once, after the final artifact.
 
 ## Board name
 

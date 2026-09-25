@@ -32,11 +32,28 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization-pm-router` | **Start here.** Works out which deliverables you want (research doc, spec, copy, wireframe, review, requirements) — asks one scoping question only if the prompt doesn't say — builds the chain from them, and runs it without re-prompting. | `05-requirements.md` (synthesis); routing for everything else |
+| `monetization-growth-pm` | **The full product work.** The Monetization Growth PM scopes the job (how far, how deep), runs every skill below in order without re-prompting, loops the review until fixes land, and writes the requirements doc. For one piece of the work, call that skill directly. | `05-requirements.md`; runs everything else |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | First pass after a spec, first pass after a review of an existing design, or revising a line a review flagged | `02-copy.md`, then `02-copy-v2.md` if revised |
-| `monetization-design-reviewer` | Scoring a design — continues into the router's chain unless "review only" is asked. Also runs the re-review inside the fix loop | `04-review.md` — scored rubric, projected score, ranked fix list with a Fix path per row; `04-review-v2.md` on re-review |
+| `monetization-design-reviewer` | Scoring a design — continues into the Growth PM's chain unless "review only" is asked. Also runs the re-review inside the fix loop | `04-review.md` — scored rubric, projected score, ranked fix list with a Fix path per row; `04-review-v2.md` on re-review |
+
+---
+
+## Intake — standalone runs
+
+When a skill is called directly (not inside a Growth PM chain), it makes sure it has what a top-tier output needs before producing anything:
+
+1. **Check** the skill's **Required context** table against the prompt, any attached file or link, and what's already in `.monetization/{feature-slug}/`.
+2. **Infer** what's obvious and state each inference in one line ("Cohort: existing users — inferred from 'credit depletion'").
+3. **Ask every real gap in one message** — `AskUserQuestion`, at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred.
+4. **Run.** If nothing is missing, ask nothing.
+
+Inside a Growth PM chain, skip intake entirely — the Growth PM's scoping already covered it, and a chain stops only for a real blocker (chain mode rules).
+
+## Missing references
+
+Skills cite reference files (`references/`, `playbooks/`, templates). If one isn't available in the environment — a chat upload without the folder, a moved file — say which file is missing and what's affected, then continue on the minimum stated in the skill itself. Never improvise the missing content silently.
 
 ---
 
@@ -72,16 +89,16 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 │   ├── 03-wireframe-v2.html ← monetization-surface-spec (fix-loop revision — the build target once approved)
 │   ├── 04-review.md        ← monetization-design-reviewer (independent; every row tagged with a Fix path)
 │   ├── 04-review-v2.md     ← monetization-design-reviewer (re-review: verifies each fix, exits or loops)
-│   └── 05-requirements.md  ← monetization-pm-router synthesis (final requirements for dev/designer)
+│   └── 05-requirements.md  ← monetization-growth-pm synthesis (final requirements for dev/designer)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md   ← pricing-intelligence
 ```
 
-`05-requirements.md` is the terminal artifact in any chain that includes a review. It consolidates final copy strings, design specs, and a prioritized action list into one implementation-ready doc. It's produced by the router's synthesis phase after all other skills have run.
+`05-requirements.md` is the terminal artifact in any chain that includes a review. It consolidates final copy strings, design specs, and a prioritized action list into one implementation-ready doc. It's produced by the Growth PM's synthesis phase after all other skills have run.
 
 Copy runs before the wireframe, not after the review — the wireframe and the review should both reflect real language, never bracketed placeholder text. If a review flags a copy line, that's a revision (`02-copy-v2.md`), not a first draft.
 
-In a new-surface chain, review findings are fixed before synthesis, not after: the router's fix loop sends each fixable row back to the skill that owns it, an independent re-review verifies the fixes, and it exits when every fixable row is resolved (max 2 passes). Rows blocked on a human fact or decision go to synthesis as Open items. `-v3` files appear only on a second pass.
+In a new-surface chain, review findings are fixed before synthesis, not after: the Growth PM's fix loop sends each fixable row back to the skill that owns it, an independent re-review verifies the fixes, and it exits per the depth the user chose — Quick (one review, no loop), Standard (every fixable 🔴/🟠 resolved, max 2 passes), or Thorough (score ≥85 and every fixable row resolved, max 3 passes). Rows blocked on a human fact or decision go to synthesis as Open items. `-v3` and later files appear only on later passes.
 
 If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
 
@@ -95,7 +112,7 @@ End a standalone artifact with:
 → Prompt: "{copy-pasteable prompt}"
 ```
 
-Omit it inside a router chain — the router runs the next step itself, and a re-prompt block tells the model to stop and wait. Chain mode rules live once, in [skills/monetization-pm-router/SKILL.md](skills/monetization-pm-router/SKILL.md); skills cite them rather than restating them.
+Omit it inside a Growth PM chain — the Growth PM runs the next step itself, and a re-prompt block tells the model to stop and wait. Chain mode rules live once, in [skills/monetization-growth-pm/SKILL.md](skills/monetization-growth-pm/SKILL.md); skills cite them rather than restating them.
 
 ### Quality gate — before delivering
 

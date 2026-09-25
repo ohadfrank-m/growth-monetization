@@ -1,7 +1,7 @@
 ---
 name: pricing-intelligence
-description: This skill should be used when the user wants to "research how X prices", "pricing strategy of X", "competitive pricing landscape", "who competes with X on price", "how do AI companies sell credits", "how does usage-based pricing work in [industry]", "benchmark our pricing model", "monitor pricing changes", "what changed in pricing this week", "pricing watchlist", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "how to negotiate X pricing". Requires PricingSaaS MCP. Logs every output to the Pricing Intelligence board on monday.com.
-version: 0.1.1
+description: This skill should be used when the user wants to "research how X prices", "pricing strategy of X", "competitive pricing landscape", "who competes with X on price", "how do AI companies sell credits", "how does usage-based pricing work in [industry]", "benchmark our pricing model", "monitor pricing changes", "what changed in pricing this week", "pricing watchlist", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "how to negotiate X pricing". Works best with the PricingSaaS MCP and falls back to web-only enrichment without it. Standalone runs offer to log to the Pricing Intelligence board on monday.com.
+version: 0.2.0
 ---
 
 # Pricing Intelligence
@@ -10,7 +10,7 @@ Research competitor pricing, map industry landscapes, benchmark monetization mod
 
 ## Routing
 
-Identify intent and route to the correct reference file. When intent is ambiguous, ask one question: "Are you researching a specific company, mapping a market, benchmarking a pricing model, tracking changes, building a battlecard, or something else?"
+Identify intent and route to the correct reference file. When intent is ambiguous, put the routing question in the intake message (see Required context) rather than a separate round trip: "Are you researching a specific company, mapping a market, benchmarking a pricing model, tracking changes, building a battlecard, or something else?"
 
 | Intent | Trigger signals | Reference |
 |--------|----------------|-----------|
@@ -28,6 +28,20 @@ Identify intent and route to the correct reference file. When intent is ambiguou
 | Negotiation intelligence | "what do people actually pay", "typical discount", "how to negotiate X" | [negotiation-intelligence.md](references/negotiation-intelligence.md) |
 
 Enrichment methods (Wayback Machine, changelog mining, earnings calls, job postings, sentiment) are embedded in the core workflows and called automatically when relevant. Full documentation: [enrichment.md](references/enrichment.md)
+
+---
+
+## Required context
+
+Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — standalone runs"): check this table, infer what's obvious, ask every real gap in one message, then run. Inside a Growth PM chain, skip it.
+
+| Field | Why it changes the output | Infer from |
+|-------|--------------------------|-----------|
+| Company or category | Decides the workflow and the companies pulled | Named in the prompt |
+| The monday.com decision it informs | Shapes "So what for monday.com" — a pricing-page test, a paywall spec and a packaging change need different takeaways | "we're about to…", the surface or team mentioned |
+| Competitor set (landscape / benchmark runs) | Who's in the table; the wrong set makes the benchmark useless | Category default: the work-management and PLG set in `monday-context.md` + the prompt's names |
+| Depth | Quick scan (current plans, 1 page) vs deep dive (history, enrichment, sentiment) | "quick", "overview" vs "deep dive", "full" |
+| OK to spend PricingSaaS credits | Full history and diffs cost credits | Never inferred — ask whenever a paid call would help (standing rule) |
 
 ---
 
@@ -83,9 +97,9 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 - Include header block on every artifact
 - Lead with exec summary (3 bullets) — always the first thing after the header
 - Every company name links to `https://pricingsaas.com/pulse/companies/{slug}` on first mention
-- Every standalone artifact ends with a **→ Next step** block (omitted in a router chain)
+- Every standalone artifact ends with a **→ Next step** block (omitted in a Growth PM chain)
 - Every competitor research includes a **So what for monday.com** section: pricing headroom, positioning implication, experiment to consider, threat signal
-- Log every output to monday.com: [monday-logging.md](references/monday-logging.md)
+- Offer to log the output to monday.com once it's delivered — posting to a shared board needs the user's go-ahead: [monday-logging.md](references/monday-logging.md)
 
 ---
 
@@ -97,11 +111,11 @@ After every company research, offer a pricing battlecard before closing.
 
 ---
 
-## In a router chain
+## In a Growth PM chain
 
-When `monetization-pm-router` runs this skill as the first step of a chain, the router's [chain mode rules](../monetization-pm-router/SKILL.md) apply. For this skill that means:
+When `monetization-growth-pm` runs this skill as the first step of a chain, the Growth PM's [chain mode rules](../monetization-growth-pm/SKILL.md) apply. For this skill that means:
 
 - Save the artifact to `.monetization/research/{topic-slug}-{YYYY-MM}.md` — the next skill reads it from there
 - Omit the `→ Next step` block and skip the battlecard offer
-- Don't log to monday.com mid-chain — posting to an external board needs the user's go-ahead. The router offers logging once, after the final artifact
+- Don't log to monday.com mid-chain — posting to an external board needs the user's go-ahead. The Growth PM offers logging once, after the final artifact
 - Paid PricingSaaS calls still need confirmation before running

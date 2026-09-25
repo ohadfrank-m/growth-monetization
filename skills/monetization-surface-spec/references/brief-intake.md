@@ -13,6 +13,7 @@ Run this when input is a natural language brief or just a surface name. Extract 
 | User cohort | new-user or existing-user | Infer from surface type where obvious (trial = new, credit depletion = existing) |
 | Tier context | which tier(s) | Infer from surface type; ask if ambiguous |
 | Primary objective | single conversion outcome | Ask if not stated — "What's the one thing this surface must make the user do?" |
+| Existing design | a live version turns greenfield into redesign | Ask only if the surface is in the context file's surface inventory and nothing was shared |
 
 ## Infer without asking
 
@@ -21,15 +22,15 @@ These can usually be inferred from surface type + tier:
 - **Tier:** "for Free users" → Free tier; "when they run out of credits" → all paid tiers
 - **Urgency level:** trial expiry → high urgency; credit warning at 20% → medium; feature gate → depends
 
-## Ask at most one question per gap
+## Ask every real gap in one message
 
-Never ask all missing fields at once. Ask the most important gap first, then infer the rest if possible.
+After inferring what you can, put every remaining gap in **one** message — `AskUserQuestion`, at most 4 questions, recommended answer first (the plugin's intake protocol in [CLAUDE.md](../../../CLAUDE.md)). One round trip, not one per field. If a field wouldn't change the spec, don't ask it.
 
 ---
 
 ## Intake output — brief summary block
 
-Before writing the spec, confirm the brief with the user in a single block:
+Before writing the spec, print the brief as one block. It's a statement, not a question — if nothing's missing, proceed in the same turn:
 
 ```markdown
 **Brief confirmed:**
@@ -40,12 +41,12 @@ Before writing the spec, confirm the brief with the user in a single block:
 - Objective: {one sentence}
 - Key constraint: {any constraints mentioned — timing, design system, scope}
 
-Proceeding to spec. [Or: "One thing before I proceed: {single question}"]
+Proceeding to spec. [Or, if gaps remain: the one intake message with every open question]
 ```
 
 This prevents a full spec being written from misunderstood input.
 
-**In a router chain:** print the brief block and proceed in the same turn — don't wait for a confirmation. The user already scoped the run; stopping here is exactly the mid-chain pause the router's chain mode rules forbid. Only stop if a required field is genuinely missing and can't be inferred (a real blocker, one question).
+**In a Growth PM chain:** print the brief block and proceed in the same turn — don't wait for a confirmation. The user already scoped the run; stopping here is exactly the mid-chain pause the Growth PM's chain mode rules forbid. Only stop if a required field is genuinely missing and can't be inferred (a real blocker, one question).
 
 ---
 
