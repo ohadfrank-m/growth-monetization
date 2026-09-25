@@ -32,11 +32,11 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization-pm-router` | **Start here.** Intent unclear, spans several skills, or a design is shared. Runs the chain without re-prompting and synthesizes it. | `05-requirements.md` (synthesis); routing for everything else |
+| `monetization-pm-router` | **Start here.** Works out which deliverables you want (research doc, spec, copy, wireframe, review, requirements) — asks one scoping question only if the prompt doesn't say — builds the chain from them, and runs it without re-prompting. | `05-requirements.md` (synthesis); routing for everything else |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | First pass after a spec, first pass after a review of an existing design, or revising a line a review flagged | `02-copy.md`, then `02-copy-v2.md` if revised |
-| `monetization-design-reviewer` | Scoring a design — continues into the router's Review → Fix → Synthesize chain unless "review only" is asked | `04-review.md` — scored rubric, projected score, ranked fix list |
+| `monetization-design-reviewer` | Scoring a design — continues into the router's chain unless "review only" is asked. Also runs the re-review inside the fix loop | `04-review.md` — scored rubric, projected score, ranked fix list with a Fix path per row; `04-review-v2.md` on re-review |
 
 ---
 
@@ -67,9 +67,11 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 ├── {feature-slug}/
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — wireframe built from this)
-│   ├── 02-copy-v2.md       ← improve-conversion-surfaces-copy (revision after review flags copy lines)
+│   ├── 02-copy-v2.md       ← improve-conversion-surfaces-copy (fix-loop revision of lines a review flagged)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (re-invoked, built from 02-copy.md)
-│   ├── 04-review.md        ← monetization-design-reviewer (scores the real thing)
+│   ├── 03-wireframe-v2.html ← monetization-surface-spec (fix-loop revision — the build target once approved)
+│   ├── 04-review.md        ← monetization-design-reviewer (independent; every row tagged with a Fix path)
+│   ├── 04-review-v2.md     ← monetization-design-reviewer (re-review: verifies each fix, exits or loops)
 │   └── 05-requirements.md  ← monetization-pm-router synthesis (final requirements for dev/designer)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md   ← pricing-intelligence
@@ -78,6 +80,8 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 `05-requirements.md` is the terminal artifact in any chain that includes a review. It consolidates final copy strings, design specs, and a prioritized action list into one implementation-ready doc. It's produced by the router's synthesis phase after all other skills have run.
 
 Copy runs before the wireframe, not after the review — the wireframe and the review should both reflect real language, never bracketed placeholder text. If a review flags a copy line, that's a revision (`02-copy-v2.md`), not a first draft.
+
+In a new-surface chain, review findings are fixed before synthesis, not after: the router's fix loop sends each fixable row back to the skill that owns it, an independent re-review verifies the fixes, and it exits when every fixable row is resolved (max 2 passes). Rows blocked on a human fact or decision go to synthesis as Open items. `-v3` files appear only on a second pass.
 
 If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
 

@@ -1,7 +1,7 @@
 ---
 name: improve-conversion-surfaces-copy
 description: Ground persuasive writing in a real reason people buy, not a feature description. Use when writing or editing copy meant to make someone buy, subscribe, sign up, or act — landing pages, ads, offers, positioning, pricing pages, upgrade prompts, email CTAs. Also use when auditing a draft that reads as feature-speak, when someone asks "why would anyone buy this?", "make this benefit-led", "what's the hook?", "this copy feels flat", or "sharpen this pitch."
-version: 0.2.0
+version: 0.2.1
 ---
 
 # Improve Conversion Surfaces Copy
@@ -97,6 +97,6 @@ This skill runs at three different points in the plugin's pipeline — which one
 → Prompt: "Build the wireframe in .monetization/{feature-slug}/ using the copy in 02-copy.md"
 ```
 
-**Revision pass — after `04-review.md` flags a specific line.** `02-copy.md` already exists; this isn't a fresh draft. Start from the reason `04-review.md` names for the flagged line (the review already did the diagnosis) and revise only what was flagged — don't re-litigate lines the review didn't call out. Save as `.monetization/{feature-slug}/02-copy-v2.md` — version it, per the plugin's iteration convention, rather than overwriting the first pass. The router's synthesis phase runs next and turns it into `05-requirements.md`.
+**Revision pass — after a review flags a specific line** (including every pass of the router's fix loop, which hands over the rows with Fix path `copy`). `02-copy.md` already exists; this isn't a fresh draft. Start from the reason named by the review version that flagged the line (`04-review.md`, or `04-review-v2.md` on a second pass) (the review already did the diagnosis) and revise only what was flagged — don't re-litigate lines the review didn't call out. Save as the next free copy version (`02-copy-v2.md`, then `-v3`…), with `fix-loop pass: {N}` in the header when the fix loop called it — version it, per the plugin's iteration convention, rather than overwriting. In the fix loop, the wireframe is rebuilt from this next; otherwise the router's synthesis phase runs next. The router also calls this pass once after the loop exits, for 🟡 rows whose recommendation needs a new string — same rules, next version number, no re-review.
 
 **Review-first pass — an existing design was reviewed, no copy artifact exists yet.** `04-review.md` exists but `01-spec.md` and `02-copy.md` don't (typical when a screenshot or Figma frame of a live surface was shared). This is a first draft for those lines, not a revision. Take each Copy/CRO row in `04-review.md`, start from the reason it names, and write options for that element only — don't rewrite lines the review didn't flag. Also write the strings for any **new** on-screen element a non-copy row adds (a Free link, a tag, a risk-reducer line, a personalization line). Those rows own the placement, but the words still come from this skill. Leave them out and the synthesis has nothing verbatim to use. Quote the current on-screen string for each element so the synthesis can show what's being replaced. Save to `.monetization/{feature-slug}/02-copy.md`. The router's synthesis phase runs next.

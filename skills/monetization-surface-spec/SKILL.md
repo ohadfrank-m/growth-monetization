@@ -1,7 +1,7 @@
 ---
 name: monetization-surface-spec
 description: This skill should be used when the user wants to "spec out a paywall", "wireframe a credit depletion modal", "design brief for an upgrade flow", "create a spec for a pricing page", "build a trial expiry screen", "spec a cancellation flow", "what should a credit meter look like", "create an upgrade trigger for [feature]", "write a design brief for a monetization surface", "I need a spec for [any of — paywall, feature gate, upgrade prompt, credit top-up, trial flow, cancellation screen, pricing page]". Produces a structured spec artifact and low-fi HTML wireframe. Connects to Figma MCP when a design already exists.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Monetization Surface Spec
@@ -95,7 +95,7 @@ For each major surface, offer to pull benchmark patterns before speccing:
 
 If yes, run web research using [wireframe-patterns.md](references/wireframe-patterns.md) as a guide. Results feed directly into the References section of the spec.
 
-In a router chain, don't ask — use the surface's playbook examples for the References section, and run web research only if the chain started with `pricing-intelligence` (its output already covers this).
+In a router chain, don't ask. If the chain produced a research artifact (`.monetization/research/{topic-slug}-{YYYY-MM}.md`, path passed by the router), read it: cite its competitor examples in the References section and use its "So what for monday.com" section to shape the copy direction — no fresh web research. Without one, use the surface's playbook examples for References.
 
 ### Step 4: Write the spec
 
@@ -131,6 +131,7 @@ Produce a low-fi HTML wireframe that shows:
 - CTA placement, using the **★ Recommended** copy option from `02-copy.md` — not a generic label
 - Escape hatch (always present)
 - Mobile consideration (note if layout changes at mobile breakpoint)
+- Every state reachable from a state switcher **and** from the URL hash (`03-wireframe.html#depleted` opens that state) — the router renders each state for the reviewer without clicking
 
 Keep it low-fi — this communicates structure and hierarchy, not final visual design. A standalone HTML file can't load Vibe's tokens, so use neutral grey placeholders and name the intended Vibe component or token in an annotation — only names confirmed via Figma variables or the Vibe MCP, otherwise "token TBD". The copy in it should be real and ship-ready even though the visual treatment isn't.
 
@@ -139,6 +140,17 @@ Output: `.monetization/{feature-slug}/03-wireframe.html`
 Build the wireframe by default once copy exists. Skip it only if the user asks for the spec and copy alone.
 
 **From a requirements doc (after the Review → Fix → Synthesize chain).** If `05-requirements.md` exists, build from it instead of `01-spec.md` + `02-copy.md` — it's the resolved version of both. Use its Final copy strings verbatim and apply every Design change. Pin each element with its `C#` / `D#` code so the wireframe and the doc cross-reference. Mark elements blocked on an Open item with its `O#` in a visibly different pin style. Wherever an open item has two possible answers (e.g. whether a price includes credits), add a prototype control that switches between them rather than picking one. Keep the `03-` filename even though it's written after `05-`: the number identifies the artifact type, not the order it was produced.
+
+### Step 7: Revision mode — inside the router's fix loop
+
+Triggered when the router passes review rows with Fix path `wireframe` or `spec` (see the router's [Fix loop](../monetization-pm-router/SKILL.md)). This revises the chain's own design; it isn't a fresh spec.
+
+- **Apply only the rows passed in.** Don't re-litigate the rest of the design — unflagged sections stay exactly as they were.
+- **`spec` rows first:** write `01-spec-v{N}.md` (next free number) with only the flagged sections changed, then rebuild the wireframe from it.
+- **Wireframe:** write `03-wireframe-v{N}.html`, where N is the next free version number for the wireframe; put `fix-loop pass: {1|2}` in the header. Use the ★ Recommended strings from the **latest** copy version — the copy skill runs before this in each pass.
+- **Pin every changed element** with its review row (`R1.3` = row 3 of `04-review.md`, `R2.1` = row 1 of `04-review-v2.md`) in the annotations, so the re-review can find each fix without diffing.
+- **Partly-blocked rows:** build the fixable part with a visibly marked `{slot}` or a prototype switch between the possible answers; never guess the missing fact.
+- Never overwrite an earlier version.
 
 End with the next step block — omitted in a router chain, same as above:
 ```
