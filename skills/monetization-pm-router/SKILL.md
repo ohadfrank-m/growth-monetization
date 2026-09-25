@@ -93,7 +93,7 @@ Read the **latest version** of each numbered artifact in `.monetization/{feature
 
 ### Rules
 
-- **Traceability.** Every row in `04-review.md` lands in exactly one place — Final copy, Design changes, or Open items — with a `Source` reference (`R#3` = review row 3). Nothing gets dropped silently.
+- **Traceability.** Every row in `04-review.md` appears at least once — in Final copy, Design changes, or Open items — with a `Source` reference (`R3` = review row 3). A row that needs both a string and a placement (e.g. "add a Free link") appears in both tables with the same Source; a row blocked on a fact also gets an Open item. Nothing gets dropped silently.
 - **Copy is verbatim.** Every Final copy string is the ★ recommended option from the copy artifact, word for word. No paraphrasing, no new lines written here.
 - **Specs are exact but not invented.** Name Vibe components and tokens only if they were confirmed from Figma variables or the Vibe MCP. Otherwise, specify relative to what's already on screen ("same text style as the plan feature rows, directly above the Pro CTA") and add "token TBD — confirm in Figma" rather than guessing a token name.
 - **No invented numbers.** Credit-to-task conversions, prices, and limits come from `monday-context.md`. If the figure isn't there, the copy keeps a marked slot (`≈ {N} AI actions`) and an Open item names who supplies N.
@@ -140,7 +140,7 @@ Anything the review couldn't assess or that needs an input before build — pend
 
 ### Self-check before delivering
 
-1. Every `04-review.md` row appears exactly once, with its Source reference.
+1. Every `04-review.md` row appears at least once, with its Source reference.
 2. Every Final copy string matches the ★ recommended option verbatim.
 3. No Vibe token or component name appears that wasn't confirmed — unconfirmed ones say "TBD".
 4. No price, limit, or credit figure appears that isn't in `monday-context.md`.
