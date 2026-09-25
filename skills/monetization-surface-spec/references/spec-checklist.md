@@ -22,6 +22,14 @@ Stable rules applied to every surface spec. Strategy data (prices, tiers, credit
 
 ---
 
+## Flow map — check before and after drafting
+
+- Multi-screen surface: a flow map row for every screen, in order, with where the user arrives from and goes next (including abandon).
+- Every screen names a friction point and its reduction — or "none" with a reason.
+- Single-screen surface: the screen before and after, and the friction at the hand-off.
+
+---
+
 ## Edge cases — address every one
 
 Mark non-applicable cases `N/A` with a one-line reason. Never skip silently.
@@ -39,3 +47,5 @@ Mark non-applicable cases `N/A` with a one-line reason. Never skip silently.
 **Seats vs. credits.** If both limits can trigger, spec which takes priority.
 
 **Billing cadence.** Does the surface behave differently for monthly vs. annual customers (e.g. mid-cycle top-up proration)?
+
+**Loading, empty, and error states.** Monetization surfaces fail at the worst moment. Spec each that applies: purchase pending (what shows between click and confirmation), payment failed (inline, with a retry and the reason when known — never a generic error), credits or plan not yet applied (what the user sees until it lands), and the empty state (no usage yet, no plan history).

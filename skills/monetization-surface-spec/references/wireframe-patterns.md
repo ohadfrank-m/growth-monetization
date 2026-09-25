@@ -1,6 +1,6 @@
 # Wireframe patterns and best-in-class examples
 
-Reference for structural patterns when building wireframes. Pull inspiration here before building — these patterns represent battle-tested approaches from leading SaaS tools.
+Reference for structural patterns when building wireframes. The **wireframe contract** in [../SKILL.md](../SKILL.md) (states by URL hash, flow strip, pin conventions, mobile rules) takes precedence over anything here; this file adds per-surface layouts and the annotation-panel markup. Pull inspiration here before building — these patterns represent battle-tested approaches from leading SaaS tools.
 
 ---
 
@@ -265,7 +265,8 @@ Small circular markers (24px diameter) sit **outside the text flow** — positio
 }
 .callout-copy    { background: #2563eb; }   /* C# — blue */
 .callout-design  { background: #16a34a; }   /* D# — green */
-.callout-open    { background: #d97706; }   /* O# — amber */
+.callout-open    { background: transparent; color: #d97706; border: 2px dashed #d97706; }   /* O# — dashed: blocked on an open item */
+.callout-touch   { background: #7c3aed; }   /* T# — friction touchpoint from the flow map */
 
 /* Annotation panel */
 #annotation-panel {

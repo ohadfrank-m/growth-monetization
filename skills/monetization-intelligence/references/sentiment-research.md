@@ -227,7 +227,7 @@ When sources conflict (e.g., G2 reviews are negative but X shows acceptance), su
 
 ## Step 4: Log to monday
 
-After delivering sentiment output, log to the Pricing Intelligence board per [monday-logging.md](monday-logging.md):
+After delivering sentiment output, offer to log it to the Pricing Intelligence board — and log on a yes — per [monday-logging.md](monday-logging.md):
 
 - Item name: `{Company} — Sentiment`
 - Summary: overall tone + key theme in 1–2 sentences

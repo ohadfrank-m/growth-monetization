@@ -1,7 +1,7 @@
 ---
 name: monetization-surface-spec
 description: This skill should be used when the user wants to "spec out a paywall", "wireframe a credit depletion modal", "design brief for an upgrade flow", "create a spec for a pricing page", "build a trial expiry screen", "spec a cancellation flow", "what should a credit meter look like", "create an upgrade trigger for [feature]", "write a design brief for a monetization surface", "I need a spec for [any of — paywall, feature gate, upgrade prompt, credit top-up, trial flow, cancellation screen, pricing page]". Produces a structured spec artifact and low-fi HTML wireframe. Connects to Figma MCP when a design already exists.
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Monetization Surface Spec
@@ -24,7 +24,7 @@ Accept any of the following as input:
 - **Figma link** — use Figma MCP to pull design context before speccing (see Figma ingestion below)
 - **Screenshot or image** — analyze the existing design, then spec it
 - **Existing partial spec** — fill the gaps and produce the wireframe
-- **Benchmark output** — from `pricing-intelligence`, translate findings directly into a surface spec
+- **Benchmark output** — from `monetization-intelligence`, translate findings directly into a surface spec
 
 When input is minimal (just a surface name), run the brief intake before proceeding — don't produce a spec from vague input.
 
@@ -104,9 +104,15 @@ Use the surface spec template: [../../templates/surface-spec.md](../../templates
 
 Apply monday.com context from [monday-context.md](../../context/monday-context.md) throughout — don't wait to be asked.
 
+**Flow map — every surface is a journey, not a screen.** Monetization surfaces rarely live on one screen: cancel → reason → save offer → confirmation; limit hit → upgrade prompt → checkout → back to work. Map the journey before the layout:
+
+- **Multi-screen surfaces** (cancellation, upgrade → checkout, trial start and expiry, credit top-up, paywall → trial start): a flow map table, one row per screen, in order — `# · Screen · Purpose · Key elements · Arrives from · Goes to (incl. abandon) · Friction point · Reduction`. Every screen names its friction point — where a user is likely to hesitate, get confused, or drop off — and the design choice that reduces it. If a screen truly has none, write "none" and why.
+- **Single-screen surfaces** (a banner, an inline gate): one line naming the screen before (what the user was doing) and the screen after (where each action lands), with the friction at the hand-off.
+- If a surface benchmark exists for this surface, build the flow map from its "Flow implications for the spec" and cite the competitors each screen borrows from.
+
 **Copy strategy section:** Name the primary reason from the 15 reasons people buy, name the copy direction, and explicitly hand off to `improve-conversion-surfaces-copy`. Never write final copy in the spec.
 
-**Edge cases:** Address every edge case in [spec-checklist.md](references/spec-checklist.md) — credit debt, admin-gated purchase, mobile, repeat exposure, enterprise. Mark non-applicable ones as N/A with one-line rationale — no silent omissions.
+**Edge cases:** Address every edge case in [spec-checklist.md](references/spec-checklist.md) — credit debt, admin-gated purchase, mobile, repeat exposure, enterprise, loading/empty/error states. Mark non-applicable ones as N/A with one-line rationale — no silent omissions.
 
 ### Step 5: Deliver the spec, then hand off for copy — before the wireframe
 
@@ -137,7 +143,8 @@ Produce a low-fi HTML wireframe that follows the **wireframe contract** below. T
 | **States** | Every state the spec defines (e.g. healthy / warning / critical / depleted, default / non-admin / trial-used), each reachable from a **state switcher** row of buttons at the top **and** from the URL hash — `03-wireframe.html#critical` opens that state, so each can be rendered for review without clicking |
 | **Hierarchy** | Sections in the spec's top-to-bottom order; the primary CTA is the only filled button on screen |
 | **Escape hatch** | Always visible in every state that asks for anything |
-| **Pins** | A small numbered/lettered circle on each annotated element: spec section letters (`A`, `D6`), review rows it fixes (`R1.3`, `R2.1`), and a **dashed** pin for anything blocked on an open item (`O3`) |
+| **Flow strip** | Multi-screen surfaces show the screens as a left-to-right sequence with arrows between them, in flow-map order, above or instead of the state switcher (each screen still opens by URL hash). Abandon paths are drawn as a branch off the step where they happen |
+| **Pins** | A small numbered/lettered circle on each annotated element: spec section letters (`A`, `D6`), review rows it fixes (`R1.3`, `R2.1`), a **dashed** pin for anything blocked on an open item (`O3`), and a **touchpoint pin** `T{n}` on each friction point from the flow map, with its reduction in the annotation panel |
 | **Annotation panel** | A side panel (stacked below on mobile) listing every pin: what the element does, trigger/dismiss rules, and what each dashed pin waits on. In revision mode, a "What changed in vN" list first |
 | **Tokens** | Neutral greys, declared as CSS variables named for the Vibe token each stands in for (`--vibe-warning`). Name a real Vibe token only if confirmed via Figma variables or the Vibe MCP; otherwise "token TBD". States must differ without color too (pattern, glyph, border weight) |
 | **Mobile** | At ≤600px: single column, the state's main banner or CTA first, persistent chrome (meters, sidebars) collapsed to a header row. No horizontal overflow at a true 375px viewport |
@@ -153,9 +160,9 @@ Build the wireframe by default once copy exists. Skip it only if the user asks f
 **Annotation rule — critical:** Never render `C#` / `D#` / `O#` annotations as inline DOM elements inside the wireframe body. Inline badges interrupt visual hierarchy and make the wireframe unreadable as a design artifact. Instead:
 - Place a small circular callout marker (absolute-positioned, 24px, non-disruptive) on the corresponding wireframe element
 - List all annotation text in the fixed right-side annotation panel
-- Open items get an amber `O#` marker and, when two states are possible, a toggling prototype control in the wireframe — not a placeholder
+- Open items get a **dashed** `O#` marker and, when two states are possible, a toggling prototype control in the wireframe — not a placeholder
 
-Follow the exact HTML/CSS pattern in [references/wireframe-patterns.md](references/wireframe-patterns.md#annotation-panel--mandatory-pattern) — structure, CSS classes, toggle script, and open-item control are all specified there. Do not invent an alternative.
+Use the annotation-panel structure, CSS classes and toggle script in [references/wireframe-patterns.md](references/wireframe-patterns.md#annotation-panel--mandatory-pattern). Where that file and the wireframe contract above differ — dashed open-item pins, `T{n}` touchpoint pins, the flow strip, URL-hash states — the contract wins.
 
 ### Step 7: Revision mode — inside the Growth PM's fix loop
 

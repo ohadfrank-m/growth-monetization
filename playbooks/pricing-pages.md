@@ -57,6 +57,9 @@ A pricing page has one job: make the right plan feel obvious for the right user.
 | Seat minimum hidden until checkout | Users feel tricked |
 | All tiers with identical "Get started" CTAs | No signal on what's recommended |
 | Feature table fully expanded above the fold | Adds cognitive load instead of reducing it |
+| Feature lists start at different heights across plans | The eye can't compare plans line by line; plans look broken. Fix the title/price block height so every list starts at the same line *(design rule)* |
+| CTAs sit at different heights across plans | The buttons stop reading as one choice. Pin each CTA to the same line regardless of content above *(design rule)* |
+| Recommended plan singled out only by being taller | Height reads as "more stuff", not "pick this". Use emphasis — the only filled CTA, a label, an accent border *(design rule)* |
 
 ## Benchmarks (B2B SaaS)
 

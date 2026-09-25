@@ -28,7 +28,7 @@ Update immediately when any of the following change:
 
 **How to update:** Edit this file directly in the repo. Add a changelog entry at the bottom. Bump `last-updated` in the frontmatter.
 
-**How to verify:** Run `pricing-intelligence` against monday.com itself — the skill can research monday.com's own public pricing page and flag gaps between this file and what's live.
+**How to verify:** Run `monetization-intelligence` against monday.com itself — the skill can research monday.com's own public pricing page and flag gaps between this file and what's live.
 
 ---
 

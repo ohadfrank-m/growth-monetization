@@ -45,9 +45,11 @@
     <rect x="28" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#d4d4d8" stroke-dasharray="5 4"/>
     <circle cx="50" cy="174" r="11" fill="#1f1f23"/><text x="50" y="178" class="n" text-anchor="middle">1</text>
     <text x="68" y="179" class="step">Research</text>
-    <text x="44" y="204" class="skill">/pricing-intelligence</text>
-    <text x="44" y="242" class="role">How competitors price</text>
-    <text x="44" y="260" class="role">and package it</text>
+    <text x="44" y="204" class="skill">/monetization-</text>
+    <text x="44" y="219" class="skill">intelligence</text>
+    <text x="44" y="242" class="role">How competitors price,</text>
+    <text x="44" y="260" class="role">package and run this</text>
+    <text x="44" y="278" class="role">surface</text>
     <text x="44" y="300" class="file">research/…md</text>
     <text x="44" y="316" class="tag">OPTIONAL · CAN END HERE</text>
 
@@ -139,7 +141,7 @@
   <text x="358" y="504" class="note">It asks for anything your prompt is missing, then does only that job.</text>
 
   <rect x="48" y="520" width="236" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="166" y="542" class="skill" text-anchor="middle">/pricing-intelligence</text>
+  <text x="166" y="542" class="skill" text-anchor="middle">/monetization-intelligence</text>
   <rect x="296" y="520" width="272" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
   <text x="432" y="542" class="skill" text-anchor="middle">/monetization-surface-spec</text>
   <rect x="580" y="520" width="300" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>

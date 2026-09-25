@@ -4,11 +4,11 @@ The plugin works best with these MCP servers connected. Every skill degrades gra
 
 | MCP | Required? | Used by |
 |-----|----------|---------|
-| monday.com | Recommended | All skills — logging and docs |
-| PricingSaaS | Recommended | `pricing-intelligence` |
+| monday.com | Recommended | `monetization-intelligence` — logging research to the Pricing Intelligence board (it asks first) |
+| PricingSaaS | Recommended | `monetization-intelligence` |
 | Figma | Optional | `monetization-surface-spec`, `monetization-design-reviewer` |
-| Slack | Optional | `pricing-intelligence` weekly digest |
-| Web search | Required | All skills — enrichment and benchmarks |
+| Slack | Optional | `monetization-intelligence` weekly digest |
+| Web search | Built in (needed for enrichment) | All skills — enrichment and surface benchmarks |
 
 ---
 
@@ -20,7 +20,7 @@ The plugin works best with these MCP servers connected. Every skill degrades gra
 - **Claude Code:** `claude mcp add --transport http monday https://mcp.monday.com/mcp`
 - **Cursor:** add to `~/.cursor/mcp.json` (see snippet below)
 
-Used to log every research output to a **Pricing Intelligence** board (created on first use — you'll be asked which workspace). Without it, artifacts are saved locally only.
+Used to log research outputs to a **Pricing Intelligence** board — the skill offers after each output and logs on a yes (the board is created on first use; you'll be asked which workspace). Without it, artifacts are saved locally only.
 
 ---
 
@@ -32,7 +32,7 @@ Used to log every research output to a **Pricing Intelligence** board (created o
 - **Claude Code:** `claude mcp add --transport http pricingsaas https://mcp.pricingsaas.com`
 - **Cursor:** see snippet below
 
-Some tools cost PricingSaaS credits. The skill always states the cost and waits for your confirmation. Without this MCP, `pricing-intelligence` runs in enrichment-only mode (Wayback Machine, changelogs, web, community sources).
+Some tools cost PricingSaaS credits. The skill always states the cost and waits for your confirmation. Without this MCP, `monetization-intelligence` runs in enrichment-only mode (Wayback Machine, changelogs, web, community sources).
 
 **Verify:** ask Claude to run `get_status()` — it should return your account and credit balance.
 
@@ -53,7 +53,7 @@ Used when you paste a Figma link into a spec or review. Without it, share a scre
 
 **URL:** `https://mcp.slack.com/mcp`
 
-Used only to post the weekly pricing digest to a channel. Without it, the digest is delivered in chat.
+Used only for the weekly pricing digest, which the skill formats as a paste-ready Slack message. Without it, the digest is delivered in chat.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Monetization Design Reviewer
@@ -88,7 +88,7 @@ CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com app
 
 ## Review Output Format
 
-Always produce **both** parts. On review-only runs, then offer the optional prototype.
+Always produce every part: the scored rubric, What's working — keep, the ranked fix table, one alternative worth testing, and one benchmark example. On review-only runs, then offer the optional prototype.
 
 ### 1. Scored Rubric
 
@@ -109,6 +109,10 @@ Score each dimension 1–5 using the anchor definitions in `references/scoring-r
 
 **Projected: Y/100 if 🔴 + 🟠 ship** — re-score each dimension using the same anchors, assuming every Critical and Major fix in the table below is implemented. This is a rubric projection, not a conversion forecast.
 
+### What's working — keep
+
+Before the fixes, 3–5 bullets on what the design already gets right, each tied to a rubric dimension or the stated goal ("Escape hatch: 'Not now' is visible and one click — keep it"). Fixes that break these are regressions, so name them — the fix loop and the team both need to know what not to touch.
+
 ### 2. Prioritized Improvements — one table, ranked
 
 This is the primary deliverable for the team — treat it like a punch list someone opens and starts working from, not a report. Everything goes in **one table**, sorted with the highest-impact fix in row one and descending from there. Don't split into per-category sub-lists — the Category column does that job while keeping priority order intact, which matters more than tidy grouping: the team should never have to hunt across sections to find out what to do first.
@@ -122,14 +126,20 @@ Column rules:
 
 - **Severity**: 🔴 Critical (revenue-losing) · 🟠 Major · 🟡 Minor. This drives the row order — sort by severity first, and within a tie, put the cheaper fix (lower effort) first, since it's the more pragmatic thing to do next.
 - **Category**: UI (visual hierarchy, layout, spacing, component/token issues, mobile) · Copy / CRO · Structure (flow, step count, information architecture, what's shown when) · Timing / Trigger (right moment, dismiss logic, frequency caps, agentic momentum).
-- **Issue**: name the problem in as few words as possible — this is context for the recommendation, not a second explanation of it.
+- **Issue**: name the problem in as few words as possible — this is context for the recommendation, not a second explanation of it. Every Issue ties to a rubric dimension, the stated goal or metric, or a named anti-pattern — never bare preference ("I'd prefer…").
 - **Recommendation**: the single most important cell. It must be the actual instruction, worded so specifically that two different people acting on it would produce the same result — not a direction to go think about it. "Change the CTA from 'Upgrade' to 'Unlock AI Agents'" is a recommendation; "make the CTA more benefit-driven" is not, and should be rewritten before the table goes out. **Exception:** Copy/CRO rows name the missing/buried reason and read "Revise with `improve-conversion-surfaces-copy` — reason: [X]" per Scope and handoff above; that skill owns producing the actual line, so don't draft copy in this cell.
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
 - **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The Growth PM's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
 
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
-End with **one benchmark example** — and explain *why* it works, not just who does it. Take it from this surface's playbook first (the AI-native reference set there is sourced and dated); fall back to pricingsaas.com, pricingpages.com, or another best-in-class SaaS only when the playbook has nothing that fits.
+**Judge friction per touchpoint.** When the spec has a flow map, score Friction & flow screen by screen: for each touchpoint, check whether the named friction is real on the design and whether its reduction was actually applied. A reduction that's in the spec but not on screen is a row.
+
+### One alternative worth testing
+
+After the fix table, one different pattern — not a fix to this design, but a different way to solve the same goal (e.g. an inline banner instead of a modal, a pause offer instead of a discount). Name the goal it serves, the evidence behind it (playbook or research doc, tagged), and how to test it: the variant, the metric, the cohort. One, not a menu.
+
+End with **one benchmark example** — and explain *why* it works, not just who does it. If this chain produced a surface benchmark (`.monetization/research/{surface}-benchmark-*.md`), it's a valid source alongside the playbook. Take it from this surface's playbook first (the AI-native reference set there is sourced and dated); fall back to pricingsaas.com, pricingpages.com, or another best-in-class SaaS only when the playbook has nothing that fits.
 
 **Respect the evidence tags.** The playbooks tag every claim — `[Verified]` (vendor docs), `[Reported]` (third-party), `[Teardown needed]` (pattern known, UI not captured). A review may state a `[Verified]` claim as fact; a `[Reported]` claim must carry the caveat inline ("reported by a third party, not vendor-confirmed"); a `[Teardown needed]` claim must never be presented as fact — say the UI hasn't been captured. Figures in a playbook section marked as pre-dating the evidence-tag standard are directional only — don't cite them as a number the team should hit. Full rules: [../../playbooks/README.md](../../playbooks/README.md).
 
@@ -159,9 +169,10 @@ When an earlier review exists and revised artifacts (`-v2`/`-v3`) have been writ
 
 2. **New issues** the fixes introduced or exposed — same ranked table and columns as a first review, numbered `R2.1`, `R2.2`… Only 🔴/🟠 feed another loop pass — except at Thorough depth, where 🟡 loop too; otherwise 🟡 go to synthesis.
 
-3. **Rescore** the full rubric on the new version, plus the projected score.
+3. **Check the keep list.** Every "What's working — keep" item from the previous review still holds, or it's a Regressed row. Carry the keep list forward (add anything the fixes newly got right) and restate the alternative worth testing — update it only if the fixes changed what's worth testing.
+4. **Rescore** the full rubric on the new version, plus the projected score.
 
-4. **Blocked rows** from earlier reviews: list them once with their owner. Don't re-score them as failures of the fix pass.
+5. **Blocked rows** from earlier reviews: list them once with their owner. Don't re-score them as failures of the fix pass.
 
 End with a one-line verdict for the Growth PM, applying the exit rule for the depth named in the brief (the depth table in the Growth PM's [Fix loop](../monetization-growth-pm/SKILL.md)): `Exit loop` or `Another pass: {row list}`. Standard exits when every fixable 🔴/🟠 row is Resolved and no new 🔴/🟠 appeared; Thorough also needs the score at ≥85 and every fixable 🟡 Resolved, unless everything left is `blocked`.
 
@@ -226,7 +237,10 @@ Before returning the review, verify all of the following. If any fail, fix befor
 10. **Anything unassessable got its own row** (Recommendation: "Pending — needs [X] to assess") rather than being silently omitted.
 11. **Every competitor claim or figure cited respects its evidence tag** — `[Verified]` stated as fact, `[Reported]` carries the caveat inline, `[Teardown needed]` never presented as fact, and figures from pre-evidence-tag sections flagged as directional rather than quoted as targets.
 12. **Projected score is present**, re-scored with the same anchors assuming every 🔴 and 🟠 fix ships.
-13. **Every row has a Fix path**, and `blocked` is used only when the fix truly needs a fact or decision not in `monday-context.md` or the artifacts.
+13. **"What's working — keep" has 3–5 bullets** tied to a dimension or the goal, and every Issue ties to a dimension, goal, or named anti-pattern.
+14. **One alternative worth testing** is present, with its goal, evidence, and test.
+15. **When a flow map exists, Friction & flow was judged per touchpoint** — every screen's named friction checked on the design, and every reduction in the spec that isn't on screen is a row.
+16. **Every row has a Fix path**, and `blocked` is used only when the fix truly needs a fact or decision not in `monday-context.md` or the artifacts.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: improve-conversion-surfaces-copy
 description: Ground persuasive writing in a real reason people buy, not a feature description. Use when writing or editing copy meant to make someone buy, subscribe, sign up, or act — landing pages, ads, offers, positioning, pricing pages, upgrade prompts, email CTAs. Also use when auditing a draft that reads as feature-speak, when someone asks "why would anyone buy this?", "make this benefit-led", "what's the hook?", "this copy feels flat", or "sharpen this pitch."
-version: 0.3.0
+version: 0.4.0
 ---
 
 # Improve Conversion Surfaces Copy
@@ -80,6 +80,8 @@ Write from the 15; check against the 8 that you've found the real driver rather 
 - **One primary reason per asset.** A page that argues five reasons equally makes the reader feel none. Pick the primary; demote the rest to support.
 - **Match the reason to the journey stage.** Effort, time, pain, guilt, and fear pull people who don't yet know they have a problem; recognition, status, love, and feeling special close people already deciding.
 - **Test the phrasing against how a real buyer talks** — their vocabulary, not yours. Language accuracy is what makes a line land; guessed language reads as an ad and gets skipped.
+- **No filler words.** *Elevate, seamless, unleash, unlock the power of, next-gen, game-changer, supercharge, empower, delve, revolutionize* — they name no reason and signal generated copy. Replace with the concrete outcome.
+- **Error and system messages are copy too.** Payment failed, purchase pending, credits not yet applied: say what happened and what to do next, plainly — no "Oops!", no exclamation marks.
 
 ## Scope and handoff
 

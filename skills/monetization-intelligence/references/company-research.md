@@ -137,6 +137,8 @@ After delivering the main analysis, ask once:
 
 If yes, run [sentiment-research.md](sentiment-research.md) and append results to the output.
 
+If the question is about strategy rather than price — how they package, expand, or where they ask for money — offer the deeper version once: "Want the full monetization teardown — packaging, expansion paths, and every surface where they charge?" If yes, run [monetization-teardown.md](monetization-teardown.md).
+
 ## Step 6: Check if missing from PricingSaaS
 
 If `search_companies` returns no results for the target company:

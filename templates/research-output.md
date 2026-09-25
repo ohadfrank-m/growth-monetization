@@ -1,7 +1,7 @@
 # Research Output Template
 
-Used by: `pricing-intelligence`
-Applies to: company research, landscape scans, model benchmarking, battlecards, teardowns
+Used by: `monetization-intelligence`
+Applies to: company research, surface benchmarks, monetization teardowns, landscape scans, model benchmarking, battlecards, pricing-page teardowns
 
 ---
 
@@ -14,7 +14,7 @@ Every research artifact follows this structure. Sections marked **[required]** a
 ```markdown
 ---
 plugin: growth-monetization
-skill: pricing-intelligence
+skill: monetization-intelligence
 feature / topic: {Company or topic} — {workflow type}
 surface type: research
 author: {name}
@@ -90,6 +90,9 @@ Always present. Address each relevant point:
 - **Positioning implication:** Does their packaging change how monday.com should frame itself in deals?
 - **Experiment to consider:** Name a specific hypothesis, the metric to watch, and the tier it affects.
 - **Threat signal:** Anything in their pricing trajectory that creates risk for monday.com?
+
+## Suggested playbook updates [required when the research covers a surface]
+Exact additions for `playbooks/{surface}.md` — each tagged `[Verified]` / `[Reported]` / `[Teardown needed]`, sourced and dated, marked **new** or **replaces {what}**, and checked against what the playbook already says. The playbook owner applies them.
 
 ## What to do next [required]
 2–4 tailored follow-up offers. Use specific names and findings from this research — not generic options.
