@@ -1,6 +1,6 @@
 ---
 name: monetization-growth-pm
-description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), then runs research → spec → copy → wireframe → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /pricing-intelligence, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
+description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), then runs research → spec → copy → wireframe → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /monetization-intelligence, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
 version: 0.4.0
 ---
 
@@ -20,7 +20,7 @@ Route by what the user wants to **walk away with**, not by which words they used
 
 | Deliverable | Skill | Artifact |
 |-------------|-------|----------|
-| Research doc | `pricing-intelligence` | `.monetization/research/{topic-slug}-{YYYY-MM}.md` |
+| Research doc | `monetization-intelligence` | `.monetization/research/{topic-slug}-{YYYY-MM}.md` |
 | Spec | `monetization-surface-spec` | `01-spec.md` |
 | Copy | `improve-conversion-surfaces-copy` | `02-copy.md` |
 | Wireframe | `monetization-surface-spec` (re-invoked) | `03-wireframe.html` |
@@ -43,7 +43,7 @@ Decide this first — it sets the order, the pre-marks, what Review needs, and w
 | Shared design, screenshot, or Figma link — no deliverable named ("isn't converting" is a problem, not a deliverable) | Review + Copy + Requirements |
 | "just score this", "review only" | Review |
 | "wireframe", "mock it up", "show me how it'd look" | Spec + Copy + Wireframe, **plus Review + Requirements by default** — the review catches problems before build. Announce them as defaults; "wireframe only" stops at `03-wireframe.html` |
-| "research", "benchmark", "how does X price", "how do companies sell AI credits" — no build ask | Research doc |
+| "research", "benchmark", "how does X price", "how do competitors handle {surface}", "monetization strategy of X" — no build ask | Research doc |
 | "write copy for", "rewrite this CTA", "the copy feels flat" | Copy |
 | "spec" / "brief" / "build" with no mention of a wireframe, or a vague "help with our {surface}" | **Ambiguous — ask the scoping question** |
 
@@ -64,7 +64,7 @@ Up to three pick-one questions in **one** message — it counts as one ask. Deli
 | All the way to a requirements doc (adds review, fix loop, re-review) | Start fresh — new spec + copy |
 | | Redesign all the way — new spec, copy, wireframe, fix loop, requirements |
 
-**Q2 — "Start with a competitor research doc for inspiration?"** Yes / No — recommend Yes only if the prompt names competitors or asks how others do it.
+**Q2 — "Start with a benchmark of how competitors run this surface?"** Yes / No — recommend Yes for a new surface or a redesign (the spec gets a flow map built from real competitor flows), No for a review of a live design unless the prompt asks how others do it.
 
 **Q3 — "How thorough should the review be?"** — ask only when Q1's recommended or likely answer includes a review of a wireframe the chain builds (new surface to requirements, or a redesign). Options, from the depth table under Fix loop: **Standard** *(recommended)* · **Quick** · **Thorough**. Skip Q3 on existing-design reviews — there's no fix loop there, so depth doesn't apply. If Q1's answer turns out to stop before the review, ignore Q3.
 
@@ -111,7 +111,7 @@ Starting now →
 
 Then immediately begin the first skill. Don't wait for the user to confirm.
 
-**Research nudge.** On a new-surface build (the surface doesn't exist yet) where the scoping question wasn't asked (a Q2 "No" is final) and the prompt names no competitors, add one line above "Starting now": `Say "add research" to benchmark competitors first.` No question, no stop. If the user says it after the spec is written, run `pricing-intelligence`, then revise the spec as `01-spec-v2.md` using the research. If copy already exists and the revised spec changed the reason or direction, revise it as `02-copy-v2.md`; otherwise keep it. Continue the chain from there.
+**Research nudge.** On a new-surface build (the surface doesn't exist yet) where the scoping question wasn't asked (a Q2 "No" is final), Research isn't already in the deliverable set, and the prompt names no competitors, add one line above "Starting now": `Say "add research" to benchmark competitors first.` No question, no stop. If the user says it after the spec is written, run `monetization-intelligence`, then revise the spec as `01-spec-v2.md` using the research. If copy already exists and the revised spec changed the reason or direction, revise it as `02-copy-v2.md`; otherwise keep it. Continue the chain from there.
 
 ---
 
@@ -170,13 +170,16 @@ Ends here — no review, no synthesis. After the copy, one line: offer `03-wiref
 ### Research → Spec
 > "Research how other tools do credit top-ups, then spec ours"
 
-1. `pricing-intelligence` → monetization model benchmarking (sub-workflow B: AI credits), saved to `.monetization/research/{topic-slug}-{YYYY-MM}.md`
-2. Continue into whichever build preset the deliverable set calls for (Spec → Copy, or the full wireframe chain). Pass the research artifact path to `monetization-surface-spec` as input — it cites the competitor examples in References and uses "So what for monday.com" to shape the copy direction
+1. `monetization-intelligence` → pick the workflow by what's being built:
+   - **a surface** (the usual case) → **surface benchmark** for that surface type, saved to `.monetization/research/{surface}-benchmark-{YYYY-MM}.md`
+   - **a pricing or packaging question** (credit packages, tier structure, value metric) → monetization model benchmarking
+2. Continue into whichever build preset the deliverable set calls for (Spec → Copy, or the full wireframe chain). Pass the research artifact path to `monetization-surface-spec` — it cites the competitor examples in References, builds its **flow map** from the benchmark's "Flow implications for the spec", and uses "So what for monday.com" to shape the copy direction. The reviewer may take its benchmark example from the same doc.
+3. The research doc's **Suggested playbook updates** become an Open item in `05-requirements.md` — see Synthesis rules.
 
 ### Research → Positioning
 > "How does Asana price compared to us? We're about to run a pricing page test"
 
-1. `pricing-intelligence` → company research + pricing page teardown
+1. `monetization-intelligence` → monetization teardown (plans, packaging, surface map) + pricing page teardown
 2. Offer: the Spec chain for a pricing page variant using the findings
 
 Research-only runs end at the research artifact — no synthesis, since there's nothing to implement yet.
@@ -191,7 +194,7 @@ The point: the requirements doc should hand dev a wireframe that's already right
 
 ### Independent review — every pass, every chain
 
-Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the `Agent` tool. Give it only file paths: the artifacts under review, [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, and `monday-context.md`. Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
+Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the `Agent` tool. Give it only file paths: the artifacts under review, [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
 
 The subagent can't see the chain, so the brief must start with a mode line, or the reviewer will pick its standalone branch and run the rest of the chain itself:
 
@@ -270,6 +273,11 @@ Read the **latest version** of each numbered artifact — per the ledger — in 
 - **No unverified claims.** Any factual promise in a Final copy string — a cancellation or refund policy, data retention after expiry, a guarantee — that isn't stated in `monday-context.md` gets an Open item naming who confirms it (Billing, Product) and is listed as a ship blocker. Copy that reads well but promises something untrue is worse than the line it replaced.
 - **Check the reviewer's factual claims before they land.** An independent reviewer can still misread the input. For every row that asserts a fact — especially "contradicts monday-context.md", a price, a limit, or something "missing" from the design — re-derive it from the input (screenshot, Figma, artifact) and the context file. If it doesn't hold, keep the row for traceability but say so in its Open item ("R1.13 reading likely wrong: {why}") and never propose a context-file change built on it.
 - **No direction-only rows.** "Improve", "consider", "strengthen", "make more X" are not requirements. If two people acting on a row would build different things, rewrite it.
+- **Every row is testable.** Each Design change and Build-order row carries **acceptance criteria** — a pass condition two people would judge the same way: "At a true 375px viewport, the CTA is visible without scrolling", not "works on mobile". A subjective property becomes an objective proxy (task completion, a visible element, a measured value); if none exists, it's a research question — say so in Open items.
+- **No vague words.** Scan Design changes, Open items and Build order (never the verbatim copy strings) for: *appropriate, suitable, reasonable, user-friendly, intuitive, efficient, fast, simple, easy, seamless, flexible, optimized, as needed, where applicable, if necessary, etc., and/or, may, might, could*. Quantify each hit or cut it. If the number isn't decided, don't invent one — write "pending: {what}" and add an Open item.
+- **Real owners.** Owner is a named person when the user or `monday-context.md` names one; otherwise the owning role plus "name TBD" (e.g. "Billing — name TBD"), and one Open item lists the owners to assign. Never "the team", "product", or a blank.
+- **Playbook updates travel.** If the chain produced a research doc with Suggested playbook updates, add one Open item: owner "Growth Monetization PM — name TBD" (the playbook owner), what's needed "apply the suggested updates to `playbooks/{surface}.md`", Source: the research file. Knowledge that stays in one report is lost to the next spec.
+- **Deferred, not defective.** Choices deliberately left to the designer (motion, exact spacing, illustration) go in **Deferred to design**, not in Design changes or Open items — they're open on purpose.
 
 ### `05-requirements.md` format
 
@@ -290,9 +298,9 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 
 ## Design changes
 
-| # | Priority | Component | Change | Spec | Source |
-|---|----------|-----------|--------|------|--------|
-| D1 | 🔴 | Pro CTA | ... | {placement, size, style, state behavior — tokens only if confirmed} | R1.5 |
+| # | Priority | Component | Change | Spec | Acceptance criteria | Source |
+|---|----------|-----------|--------|------|---------------------|--------|
+| D1 | 🔴 | Pro CTA | ... | {placement, size, style, state behavior — tokens only if confirmed} | {pass condition — e.g. "visible without scrolling at a true 375px"} | R1.5 |
 
 ## Resolved before handoff
 
@@ -308,13 +316,19 @@ Anything the review couldn't assess or that needs an input before build — pend
 
 | # | Owner | What's needed | Blocks | Source |
 |---|-------|---------------|--------|--------|
-| O1 | Design | 375px screenshot to confirm CTA stays above fold | D1 on mobile | R1.9 |
+| O1 | Design — name TBD | 375px screenshot to confirm CTA stays above fold | D1 on mobile | R1.9 |
 
 ## Build order
 
-| # | Priority | Owner | Task | Covers | Effort |
-|---|----------|-------|------|--------|--------|
-| 1 | 🔴 | Eng | ... | Final copy rows 1–2, D1 | S |
+| # | Priority | Owner | Task | Covers | Acceptance criteria | Effort |
+|---|----------|-------|------|--------|---------------------|--------|
+| 1 | 🔴 | Eng — name TBD | ... | Final copy rows 1–2, D1 | {how QA knows it's done} | S |
+
+## Deferred to design
+
+Optional — choices left open on purpose, so nobody mistakes them for gaps.
+
+- {e.g. "Transition between the warning and critical banner states"}
 ```
 
 **Current and projected score:** copy both from the latest review version — the reviewer owns the rubric and computes it. It's a rubric projection, not a conversion forecast; don't restate it as a lift estimate.
@@ -328,7 +342,10 @@ Anything the review couldn't assess or that needs an input before build — pend
 5. Every factual promise in the copy (policy, retention, guarantee) not in `monday-context.md` has an Open item and is listed as a ship blocker.
 6. Every reviewer row asserting a fact or contradiction was re-derived from the input; any that didn't hold says so in its Open item.
 7. No row is direction-only.
-8. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
+8. Every Design change and Build-order row has acceptance criteria; no vague word from the list survives outside the copy strings.
+9. Every owner is a named person or "{role} — name TBD"; none says "the team".
+10. If a research doc with Suggested playbook updates exists, its Open item is present.
+11. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
 
 After delivering, one line only — existing-design chains: offer to build a wireframe of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input. Fix-loop chains: no offer; the build target is already the fixed wireframe.
 

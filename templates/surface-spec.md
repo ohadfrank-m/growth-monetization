@@ -63,6 +63,15 @@ List every section of the surface in visual order:
 - **State preservation:** {if mid-task: does it save state? how does user resume?}
 - **Dismiss logic:** {what happens if dismissed — repeat after X days / session / never}
 
+## Flow map [required]
+The journey, before the layout. Multi-screen surfaces (cancellation, upgrade → checkout, trial, top-up, paywall → trial start):
+
+| # | Screen | Purpose | Key elements | Arrives from | Goes to (incl. abandon) | Friction point | Reduction |
+|---|--------|---------|--------------|--------------|-------------------------|----------------|-----------|
+| 1 | {e.g. Cancel intent} | {intercept, learn why} | {reason list, "pause instead" link} | {Billing → Cancel} | {2 · abandon: back to billing} | {feels like a wall before the real cancel} | {one-click "continue to cancel" always visible} |
+
+Every screen names a friction point and its reduction, or "none — {why}". Single-screen surfaces: one line — the screen before, the screen after, and the friction at the hand-off. Built from the surface benchmark's flow implications when one exists.
+
 ## Copy strategy [required]
 Do not write final copy here. Specify the persuasion angle and hand off.
 
@@ -84,11 +93,15 @@ Do not write final copy here. Specify the persuasion angle and hand off.
 ## Edge cases [required]
 Address each that applies:
 
+Address every case in `monetization-surface-spec/references/spec-checklist.md` — N/A needs a one-line reason. The most common ones:
+
 - **Credit debt:** what happens if user goes below 0 mid-task?
 - **Admin-gated purchase:** user wants to top up but isn't the admin — what's the path?
 - **Mobile:** does this surface work on mobile? any layout changes needed?
 - **Repeat exposure:** what if the user has already seen this 3× this week?
 - **Enterprise accounts:** does this surface behave differently for enterprise users?
+- **Loading, empty and error states:** purchase pending, payment failed, plan or credits not yet applied, no-data state
+- **Seats vs. credits** and **billing cadence** (monthly vs annual) — see the checklist
 
 ## monday.com design constraints [required]
 - Use Vibe design system tokens — flag any hardcoded values in review

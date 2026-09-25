@@ -1,26 +1,30 @@
 ---
-name: pricing-intelligence
-description: This skill should be used when the user wants to "research how X prices", "pricing strategy of X", "competitive pricing landscape", "who competes with X on price", "how do AI companies sell credits", "how does usage-based pricing work in [industry]", "benchmark our pricing model", "monitor pricing changes", "what changed in pricing this week", "pricing watchlist", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "how to negotiate X pricing". Works best with the PricingSaaS MCP and falls back to web-only enrichment without it. Standalone runs offer to log to the Pricing Intelligence board on monday.com.
-version: 0.2.0
+name: monetization-intelligence
+description: Competitive monetization intelligence — how other companies make money and how they run every monetization surface, not just what they charge. Covers the whole system (value metric, packaging and tiers, price points, discounting, free/trial model, expansion paths, where the product asks for money) and benchmarks how competitors run a specific surface — upgrade flow, cancellation flow, paywall, trial, credit top-up, pricing page. Use when the user wants to "research how X prices", "how do competitors handle cancellation", "benchmark upgrade flows", "how does X's paywall work", "how do others run trial expiry", "monetization strategy of X", "how does X make money", "X's packaging", "competitive pricing landscape", "how do AI companies sell credits", "benchmark our pricing model", "monitor pricing changes", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "pricing intelligence". Works best with the PricingSaaS MCP and falls back to web-only enrichment without it. Standalone runs offer to log to the Pricing Intelligence board on monday.com.
+version: 0.3.0
 ---
 
-# Pricing Intelligence
+# Monetization Intelligence
 
-Research competitor pricing, map industry landscapes, benchmark monetization models, and monitor pricing changes — powered by PricingSaaS MCP, enrichment sources, and monday.com logging.
+How competitors make money — and how they run the surfaces where they ask for it. Price is one input; the job is the whole monetization system: the value metric, packaging and tiers, price points and discounting, the free/trial model, expansion paths, and every surface — pricing page, paywall, upgrade flow, trial, credit top-up, cancellation. A spec for a cancellation flow should be able to start from "here's how five competitors run theirs", not from a blank page.
+
+Powered by the PricingSaaS MCP for plans and change history, public product documentation and captures for surfaces, and enrichment sources (Wayback, changelogs, community) for everything else.
 
 ## Routing
 
-Identify intent and route to the correct reference file. When intent is ambiguous, put the routing question in the intake message (see Required context) rather than a separate round trip: "Are you researching a specific company, mapping a market, benchmarking a pricing model, tracking changes, building a battlecard, or something else?"
+Identify intent and route to the correct reference file. When intent is ambiguous, put the routing question in the intake message (see Required context) rather than a separate round trip: "Are you researching a specific company, benchmarking how competitors run a surface (upgrade, cancellation, paywall, trial, top-up), mapping a market, benchmarking a pricing model, tracking changes, building a battlecard, or something else?"
 
 | Intent | Trigger signals | Reference |
 |--------|----------------|-----------|
-| Single company deep-dive | company name + "price", "strategy", "packaging", "tiers", "model" | [company-research.md](references/company-research.md) |
+| **Surface benchmark** | "how do competitors / X handle [cancellation, upgrade flow, paywall, trial, trial expiry, credit top-up, seat limit, downgrade]", "benchmark upgrade flows", "best-in-class [surface]", "how does X's paywall work" | [surface-benchmark.md](references/surface-benchmark.md) |
+| **Monetization teardown** | "monetization strategy of X", "how does X make money", "X's packaging", "how does X expand accounts", "tear down X's monetization", "full teardown of X" | [monetization-teardown.md](references/monetization-teardown.md) |
+| Single company pricing deep-dive | company name + "price", "plans", "tiers", "pricing history" | [company-research.md](references/company-research.md) |
 | Category / industry landscape | "industry", "category", "landscape", "trends", "market", "who competes" | [trend-research.md](references/trend-research.md) |
 | **Monetization model benchmarking** | "how do AI companies sell credits", "usage-based vs seat-based", "how should we structure our pricing model", "credit economics", "benchmark our model", "how do PLG tools charge for AI" | [monetization-model-benchmarking.md](references/monetization-model-benchmarking.md) |
 | Track pricing changes | "monitor", "watchlist", "what changed", "pricing news", "updates" | [monitoring.md](references/monitoring.md) |
 | Category watchlist setup | "track the {category} space", "add all {category} competitors", "set up watchlist" | [category-watchlist.md](references/category-watchlist.md) |
 | Sentiment / market reaction | "what do people think", "sentiment", "customer reactions", "controversy" | [sentiment-research.md](references/sentiment-research.md) |
-| Pricing page teardown | "tear down", "analyze pricing page", "pricing psychology", "how does X present pricing" | [pricing-page-teardown.md](references/pricing-page-teardown.md) |
+| Pricing page teardown | "tear down X's pricing page", "analyze pricing page", "pricing psychology", "how does X present pricing" — only when the pricing page is named | [pricing-page-teardown.md](references/pricing-page-teardown.md) |
 | Competitive battlecard | "battlecard", "losing deals to X", "pricing objections", "vs X pricing" | [battlecard-generator.md](references/battlecard-generator.md) |
 | Weekly digest | "weekly digest", "what changed this week", "pricing brief", "run my digest" | [weekly-digest.md](references/weekly-digest.md) |
 | A/B test detection | "testing their pricing page", "A/B testing pricing", "pricing page experiments" | [ab-test-detection.md](references/ab-test-detection.md) |
@@ -38,6 +42,7 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 | Field | Why it changes the output | Infer from |
 |-------|--------------------------|-----------|
 | Company or category | Decides the workflow and the companies pulled | Named in the prompt |
+| Surface type (surface benchmark) | Decides what gets captured per competitor — offers and save paths for cancellation, preview and trial path for a paywall, packages for a top-up | "cancellation", "upgrade flow", "paywall"… — ask only if the prompt names none |
 | The monday.com decision it informs | Shapes "So what for monday.com" — a pricing-page test, a paywall spec and a packaging change need different takeaways | "we're about to…", the surface or team mentioned |
 | Competitor set (landscape / benchmark runs) | Who's in the table; the wrong set makes the benchmark useless | Category default: the work-management and PLG set in `monday-context.md` + the prompt's names |
 | Depth | Quick scan (current plans, 1 page) vs deep dive (history, enrichment, sentiment) | "quick", "overview" vs "deep dive", "full" |
@@ -96,9 +101,11 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 - Use the research artifact template: [../../templates/research-output.md](../../templates/research-output.md)
 - Include header block on every artifact
 - Lead with exec summary (3 bullets) — always the first thing after the header
-- Every company name links to `https://pricingsaas.com/pulse/companies/{slug}` on first mention
+- Every company name links on first mention — to `https://pricingsaas.com/pulse/companies/{slug}` when the slug is confirmed through the MCP, otherwise to the source page actually used. Never guess a slug
 - Every standalone artifact ends with a **→ Next step** block (omitted in a Growth PM chain)
-- Every competitor research includes a **So what for monday.com** section: pricing headroom, positioning implication, experiment to consider, threat signal
+- Every competitor research includes a **So what for monday.com** section: pricing headroom, positioning implication, experiment to consider, threat signal — and, for surface work, which pattern to adopt, adapt, or avoid on monday's version of the surface
+- **Evidence tags on every claim about a competitor's product or UI**, per [playbooks/README.md](../../playbooks/README.md): `[Verified]` (vendor docs or a capture you made), `[Reported]` (third-party), `[Teardown needed]` (behind a login or not captured). Never describe a screen you haven't seen
+- **Durable findings go to the playbooks, not just the report.** When research produces a benchmark, example, or anti-pattern for a surface type, end with **Suggested playbook updates**: the exact addition for `playbooks/{surface}.md`, tagged and sourced, checked against what's already there so nothing is duplicated
 - Offer to log the output to monday.com once it's delivered — posting to a shared board needs the user's go-ahead: [monday-logging.md](references/monday-logging.md)
 
 ---
@@ -107,7 +114,7 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 
 When research involves monday.com or its competitors, read [context/monday-context.md](../../context/monday-context.md) for current plans and prices before writing the "So what for monday.com" section. Compare against the context file, not memory.
 
-After every company research, offer a pricing battlecard before closing.
+After every company research or monetization teardown, offer a pricing battlecard before closing.
 
 ---
 

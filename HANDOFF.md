@@ -99,3 +99,7 @@ Read `CLAUDE.md` first — it's auto-loaded and has the operational rules. Read 
 ## Rename added 2026-09-25: router → Monetization Growth PM
 
 `monetization-pm-router` is now `monetization-growth-pm`. Invoking it means the full product work (scoping how far and how deep, the chain, the fix loop, requirements); a user who wants one piece calls that skill directly, and each skill runs its own intake when called alone. Earlier sections above say "router" — that's the same skill under its old name.
+
+## Rename added 2026-09-25: pricing-intelligence → monetization-intelligence
+
+The research skill's scope grew from what competitors charge to the whole monetization system — model, packaging, price, expansion paths — and how competitors run each surface (upgrade, cancellation, paywall, trial, top-up). Two workflows were added: surface benchmark and monetization teardown. Earlier sections above say `pricing-intelligence`; it's the same skill under its old name. The monday.com board keeps its name, "Pricing Intelligence".
