@@ -138,7 +138,14 @@ Output: `.monetization/{feature-slug}/03-wireframe.html`
 
 Build the wireframe by default once copy exists. Skip it only if the user asks for the spec and copy alone.
 
-**From a requirements doc (after the Review → Fix → Synthesize chain).** If `05-requirements.md` exists, build from it instead of `01-spec.md` + `02-copy.md` — it's the resolved version of both. Use its Final copy strings verbatim and apply every Design change. Pin each element with its `C#` / `D#` code so the wireframe and the doc cross-reference. Mark elements blocked on an Open item with its `O#` in a visibly different pin style. Wherever an open item has two possible answers (e.g. whether a price includes credits), add a prototype control that switches between them rather than picking one. Keep the `03-` filename even though it's written after `05-`: the number identifies the artifact type, not the order it was produced.
+**From a requirements doc (after the Review → Fix → Synthesize chain).** If `05-requirements.md` exists, build from it instead of `01-spec.md` + `02-copy.md` — it's the resolved version of both. Use its Final copy strings verbatim and apply every Design change. Keep the `03-` filename even though it's written after `05-`: the number identifies the artifact type, not the order it was produced.
+
+**Annotation rule — critical:** Never render `C#` / `D#` / `O#` annotations as inline DOM elements inside the wireframe body. Inline badges interrupt visual hierarchy and make the wireframe unreadable as a design artifact. Instead:
+- Place a small circular callout marker (absolute-positioned, 24px, non-disruptive) on the corresponding wireframe element
+- List all annotation text in the fixed right-side annotation panel
+- Open items get an amber `O#` marker and, when two states are possible, a toggling prototype control in the wireframe — not a placeholder
+
+Follow the exact HTML/CSS pattern in [references/wireframe-patterns.md](references/wireframe-patterns.md#annotation-panel--mandatory-pattern) — structure, CSS classes, toggle script, and open-item control are all specified there. Do not invent an alternative.
 
 End with the next step block — omitted in a router chain, same as above:
 ```

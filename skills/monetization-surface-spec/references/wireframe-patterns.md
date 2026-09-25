@@ -193,14 +193,192 @@ Reference for structural patterns when building wireframes. Pull inspiration her
 ## Wireframe delivery format
 
 Always deliver wireframes as single-file HTML:
-- Low-fi — grey boxes, placeholder text, clear labels
+- Low-fi — neutral greys, real copy, clear structure
 - All states shown (if multi-state surface): use tabs or stacked sections
-- Annotated: small labels explaining each element's purpose
-- Mobile note at top: "Mobile: {what stacks or collapses}"
+- Mobile note in the annotation panel header: "Mobile: {what stacks or collapses}"
 
-File: `.monetization/{feature-slug}/03-wireframe.html` — built after `02-copy.md` exists, using its recommended copy in place of any placeholder text below
+File: `.monetization/{feature-slug}/03-wireframe.html` — built after `02-copy.md` exists, using its recommended copy verbatim
 
 Reference the pattern used in the wireframe's opening comment:
 ```html
 <!-- Pattern: {pattern name} — adapted for monday.com credit depletion, existing-user cohort -->
+```
+
+---
+
+## Annotation panel — mandatory pattern
+
+**Never place annotation badges inline in the wireframe body.** Inline badges interrupt the visual hierarchy and make the wireframe unreadable as a design artifact. Annotations belong in a separate panel; callout markers on wireframe elements are small and non-disruptive.
+
+### Layout
+
+```
+┌─────────────────────────────────────────────┬──────────────────────┐
+│                                             │  Annotations    [×]  │
+│           Wireframe body                    │  ─────────────────── │
+│           (full readable width)             │  C1  Copy note       │
+│           [1] [2] small callout markers     │  D1  Design note     │
+│           anchored to elements              │  O1  Open item       │
+│                                             │                      │
+└─────────────────────────────────────────────┴──────────────────────┘
+```
+
+- Panel is **fixed on the right**, 300px wide, full viewport height, independently scrollable
+- A **"Annotations" toggle button** (top-right corner of page) collapses/expands the panel; when collapsed, wireframe fills the full width
+- Wireframe body has `margin-right: 316px` when panel is open; `margin-right: 0` when closed
+
+### Callout markers on wireframe elements
+
+Small circular markers (24px diameter) sit **outside the text flow** — positioned absolutely relative to their nearest `position: relative` ancestor, or floated to the far right of their container. They don't push other content around.
+
+```html
+<!-- Correct: marker floated right, doesn't interrupt copy -->
+<div class="wf-element" style="position: relative;">
+  <span class="callout callout-copy" data-id="C1">C1</span>
+  <h1>Don't lose what you built</h1>
+</div>
+
+<!-- Wrong: badge rendered as a block inside the text flow -->
+<div class="badge copy-badge">C1 — Replaces "Choose the right plan"...</div>
+<h1>Don't lose what you built</h1>
+```
+
+### CSS for callouts and panel
+
+```css
+/* Callout marker — anchored to element, doesn't affect layout */
+.callout {
+  position: absolute;
+  top: 4px;
+  right: -32px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  z-index: 10;
+  color: #fff;
+}
+.callout-copy    { background: #2563eb; }   /* C# — blue */
+.callout-design  { background: #16a34a; }   /* D# — green */
+.callout-open    { background: #d97706; }   /* O# — amber */
+
+/* Annotation panel */
+#annotation-panel {
+  position: fixed;
+  top: 0; right: 0;
+  width: 300px;
+  height: 100vh;
+  background: #f8fafc;
+  border-left: 1px solid #e2e8f0;
+  overflow-y: auto;
+  padding: 16px;
+  font-size: 13px;
+  z-index: 100;
+}
+
+/* Annotation entry */
+.ann-entry {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+.ann-badge {
+  flex-shrink: 0;
+  width: 28px;
+  height: 20px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.ann-copy    { background: #2563eb; }
+.ann-design  { background: #16a34a; }
+.ann-open    { background: #d97706; }
+.ann-text    { color: #334155; line-height: 1.4; }
+```
+
+### HTML structure
+
+```html
+<!-- Toggle button — always visible -->
+<button id="ann-toggle" onclick="togglePanel()" 
+  style="position:fixed; top:12px; right:12px; z-index:200; 
+         background:#1e293b; color:#fff; border:none; border-radius:6px; 
+         padding:6px 12px; font-size:12px; cursor:pointer;">
+  Annotations
+</button>
+
+<!-- Annotation panel -->
+<div id="annotation-panel">
+  <div style="font-weight:700; font-size:13px; color:#0f172a; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid #e2e8f0;">
+    Annotations
+    <div style="font-size:11px; font-weight:400; color:#64748b; margin-top:2px;">
+      Mobile: [describe what stacks or collapses]
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;">
+    <span style="font-size:11px; color:#2563eb;">● C# copy</span>
+    <span style="font-size:11px; color:#16a34a;">● D# design</span>
+    <span style="font-size:11px; color:#d97706;">● O# open</span>
+  </div>
+
+  <!-- Entries — one per annotation -->
+  <div class="ann-entry">
+    <span class="ann-badge ann-copy">C1</span>
+    <span class="ann-text">Replaces "Choose the right plan" — escape pain/guilt framing</span>
+  </div>
+  <div class="ann-entry">
+    <span class="ann-badge ann-design">D1</span>
+    <span class="ann-text">Moved above price (was below CTA)</span>
+  </div>
+  <div class="ann-entry">
+    <span class="ann-badge ann-open">O1</span>
+    <span class="ann-text">BLOCKED: AI Actions translation string — awaiting final wording from copy</span>
+  </div>
+</div>
+
+<script>
+function togglePanel() {
+  const panel = document.getElementById('annotation-panel');
+  const body  = document.getElementById('wireframe-body');
+  const btn   = document.getElementById('ann-toggle');
+  const open  = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  body.style.marginRight = open ? '0' : '316px';
+  btn.textContent = open ? 'Annotations' : 'Hide annotations';
+}
+</script>
+```
+
+### Open items — two-state prototype control
+
+When an open item has two possible answers (e.g. whether a price line includes credits), show both states with a toggle rather than picking one:
+
+```html
+<div class="open-toggle" style="border:2px dashed #d97706; border-radius:6px; padding:8px 12px;">
+  <div style="font-size:11px; color:#d97706; margin-bottom:6px;">O1 — open: awaiting decision</div>
+  <div id="ot1-a" class="ot-state">State A: $19/seat/month</div>
+  <div id="ot1-b" class="ot-state" style="display:none">State B: $19/seat/month (includes 2,000 AI credits)</div>
+  <button onclick="toggleOT('ot1')" style="font-size:11px; margin-top:6px; cursor:pointer;">Toggle state</button>
+</div>
+<script>
+function toggleOT(id) {
+  const a = document.getElementById(id+'-a');
+  const b = document.getElementById(id+'-b');
+  a.style.display = a.style.display === 'none' ? '' : 'none';
+  b.style.display = b.style.display === 'none' ? '' : 'none';
+}
+</script>
 ```
