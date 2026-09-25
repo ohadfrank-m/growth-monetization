@@ -97,6 +97,7 @@ Read the **latest version** of each numbered artifact in `.monetization/{feature
 - **Copy is verbatim.** Every Final copy string is the ★ recommended option from the copy artifact, word for word. No paraphrasing, no new lines written here.
 - **Specs are exact but not invented.** Name Vibe components and tokens only if they were confirmed from Figma variables or the Vibe MCP. Otherwise, specify relative to what's already on screen ("same text style as the plan feature rows, directly above the Pro CTA") and add "token TBD — confirm in Figma" rather than guessing a token name.
 - **No invented numbers.** Credit-to-task conversions, prices, and limits come from `monday-context.md`. If the figure isn't there, the copy keeps a marked slot (`≈ {N} AI actions`) and an Open item names who supplies N.
+- **No unverified claims.** Any factual promise in a Final copy string — a cancellation or refund policy, data retention after expiry, a guarantee — that isn't stated in `monday-context.md` gets an Open item naming who confirms it (Billing, Product) and is listed as a ship blocker. Copy that reads well but promises something untrue is worse than the line it replaced.
 - **No direction-only rows.** "Improve", "consider", "strengthen", "make more X" are not requirements. If two people acting on a row would build different things, rewrite it.
 
 ### `05-requirements.md` format
@@ -144,8 +145,9 @@ Anything the review couldn't assess or that needs an input before build — pend
 2. Every Final copy string matches the ★ recommended option verbatim.
 3. No Vibe token or component name appears that wasn't confirmed — unconfirmed ones say "TBD".
 4. No price, limit, or credit figure appears that isn't in `monday-context.md`.
-5. No row is direction-only.
-6. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
+5. Every factual promise in the copy (policy, retention, guarantee) not in `monday-context.md` has an Open item and is listed as a ship blocker.
+6. No row is direction-only.
+7. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
 
 After delivering, one line only: offer to build `03-wireframe.html` of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input.
 

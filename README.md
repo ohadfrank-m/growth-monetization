@@ -104,7 +104,7 @@ The entry point. Reads your intent, runs the right skills in sequence without pa
 
 **What you get:** `05-requirements.md` — final copy strings (verbatim ★ picks, each next to the line it replaces), design changes specified precisely enough to build, open items with owners, and a sorted build order. Every row traces back to the review row it came from, so nothing gets dropped between skills.
 
-Claude's `/` menu lists each skill separately — there's no plugin-level command — so `/monetization-pm-router` is the one to remember. Sharing a design with `/monetization-design-reviewer` directly also runs the full chain unless you say "review only".
+Claude's `/` menu lists each skill separately — there's no plugin-level command. Skills appear namespaced by plugin, so typing `/growth-monetization` lists all five; `/growth-monetization:monetization-pm-router` is the one to pick. (This README uses the short skill names.) Sharing a design with `/monetization-design-reviewer` directly also runs the full chain unless you say "review only".
 
 ---
 

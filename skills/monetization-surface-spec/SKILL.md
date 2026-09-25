@@ -132,11 +132,13 @@ Produce a low-fi HTML wireframe that shows:
 - Escape hatch (always present)
 - Mobile consideration (note if layout changes at mobile breakpoint)
 
-Keep it low-fi — this communicates structure and hierarchy, not final visual design. Use Vibe color tokens as references, not hardcoded hex values. The copy in it should be real and ship-ready even though the visual treatment isn't.
+Keep it low-fi — this communicates structure and hierarchy, not final visual design. A standalone HTML file can't load Vibe's tokens, so use neutral grey placeholders and name the intended Vibe component or token in an annotation — only names confirmed via Figma variables or the Vibe MCP, otherwise "token TBD". The copy in it should be real and ship-ready even though the visual treatment isn't.
 
 Output: `.monetization/{feature-slug}/03-wireframe.html`
 
 Build the wireframe by default once copy exists. Skip it only if the user asks for the spec and copy alone.
+
+**From a requirements doc (after the Review → Fix → Synthesize chain).** If `05-requirements.md` exists, build from it instead of `01-spec.md` + `02-copy.md` — it's the resolved version of both. Use its Final copy strings verbatim and apply every Design change. Pin each element with its `C#` / `D#` code so the wireframe and the doc cross-reference. Mark elements blocked on an Open item with its `O#` in a visibly different pin style. Wherever an open item has two possible answers (e.g. whether a price includes credits), add a prototype control that switches between them rather than picking one. Keep the `03-` filename even though it's written after `05-`: the number identifies the artifact type, not the order it was produced.
 
 End with the next step block — omitted in a router chain, same as above:
 ```
