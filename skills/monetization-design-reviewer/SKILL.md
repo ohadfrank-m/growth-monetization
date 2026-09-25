@@ -1,7 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Monetization Design Reviewer
@@ -100,10 +100,10 @@ Score each dimension 1–5 using the anchor definitions in `references/scoring-r
 
 This is the primary deliverable for the team — treat it like a punch list someone opens and starts working from, not a report. Everything goes in **one table**, sorted with the highest-impact fix in row one and descending from there. Don't split into per-category sub-lists — the Category column does that job while keeping priority order intact, which matters more than tidy grouping: the team should never have to hunt across sections to find out what to do first.
 
-| # | Severity | Category | Issue | Recommendation | Effort |
-|---|----------|----------|-------|-----------------|--------|
-| 1 | 🔴 | UI | *(what's wrong, one clause)* | *(the exact thing to do — a real designer/eng could act on this with no follow-up question)* | S / M / L |
-| 2 | 🟠 | Copy / CRO | ... | ... | S |
+| # | Severity | Category | Issue | Recommendation | Effort | Fix path |
+|---|----------|----------|-------|-----------------|--------|----------|
+| 1 | 🔴 | UI | *(what's wrong, one clause)* | *(the exact thing to do — a real designer/eng could act on this with no follow-up question)* | S / M / L | wireframe |
+| 2 | 🟠 | Copy / CRO | ... | ... | S | copy |
 
 Column rules:
 
@@ -112,6 +112,7 @@ Column rules:
 - **Issue**: name the problem in as few words as possible — this is context for the recommendation, not a second explanation of it.
 - **Recommendation**: the single most important cell. It must be the actual instruction, worded so specifically that two different people acting on it would produce the same result — not a direction to go think about it. "Change the CTA from 'Upgrade' to 'Unlock AI Agents'" is a recommendation; "make the CTA more benefit-driven" is not, and should be rewritten before the table goes out. **Exception:** Copy/CRO rows name the missing/buried reason and read "Revise with `improve-conversion-surfaces-copy` — reason: [X]" per Scope and handoff above; that skill owns producing the actual line, so don't draft copy in this cell.
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
+- **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The router's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
 
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
@@ -128,6 +129,28 @@ After delivering the review, offer to visualize the recommended fixes as a low-f
 > Want me to mock up the recommended version? I can do it as **HTML** (interactive, closest to a real screen, doubles as an eng spec) or a **SVG wireframe** (faster, static, good for communicating structure). Which do you want?
 
 Only build it if they say yes. Build the *improved* version, not a copy of the original. Use monday's Vibe visual language where relevant. Keep it low-fi — this is to communicate the fix, not to ship pixel-perfect UI.
+
+---
+
+## Re-review mode — inside the router's fix loop
+
+When an earlier review exists and revised artifacts (`-v2`/`-v3`) have been written in response to it, this is a re-review, not a fresh review. Save as `04-review-v2.md` (or `-v3`). It's run in a fresh subagent that sees only the files — see the router's [Fix loop](../monetization-pm-router/SKILL.md).
+
+1. **Verify every fixable row** from the previous review — one table, nothing skipped:
+
+   | Prev row | Fix path | Status | Evidence |
+   |----------|----------|--------|----------|
+   | R1.3 | wireframe | Resolved / Partly / Not resolved / Regressed | *(what in the new version shows it — element, state, file)* |
+
+   Judge against the row's Recommendation, not against taste. Resolved means a second designer would agree the Recommendation was carried out. Don't re-open rows marked Resolved on a later pass.
+
+2. **New issues** the fixes introduced or exposed — same ranked table and columns as a first review, numbered `R2.1`, `R2.2`… Only 🔴/🟠 feed another loop pass; 🟡 go to synthesis.
+
+3. **Rescore** the full rubric on the new version, plus the projected score.
+
+4. **Blocked rows** from earlier reviews: list them once with their owner. Don't re-score them as failures of the fix pass.
+
+End with a one-line verdict for the router: `Exit loop` (every fixable row Resolved, no new 🔴/🟠) or `Another pass: {row list}`.
 
 ---
 
@@ -190,6 +213,7 @@ Before returning the review, verify all of the following. If any fail, fix befor
 10. **Anything unassessable got its own row** (Recommendation: "Pending — needs [X] to assess") rather than being silently omitted.
 11. **Every competitor claim or figure cited respects its evidence tag** — `[Verified]` stated as fact, `[Reported]` carries the caveat inline, `[Teardown needed]` never presented as fact, and figures from pre-evidence-tag sections flagged as directional rather than quoted as targets.
 12. **Projected score is present**, re-scored with the same anchors assuming every 🔴 and 🟠 fix ships.
+13. **Every row has a Fix path**, and `blocked` is used only when the fix truly needs a fact or decision not in `monday-context.md` or the artifacts.
 
 ---
 
@@ -199,6 +223,8 @@ Save the review to `.monetization/{feature-slug}/04-review.md` with the header f
 
 Then continue — a review is never the last step unless the user asked for one:
 
+- **Router review** (the brief opens with `Mode: router review`): write the file named in the brief, end with the verdict line, and stop. The router decides what runs next — never hand off, add a next-step block, or offer a prototype in this mode.
+- **Inside a new-surface chain:** the router's fix loop runs next — it routes each fixable row by its Fix path. No next-step block, no prototype offer.
 - **Default (including when this skill was invoked directly, not via the router):** hand off to the Review → Fix → Synthesize chain in [monetization-pm-router](../monetization-pm-router/SKILL.md) and follow its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run.
 - **Review only** (the user said "just score it", "review only", or equivalent): end with the prototype offer above and this block:
 

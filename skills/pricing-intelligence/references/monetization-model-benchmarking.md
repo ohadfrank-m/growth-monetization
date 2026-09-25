@@ -265,7 +265,7 @@ WebSearch(query="{category} feature gating strategy per tier")
 ## Output file
 
 Write the benchmark output to:
-`.monetization/research/{topic-slug}-benchmark-{YYYY-MM}.md`
+`.monetization/research/{topic-slug}-{YYYY-MM}.md` — same convention as every research artifact, so the router and the spec skill find it
 
 Use the research output template: [../../../templates/research-output.md](../../../templates/research-output.md)
 

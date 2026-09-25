@@ -45,6 +45,8 @@ Proceeding to spec. [Or: "One thing before I proceed: {single question}"]
 
 This prevents a full spec being written from misunderstood input.
 
+**In a router chain:** print the brief block and proceed in the same turn — don't wait for a confirmation. The user already scoped the run; stopping here is exactly the mid-chain pause the router's chain mode rules forbid. Only stop if a required field is genuinely missing and can't be inferred (a real blocker, one question).
+
 ---
 
 ## From existing design input

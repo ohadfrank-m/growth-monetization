@@ -1,7 +1,7 @@
 ---
 name: pricing-intelligence
 description: This skill should be used when the user wants to "research how X prices", "pricing strategy of X", "competitive pricing landscape", "who competes with X on price", "how do AI companies sell credits", "how does usage-based pricing work in [industry]", "benchmark our pricing model", "monitor pricing changes", "what changed in pricing this week", "pricing watchlist", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "how to negotiate X pricing". Requires PricingSaaS MCP. Logs every output to the Pricing Intelligence board on monday.com.
-version: 0.1.0
+version: 0.1.1
 ---
 
 # Pricing Intelligence
@@ -83,7 +83,7 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 - Include header block on every artifact
 - Lead with exec summary (3 bullets) — always the first thing after the header
 - Every company name links to `https://pricingsaas.com/pulse/companies/{slug}` on first mention
-- Every artifact ends with a **→ Next step** block
+- Every standalone artifact ends with a **→ Next step** block (omitted in a router chain)
 - Every competitor research includes a **So what for monday.com** section: pricing headroom, positioning implication, experiment to consider, threat signal
 - Log every output to monday.com: [monday-logging.md](references/monday-logging.md)
 
@@ -94,3 +94,14 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 When research involves monday.com or its competitors, read [context/monday-context.md](../../context/monday-context.md) for current plans and prices before writing the "So what for monday.com" section. Compare against the context file, not memory.
 
 After every company research, offer a pricing battlecard before closing.
+
+---
+
+## In a router chain
+
+When `monetization-pm-router` runs this skill as the first step of a chain, the router's [chain mode rules](../monetization-pm-router/SKILL.md) apply. For this skill that means:
+
+- Save the artifact to `.monetization/research/{topic-slug}-{YYYY-MM}.md` — the next skill reads it from there
+- Omit the `→ Next step` block and skip the battlecard offer
+- Don't log to monday.com mid-chain — posting to an external board needs the user's go-ahead. The router offers logging once, after the final artifact
+- Paid PricingSaaS calls still need confirmation before running
