@@ -20,7 +20,7 @@ Use this when:
 | What the user says | Route to | What it does |
 |-------------------|---------|-------------|
 | "research how X prices", "competitive pricing", "how do companies sell AI credits", "benchmark our model" | `pricing-intelligence` | Competitor research, landscape scans, model benchmarking |
-| "review this design", "critique this paywall", "score this upgrade modal" | `monetization-design-reviewer` | CRO rubric score + prioritised improvement list |
+| "review this design", "critique this paywall", "score this upgrade modal", or any shared screenshot / Figma link | **Review → Fix → Synthesize chain** (below) | Review + copy revisions + one `05-requirements.md` |
 | "spec out a surface", "wireframe a paywall", "design brief for a trial flow", "I need a spec for..." | `monetization-surface-spec` | Full spec + low-fi wireframe |
 | "write copy for this CTA", "rewrite this upgrade prompt", "the copy feels flat" | `improve-conversion-surfaces-copy` | Benefit-led copy rewrite with 2–3 options |
 | Multi-step / unclear | Continue below → |
