@@ -32,11 +32,11 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization-pm-router` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
+| `monetization-pm-router` | **Start here.** Intent unclear, spans several skills, or a design is shared. Runs the chain without re-prompting and synthesizes it. | `05-requirements.md` (synthesis); routing for everything else |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
-| `improve-conversion-surfaces-copy` | Writing persuasive copy (1st call, drives the wireframe) or revising a flagged line (2nd call, after review) | `02-copy.md`, then `02-copy-v2.md` if revised |
-| `monetization-design-reviewer` | Scoring the real spec + copy + wireframe together | `04-review.md` — scored rubric + ranked fix list |
+| `improve-conversion-surfaces-copy` | First pass after a spec, first pass after a review of an existing design, or revising a line a review flagged | `02-copy.md`, then `02-copy-v2.md` if revised |
+| `monetization-design-reviewer` | Scoring a design — continues into the router's Review → Fix → Synthesize chain unless "review only" is asked | `04-review.md` — scored rubric, projected score, ranked fix list |
 
 ---
 
@@ -67,17 +67,23 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 ├── {feature-slug}/
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — wireframe built from this)
+│   ├── 02-copy-v2.md       ← improve-conversion-surfaces-copy (revision after review flags copy lines)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (re-invoked, built from 02-copy.md)
-│   └── 04-review.md        ← monetization-design-reviewer (scores the real thing)
+│   ├── 04-review.md        ← monetization-design-reviewer (scores the real thing)
+│   └── 05-requirements.md  ← monetization-pm-router synthesis (final requirements for dev/designer)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md   ← pricing-intelligence
 ```
+
+`05-requirements.md` is the terminal artifact in any chain that includes a review. It consolidates final copy strings, design specs, and a prioritized action list into one implementation-ready doc. It's produced by the router's synthesis phase after all other skills have run.
 
 Copy runs before the wireframe, not after the review — the wireframe and the review should both reflect real language, never bracketed placeholder text. If a review flags a copy line, that's a revision (`02-copy-v2.md`), not a first draft.
 
 If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
 
-### Next step block — end of every artifact
+### Next step block — standalone runs only
+
+End a standalone artifact with:
 
 ```
 ---
@@ -85,13 +91,15 @@ If the folder exists, detect what's there and continue from the next number. Whe
 → Prompt: "{copy-pasteable prompt}"
 ```
 
+Omit it inside a router chain — the router runs the next step itself, and a re-prompt block tells the model to stop and wait. Chain mode rules live once, in [skills/monetization-pm-router/SKILL.md](skills/monetization-pm-router/SKILL.md); skills cite them rather than restating them.
+
 ### Quality gate — before delivering
 
 - Header block present
 - Specific enough that two people acting on it produce the same result
 - monday.com facts cited from the context file, not memory
 - No empty sections or "N/A" padding (except the spec edge-case list, where N/A needs a reason)
-- Next step block present
+- Next step block present on standalone runs, absent inside a chain
 
 ---
 

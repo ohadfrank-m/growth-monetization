@@ -1,7 +1,7 @@
 ---
 name: monetization-surface-spec
-description: This skill should be used when the user wants to "spec out a paywall", "wireframe a credit depletion modal", "design brief for an upgrade flow", "create a spec for a pricing page", "build a trial expiry screen", "spec a cancellation flow", "what should a credit meter look like", "create an upgrade trigger for [feature]", "write a design brief for a monetization surface", "I need a spec for [any of: paywall, feature gate, upgrade prompt, credit top-up, trial flow, cancellation screen, pricing page]". Produces a structured spec artifact and low-fi HTML wireframe. Connects to Figma MCP when a design already exists.
-version: 0.1.0
+description: This skill should be used when the user wants to "spec out a paywall", "wireframe a credit depletion modal", "design brief for an upgrade flow", "create a spec for a pricing page", "build a trial expiry screen", "spec a cancellation flow", "what should a credit meter look like", "create an upgrade trigger for [feature]", "write a design brief for a monetization surface", "I need a spec for [any of — paywall, feature gate, upgrade prompt, credit top-up, trial flow, cancellation screen, pricing page]". Produces a structured spec artifact and low-fi HTML wireframe. Connects to Figma MCP when a design already exists.
+version: 0.2.0
 ---
 
 # Monetization Surface Spec
@@ -95,6 +95,8 @@ For each major surface, offer to pull benchmark patterns before speccing:
 
 If yes, run web research using [wireframe-patterns.md](references/wireframe-patterns.md) as a guide. Results feed directly into the References section of the spec.
 
+In a router chain, don't ask — use the surface's playbook examples for the References section, and run web research only if the chain started with `pricing-intelligence` (its output already covers this).
+
 ### Step 4: Write the spec
 
 Check the anti-patterns in [spec-checklist.md](references/spec-checklist.md) before and after drafting.
@@ -113,7 +115,7 @@ Write the spec to: `.monetization/{feature-slug}/01-spec.md`
 
 Do **not** build the wireframe yet. The wireframe gets built from the real headline/CTA copy `improve-conversion-surfaces-copy` writes next — not from placeholder text. Building it now and rewriting it later wastes a pass and means the wireframe never actually reflects the words it'll ship with.
 
-Always end the spec with the next step block:
+End the spec with the next step block — unless this is running in a router chain, in which case omit it and let the router continue (see chain mode rules in [monetization-pm-router](../monetization-pm-router/SKILL.md)):
 ```
 ---
 → Next step: improve-conversion-surfaces-copy — write the actual headline/CTA copy from the reason and direction named above
@@ -130,13 +132,15 @@ Produce a low-fi HTML wireframe that shows:
 - Escape hatch (always present)
 - Mobile consideration (note if layout changes at mobile breakpoint)
 
-Keep it low-fi — this communicates structure and hierarchy, not final visual design. Use Vibe color tokens as references, not hardcoded hex values. The copy in it should be real and ship-ready even though the visual treatment isn't.
+Keep it low-fi — this communicates structure and hierarchy, not final visual design. A standalone HTML file can't load Vibe's tokens, so use neutral grey placeholders and name the intended Vibe component or token in an annotation — only names confirmed via Figma variables or the Vibe MCP, otherwise "token TBD". The copy in it should be real and ship-ready even though the visual treatment isn't.
 
 Output: `.monetization/{feature-slug}/03-wireframe.html`
 
 Build the wireframe by default once copy exists. Skip it only if the user asks for the spec and copy alone.
 
-Always end with the next step block:
+**From a requirements doc (after the Review → Fix → Synthesize chain).** If `05-requirements.md` exists, build from it instead of `01-spec.md` + `02-copy.md` — it's the resolved version of both. Use its Final copy strings verbatim and apply every Design change. Pin each element with its `C#` / `D#` code so the wireframe and the doc cross-reference. Mark elements blocked on an Open item with its `O#` in a visibly different pin style. Wherever an open item has two possible answers (e.g. whether a price includes credits), add a prototype control that switches between them rather than picking one. Keep the `03-` filename even though it's written after `05-`: the number identifies the artifact type, not the order it was produced.
+
+End with the next step block — omitted in a router chain, same as above:
 ```
 ---
 → Next step: monetization-design-reviewer — score the spec, copy, and wireframe together

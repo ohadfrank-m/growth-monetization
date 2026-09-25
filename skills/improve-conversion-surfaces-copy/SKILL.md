@@ -1,7 +1,7 @@
 ---
 name: improve-conversion-surfaces-copy
 description: Ground persuasive writing in a real reason people buy, not a feature description. Use when writing or editing copy meant to make someone buy, subscribe, sign up, or act — landing pages, ads, offers, positioning, pricing pages, upgrade prompts, email CTAs. Also use when auditing a draft that reads as feature-speak, when someone asks "why would anyone buy this?", "make this benefit-led", "what's the hook?", "this copy feels flat", or "sharpen this pitch."
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Improve Conversion Surfaces Copy
@@ -85,7 +85,9 @@ Read `references/sources.md` when the top-level guidance isn't enough — it enc
 
 ## Plugin output
 
-This skill runs at two different points in the plugin's pipeline — which one determines the file and the framing. Check what's already in `.monetization/{feature-slug}/` before writing anything.
+This skill runs at three different points in the plugin's pipeline — which one determines the file and the framing. Check what's already in `.monetization/{feature-slug}/` before writing anything.
+
+**In a router chain** (the router announced a sequence before this ran), omit the next-step block in every case below — the router runs the next step itself. See the chain mode rules in [monetization-pm-router](../monetization-pm-router/SKILL.md).
 
 **First pass — right after the spec, before the wireframe exists.** If `01-spec.md` exists and there's no `02-copy.md` yet, this is a first pass. Start from the spec's named reason and direction instead of re-deriving them. This is the copy the wireframe gets built from, so write real, ship-ready lines — not more placeholders for someone to fix later. Save to `.monetization/{feature-slug}/02-copy.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md), and end with:
 
@@ -95,4 +97,6 @@ This skill runs at two different points in the plugin's pipeline — which one d
 → Prompt: "Build the wireframe in .monetization/{feature-slug}/ using the copy in 02-copy.md"
 ```
 
-**Revision pass — after `04-review.md` flags a specific line.** `02-copy.md` already exists; this isn't a fresh draft. Start from the reason `04-review.md` names for the flagged line (the review already did the diagnosis) and revise only what was flagged — don't re-litigate lines the review didn't call out. Save as `.monetization/{feature-slug}/02-copy-v2.md` — version it, per the plugin's iteration convention, rather than overwriting the first pass. No next-step block needed; this is normally the last artifact in the chain.
+**Revision pass — after `04-review.md` flags a specific line.** `02-copy.md` already exists; this isn't a fresh draft. Start from the reason `04-review.md` names for the flagged line (the review already did the diagnosis) and revise only what was flagged — don't re-litigate lines the review didn't call out. Save as `.monetization/{feature-slug}/02-copy-v2.md` — version it, per the plugin's iteration convention, rather than overwriting the first pass. The router's synthesis phase runs next and turns it into `05-requirements.md`.
+
+**Review-first pass — an existing design was reviewed, no copy artifact exists yet.** `04-review.md` exists but `01-spec.md` and `02-copy.md` don't (typical when a screenshot or Figma frame of a live surface was shared). This is a first draft for those lines, not a revision. Take each Copy/CRO row in `04-review.md`, start from the reason it names, and write options for that element only — don't rewrite lines the review didn't flag. Also write the strings for any **new** on-screen element a non-copy row adds (a Free link, a tag, a risk-reducer line, a personalization line). Those rows own the placement, but the words still come from this skill. Leave them out and the synthesis has nothing verbatim to use. Quote the current on-screen string for each element so the synthesis can show what's being replaced. Save to `.monetization/{feature-slug}/02-copy.md`. The router's synthesis phase runs next.

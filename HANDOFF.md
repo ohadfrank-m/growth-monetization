@@ -27,6 +27,14 @@ Two reference repos shaped the structure: `product-manager` (Pragmatic Framework
 
 ---
 
+## Deviation added 2026-09-25: the router owns the chain
+
+Pattern 4 above ("sequenced but independently invokable… every artifact ends with a `→ Next step` block") didn't survive first real use. A trial-expiry screenshot run through the router produced a review whose copy rows said "revise with `improve-conversion-surfaces-copy`" and stopped, ending on a "want me to mock it up?" question. The user had to re-prompt each skill and got four artifacts instead of one answer.
+
+What changed: the router now announces a chain and runs it end to end. Skills omit next-step blocks and optional offers while a chain runs (rules live once, in `skills/monetization-pm-router/SKILL.md` → Chain mode rules). Any chain containing a review ends in `05-requirements.md`, a synthesis a designer and engineer can build from directly. The router is no longer artifact-free. Skills are still independently invokable, and standalone runs keep the next-step block.
+
+Why the synthesis rules are strict (verbatim copy, no invented tokens/numbers/claims, every review row traced): the value of `05-requirements.md` is that nobody has to re-open the other artifacts. That only holds if nothing in it is guessed.
+
 ## Why `adapters/` (Cursor/ChatGPT-specific files) was cut from Wave 1
 
 Originally planned: separate adapter files per environment (Cursor `.mdc` rules, a ChatGPT system prompt). Cut because:
