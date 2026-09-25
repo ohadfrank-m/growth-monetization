@@ -190,10 +190,28 @@ Before returning the review, verify all of the following. If any fail, fix befor
 
 ## Plugin output
 
-When running inside the growth-monetization plugin, save the review to `.monetization/{feature-slug}/04-review.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md), and end with:
+Save the review to `.monetization/{feature-slug}/04-review.md` with the header from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md).
+
+**After saving, determine which mode this review is running in:**
+
+### Chain mode (router declared a multi-step sequence before this review started)
+Proceed immediately — do not pause for the user:
+
+1. **Run `improve-conversion-surfaces-copy`** for each Copy/CRO row in the review. For each row:
+   - State the element (headline, CTA, trust signal, etc.)
+   - State the reason it's failing (from the review row)
+   - Invoke the copy skill to produce 2–3 options with one ★ recommended
+   - Save all copy output to `.monetization/{feature-slug}/02-copy-v2.md` (versioned from any existing `02-copy.md`)
+
+2. After all Copy/CRO items are written, **return to `monetization-pm-router` synthesis phase** and produce `05-requirements.md`.
+
+No next-step block needed — the chain continues automatically.
+
+### Standalone mode (design reviewer invoked directly, not as part of a router chain)
+End the review with:
 
 ```
 ---
-→ Next step: improve-conversion-surfaces-copy — revise the Copy / CRO rows flagged above (02-copy.md already exists — this is a targeted fix, not a first draft)
-→ Prompt: "Revise the flagged copy in .monetization/{feature-slug}/02-copy.md per the flags in 04-review.md, save as 02-copy-v2.md"
+→ Next step: improve-conversion-surfaces-copy — revise the Copy / CRO rows flagged above (treat as revision, not first draft)
+→ Prompt: "Revise the flagged copy in .monetization/{feature-slug}/04-review.md, save as 02-copy-v2.md, then run monetization-pm-router synthesis to produce 05-requirements.md"
 ```

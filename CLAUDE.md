@@ -32,7 +32,7 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 | Skill | Use when | Produces |
 |-------|---------|---------|
-| `monetization-pm-router` | Intent is unclear or spans several skills | Routing decision, then runs the right skill(s) |
+| `monetization-pm-router` | **Start here.** Intent unclear, spans several skills, or you're sharing a design for review. Runs full chain automatically + synthesizes into one requirements doc. | `05-requirements.md` (synthesis); routing for everything else |
 | `pricing-intelligence` | Researching competitors, markets, or pricing models | Research report, landscape, benchmark, battlecard |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | Writing persuasive copy (1st call, drives the wireframe) or revising a flagged line (2nd call, after review) | `02-copy.md`, then `02-copy-v2.md` if revised |
@@ -67,23 +67,31 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 ├── {feature-slug}/
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — wireframe built from this)
+│   ├── 02-copy-v2.md       ← improve-conversion-surfaces-copy (revision after review flags copy lines)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (re-invoked, built from 02-copy.md)
-│   └── 04-review.md        ← monetization-design-reviewer (scores the real thing)
+│   ├── 04-review.md        ← monetization-design-reviewer (scores the real thing)
+│   └── 05-requirements.md  ← monetization-pm-router synthesis (final requirements for dev/designer)
 └── research/
     └── {topic-slug}-{YYYY-MM}.md   ← pricing-intelligence
 ```
+
+`05-requirements.md` is the terminal artifact in any chain that includes a review. It consolidates final copy strings, design specs, and a prioritized action list into one implementation-ready doc. It's produced by the router's synthesis phase after all other skills have run.
 
 Copy runs before the wireframe, not after the review — the wireframe and the review should both reflect real language, never bracketed placeholder text. If a review flags a copy line, that's a revision (`02-copy-v2.md`), not a first draft.
 
 If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
 
-### Next step block — end of every artifact
+### Next step block — end of every artifact (standalone mode only)
+
+The next step block is for standalone skill invocations where the user will re-prompt manually. It is **not** written when the skill is running inside a router-orchestrated chain — in that case, the chain continues automatically and a next step block would be misleading.
 
 ```
 ---
 → Next step: {skill} — {why it follows}
 → Prompt: "{copy-pasteable prompt}"
 ```
+
+When in chain mode, omit this block entirely. The router owns sequencing; individual skills just deliver their artifact and stop.
 
 ### Quality gate — before delivering
 
