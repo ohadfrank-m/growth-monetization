@@ -2,7 +2,7 @@
 
 Surface type 5: running low on credits, credit meter, metering dashboard, top-up flow.
 
-The highest-priority surface type for monday.com given the AI Agents launch. CRO rationale, benchmarks, best-in-class examples, and monday-specific mechanics (meter design, forecasting, top-up flow, agentic depletion, dual-gated trial) live in the shared playbook — read it before drafting, not just for the anti-pattern list: [../../../playbooks/credit-ui.md](../../../playbooks/credit-ui.md). This file covers only what's specific to *writing the spec*.
+The highest-priority surface type for monday.com given the AI Agents launch. CRO rationale, benchmarks, best-in-class examples, and monday-specific mechanics (meter design, forecasting, top-up flow, agentic depletion, trials that gate on time and credits) live in the shared playbook — read it before drafting, not just for the anti-pattern list: [../../../playbooks/credit-ui.md](../../../playbooks/credit-ui.md). This file covers only what's specific to *writing the spec*.
 
 ## When this surface appears
 

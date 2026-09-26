@@ -1,94 +1,124 @@
 # Paywalls & feature gates — CRO playbook
 
-Surface type 2. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks).
+Surface type 2: the user tries to use a locked feature. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks). Tier and seat *limits* are [upgrade-triggers.md](upgrade-triggers.md); credit depletion is [credit-ui.md](credit-ui.md).
 
-## Core principle
-A paywall is a value conversation, not a wall. The best paywalls feel like a natural offer, not an interruption. Users should leave thinking "that makes sense" not "I got blocked."
+## Core rule
 
-## Paywall trigger types
-
-| Trigger | Context | Key design constraint |
-|---------|---------|----------------------|
-| Feature gate | User clicks locked feature | Must show the feature value *before* the ask |
-| Usage cap | User hits limit (seats, items, actions) | Show progress toward limit proactively — not just at 100% |
-| Trial expiry | Trial period ending | Personalize with what they built/used during trial |
-| Time-based nudge | N days of free use | Lowest urgency — must be dismissible, never recurring |
-| Aha moment upsell | After key activation milestone | Highest intent — convert here |
-
-## Paywall screen components (ranked by importance)
-
-1. **Headline** — benefit-led, not feature-led. "Get unlimited automations" > "Upgrade to Pro"
-2. **Feature preview** — screenshot, animation, or description of what they're unlocking. Never skip this.
-3. **Differentiator line** — one sentence on why this feature exists / what pain it solves
-4. **Price anchoring** — show monthly equivalent even if billed annually. Show savings vs monthly.
-5. **Primary CTA** — specific: "Unlock Automations", "Start Pro — $X/mo"
-6. **Secondary path** — downgrade, continue free, or "remind me later" — must be visible
-7. **Social proof** (optional but lifts) — "Used by 50,000+ teams"
-
-## Modal vs. full-page vs. inline
-
-| Format | When to use | Conversion notes |
-|--------|------------|-----------------|
-| Modal | Feature gate, usage cap | High intent context — converts well if triggered correctly |
-| Full page | Trial expiry, plan comparison | More deliberate — use when user has time to decide |
-| Inline nudge | Low-urgency upsell, approaching limit | Non-blocking — lower CVR but lower annoyance |
-| Tooltip / hover | Discovery of locked features | Awareness, not conversion — don't over-optimize here |
-
-## Copy patterns that work
-
-**Headline formulas:**
-- "Unlock [Feature] to [Outcome]"
-- "You're one step away from [Benefit]"
-- "[Feature] is a Pro feature — here's why teams love it"
-- "You've hit your free limit — here's what's next"
-
-**CTA formulas:**
-- "Unlock [Feature Name]" (most specific, highest CVR)
-- "Start [Plan] — $X/month" (price-transparent, builds trust)
-- "Continue with Pro" (trial-to-paid context)
-
-**Avoid:**
-- "Upgrade now" — zero benefit signal
-- "Go Premium" — meaningless without context
-- "Subscribe" — transactional, cold
-
-## Timing rules
-
-- **Do not show** during onboarding (first session, before activation)
-- **Do not show** mid-task if the task doesn't require the locked feature
-- **Wait 24–48h** after a dismiss before showing again
-- **Session cap:** max 1 paywall per session (excluding feature gates triggered by user intent)
-- **Best moment:** immediately after the user has completed something meaningful (just created their first board, just ran their first automation, etc.)
-
-## Anti-patterns
-
-| Anti-pattern | Why it fails |
-|---|---|
-| Gate with no feature preview | User can't tell what they'd gain |
-| Pushing a higher tier than needed to unlock the feature | Friction, feels like a bait-and-switch |
-| Generic "This feature requires Pro" with no outcome named | Functional, not motivating |
+Show the value before the ask. A gate the user meets before seeing what the feature does is a wall; a gate after a preview is a moment of informed desire. In B2B, the person who hits the gate often can't pay — so every gate has a path to the person who can.
 
 ## Benchmarks
 
-*Directional only — these figures pre-date the evidence-tag standard and carry no source. Don't cite them as fact in a review; the sourced material is in the AI-native reference set below.*
+| Metric | Number | Tag | Applies to | Source | Checked |
+|---|---|---|---|---|---|
+| Day-35 download-to-paid, hard paywall vs. freemium | 12.11% vs. 2.18% (~75K apps) | [Verified] | mobile app | [RevenueCat State of Subscription Apps 2025](https://www.revenuecat.com/state-of-subscription-apps-2025) | 2026-09-25 |
 
-| Metric | Poor | Average | Good |
-|--------|------|---------|------|
-| Paywall → upgrade CTR | <3% | 5–10% | 15%+ |
-| Trial expiry paywall CVR | <10% | 15–25% | 30%+ |
-| Feature gate CTR (high intent) | <8% | 12–18% | 25%+ |
+The one sourced paywall dataset is mobile subscription apps, not B2B SaaS — a direction for monday, never a target.
 
-## Best-in-class examples
+## Patterns
 
-*Pre-dates the evidence-tag standard — the patterns are sound, but any figures here are unsourced. Tagged teardowns are in the AI-native reference set below.*
+### Two gate models
 
-**Notion** — Feature gate paywalls show a live preview of the blocked content blurred behind the modal. User can see exactly what they're missing. CVR benchmark: ~18–22% on database-related gates.
+- **Hard gate** (blocking modal): only when the feature is architecturally separate, can't be previewed, and intent is already explicit. Rare in B2B PLG.
+- **Soft gate** (inline, contextual, non-blocking): monday's default. The gate appears after the user has seen or sampled what's being locked.
 
-**Figma** — Trial expiry screen uses "Here's what you built" personalization with actual file thumbnails. Anchors loss aversion to real work, not abstract features.
+### Where the gate sits
 
-**Linear** — Usage cap modals show a progress bar with team context ("Your team has created 95/100 issues this month"). Social proof of team usage increases urgency without guilt.
+| Trigger | Context | Key design constraint |
+|---|---|---|
+| Feature gate | User clicks a locked feature | Show the feature's value *before* the ask |
+| Use-based limit | Free user samples a feature N times, then it locks | Warn before the lock — a silent lock reads as broken |
+| Export / operationalize | User built something and tries to use it outside the product | The highest-intent moment: the value is already proven |
+| Aha-moment upsell | Right after an activation milestone | Convert here |
+| Time-based nudge | N days of free use | Lowest urgency — dismissible, never recurring |
 
-**Loom** — "You've watched this 3x" re-engagement paywall on high-value content. Intent signal used to time the ask.
+### Screen components (by importance)
+
+1. **Headline** — the outcome, not the plan. "Automate this every Monday" beats "Upgrade to Pro". Name only what the tier actually includes — a specific number beats "unlimited" unless it truly is.
+2. **Feature preview** — screenshot, animation, sample output, or what the agent would *do* on the user's own data. Never skip it.
+3. **Differentiator line** — one sentence on the pain this feature removes.
+4. **Price anchoring** — the monthly equivalent even when billed annually; savings vs. monthly.
+5. **Primary CTA** — specific: "Unlock {feature}", "Start {plan} — ${X}/mo".
+6. **Secondary path** — continue free, compare plans, or "Not now" — always visible.
+7. **Social proof** (optional) — close to the CTA.
+
+### Preview and loss-anchor patterns
+
+- **Blurred preview:** the locked content shown blurred behind the gate, so the user sees exactly what they'd unlock.
+- **"Here's what you built":** at trial expiry or a limit, show the user's own work (files, boards, runs) as the loss anchor — real work, not abstract features.
+
+### Copy patterns
+
+**Headline formulas:** "Unlock {feature} to {outcome}" · "You're one step away from {benefit}" · "{feature} is a {plan} feature — here's what it does for your team" · "You've hit your free limit — here's what's next".
+**CTA formulas:** "Unlock {feature}" (most specific) · "Start {plan} — ${X}/month" (price-transparent) · "Continue with {plan}" (trial-to-paid).
+**Avoid:** "Upgrade now" (no benefit) · "Go Premium" (meaningless without context) · "Subscribe" (transactional, cold).
+
+These are patterns for `improve-conversion-surfaces-copy`, not final copy.
+
+### Format
+
+| Format | When to use | Note |
+|---|---|---|
+| Modal | Feature gate or use-based limit the user triggered | High intent — works if the timing is right |
+| Full page | Trial expiry, plan comparison | Deliberate decisions |
+| Inline nudge | Low-urgency upsell, approaching a limit | Lower conversion, lower annoyance |
+| Tooltip / hover | Discovery of locked features | Awareness, not conversion |
+
+### Timing and frequency — owned here
+
+- **Intent-triggered gates** (the user clicked the locked feature) show every time they click — the user asked. After 3 dismissals in 7 days, switch to a compact variant (preview collapsed, CTA kept).
+- **Unprompted paywalls** (nudges the product initiates): at most one per session, and not again within 48 hours of a dismiss. Never re-show automatically on a timer regardless of behaviour.
+- **Don't show** during onboarding (first session, before activation), or mid-task when the task doesn't need the locked feature.
+- **Best moment:** right after the user completes something meaningful — the first board, the first automation run, the first agent result.
+
+### IC vs. admin — the B2B decision
+
+The IC who meets the gate usually can't buy; the admin who can buy never sees it. Required on every monday gate:
+
+1. **Admin:** "Unlock {feature}" or "Start trial".
+2. **IC:** "Notify admin" / "Ask {admin}" — pre-filled with the feature and what the IC was doing.
+3. **The admin's notification** carries enough context to decide: who, what, where, why.
+
+Figma's seat request is the reference implementation — see the AI-native set below. (Slack is often cited for an "ask your admin" upgrade flow, but its help center documents the opposite default: any member can upgrade a free workspace unless owners restrict it [Verified — [Slack help](https://slack.com/help/articles/360002044828-Manage-who-can-upgrade-a-free-workspace)]. Don't cite it for this.)
+
+## Company teardowns
+
+### Canva — the distributed crown
+
+**What they ship [Verified — [Canva Apps SDK](https://www.canva.dev/docs/apps/design-guidelines/premium-apps/), [Canva help](https://www.canva.com/help/premium-elements/)].** A yellow crown marks premium templates, elements and features for free users. Premium **features** open the upgrade dialog right after the click. Premium **elements** can be placed in a design with a watermark; the user pays at removal or download — buy the element, buy all at download, or upgrade.
+
+**Why it works (inference).** The paywall is spread across the product, and the element pattern is preview-first at its purest: the user sees the premium element in their own design before paying.
+
+**Where it breaks.** A third-party reviewer describes free users scanning every result for the crown and choosing by availability rather than fit [Reported — [review](https://brendacadman.com/is-canva-pro-worth-it/)]. That's the friction cost of the pattern.
+
+**Steal for monday.com.** Let a free user place the premium thing — the agent, the AI column — and see it work on their board, and gate the save, the schedule, or the export.
+
+### Linear — capacity, not features
+
+**What they ship [Verified — [Linear pricing](https://linear.app/pricing), [docs](https://linear.app/docs/billing-and-plans)].** Free includes the core product and Linear Agent; it gates mainly on scale — 250 issues, 2 teams, 10MB uploads — plus some Business-only intelligence and integrations. Above 250 issues, new issues can't be created. Only non-archived issues count, so auto-archiving frees capacity.
+
+**Why it works (inference).** By the time the cap hits, the team depends on the product: the cost of not upgrading is losing something they already use.
+
+**Steal for monday.com.** Gate on volume the team generates by using the product, and warn before the wall ([upgrade-triggers.md](upgrade-triggers.md) owns the thresholds).
+
+### Notion — a gate at the wrong granularity
+
+See [case: notion-2025-ai-bundling](cases.md#notion-2025-ai-bundling). For this surface: since May 2025, new Plus customers get only trial-level AI and full AI needs Business ($20/member/mo), which also bundles SAML SSO and admin controls [Verified — [pricing](https://www.notion.com/pricing); date Reported]. A user who wanted AI alone had to buy a tier of features they didn't need.
+
+**Steal for monday.com.** The minimum purchase should match the value wanted. monday's Standard and Pro admins can buy a larger monthly credit package without changing tier — Basic is capped at 1,000 credits and Free has none ([monday-context.md](../context/monday-context.md)) — so a credit gate can offer "more credits" before "a new plan".
+
+### Cursor — the frontier-model gate
+
+**What they ship.** Frontier models are listed under Pro; the free Hobby plan has limited agent requests [Verified — [Cursor pricing](https://cursor.com/pricing)]. Free users meet the gate when they pick a frontier model or run out of Hobby limits [Reported — [nxcode](https://www.nxcode.io/resources/news/is-cursor-ai-free-plans-limits-worth-upgrading-2026)]. The prompt wording hasn't been captured [Teardown needed].
+
+**Steal for monday.com.** Gate at the moment of intent — the user reaching for the capability — not on a schedule.
+
+### ChatGPT — the capability difference as the gate
+
+Free users run a lighter default model and see the stronger one as a Plus benefit [Reported — [MacRumors](https://www.macrumors.com/2026/08/06/chatgpt-free-unlimited-text-chats/); OpenAI pages blocked direct fetch]. Model names change monthly — re-verify before quoting. Exact gate wording not captured [Teardown needed].
+
+### ClickUp — sample, then lock
+
+ClickUp's free plan uses use-based limits: users can try features such as Gantt a set number of times before they lock [Verified — [ClickUp help](https://help.clickup.com/hc/en-us/articles/10129535087383-Intro-to-pricing)]. The reported pain point is the lock arriving with little warning [Reported — [ClickUp feedback board](https://feedback.clickup.com/feature-requests/p/limited-uses-warning)]. The AI-credit version of the same pattern is in the AI-native set below.
 
 ## AI-native reference set: Clay · Figma · ClickUp · Claude
 
@@ -113,17 +143,17 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 
 **Why it works.** Clay gates the *last mile*, not the first. Users experience the core value (enriched rows) on Free, then hit the wall when trying to operationalize it — the highest-intent moment.
 
-**Where it breaks.** A 200-row cap is hit during evaluation for most real lists, so some users meet the gate before the aha moment.
+**Where it breaks.** A tight row cap can be hit during evaluation, so some users may meet the gate before the aha moment (inference).
 
 **Steal for monday.com.** Gate at the "operationalize" step: let the user run the agent and see the output on the board, then gate scheduling/recurring runs or cross-board automation. Show the output before the ask — this is the monday version of "show the value first."
 
 ### Figma — seat gate with instant temporary access
 
-**What they ship [Verified].** Actions that need a higher seat trigger a seat request (or instant access if the admin enabled auto-approve). With manual approval, requesters get a one-time 3-day temporary access for each paid seat type while the admin reviews. For AI: Starter and View seats have a 150-credit daily cap on top of the monthly one; when credits run out, paid AI features are disabled until reset, free AI features stay available.
+**What they ship [Verified].** Actions that need a higher seat trigger a seat request (or instant access if the admin enabled auto-approve). With manual approval, requesters get a one-time 3-day temporary access for each paid seat type while the admin reviews. [Reported — the 3-day passage was seen only in a help-center search snippet and a Figma staff forum reply, 2026-09-26; re-read the article before citing as fact] For AI: Starter and View seats have a 150-credit daily cap on top of the monthly one; when credits run out, paid AI features are disabled until reset, free AI features stay available.
 
 **Flow.** User clicks a gated action → request modal (reason field) → immediate 3-day access → admin gets email + in-app notification → approve/decline.
 
-**UI.** Request modal is in-context; admin sees the request in the dashboard with origin, reason, current seat, time, and cost.
+**UI.** Request modal is in-context; admin sees the request in the dashboard with origin, reason, current seat and time.
 
 **Why it works.** The 3-day temporary access turns a *blocking* paywall into a *non-blocking* one. The user keeps working, the admin decides with the user's real usage already happening — and removing access after 3 days is loss aversion working on the admin.
 
@@ -143,7 +173,7 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 
 **Where it breaks.** "Pause" on an *automatic* feature is silent by nature — the field just stops filling. If the paused state isn't loud at the point of use, the user discovers it as broken data, not a paywall.
 
-**Steal for monday.com.** Sample credits for AI Blocks on existing (pre-May-2026) accounts is the right structure — but the paused state needs an inline marker on every affected column ("AI paused — out of credits · Get more"), not only a banner.
+**Steal for monday.com.** One-time sample credits for AI Blocks would be the right structure, if monday offers them — but the paused state needs an inline marker on every affected column ("AI paused — out of credits · Get more"), not only a banner.
 
 ### Claude — the three-exit usage wall
 
@@ -168,8 +198,8 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 | Feature gate headline | Outcome, not plan | "Let this agent run every morning" (gate on scheduling) |
 | Sample-credit depletion | What stopped, where | "AI stopped filling 'Summary' on 42 items — you've used your trial credits" |
 | IC on multi-seat account | Keep working + admin loop | "Keep using it for now — we've asked [Admin name] to add it" |
-| Usage wall headline | When you can continue | "You're out of credits for this cycle — they refill on [date]" |
-| Three-exit CTA set | Match the user state | "Top up 2,000 credits" · "Move to a bigger package" · "Notify my admin" |
+| Usage wall headline | When you can continue | "You're out of credits for this cycle — they refill {reset date}" |
+| Three-exit CTA set | Match the user state | "Add {N} credits" (admin) · "Move to a bigger package" (admin) · "Notify my admin" (IC) |
 
 ### Sources (checked 2026-09-24)
 
@@ -178,9 +208,40 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 - ClickUp: https://help.clickup.com/hc/en-us/articles/20686299081879-ClickUp-Brain-AI-feature-availability-and-limits
 - Claude: https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work · https://www.ai-toolbox.co/claude-management-and-productivity/claude-usage-limits-2026
 
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Who did it |
+|---|---|---|
+| Gate with no preview | The user can't tell what they'd gain | Common |
+| Lock after N uses with no warning | Feels broken, not like an offer | ClickUp use-based limits [Reported] |
+| Gate forces a whole bundled tier for one feature | Users route to alternatives instead of upgrading | [case: notion-2025-ai-bundling](cases.md#notion-2025-ai-bundling) |
+| Pushing a higher tier than the feature needs | Friction; feels like bait-and-switch | Common |
+| No IC path ("Notify admin") | The IC is stuck; the admin never learns | Common in B2B |
+| Hard-blocking modal mid-workflow | Destroys momentum | Common |
+| Generic "This feature requires Pro" with no outcome | Functional, not motivating | Common |
+| Promising "unlimited" when the tier is capped | A broken promise at the moment of purchase | Risk for monday — Pro automations are 25,000/mo, not unlimited |
+
 ## monday.com-specific notes
 
-- AI Agents paywall: must show a preview of what the agent would *do* — not just that it exists. Show the output.
-- Credit gates: "You've used X of Y AI credits" is not a paywall headline — it's a metric. Lead with what stops working when credits run out.
-- Agentic flows: if a paywall interrupts an agent mid-task, the experience is broken. Design for non-blocking upgrade paths in agent contexts — inline banner, not full-screen modal.
-- Existing users hitting credit walls: these users have no urgency lever (time-unlimited balance). The hook must be capability, not scarcity.
+All facts from [context/monday-context.md](../context/monday-context.md).
+
+- **AI Agents paywall:** show a preview of what the agent would *do* on the user's own board — the output — not just that it exists. Free has 0 AI credits, so the preview must not consume any.
+- **Credit gates:** "You've used X of Y AI credits" is a metric, not a headline. Lead with what stops working.
+- **Agentic flows:** a paywall that interrupts an agent mid-task breaks the experience. Use inline, non-blocking paths in agent contexts, and preserve task state.
+- **Existing users at a credit wall** have no urgency lever (no deadline) — the hook is capability, not scarcity.
+- **ICs can't self-purchase** — every gate an IC sees has "Notify admin".
+- **Tier facts for gate copy:** Pro automations 25,000/mo, Enterprise 250,000/mo; Free and Basic have none; Basic credits are fixed at 1,000.
+
+## Sources
+
+Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
+
+- RevenueCat: https://www.revenuecat.com/state-of-subscription-apps-2025
+- Canva: https://www.canva.dev/docs/apps/design-guidelines/premium-apps/ · https://www.canva.com/help/premium-elements/ · https://brendacadman.com/is-canva-pro-worth-it/
+- Linear: https://linear.app/pricing · https://linear.app/docs/billing-and-plans
+- Notion: https://www.notion.com/pricing · https://www.usecarly.com/blog/notion-ai-pricing-change/
+- Cursor: https://cursor.com/pricing · https://www.nxcode.io/resources/news/is-cursor-ai-free-plans-limits-worth-upgrading-2026
+- ChatGPT: https://www.macrumors.com/2026/08/06/chatgpt-free-unlimited-text-chats/
+- ClickUp: https://help.clickup.com/hc/en-us/articles/10129535087383-Intro-to-pricing · https://feedback.clickup.com/feature-requests/p/limited-uses-warning
+- Slack: https://slack.com/help/articles/360002044828-Manage-who-can-upgrade-a-free-workspace
+- Figma: https://help.figma.com/hc/en-us/articles/1500003870721-Approve-or-decline-seat-upgrade-requests · https://help.figma.com/hc/en-us/articles/4414038570007-Set-approval-settings-for-new-seats · https://forum.figma.com/suggest-a-feature-11/temporary-3-day-access-when-requesting-an-upgrade-please-turn-this-off-39239

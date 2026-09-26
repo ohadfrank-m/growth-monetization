@@ -55,4 +55,4 @@ monday.com specific context: [monday-context.md](../../../context/monday-context
 **Cohort:** New users
 **Primary conversion:** Trial to paid (full upgrade or self-serve)
 **Key constraint:** Show aha moment before asking for payment — ask too early = conversion tanks
-**Reference:** [trial-flows.md](trial-flows.md) · No shared playbook yet — this surface has no counterpart in `monetization-design-reviewer` (see that skill's SKILL.md for the open taxonomy gap).
+**Reference:** [trial-flows.md](trial-flows.md) · Playbook: [../../../playbooks/trial-flows.md](../../../playbooks/trial-flows.md) · Reviewer scores it against the Trial Flow rubric column.

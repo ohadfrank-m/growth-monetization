@@ -1,154 +1,140 @@
 # Credit / consumption UI — CRO playbook
 
-Surface type 5: running low on credits, credit meter, metering dashboard, top-up flow. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks).
+Surface type 5: credit meter, low-balance warnings, depletion, top-up, and the admin side of all of these. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks). This file owns the credit thresholds; tier and seat limits are [upgrade-triggers.md](upgrade-triggers.md).
 
-The highest-priority surface type for monday.com given the AI Agents launch, and the one with the most novel UX problems in this plugin — most companies don't yet have a settled pattern for this.
+The context file names credit depletion UX the squad's top design priority ([monday-context.md](../context/monday-context.md)). It's the surface with the most novel problems in this plugin — most companies don't have a settled pattern yet.
 
-This file was previously forked across two skills with different benchmarks and different best-in-class examples for the same surface. It's merged here as the single source; don't re-fork it.
+## Core rule
 
-## The credit psychology problem
+Resolve the complexity for the user before they spend. Credits fail when the user can't tell what a credit buys, can't see how much is left, or learns the cost only after it's spent. Translate every number into work, warn before the wall, and when the wall comes, save the work and name what stopped.
 
-Credits create a different anxiety than seat limits. Users fear *running out mid-task* more than they fear hitting a hard cap. Design for the anxiety state, not the depleted state. Tier upgrade triggers (a blocked-and-frustrated moment — see [upgrade-triggers.md](upgrade-triggers.md)) and credit depletion (an anxious, mid-task moment) require different design approaches even though both are "usage limits."
+Context: Growth Unhinged, using PricingSaaS data, counts 79 of the PricingSaaS 500 index with a credit model at the end of 2025, up from 35 a year earlier, and calls credits the defining pricing innovation of 2025 [Reported — [Growth Unhinged](https://www.growthunhinged.com/p/2025-state-of-saas-pricing-changes)].
 
-## When this surface appears
+Credits create a different anxiety than seat limits: users fear running out *mid-task* more than hitting a cap. Design for the anxious state, not only the depleted one.
 
-- **Warning state:** credit balance drops below warning threshold (e.g., 20% or 50 credits remaining)
-- **Depletion state:** credit balance reaches 0 mid-session or mid-task
-- **Depletion mid-task:** balance hits 0 while an AI agent is actively running — highest-risk moment
-- **Credit meter (persistent):** visible in dashboard or sidebar at all times when credits are < 100% or < threshold
-- **Top-up flow:** user initiates a credit purchase (self-serve or admin)
-- **Post-top-up confirmation:** credits added, task can resume
+## Patterns
 
-## The always-on credit meter
+### Thresholds — owned here
 
-The persistent meter is the single most important credit surface — it sets the mental model before any upgrade moment.
+| State | Balance | Surface | Behaviour |
+|---|---|---|---|
+| Healthy | more than 20% left | Meter only | The number and its translation; no urgency copy |
+| Warning | 20% left (80% used) | Non-blocking inline banner in the feature in use | "Running low" — proactive, dismissible |
+| Critical | 5% left (95% used) | Persistent banner | Says what stops next and when it refills |
+| Depleted | 0 | Inline in the feature, never a blocking modal in an agent flow | Names what stopped, saves the work, offers the paths |
 
-- **Placement:** visible in the primary workspace chrome, not buried in settings. If a user has to hunt for their balance, every downstream depletion feels like a surprise.
-- **Always translate:** never show a bare number. "820 credits" alone is meaningless. Pair with task translation: "820 credits ≈ ~160 agent actions." The translation is the product's job, not the user's math.
-- **State progression:** healthy → warning → critical → depleted (color shift green → yellow → orange → red). The color shift is the ambient early warning; it should change *before* any modal fires.
-- **Hover/tap detail:** reveal burn context — "You've used 340 credits this week, mostly on document summaries."
-- **Scoring note:** a meter that shows a number with no translation is an automatic value-clarity ≤2 on the design-reviewer rubric.
+These match monday's admin alerts at 80% and 100% ([monday-context.md](../context/monday-context.md)). They're a convention, not a tested optimum — A/B test before treating them as tuned. States must differ without colour too (pattern, glyph, border weight), so they read for colour-blind users and in low-fi wireframes.
 
-## Burn-rate forecasting
+### Task translation is mandatory
 
-Forecasting is what converts passive awareness into proactive top-up. It's the highest-leverage credit UI pattern.
+"500 credits" is meaningless; "≈ 25 resume screenings" is a reason to buy. Every credit number — meter, banner, depletion, top-up, pricing page — carries a task translation.
 
-- **Show the projection, not just the balance:** "At your current rate, you'll run out in ~4 days." Rate-based framing drives top-ups far more than a static remaining count.
-- **Accuracy matters more than precision:** a forecast that's visibly wrong destroys trust worse than no forecast. Use a conservative range ("~3–5 days") over a false-precise single number if the data is noisy.
-- **Tie the forecast to a moment:** "…which means you'll run out before your Friday report." Anchoring the projection to a known deadline sharply increases action.
+- **monday's translation:** the official line — 1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries, or hundreds of automated workflow updates. Never "1 credit ≈ 1 AI action": one AI block action is 8 credits, Notetaker 120 per meeting hour ([monday-context.md](../context/monday-context.md)). When usage data exists, prefer the user's own recent actions as the unit ("≈ 40 more summaries at your pace").
+- **One rate everywhere.** If the pricing page and the meter imply different rates, trust breaks.
+- **Who does it well.** HubSpot publishes a credit rate sheet — 50 credits per resolved Customer Agent conversation, 10 per workflow AI action, 100 per recommended lead — and per-tier included credits (Starter 500, Pro 3,000, Enterprise 5,000) [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)]. Notion publishes per-run cost ranges for Custom Agents (e.g. Q&A agents ~$0.03–$0.11 a run, daily briefs ~$0.10–$0.30) and shows each run's usage in an admin dashboard [Verified — [Notion help](https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents)]. Figma publishes a per-feature cost table in its Help Center [Verified — [Figma help](https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work)], though a third party argues people don't find it before they need it [Reported — [UiChemy](https://uichemy.com/blog/figma-ai-credits/)].
+- **Outcome pricing is translation built in.** HubSpot moved Customer Agent to $0.50 per resolved conversation and Prospecting Agent to $1.00 per recommended lead on April 14, 2026 [Verified — [HubSpot](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete)]: the unit is the result.
 
-## Credit-to-task translation
+### The always-on meter
 
-The difference between a meter users understand and one they resent.
+- **Placement:** in the primary workspace chrome, not buried in settings. If users hunt for their balance, every depletion feels like a surprise.
+- **Content:** balance + translation + refill date (`{reset date}` — the context file doesn't state the cadence).
+- **Hover / tap detail:** what's been used and on what ("380 credits this week, mostly on summaries").
+- **Mark what costs credits.** HubSpot marks credit-consuming features with an icon in the UI [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)].
+- **Scoring note:** a meter with a number and no translation is value clarity ≤2 on the design-reviewer rubric.
 
-- Every credit-denominated surface — meter, depletion, top-up, pricing page, trial — must express credits in tasks the user recognizes.
-- Translation must be **honest and stable:** if "1 agent action ≈ 5 credits" on the pricing page but the meter implies a different rate, trust breaks. One rate, everywhere.
-- Prefer the user's own recent actions as the unit ("≈ 40 more document summaries at your usage") over abstract catalog actions.
+### Show the cost before the spend
 
-## Warning → depletion progression
+The strongest credit pattern: a cost estimate before a run, not a receipt after it — Clay's pre-run estimate is the reference (AI-native set below). Lovable shows credits used only after or during a run, in a menu under each response, with no upfront estimate [Verified — [Lovable docs](https://docs.lovable.dev/introduction/credits-and-usage)] — honest, but the user can't decide before spending.
 
-**Proactive nudge (30–40% remaining):** non-blocking banner or sidebar card. Framing: "You're getting great value from AI — here's how to keep the momentum." Show what credits are being used on — makes the value tangible.
+### Burn-rate forecasting
 
-**Urgent nudge (10–15% remaining):** more prominent, persistent, but still dismissible. Specific: "You have ~X AI actions left. After that, [specific thing] stops working." Include a preview of what buying credits unlocks.
+Rate-based framing ("at this pace you'll run out around {date}") turns awareness into proactive action. Tie the forecast to a moment the user cares about when one is known — "…before your Friday report" — so the date means something. Accuracy beats precision: a conservative range ("~3–5 days") over a false-precise day when data is noisy. Show it only with enough history (the spec default is ≥7 days).
 
-**Depleted state:** the most sensitive moment — user is blocked. Never just show an error. Show what stopped, why, and how to fix it immediately. Provide a one-click "get more credits" path with pre-filled quantity.
+### Depletion — what the moment needs
 
-Best-in-class pattern for the warning state — **Notion AI**: running-low banner lives in the editor sidebar, doesn't interrupt writing. Shows "X AI responses remaining this month." One-click "Get more" button. Non-blocking, contextual.
+1. **Name what stopped**, not the balance: "{agent} has paused" beats "You're out of credits".
+2. **Keep the work.** Lovable pauses a mid-task message when credits run out; the user can resume with new credits or ask it to wrap up [Verified — [Lovable docs](https://docs.lovable.dev/introduction/credits-and-usage)]. Cursor notifies the user and offers on-demand usage or an upgrade when included usage runs out [Verified — [Cursor help](https://cursor.com/help/models-and-usage/usage-limits)]. monday's platform doesn't natively save agentic task state today ([monday-context.md](../context/monday-context.md)) — "your work is saved" may only be said once it's true.
+3. **Offer the right path for who's looking.** The admin gets the purchase; the IC gets "Notify admin" — ICs can't buy.
+4. **Say when it's back:** the refill date makes waiting a real choice (Claude's pattern, AI-native set below).
+5. **Resume path after credits land** — explicit, or automatic.
 
-Best-in-class pattern for progressive states — **HubSpot AI**: three states — healthy (no meter visible), warning (meter appears at 20%), critical (meter turns red + pulse animation), each with progressively stronger messaging. Users aren't surprised by depletion; the warning state gives them time to act.
+### Admin controls
 
-Best-in-class pattern for depletion messaging — **Intercom Fin**: leads with the task, not the credits — "Your AI conversation agent has paused — you've run out of AI credits", not "You have 0 credits." Users understand what stopped in terms they care about.
+HubSpot lets Super Admins and Billing Admins set account, feature and action-level limits; at a limit, features pause until the next cycle, and by default usage pauses when included credits run out — overage is opt-in [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)]. Cursor's team spend limits stop on-demand usage at the cap [Verified — [Cursor help](https://cursor.com/help/account-and-billing/spend-limits)]. Caps remove the fear that makes admins switch AI off pre-emptively. monday already ships caps: admins can set limits account-wide, per capability (Hard or Soft) and per user or department ([monday-context.md](../context/monday-context.md)). The surface gap is making those limits visible to the IC who hits one — say which limit stopped them and who set it.
 
-## Top-up flow
+### Top-up and package choice
 
-The purchase moment when a user chooses to add credits rather than upgrade a plan.
+- **Three options** anchor a middle choice; pre-select the recommended one rather than a blank quantity.
+- **Show the plan alternative alongside** — a bigger monthly package can beat repeated top-ups (Clay's docs make this explicit — see [upgrade-triggers.md](upgrade-triggers.md)).
+- **One-click for the admin** with payment on file; confirm what was bought in tasks.
+- **Rollover is a differentiator.** HubSpot, Figma and Cursor credits don't roll over [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing), [Figma help](https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work), [Cursor help](https://cursor.com/help/models-and-usage/usage-limits)]. Lovable's paid monthly credits roll over (2-month expiry); top-ups last 12 months; daily credits don't roll over [Verified — [Lovable docs](https://docs.lovable.dev/introduction/credits-and-usage)].
+- **For monday:** packages are monthly buckets bought with seats — Standard 2,000 / 4,000 / 8,000, Pro 3,000 / 4,000 / 8,000 / 20,000, at $0.01 per credit annual or $0.0125 monthly, flat; Basic is fixed at 1,000 ([monday-context.md](../context/monday-context.md)). Top-up today means moving to the next bucket ("Add credits anytime"); one-time packs, overage and auto top-up aren't published, and unused credits don't roll over (official for Notetaker; the general rule is still to confirm) — spec those as open items, never as facts. Illustrative prices use slots (`{N} credits — ${price}`).
 
-- **Default the recommended quantity:** pre-select the "best value" tier — most users anchor to the default. Don't present a blank quantity field.
-- **Show per-credit price at each tier** so volume value is legible; label the volume tier "best value" explicitly.
-- **Show the plan-upgrade alternative alongside:** "Or upgrade to Pro — includes X credits/month at a lower effective rate." A pure top-up path hides the often-better subscription option.
-- **One-click, no re-entry:** payment on file should mean top-up is a single confirm. Re-entering card details at the depletion moment is a conversion killer.
-- **Confirm what they just bought in tasks:** "Added 2,000 credits ≈ ~400 agent actions." Close the loop in the same unit.
-
-```
-[Modal:]
-  [Headline: "Top up AI credits"]
-  [Current balance: "0 credits remaining"]
-  [Package options:]
-    ○ 500 credits — $X/mo  (≈ 500 AI actions)
-    ● 2,000 credits — $X/mo  (≈ 2,000 AI actions)  [BEST VALUE badge]
-    ○ 5,000 credits — $X/mo  (≈ 5,000 AI actions)
-  [Selected package summary: "2,000 credits for $X — billed monthly, cancel anytime"]
-  [CTA: "Top up and resume"]  [Dismiss: "Notify my admin instead"]
-```
-Critical elements: three package options (anchors mid-tier choice), task translation on every option, "resume" in the CTA, admin path as secondary.
-
-## Agentic mid-task depletion (critical experience)
-
-If an agent exhausts credits mid-task, this is the highest-stakes credit moment in the product.
-
-- **Never fail silently.** Save task state, explain what happened in one line, and offer an immediate resume path.
-- **Non-blocking where possible:** an inline "you're out of credits — top up to let the agent finish" beats a full-screen error that discards the in-progress work.
-- **Preserve the artifact.** Whatever the agent produced up to the depletion point must survive. Losing partial work turns a top-up moment into a churn moment.
-- **Post-purchase resume:** auto-resume or an explicit "Resume task" CTA — a user who has credits but doesn't know how to continue is a support ticket waiting to happen.
+### Top-up modal (admin)
 
 ```
-[Inline banner in agent run interface:]
-[⚠️] "Your AI agent has paused — you're out of credits"
-[Subtext: "{Agent name} stopped at step {N}. Top up to continue where you left off."]
-[CTA: "Top up credits — {package size} for ${price}"]  [Secondary: "Notify admin"]
-[Small: "Your work is saved"]
+[Headline: "Add AI credits"]
+[Current balance: "{credits} credits left"]
+[Package options — three, recommended pre-selected:]
+  ○ {N} credits — ${X}/mo   (≈ {translation})
+  ● {N} credits — ${X}/mo   (≈ {translation})  [Recommended]
+  ○ {N} credits — ${X}/mo   (≈ {translation})
+[Summary: "{N} credits for ${X} — billed {cadence}"]
+[CTA: "Add credits and resume"]   [Secondary for an IC: "Notify my admin instead"]
 ```
 
-## Dual-gated trial display (monday-specific)
+Three options anchor a middle choice; task translation on every option; "resume" in the CTA; the admin path as the secondary. For monday, show the per-credit price only where it differs — monday's is flat ($0.01 annual, $0.0125 monthly, [monday-context.md](../context/monday-context.md)), so the per-package total is what varies.
 
-The 1,500-credit dual-gated trial structure gates on both time and credits. The UI must make **both** gates legible without creating double anxiety.
+### Agent-run depletion banner
 
-- Show the binding constraint — whichever runs out first. If credits will deplete before the trial clock, lead with credits; if time is shorter, lead with days.
-- Don't show two racing countdowns with equal weight — that reads as a trap. One primary constraint, one secondary line.
-- On the tighter gate, pair with the value recap and the clear post-trial path (buy credits / pick a plan).
+```
+[Inline, in the agent run view:]
+"{agent} has paused — your team is out of AI credits"
+"It finished {N} of {M} steps. {what's kept}"
+[Admin: "Add credits"]  [IC: "Notify admin"]  [Stop run and keep results]
+```
 
-## Benchmarks
+### Agentic depletion — the critical experience
 
-*Directional only — these figures pre-date the evidence-tag standard and carry no source. Don't cite them as fact in a review; the sourced material is in the AI-native reference set below.*
+1. Never fail silently: tell the user immediately, with a resume path.
+2. Preserve state before any UI, once the platform can.
+3. A non-blocking warning during active runs, before the wall: "{agent} will pause in about {N} steps."
+4. Never block at the warning threshold — the wall is only for real depletion.
 
-| Metric | Poor | Average | Good |
-|--------|------|---------|------|
-| Credit depletion → purchase CVR | <10% | 15–25% | 30%+ |
-| Credit warning (30% left) → purchase CVR | <5% | 8–12% | 18%+ |
-| Forecast-shown → proactive top-up CVR | <5% | 8–14% | 20%+ |
-| Top-up flow completion (payment on file) | <40% | 55–70% | 80%+ |
-| Meter comprehension (users who can state what a credit buys) | <30% | 50–65% | 80%+ |
-| Mid-task depletion → resume (vs. abandon) | <30% | 45–60% | 75%+ |
+### When a trial gates on time and credits
 
-## Best-in-class metering references
+If a trial limits both days and credits, show the constraint that will bind first as primary, the other as one secondary line — two equal countdowns read as a trap. Pair the tighter gate with a value recap and the post-trial path. (A no-touch trial that limits both time and credits is being worked on, but it isn't in [monday-context.md](../context/monday-context.md) yet — add it there, with its numbers, before a spec relies on it.)
 
-*Pre-dates the evidence-tag standard — the patterns are sound, but any figures here are unsourced. Tagged teardowns are in the AI-native reference set below.*
+## Company teardowns
 
-**OpenAI API dashboard** — burn-rate projection ("at this rate, runs out in X days") is the model for forecasting. Rate framing drives top-ups better than raw balance.
+### Credit models — a map
 
-**Anthropic / Claude usage** — two-window meter (session + weekly) with reset times, and pay-to-continue under a spending cap. Full teardown in the AI-native reference set below.
+Growth Unhinged's 2×2 sorts credit models by whether credits track value or cost, and whether the model favours the vendor or the customer [Reported — [Growth Unhinged](https://www.growthunhinged.com/p/2025-state-of-saas-pricing-changes)]:
 
-**Vercel** — usage dashboard with per-resource meters and clear overage pricing shown *before* the overage happens; no surprise bills.
+| Quadrant | Companies in the source | Pattern (source's description) |
+|---|---|---|
+| Value-based, vendor-friendly | HubSpot, Adobe Firefly | Price AI around outcomes; tightly control usage to protect margins |
+| Value-based, customer-friendly | Lovable, Replit | Framed around what you can build; Lovable pools credits and rolls them over; Replit rolls over on Pro only |
+| Cost-based, vendor-friendly | Cursor | Tightly governed through caps, add-ons and admin controls |
+| Cost-based, customer-friendly | Clay, PostHog | "Transparent but unforgiving"; limited rollover (Clay up to 2× the monthly allocation; PostHog 50% of unused prepaid credits on an equal-or-higher renewal) |
 
-**Linear (cycle capacity)** — turns invisible consumption into an always-present, low-anxiety signal, normalizing awareness before any limit is hit.
+monday isn't in the source. On the context file's facts — credits bought as monthly buckets alongside seats, packages scaled by tier — it sits closest to the value-based, vendor-friendly quadrant; that placement is this playbook's inference.
 
-## Credit pricing presentation
+### Cursor — opacity costs more than price
 
-- Show per-credit price at each tier to enable comparison.
-- Highlight the "best value" option (volume pricing) — anchors toward higher purchase.
-- If upgrading to a plan includes credits, show the effective credit cost vs. buying standalone.
-- Avoid presenting credits purely as a number without context — "500 credits" means nothing without "≈ 500 AI actions."
+See [case: cursor-2025-pricing](cases.md#cursor-2025-pricing). For this surface: on June 16, 2025, Cursor replaced 500 requests with $20 of included usage at API prices; "unlimited" applied only to Auto mode, users hit unexpected charges, and on July 4, 2025 Cursor apologised and refunded [Verified — [Cursor blog](https://cursor.com/blog/june-2025-pricing)]. Included usage doesn't roll over.
+**Steal for monday.com.** Never let a word like "unlimited" do work the mechanics don't back up.
 
-## Anti-patterns
+### Linear — AI in the seat, compute metered
 
-| Anti-pattern | Specific failure | Fix |
-|-------------|-----------------|-----|
-| Bare credit number | "500 credits" with no task translation | Always add "≈ 500 AI actions" |
-| Hard stop mid-agent-task | Task fails, state lost | Save state, pause task, offer resume |
-| Full-screen blocking modal in agentic flow | Breaks flow, scary UX | Inline banner at warning threshold |
-| No IC → admin path | IC dead-ends, admin never knows | "Notify admin" button always present |
-| Post-purchase no resume path | User has credits, doesn't know how to continue | Auto-resume or explicit "Resume task" CTA |
-| Credit expiry not communicated | Surprise at month end | Show expiry prominently if credits don't roll over |
+Most Linear AI features are included in the seat price. On June 11, 2026, Linear launched opt-in, prepaid, workspace-level AI credits for Coding Sessions and Agent Loops [Verified — [Linear docs](https://linear.app/docs/ai-credits), [changelog](https://linear.app/changelog/2026-06-11-coding-sessions)], after saying high-volume compute "may move to usage-based pricing beyond a certain threshold" [Verified — [changelog, Mar 2026](https://linear.app/changelog/2026-03-24-introducing-linear-agent)].
+**Steal for monday.com.** A generous baseline inside the plan, and metering only for the heavy agentic workloads above it.
+
+### Other launches worth knowing
+
+- **Salesforce Flex Credits** (May 15, 2025): 20 Flex Credits = $0.10 per Agentforce action; packs of 100,000 for $500 [Verified — [Salesforce](https://www.salesforce.com/news/press-releases/2025/05/15/agentforce-flexible-pricing-news/)].
+- **Airtable AI credit packs** replaced per-seat AI charges on June 24, 2025: 10,000 credits for $20/mo up to 400,000 for $800/mo [Verified — [Airtable help](https://support.airtable.com/articles/3378106230-airtable-ai-billing)].
+- **Notion Custom Agents:** paid Notion Credits from May 4, 2026, $10 per 1,000, Business and Enterprise only [Verified — [Notion help](https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents)].
 
 ## AI-native reference set: Clay · Figma · ClickUp · Claude
 
@@ -165,7 +151,7 @@ Mandatory reference set for every playbook — and the most important one for th
 | Depletion behavior | Auto top-up keeps runs going | Paid AI off until reset; free AI stays on; daily cap on Starter/View | Automatic AI features pause | Blocking message + reset time |
 | Continue-past-limit | Auto top-ups (admin, card on file) | Shared pool + PAYG to a spend limit | Credit packs ($10 / 10k) | Usage credits at API rates, monthly cap, auto-reload, alerts |
 | Rollover | Up to 2x monthly allocation | None | None (trial credits don't reset) | Usage credits generally don't expire |
-| Admin controls | Auto top-up threshold + amount | Pool purchase; per-user caps not available (as of Mar 2026) | Workspace-level | Spend caps: org / seat tier / member, MTD spend column |
+| Admin controls | Auto top-up threshold + amount | Pool purchase; custom individual limits (added after enforcement) | Workspace-level | Spend caps: org / seat tier / member, MTD spend column |
 
 ### Clay — cost transparency before the spend
 
@@ -190,7 +176,7 @@ Mandatory reference set for every playbook — and the most important one for th
 
 ### Figma — per-person allowance, graceful degradation, pooled rescue
 
-**What they ship [Verified].** Credits belong to individual seats, reset monthly, no rollover, not shareable. Starter and View seats also have a 150-credit daily cap. When credits run out, paid AI features are disabled until the next reset while free features stay available, and an admin-purchased shared pool acts as a buffer (subscription at a better rate + pay-as-you-go up to a spend limit). Users and admins can track usage; Org/Enterprise admins export CSV history. Per-user caps weren't available at enforcement (March 2026) **[Verified at the time — recheck]**.
+**What they ship [Verified].** Credits belong to individual seats, reset monthly, no rollover, not shareable. Starter and View seats also have a 150-credit daily cap. When credits run out, paid AI features are disabled until the next reset while free features stay available, and an admin-purchased shared pool acts as a buffer (subscription at a better rate + pay-as-you-go up to a spend limit). Users and admins can track usage; Organization and Enterprise admins get CSV export and history, and Enterprise an AI Usage API. Per-user caps weren't available at enforcement (March 18, 2026); admins can now set custom individual limits **[Verified — [Figma help](https://help.figma.com/hc/en-us/articles/35865276858647-Manage-AI-credits), 2026-09-25]**. Allocations per month: Full seats 500 (Starter) / 3,000 (Professional) / 3,500 (Organization) / 4,250 (Enterprise); Dev, Collab and View seats 500 on every plan; View and Starter also a 150-credit daily cap; a per-feature cost table is published in the Help Center **[Verified]**.
 
 **Why it works.** Free AI features staying live means depletion degrades the product rather than breaking it. The shared pool is the right fix for per-seat limits: the heavy user draws from the account, not from a colleague.
 
@@ -229,7 +215,7 @@ Mandatory reference set for every playbook — and the most important one for th
 |---|---|---|
 | Pre-run estimate | Cost + scope + share of balance | "~450 credits · 300 items · about 15% of your remaining balance" |
 | Big-run warning | Name the share | "This run uses about half of what's left this month. Try it on 10 items first?" |
-| Persistent meter | Balance + translation + refill | "2,140 credits left ≈ 40 agent runs · refills [date]" |
+| Persistent meter | Balance + translation + refill | "{credits} credits left ≈ {n} {usage unit} · refills {reset date}" |
 | Forecast | Rate + deadline | "At this pace you'll run out around [date], before your cycle refills" |
 | Depleted (interactive) | What stopped + resume | "Sidekick needs more credits to answer — top up or wait until [date]" |
 | Depleted (autonomous) | Where it stopped | "AI stopped updating 'Sentiment' on 120 items · Top up to resume" |
@@ -242,10 +228,46 @@ Mandatory reference set for every playbook — and the most important one for th
 - ClickUp: https://help.clickup.com/hc/en-us/articles/20686299081879-ClickUp-Brain-AI-feature-availability-and-limits · https://www.rock.so/blog/clickup-pricing
 - Claude: https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans · https://support.claude.com/en/articles/12005970-manage-usage-credits-for-team-and-seat-based-enterprise-plans · https://www.ai-toolbox.co/claude-management-and-productivity/claude-usage-limits-2026 · https://ccforeveryone.com/guides/claude-code-limits-and-pricing
 
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Who did it |
+|---|---|---|
+| Bare credit number, no task translation | The user can't evaluate the purchase | Common; monday risk if anyone reverts to the retired 1:1 translation |
+| Opaque mechanics ("unlimited" that isn't) | Trust collapses faster than any price increase | Cursor, June 2025 [Verified] |
+| Cost shown only after the spend | The user can't decide before spending | Lovable — no upfront estimate [Verified] |
+| Credit docs that exist but can't be found at the moment of need | Confusion and third-party explainers | Figma, per a third party [Reported] |
+| Depletion that names the balance, not what stopped | The loss isn't connected to the work | Common |
+| Hard stop mid-agent-task, work lost | The top-up moment becomes a churn moment | Common in agentic tools |
+| Full-screen blocking modal in an agentic flow | Breaks momentum | Common |
+| No IC → admin path | The IC is stuck; the admin never learns | Common in B2B |
+| No resume path after purchase | The user has credits and doesn't know how to continue | Common |
+| Credit expiry not communicated | A surprise at month end | Common |
+| Silent downgrade to a lighter model in an agent flow | The task quietly gets worse | Risk flagged by ChatGPT's fallback [Verified] |
+
 ## monday.com-specific notes
 
-- AI credits are new (May 2026 launch) — users have no prior mental model. The first-ever credit depletion experience must be educational, not just transactional.
-- New users (14-day trial) have an urgency lever (time). Credit UI should reinforce "you're getting value now — don't let it stop."
-- Existing users (credit balance, no time limit) have no urgency lever. Must create desire, not FOMO — show value received, not scarcity.
-- Agent mid-task interruption: if a Sidekick agent runs out of credits mid-task, this is a critical experience. Must save task state, explain what happened, and provide an immediate path to resume. Never just fail silently.
-- Admin vs. end user: in B2B, end users hit credit walls but admins hold the credit wallet. Every credit-facing surface needs a "notify your admin" path that generates an actionable admin notification, not a dead end.
+All facts from [context/monday-context.md](../context/monday-context.md).
+
+- **AI credits are new** (the current model applies to customers who joined on or after May 6, 2026) — users have no mental model yet. The first depletion experience must teach, not just sell.
+- **Packages** are monthly buckets bought alongside seats: Standard 2,000 / 4,000 / 8,000; Pro 3,000 / 4,000 / 8,000 / 20,000; $0.01 per credit annual, $0.0125 monthly, no volume discount. Basic is fixed at 1,000; Free has 0.
+- **At 100%** a short, unquantified grace period runs, then paid AI capabilities pause until credits are added or the billing cycle resets; free AI features keep working. No auto top-up; admins get alerts at 80% and 100% (whether ICs do is unconfirmed). ICs see depletion but can't buy — every surface needs "Notify admin".
+- **One account-level pool** with admin limits (account, per capability Hard/Soft, per user or department). A user can be stopped by their own limit while the account still has credits — the copy must say which.
+- **State preservation** isn't native for agentic tasks today — a known gap. Don't promise "your work is saved" until it is.
+- **Cadence:** a monthly allotment tied to the billing cycle, not the calendar month. Per-feature rates are in the context file's rate table.
+- **Still unpublished:** general rollover rule, one-time packs / overage / auto top-up, grace length. Spec them as open items.
+- **New users** (14-day Pro trial; trial credit amount unpublished) have a time lever: "you're getting value — don't let it stop". **Existing users** have none: show value received, not scarcity.
+
+## Sources
+
+Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
+
+- Growth Unhinged / PricingSaaS: https://www.growthunhinged.com/p/2025-state-of-saas-pricing-changes · https://newsletter.pricingsaas.com/p/how-to-use-credit-models-12-examples
+- HubSpot: https://legal.hubspot.com/hubspot-product-and-services-catalog · https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing · https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete · https://www.hubspot.com/products/artificial-intelligence/credits
+- Notion: https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents
+- Figma: https://www.figma.com/blog/updates-to-ai-credits-in-figma/ · https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work · https://help.figma.com/hc/en-us/articles/35865276858647-Manage-AI-credits · https://uichemy.com/blog/figma-ai-credits/
+- Lovable: https://docs.lovable.dev/introduction/credits-and-usage
+- Cursor: https://cursor.com/blog/june-2025-pricing · https://cursor.com/help/models-and-usage/usage-limits · https://cursor.com/help/account-and-billing/spend-limits · https://cursor.com/docs/account/pricing
+- Linear: https://linear.app/docs/ai-credits · https://linear.app/changelog/2026-06-11-coding-sessions · https://linear.app/changelog/2026-03-24-introducing-linear-agent
+- Salesforce: https://www.salesforce.com/news/press-releases/2025/05/15/agentforce-flexible-pricing-news/
+- Airtable: https://support.airtable.com/articles/3378106230-airtable-ai-billing
+- Replit / PostHog / Clay: https://www.lowcode.agency/blog/replit-pricing-explained · https://posthog.com/docs/billing/pre-paid-plans · https://university.clay.com/docs/credit-usage

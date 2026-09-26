@@ -2,7 +2,7 @@
 
 Surface type 2: user tries to access a locked feature.
 
-CRO rationale, benchmarks, timing rules, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/paywalls.md](../../../playbooks/paywalls.md). This file covers only what's specific to *writing the spec*.
+CRO rationale, benchmarks, timing and frequency rules, and best-in-class examples for this surface live in the shared playbook — read it before drafting: [../../../playbooks/paywalls.md](../../../playbooks/paywalls.md). This file covers only what's specific to *writing the spec*.
 
 ## When it appears
 - Click on a locked feature, view, or column type

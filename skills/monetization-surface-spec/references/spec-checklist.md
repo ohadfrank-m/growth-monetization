@@ -8,7 +8,7 @@ Stable rules applied to every surface spec. Strategy data (prices, tiers, credit
 
 | Anti-pattern | Why it fails | Spec this instead |
 |-------------|-------------|-------------------|
-| Bare credit number ("500 credits") | Meaningless without context | Always add a task translation ("≈ 500 AI actions") |
+| Bare credit number ("500 credits") | Meaningless without context | Always add a task translation from the context file's official line ("≈ 25 resume screenings"), never 1 credit = 1 action |
 | Hard stop mid-agent-task | State lost, user churns | Save state, pause the task, offer a resume path |
 | Full-screen blocking modal in an agentic flow | Breaks momentum | Inline nudge at the warning threshold |
 | "Upgrade" as the only CTA | Names the cost, not the benefit | Benefit-led CTA ("Keep building", "Unlock AI Agents") |
