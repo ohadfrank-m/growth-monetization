@@ -1,87 +1,81 @@
 # Pricing pages — CRO playbook
 
-Surface type 1. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks).
+Surface type 1: the public or in-app plan comparison. Cited by `monetization-surface-spec` (write the spec) and `monetization-design-reviewer` (score against these benchmarks). Cohort: mostly **new users** evaluating; logged-in "See plans" traffic is existing users.
 
-## What makes a pricing page convert
+## Core rule
 
-### The job
-A pricing page has one job: make the right plan feel obvious for the right user. Confusion kills conversion. Every element should reduce cognitive load, not add to it.
+A pricing page has one job: make the right plan feel obvious for the right buyer. Visitors arrive evaluating whether the price is worth it, so every element should reduce the work of choosing — structure first, visual design last.
+
+## Patterns
 
 ### Page structure (proven order)
-1. **Headline** — outcome-focused, not feature-focused ("Everything your team needs to move faster" not "Compare our plans")
-2. **Toggle** — Monthly / Annual with savings callout (show $ saved, not just %)
-3. **Plan cards** — 3–4 max. More than 4 creates paralysis.
-4. **Recommended plan highlight** — one card visually elevated (border, badge, background)
-5. **Feature comparison** — collapsed by default, expandable. Full table below fold is fine.
-6. **Social proof** — logos + one strong quote near CTA
-7. **FAQ** — address top 3 objections (cancellation, seat limits, billing)
-8. **CTA repeat** — sticky or repeated at bottom
 
-## Plan card anatomy
+1. **Headline** — the outcome, not "Compare our plans".
+2. **Billing toggle** — monthly / annual, with the saving shown in dollars as well as percent.
+3. **Plan cards** — the self-serve choice kept to three or four comparable cards (see *Tier count* below).
+4. **One recommended plan**, singled out by emphasis — the only filled CTA, a label, an accent border — not by extra height.
+5. **Feature comparison** — collapsed by default, expandable; expanding it is a high-intent signal worth tracking.
+6. **Social proof** — next to the CTA, where the hesitating buyer is, not only at the bottom.
+7. **FAQ** — the top objections: cancellation, seat minimums, billing, credits.
+8. **CTA repeat** — sticky or repeated at the bottom.
 
-**Must-haves:**
-- Plan name (short, memorable)
-- One-line value prop per plan (not a list of features — a promise)
-- Price with billing cadence explicit ("per seat / month, billed annually")
-- Primary CTA — specific ("Start free", "Start Pro trial", not just "Get started")
-- 3–5 bullet highlights (what makes *this* plan different from the one below it)
-- "Everything in [lower plan], plus:" — reduces re-reading
+### Plan card anatomy
 
-**Common failures:**
-- All plans have the same bullets → user can't differentiate
-- Price shown without context → anchor with crossed-out monthly price
-- CTA identical across all plans → no signal on what's recommended
-- "Contact sales" as only Enterprise CTA without a self-serve option → loses mid-market
+- Plan name, and a **one-line promise** naming who it's for.
+- Price with the cadence explicit ("per seat / month, billed annually").
+- A **specific CTA** per plan, matched to its intent.
+- 3–5 highlights: what makes *this* plan different from the one below.
+- "Everything in {lower plan}, plus:" — saves re-reading.
+- For seat-based plans, the minimum and bundle steps stated on the card, not discovered at checkout.
+- **Free tier clarity:** its limits stated plainly, and "Free forever" vs. "Free trial" never ambiguous — a vague free tier creates churn, not activation.
+- **Annual anchor:** when the toggle is on annual, show the monthly price crossed out beside the annual equivalent.
 
-## Pricing presentation patterns
+### Billing default
 
-### Anchoring
-- Show the most expensive plan first (left-to-right reading) or make it visible — it anchors perception
-- Cross out monthly price on annual toggle
-- "Most popular" badge on the plan you want to sell
+Figma and Canva default to annual; Linear and Airtable show only annual rates; Slack leads with a monthly promotion beside the annual price [Verified — each company's pricing page, checked 2026-09-25]. Annual contracts correlate with lower churn [Reported — ProfitWell research via [Reforge](https://www.reforge.com/blog/brief-churn-benchmarks-for-recurring-revenue-businesses)]. monday already defaults to annual (~18% saving, [monday-context.md](../context/monday-context.md)), so for monday the test is the savings label (dollars vs. percent), not the default.
 
-### Freemium / free tier
-- If you have a free tier, make its limits clear — vague free tiers create churn, not activation
-- "Free forever" vs "Free trial" must be unambiguous
+### Tier count
 
-### Per-seat vs. flat vs. usage
-- Per-seat: show "starting at X users" with a calculator if possible
-- Usage-based: show example usage tiers ("~500 AI actions/month")
-- Hybrid: simplify — don't show both dimensions simultaneously unless unavoidable
+Fewer comparable choices are easier to decide between — there's no primary study behind a magic number, but three or four self-serve cards is the common practice. **monday has five tiers** (Free, Basic, Standard, Pro, Enterprise — [monday-context.md](../context/monday-context.md)). Canva shows four main cards and treats Free and Enterprise differently from the paid middle [Verified — [Canva pricing](https://www.canva.com/pricing/)]; the analogue for monday is to make Free and Enterprise visually distinct so the real comparison is Basic / Standard / Pro.
 
-## Anti-patterns
+### The recommended plan is a commercial decision
 
-| Anti-pattern | Why it fails |
-|---|---|
-| Credit amounts shown without task translation | Meaningless without context |
-| Seat minimum hidden until checkout | Users feel tricked |
-| All tiers with identical "Get started" CTAs | No signal on what's recommended |
-| Feature table fully expanded above the fold | Adds cognitive load instead of reducing it |
-| Feature lists start at different heights across plans | The eye can't compare plans line by line; plans look broken. Fix the title/price block height so every list starts at the same line *(design rule)* |
-| CTAs sit at different heights across plans | The buttons stop reading as one choice. Pin each CTA to the same line regardless of content above *(design rule)* |
-| Recommended plan singled out only by being taller | Height reads as "more stuff", not "pick this". Use emphasis — the only filled CTA, a label, an accent border *(design rule)* |
+Highlight the plan that serves the revenue goal, not a design choice. Canva's "Recommended" badge sits on **Business**, its higher paid plan [Verified — [Canva pricing](https://www.canva.com/pricing/)]. Figma and Linear recommend no plan [Verified — [Figma](https://www.figma.com/pricing/), [Linear](https://linear.app/pricing)].
 
-## Benchmarks (B2B SaaS)
+### CTAs specific to each plan
 
-*Directional only — these figures pre-date the evidence-tag standard and carry no source. Don't cite them as fact in a review; the sourced material is in the AI-native reference set below.*
+| Plan | Right CTA | Wrong CTA |
+|---|---|---|
+| Free | "Get started free" | "Get started" |
+| Paid, with trial | "Try {plan} free" / "Start a free trial" | "Get started" |
+| Enterprise | "Talk to us", plus a self-serve path for smaller enterprise teams | "Upgrade" |
 
-| Metric | Poor | Average | Good |
-|--------|------|---------|------|
-| Pricing page → trial start | <3% | 5–8% | 10%+ |
-| Annual toggle usage | <20% | 30–40% | 50%+ |
-| Time on page before CTA click | >3 min | 1–2 min | <60s |
+Cursor's CTAs are tier-specific — "Try Cursor", "Get Pro", "Get Teams", "Contact sales" [Verified — [Cursor pricing](https://cursor.com/pricing)]. Canva uses "Get started" on Free and "Start a free trial" on Pro and Business [Verified]. Linear uses "Get started" on every self-serve plan [Verified] — the same-CTA pattern.
 
-## Best-in-class examples
+### AI credits on the pricing page
 
-*Pre-dates the evidence-tag standard — the patterns are sound, but any figures here are unsourced. Tagged teardowns are in the AI-native reference set below.*
+Credits need their own explanation, with task translation at the tier level — not buried in docs ([credit-ui.md](credit-ui.md) owns the translation rule).
 
-**Linear** — Extreme clarity. 3 plans, one recommended, feature list that actually differentiates. No fluff.
+- **Publish the rates.** HubSpot publishes included credits per tier (Starter 500, Professional 3,000, Enterprise 5,000) and a rate sheet (50 credits per resolved Customer Agent conversation, 10 per AI workflow action) [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)]. A worked example built from those rates — e.g. 40 resolutions (2,000) + 50 workflow actions (500) — is this playbook's construction, not HubSpot's.
+- **Show credits per seat or tier on the page.** Figma's pricing page now lists AI credits per seat type [Verified — [Figma pricing](https://www.figma.com/pricing/)], after confusion around the March 18, 2026 enforcement [Reported — [Vibe Coding Academy](https://www.vibecodingacademy.ai/blog/figma-ai-credits-everything-you-need-to-know)].
+- **Translate into real tasks.** Notion publishes per-run cost ranges for Custom Agents in its help center [Verified — [Notion help](https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents)].
+- **For monday:** use the context file's official translation (1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries) rather than a 1:1 "≈ 2,000 AI actions" that only restates the number.
 
-**Notion** — Annual toggle with $ savings shown. "Most popular" on Plus. Free tier limits explicit.
+### Bundling AI into a higher tier
 
-**Loom** — Uses "you've already recorded X videos" personalization on pricing page for logged-in users. Context-aware pricing pages convert 30–40% better than static.
+When AI moves into a higher tier, the page must justify the jump on AI value, not on the other features in the bundle — see [case: notion-2025-ai-bundling](cases.md#notion-2025-ai-bundling).
 
-**Intercom** — Anchoring via add-ons. Base price looks reasonable; upsells are modular. Reduces sticker shock.
+### Mobile
+
+- The recommended plan first in the stacked cards, not in the middle.
+- Tap targets at least 44 × 44 pt [Verified — [Apple HIG](https://developer.apple.com/design/human-interface-guidelines/buttons)].
+- The billing toggle works before the cards appear.
+- The comparison table becomes an accordion or a horizontal scroll.
+- Judge mobile on a real device or a true 375px viewport — a narrow headless-browser window crops the page and fakes overflow.
+
+### Testing order
+
+Structure before visual design: recommended plan → CTA copy per plan → social proof placement → comparison collapsed vs. open → savings label. Don't test button colour until these are settled.
 
 ## AI-native reference set: Clay · Figma · ClickUp · Claude
 
@@ -99,7 +93,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 
 ### Clay — usage-only, two meters, slider plans
 
-**What they ship [Verified/Reported].** Repriced March 2026 to Free / Launch / Growth / Enterprise. Launch lists at $185/mo and Growth at $495/mo, $167 and $446 on annual ("save 10%"). All plans include unlimited seats — you pay for consumption, not people. Two meters on every paid tier: Data Credits (buying third-party data) and Actions (platform work). Plan cards are sliders: small print reads "Starts at $54/mo, expand anytime" on Launch — the headline price is a default position, not a floor. Legacy Starter/Explorer/Pro kept indefinitely for existing customers.
+**What they ship [Reported — third-party pricing coverage].** Repriced March 2026 to Free / Launch / Growth / Enterprise. Launch lists at $185/mo and Growth at $495/mo, $167 and $446 on annual ("save 10%"). All plans include unlimited seats — you pay for consumption, not people. Two meters on every paid tier: Data Credits (buying third-party data) and Actions (platform work). Plan cards are sliders: small print reads "Starts at $54/mo, expand anytime" on Launch — the headline price is a default position, not a floor. Legacy Starter/Explorer/Pro kept indefinitely for existing customers.
 
 **Flow.** Land on pricing → pick plan → drag slider to credit volume → price updates live → credit calculator for estimation.
 
@@ -107,7 +101,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 
 **Copy pattern.** Leads with "unlimited users" as the anti-seat-tax promise. Expansion language ("expand anytime") on the card itself, removing fear of picking the wrong tier.
 
-**Why it works.** The slider kills the "which box am I?" paralysis for usage products — the tier sets capabilities (CRM sync, API), the slider sets volume. Unlimited seats removes the internal "who gets a license" negotiation, which is the #1 PLG spread blocker.
+**Why it works.** The slider kills the "which box am I?" paralysis for usage products — the tier sets capabilities (CRM sync, API), the slider sets volume. Unlimited seats removes the internal "who gets a license" negotiation, a common blocker to spreading a PLG product (inference).
 
 **Where it breaks.** Two currencies that deplete independently is the most-cited confusion in third-party coverage. The per-enrichment credit cost is published inside the app rather than on the pricing page, so buyers can't compute cost-per-lead before signup. The page states prices two ways (card vs. FAQ) — a legibility tax. Third-party "real cost" articles now outrank Clay for its own pricing queries.
 
@@ -137,7 +131,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 
 **UI.** Two pricing pages. AI page leads with tier cards and the pricing-promise block.
 
-**Copy pattern.** The pricing promise is the standout copy asset — it pre-empts the #1 AI-buyer fear (the vendor will raise prices once we depend on it).
+**Copy pattern.** The pricing promise is the standout copy asset — it pre-empts a common AI-buyer fear: that the vendor will raise prices once the team depends on it (inference).
 
 **Why it works.** Separating AI lets ClickUp keep the $7/$12 headline competitive against Asana/monday while monetizing AI demand. The promise block turns cost volatility into a trust signal.
 
@@ -147,7 +141,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 
 ### Claude — plans defined by usage multipliers
 
-**What they ship [Verified].** Individual: Free, Pro $20/mo ($17/mo annual, $200/yr), Max $100 (5x Pro usage) and $200 (20x Pro usage). Team: standard seats (1.25x Pro) and premium seats (6.25x Pro). Usage runs on a rolling five-hour session window plus a weekly limit on paid plans; chat, desktop, and Claude Code draw from one pool. Anthropic doesn't publish a fixed message count because usage depends on message length, attachments, model, and features; the Help Center gives an approximate Pro figure (~45 messages per five hours). Usage-based Enterprise bills at API rates with no per-seat caps.
+**What they ship [Reported — third-party coverage of Claude's plans].** Individual: Free, Pro $20/mo ($17/mo annual, $200/yr), Max $100 (5x Pro usage) and $200 (20x Pro usage). Team: standard seats (1.25x Pro) and premium seats (6.25x Pro). Usage runs on a rolling five-hour session window plus a weekly limit on paid plans; chat, desktop, and Claude Code draw from one pool. Anthropic doesn't publish a fixed message count because usage depends on message length, attachments, model, and features; the Help Center gives an approximate Pro figure (~45 messages per five hours). Usage-based Enterprise bills at API rates with no per-seat caps.
 
 **Flow.** Individual vs. Team & Enterprise tabs → monthly/annual toggle → plan cards → FAQ explains the session/weekly mechanics.
 
@@ -167,7 +161,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 |---|---|---|
 | Credit section headline | Outcome + unit translation | "AI credits, measured in work done" |
 | Credit explainer line | Task anchor, not a number | "3,000 credits ≈ [X] agent runs or [Y] hours of meeting notes" |
-| Seat-tax killer (if applicable) | Name the fear | "Credits are shared across your account — no per-person caps" |
+| Seat-tax killer (if applicable) | Name the fear | "Credits are shared across your account — no per-person caps" (only if monday pools credits — not stated in the context file) |
 | Expansion reassurance | Put it on the card | "Start at 3,000 credits. Add more anytime." |
 | Pricing promise | Pre-empt lock-in fear | "If our AI costs go down, your price goes down. If they go up, we'll tell you first." (requires legal + finance sign-off) |
 | Tier differentiator (capacity-only tier) | Relative multiple | "Everything in Pro, with 2x the monthly credits" |
@@ -190,8 +184,41 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 - ClickUp: https://clickup.com/brain/pricing · https://www.rock.so/blog/clickup-pricing · https://agiled.app/blog/clickup-pricing
 - Claude: https://www.ai-toolbox.co/claude-management-and-productivity/claude-usage-limits-2026 · https://krater.ai/blog/claude-usage-limits · https://claudelimit.com/claude-pro-limits/
 
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Who did it |
+|---|---|---|
+| Credit amounts without task translation | Meaningless without context | Common; monday risk with 1:1 translation |
+| Seat minimum hidden until checkout | Users feel tricked | Common |
+| The same bullets on every plan | The buyer can't tell the plans apart | Common |
+| The same CTA on every plan | No signal on intent or recommendation | Linear — "Get started" on every self-serve plan [Verified] |
+| Feature table fully expanded above the fold | Adds cognitive load | Common |
+| Feature lists start at different heights across plans | The eye can't compare line by line *(design rule)* | Common |
+| CTAs at different heights across plans | The buttons stop reading as one choice *(design rule)* | Common |
+| Recommended plan singled out only by height | Height reads as "more stuff", not "pick this" *(design rule)* | Common |
+| AI bundled into a higher tier with no path for AI-only buyers | Buyers route to alternatives | [case: notion-2025-ai-bundling](cases.md#notion-2025-ai-bundling) |
+| A billing-model change explained unclearly | Trust collapse, refunds | [case: cursor-2025-pricing](cases.md#cursor-2025-pricing) |
+| Social proof only at the bottom | Misses the buyer hesitating at the CTA | Common |
+| "Contact sales" as the only Enterprise path | Loses mid-market teams that would self-serve | Common |
+
 ## monday.com-specific notes
 
-- Enterprise tier should always have a clear "talk to us" path but *also* a self-serve option for smaller enterprise teams
-- The AI credit model needs its own section on the pricing page — credits as a dimension confuse users if not explained with examples
-- CRM cross-sell opportunity: pricing page is an underused channel for multi-product awareness
+All facts from [context/monday-context.md](../context/monday-context.md).
+
+- **Five tiers**, annual shown by default with an ~18% saving; paid plans start at 3 seats in bundles (3, 5, 10, 15, 20, 25, 30, 40). State the minimum and bundles on the card.
+- **Make Free and Enterprise visually distinct** so the comparison is Basic / Standard / Pro.
+- **Enterprise** needs "Talk to us" and a self-serve path for smaller enterprise teams.
+- **AI credits need their own explanation** on the page, with the official task translation per tier (Basic 1,000 fixed; Standard 2,000–8,000; Pro 3,000–20,000).
+- **Cross-sell:** the pricing page is an underused channel for CRM, service and dev awareness.
+- **Context-file gap:** "1 credit ≈ 1 AI action" and "1,000 credits ≈ 50 resume screenings" disagree by up to 20× for real tasks — the owner should say which the page uses.
+
+## Sources
+
+Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
+
+- Pricing pages: https://www.figma.com/pricing/ · https://www.canva.com/pricing/ · https://www.airtable.com/pricing · https://linear.app/pricing · https://slack.com/pricing · https://cursor.com/pricing
+- Churn and annual contracts: https://www.reforge.com/blog/brief-churn-benchmarks-for-recurring-revenue-businesses
+- HubSpot: https://legal.hubspot.com/hubspot-product-and-services-catalog · https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing
+- Figma credits: https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work · https://www.vibecodingacademy.ai/blog/figma-ai-credits-everything-you-need-to-know
+- Notion: https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents · https://www.notion.com/help/2025-pricing-changes
+- Apple HIG: https://developer.apple.com/design/human-interface-guidelines/buttons

@@ -25,7 +25,7 @@ Only 1, 3, and 5 are defined per dimension. A **2** is "closer to 1 than 3"; a *
 ### Timing / trigger logic — *is this shown at the right moment?*
 - **1** — Wrong moment: pre-aha, mid-unrelated-task, or interrupts an agent's flow; recurs after dismiss.
 - **3** — Acceptable moment but not optimal; reactive (fires at 100% limit) rather than proactive.
-- **5** — Fires at peak intent (just after an activation milestone, or proactively at ~75–90% of a limit); respects dismiss + frequency caps; non-blocking in agentic contexts.
+- **5** — Fires at peak intent (just after an activation milestone, or proactively before the limit — the thresholds in the surface's playbook, e.g. 80/90% for tier limits in `playbooks/upgrade-triggers.md`, 80/95% used for credits in `playbooks/credit-ui.md`); respects dismiss + frequency caps; non-blocking in agentic contexts.
 
 ### Copy quality — *benefit-led headline, specific CTA?*
 - **1** — Headline is a label ("Upgrade to Pro"); CTA is generic ("Upgrade", "Subscribe"); no anchoring.
