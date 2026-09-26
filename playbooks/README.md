@@ -58,6 +58,8 @@ Vendor UI strings are paraphrased unless they appear in a cited source. Re-verif
 
 ### Updating a playbook
 
+- **Run the linter before committing:** `python3 scripts/lint-playbooks.py`. It checks section order, benchmark rows (tag, Applies to, URL, date), the AI-native set, evidence-tag spelling, links and case ids, retired claims (e.g. "1 credit ≈ 1 AI action"), and warns on sources checked more than 90 days ago.
+
 - **A company already in the playbook:** update its block in place — don't add a second block. Keep the tag of the strongest evidence you have and replace the source and checked date.
 - **A claim with no source:** find one, or move it to a clearly marked *directional* note, or delete it. Never leave it looking like a fact. When a new source contradicts an existing claim, replace the claim and say what changed in the commit.
 - **Research output:** `monetization-intelligence` ends surface work with *Suggested playbook updates*, marked **new** or **replaces {what}**. The owner applies them here; the skill never edits a playbook itself.
