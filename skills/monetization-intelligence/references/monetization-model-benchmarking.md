@@ -136,7 +136,7 @@ How clearly does each company translate credits to outcomes?
 
 | Company | Translation clarity | Example |
 |---------|-------------------|---------|
-| {Company} | Clear / Vague / None | "1 credit = 1 AI action" |
+| {Company} | Clear / Vague / None | "1,000 credits ≈ 50 resume screenings" (task-level translation) |
 
 **Industry finding:** {what the data shows about how companies communicate credit value}
 

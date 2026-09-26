@@ -6,6 +6,16 @@ Surface type 3: discounts, limited-time offers, annual upsells, bundles and cros
 
 Only use urgency when the deadline is real, and anchor every offer to the genuine regular price. Promotions train users: run them too often or too deep and the cohort learns to wait. The goal is urgency without dependency — an offer that feels like a reward for a specific moment, not a standing discount.
 
+## Legal context — guidance, not legal advice
+
+**Reviewed by legal: not yet.** These rules protect **consumers**; monday's team buyers are mostly B2B, which falls under separate misleading-marketing law (e.g. the UK Business Protection from Misleading Marketing Regulations 2008, EU Directive 2006/114/EC — not verified here; flag for legal).
+
+| Rule | What it says | Source |
+|---|---|---|
+| UK — DMCC Act 2024 s.226 | Bans misleading actions, including false or misleading price information relevant to a purchase decision | [s.226](https://www.legislation.gov.uk/ukpga/2024/13/section/226) [Verified] |
+| UK — DMCC Act Sch. 20 para 7 | Bans falsely stating a product is available only for a limited time; the CMA's guidance gives restarting countdown timers as an example | [Sch. 20](https://www.legislation.gov.uk/ukpga/2024/13/schedule/20), [CMA207](https://www.gov.uk/government/publications/unfair-commercial-practices-cma207/unfair-commercial-practices) [Verified] |
+| EU — Price Indication Directive Art. 6a | A price reduction must be measured against the lowest price in the prior 30 days — for **goods**; SaaS reference prices fall under the UCPD's misleading-action rules instead | [Reported] — [HSF Kramer on CJEU C-330/23](https://www.hsfkramer.com/notes/ip/2024-posts/cjeu-confirms-that-price-reduction-claims-must-be-based-on-lowest-price-in-last-30-days); EUR-Lex not read |
+
 ## Patterns
 
 ### Anchoring — always
@@ -77,16 +87,6 @@ The monthly → annual move is the core B2B promotion.
 
 - **When:** at plan selection (the toggle, with the saving highlighted); after the first month on monthly ("you've done {X} — lock in the year"); at the renewal reminder.
 - **How:** the monthly equivalent billed annually, the dollars saved vs. staying monthly, one click with the payment method on file. A cancellation or refund guarantee reduces commitment anxiety — only if one actually exists.
-
-## Legal context — guidance, not legal advice
-
-**Reviewed by legal: not yet.** These rules protect **consumers**; monday's team buyers are mostly B2B, which falls under separate misleading-marketing law (e.g. the UK Business Protection from Misleading Marketing Regulations 2008, EU Directive 2006/114/EC — not verified here; flag for legal).
-
-| Rule | What it says | Source |
-|---|---|---|
-| UK — DMCC Act 2024 s.226 | Bans misleading actions, including false or misleading price information relevant to a purchase decision | [s.226](https://www.legislation.gov.uk/ukpga/2024/13/section/226) [Verified] |
-| UK — DMCC Act Sch. 20 para 7 | Bans falsely stating a product is available only for a limited time; the CMA's guidance gives restarting countdown timers as an example | [Sch. 20](https://www.legislation.gov.uk/ukpga/2024/13/schedule/20), [CMA207](https://www.gov.uk/government/publications/unfair-commercial-practices-cma207/unfair-commercial-practices) [Verified] |
-| EU — Price Indication Directive Art. 6a | A price reduction must be measured against the lowest price in the prior 30 days — for **goods**; SaaS reference prices fall under the UCPD's misleading-action rules instead | [Reported] — [HSF Kramer on CJEU C-330/23](https://www.hsfkramer.com/notes/ip/2024-posts/cjeu-confirms-that-price-reduction-claims-must-be-based-on-lowest-price-in-last-30-days); EUR-Lex not read |
 
 ## AI-native reference set: Clay · Figma · ClickUp · Claude
 
