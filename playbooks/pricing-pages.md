@@ -59,7 +59,7 @@ Credits need their own explanation, with task translation at the tier level — 
 - **Publish the rates.** HubSpot publishes included credits per tier (Starter 500, Professional 3,000, Enterprise 5,000) and a rate sheet (50 credits per resolved Customer Agent conversation, 10 per AI workflow action) [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)]. A worked example built from those rates — e.g. 40 resolutions (2,000) + 50 workflow actions (500) — is this playbook's construction, not HubSpot's.
 - **Show credits per seat or tier on the page.** Figma's pricing page now lists AI credits per seat type [Verified — [Figma pricing](https://www.figma.com/pricing/)], after confusion around the March 18, 2026 enforcement [Reported — [Vibe Coding Academy](https://www.vibecodingacademy.ai/blog/figma-ai-credits-everything-you-need-to-know)].
 - **Translate into real tasks.** Notion publishes per-run cost ranges for Custom Agents in its help center [Verified — [Notion help](https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents)].
-- **For monday:** use the context file's official translation (1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries) rather than a 1:1 "≈ 2,000 AI actions" that only restates the number.
+- **For monday:** use the context file's official translation (1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries, hundreds of workflow updates). "1 credit ≈ 1 AI action" is retired — the rate card contradicts it.
 
 ### Bundling AI into a higher tier
 
@@ -161,7 +161,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 |---|---|---|
 | Credit section headline | Outcome + unit translation | "AI credits, measured in work done" |
 | Credit explainer line | Task anchor, not a number | "3,000 credits ≈ [X] agent runs or [Y] hours of meeting notes" |
-| Seat-tax killer (if applicable) | Name the fear | "Credits are shared across your account — no per-person caps" (only if monday pools credits — not stated in the context file) |
+| Seat-tax killer (if applicable) | Name the fear | "Credits are shared across your account" (monday pools credits account-wide; admins can still set per-user limits, so don't promise "no caps") |
 | Expansion reassurance | Put it on the card | "Start at 3,000 credits. Add more anytime." |
 | Pricing promise | Pre-empt lock-in fear | "If our AI costs go down, your price goes down. If they go up, we'll tell you first." (requires legal + finance sign-off) |
 | Tier differentiator (capacity-only tier) | Relative multiple | "Everything in Pro, with 2x the monthly credits" |
@@ -188,7 +188,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 
 | Anti-pattern | Why it fails | Who did it |
 |---|---|---|
-| Credit amounts without task translation | Meaningless without context | Common; monday risk with 1:1 translation |
+| Credit amounts without task translation | Meaningless without context | Common; monday risk if the retired 1:1 translation returns |
 | Seat minimum hidden until checkout | Users feel tricked | Common |
 | The same bullets on every plan | The buyer can't tell the plans apart | Common |
 | The same CTA on every plan | No signal on intent or recommendation | Linear — "Get started" on every self-serve plan [Verified] |
@@ -210,7 +210,7 @@ All facts from [context/monday-context.md](../context/monday-context.md).
 - **Enterprise** needs "Talk to us" and a self-serve path for smaller enterprise teams.
 - **AI credits need their own explanation** on the page, with the official task translation per tier (Basic 1,000 fixed; Standard 2,000–8,000; Pro 3,000–20,000).
 - **Cross-sell:** the pricing page is an underused channel for CRM, service and dev awareness.
-- **Context-file gap:** "1 credit ≈ 1 AI action" and "1,000 credits ≈ 50 resume screenings" disagree by up to 20× for real tasks — the owner should say which the page uses.
+- **One translation:** the page uses the official "1,000 credits ≈ 50 resume screenings" line, matching the in-product meter (see [credit-ui.md](credit-ui.md)).
 
 ## Sources
 

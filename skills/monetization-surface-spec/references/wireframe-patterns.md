@@ -122,8 +122,8 @@ Reference for structural patterns when building wireframes. The **wireframe cont
 [Sidebar section:]
   [Icon] AI Credits
   [Progress bar: ██████░░░░ 60%]
-  [Label: "600 credits remaining — ≈ 600 AI actions"]
-  [Small: "Resets {date}" or "Top up anytime"]
+  [Label: "600 credits remaining — ≈ {N} {task} at your pace"]
+  [Small: "Resets {billing-cycle date}" or "Add credits anytime"]
   [Link: "Top up"]
 ```
 
@@ -139,7 +139,7 @@ Reference for structural patterns when building wireframes. The **wireframe cont
 [⚠️] "Your AI agent has paused — you're out of credits"
 [Subtext: "{Agent name} stopped at step {N}. Top up to continue where you left off."]
 [CTA: "Top up credits — {package size} for ${price}"]  [Secondary: "Notify admin"]
-[Small: "Your work is saved"]
+[Small: "Your work is saved" — only once state preservation ships; not native today (see monday-context.md)]
 ```
 
 **Critical elements:** Names the agent, names the step, reassures state is saved, single top-up CTA with price visible, admin path.
@@ -150,9 +150,10 @@ Reference for structural patterns when building wireframes. The **wireframe cont
   [Headline: "Top up AI credits"]
   [Current balance: "0 credits remaining"]
   [Package options:]
-    ○ 500 credits — $X/mo  (≈ 500 AI actions)
-    ● 2,000 credits — $X/mo  (≈ 2,000 AI actions)  [BEST VALUE badge]
-    ○ 5,000 credits — $X/mo  (≈ 5,000 AI actions)
+    ○ {bucket} credits/mo — ${price}/mo  (≈ {N} {task})
+    ● {next bucket} credits/mo — ${price}/mo  (≈ {N} {task})  [RECOMMENDED badge]
+    ○ {bucket+2} credits/mo — ${price}/mo  (≈ {N} {task})
+  [Buckets and prices from monday-context.md; today a top-up moves the account to a larger monthly bucket — one-time packs aren't published]
   [Selected package summary: "2,000 credits for $X — billed monthly, cancel anytime"]
   [CTA: "Top up and resume"]  [Dismiss: "Notify my admin instead"]
 ```

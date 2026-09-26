@@ -129,7 +129,7 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 ### Figma — the reference implementation for IC → admin upgrades
 
 **What they ship [Verified].**
-- **Request moment:** users request a seat when they attempt an action their seat doesn't allow. With manual approval, they get a **one-time** 3-day temporary access per paid seat type (Full / Dev / Collab) while the admin reviews; it applies on Professional as well as Organization and Enterprise. Access ends at denial or expiry.
+- **Request moment:** users request a seat when they attempt an action their seat doesn't allow. With manual approval, they get a **one-time** 3-day temporary access per paid seat type (Full / Dev / Collab) while the admin reviews [Reported — the 3-day passage was seen only in a help-center search snippet and a Figma staff forum reply, 2026-09-26; re-read the article before citing as fact]; it applies on Professional as well as Organization and Enterprise. Access ends at denial or expiry.
 - **Admin side:** the request shows where it was sent from, the request reason, current seat, and time; admins get email and in-app notifications, and the requester hears the decision either way. (An explicit cost line on the request card wasn't found in the docs on 2026-09-25.)
 - **Policy control:** per seat type — manual approval, manual unless a paid seat is already free (default), or auto-approve, with digest emails listing new paid seats.
 - **Billing:** approved seats are prorated; unused time on a prior paid seat is credited.

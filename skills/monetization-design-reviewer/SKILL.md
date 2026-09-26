@@ -72,8 +72,9 @@ Always identify the **surface type** first (see Surface Types), then apply the c
 | 5 | **Consumption / Credit Upgrade** | Running low on credits, credit meter, metering dashboard, top-up flow |
 | 6 | **Cancellation Flow** | User initiates cancel or downgrade |
 | 7 | **Downgrade Experience** | Plan reduction confirmation, loss framing |
+| 8 | **Trial Flow** | Trial start, mid-trial nudge, trial expiry |
 
-**Known gap:** this table has no row for a trial-flow surface (start / mid-trial / expiry), and `references/scoring-rubric.md`'s weighting matrix has no matching column. `monetization-surface-spec` covers trial flow as its own surface type 7. Don't force a trial-expiry review into "Downgrade Experience" — flag the gap to the user and score against the closest matrix column (usually Paywall / Gate, since a trial-expiry screen is functionally a paywall) until this is reconciled.
+Trial-flow reviews score against the Trial Flow column of `references/scoring-rubric.md`.
 
 CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com application) for each surface type is owned once, in the shared playbook — not duplicated here. Read the matching file before scoring:
 - Pricing pages → [../../playbooks/pricing-pages.md](../../playbooks/pricing-pages.md)
@@ -82,6 +83,7 @@ CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com app
 - Tier upgrade triggers (seats, features, automations — not credits) → [../../playbooks/upgrade-triggers.md](../../playbooks/upgrade-triggers.md)
 - Consumption / credit upgrade (meters, forecasting, top-ups) → [../../playbooks/credit-ui.md](../../playbooks/credit-ui.md)
 - Cancellation & downgrade → [../../playbooks/cancellation.md](../../playbooks/cancellation.md)
+- Trial flows (start, mid-trial, expiry) → [../../playbooks/trial-flows.md](../../playbooks/trial-flows.md)
 - **Scoring anchors & weighting (read for every review — this stays reviewer-owned, no other skill needs it)** → `references/scoring-rubric.md`
 
 ---
@@ -182,7 +184,7 @@ End with a one-line verdict for the Growth PM, applying the exit rule for the de
 
 When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, then apply this lens:
 
-- **AI credits** are the primary consumption unit for the AI Agents launch (May 2026). Credit and metering UI must make value-per-credit legible — not just the price. Credit-to-task translation ("≈ 500 AI actions") is required, never a bare number.
+- **AI credits** are the primary consumption unit for the AI Agents launch (May 2026). Credit and metering UI must make value-per-credit legible — not just the price. Credit-to-task translation is required, never a bare number — using the context file's official line (1,000 credits ≈ 50 resume screenings), never "1 credit = 1 AI action".
 - **Tier structure:** Free → Basic → Standard → Pro → Enterprise. Most upgrade pressure is Free→Pro and Standard→Pro.
 - **User types:** New users (trial, urgency lever) vs. existing users (credit balance, no urgency lever). Every review must state which cohort the surface addresses — the hook differs (scarcity vs. capability).
 - **Agentic context:** Upgrade and depletion triggers in agentic flows must not break task momentum. Prefer non-blocking inline nudges over full-screen modal interruptions. A credit depletion mid-agent-task must save state and offer a resume path — never fail silently.

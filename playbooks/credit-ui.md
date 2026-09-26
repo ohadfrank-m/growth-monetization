@@ -27,9 +27,9 @@ These match monday's admin alerts at 80% and 100% ([monday-context.md](../contex
 
 ### Task translation is mandatory
 
-"500 credits" is meaningless; "≈ 500 AI actions" is a reason to buy. Every credit number — meter, banner, depletion, top-up, pricing page — carries a task translation.
+"500 credits" is meaningless; "≈ 25 resume screenings" is a reason to buy. Every credit number — meter, banner, depletion, top-up, pricing page — carries a task translation.
 
-- **monday's default:** 1 credit ≈ 1 AI action; official examples: 1,000 credits ≈ 50 resume screenings or 5 hours of meeting summaries ([monday-context.md](../context/monday-context.md)). 1:1 is only a default — prefer the user's own recent actions as the unit when usage data exists ("≈ 40 more summaries at your pace").
+- **monday's translation:** the official line — 1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries, or hundreds of automated workflow updates. Never "1 credit ≈ 1 AI action": one AI block action is 8 credits, Notetaker 120 per meeting hour ([monday-context.md](../context/monday-context.md)). When usage data exists, prefer the user's own recent actions as the unit ("≈ 40 more summaries at your pace").
 - **One rate everywhere.** If the pricing page and the meter imply different rates, trust breaks.
 - **Who does it well.** HubSpot publishes a credit rate sheet — 50 credits per resolved Customer Agent conversation, 10 per workflow AI action, 100 per recommended lead — and per-tier included credits (Starter 500, Pro 3,000, Enterprise 5,000) [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)]. Notion publishes per-run cost ranges for Custom Agents (e.g. Q&A agents ~$0.03–$0.11 a run, daily briefs ~$0.10–$0.30) and shows each run's usage in an admin dashboard [Verified — [Notion help](https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents)]. Figma publishes a per-feature cost table in its Help Center [Verified — [Figma help](https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work)], though a third party argues people don't find it before they need it [Reported — [UiChemy](https://uichemy.com/blog/figma-ai-credits/)].
 - **Outcome pricing is translation built in.** HubSpot moved Customer Agent to $0.50 per resolved conversation and Prospecting Agent to $1.00 per recommended lead on April 14, 2026 [Verified — [HubSpot](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete)]: the unit is the result.
@@ -60,7 +60,7 @@ Rate-based framing ("at this pace you'll run out around {date}") turns awareness
 
 ### Admin controls
 
-HubSpot lets Super Admins and Billing Admins set account, feature and action-level limits; at a limit, features pause until the next cycle, and by default usage pauses when included credits run out — overage is opt-in [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)]. Cursor's team spend limits stop on-demand usage at the cap [Verified — [Cursor help](https://cursor.com/help/account-and-billing/spend-limits)]. Caps remove the fear that makes admins switch AI off pre-emptively. monday has admin alerts at 80% and 100% today, but no cap controls — a gap, not current behaviour.
+HubSpot lets Super Admins and Billing Admins set account, feature and action-level limits; at a limit, features pause until the next cycle, and by default usage pauses when included credits run out — overage is opt-in [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)]. Cursor's team spend limits stop on-demand usage at the cap [Verified — [Cursor help](https://cursor.com/help/account-and-billing/spend-limits)]. Caps remove the fear that makes admins switch AI off pre-emptively. monday already ships caps: admins can set limits account-wide, per capability (Hard or Soft) and per user or department ([monday-context.md](../context/monday-context.md)). The surface gap is making those limits visible to the IC who hits one — say which limit stopped them and who set it.
 
 ### Top-up and package choice
 
@@ -68,7 +68,7 @@ HubSpot lets Super Admins and Billing Admins set account, feature and action-lev
 - **Show the plan alternative alongside** — a bigger monthly package can beat repeated top-ups (Clay's docs make this explicit — see [upgrade-triggers.md](upgrade-triggers.md)).
 - **One-click for the admin** with payment on file; confirm what was bought in tasks.
 - **Rollover is a differentiator.** HubSpot, Figma and Cursor credits don't roll over [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing), [Figma help](https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work), [Cursor help](https://cursor.com/help/models-and-usage/usage-limits)]. Lovable's paid monthly credits roll over (2-month expiry); top-ups last 12 months; daily credits don't roll over [Verified — [Lovable docs](https://docs.lovable.dev/introduction/credits-and-usage)].
-- **For monday:** packages are monthly buckets bought with seats — Standard 2,000 / 4,000 / 8,000, Pro 3,000 / 4,000 / 8,000 / 20,000, at $0.01 per credit annual or $0.0125 monthly, flat; Basic is fixed at 1,000 ([monday-context.md](../context/monday-context.md)). Whether one-time top-ups exist, and whether credits roll over, aren't in the context file — spec them as open items, never as facts. Illustrative prices use slots (`{N} credits — ${price}`).
+- **For monday:** packages are monthly buckets bought with seats — Standard 2,000 / 4,000 / 8,000, Pro 3,000 / 4,000 / 8,000 / 20,000, at $0.01 per credit annual or $0.0125 monthly, flat; Basic is fixed at 1,000 ([monday-context.md](../context/monday-context.md)). Top-up today means moving to the next bucket ("Add credits anytime"); one-time packs, overage and auto top-up aren't published, and unused credits don't roll over (official for Notetaker; the general rule is still to confirm) — spec those as open items, never as facts. Illustrative prices use slots (`{N} credits — ${price}`).
 
 ### Top-up modal (admin)
 
@@ -232,7 +232,7 @@ Mandatory reference set for every playbook — and the most important one for th
 
 | Anti-pattern | Why it fails | Who did it |
 |---|---|---|
-| Bare credit number, no task translation | The user can't evaluate the purchase | Common; monday risk — the default 1:1 translation repeats the number |
+| Bare credit number, no task translation | The user can't evaluate the purchase | Common; monday risk if anyone reverts to the retired 1:1 translation |
 | Opaque mechanics ("unlimited" that isn't) | Trust collapses faster than any price increase | Cursor, June 2025 [Verified] |
 | Cost shown only after the spend | The user can't decide before spending | Lovable — no upfront estimate [Verified] |
 | Credit docs that exist but can't be found at the moment of need | Confusion and third-party explainers | Figma, per a third party [Reported] |
@@ -250,10 +250,12 @@ All facts from [context/monday-context.md](../context/monday-context.md).
 
 - **AI credits are new** (the current model applies to customers who joined on or after May 6, 2026) — users have no mental model yet. The first depletion experience must teach, not just sell.
 - **Packages** are monthly buckets bought alongside seats: Standard 2,000 / 4,000 / 8,000; Pro 3,000 / 4,000 / 8,000 / 20,000; $0.01 per credit annual, $0.0125 monthly, no volume discount. Basic is fixed at 1,000; Free has 0.
-- **At 0 credits** AI capabilities stop; there's no auto top-up; admins get alerts at 80% and 100%. ICs see depletion but can't buy — every surface needs "Notify admin".
+- **At 100%** a short, unquantified grace period runs, then paid AI capabilities pause until credits are added or the billing cycle resets; free AI features keep working. No auto top-up; admins get alerts at 80% and 100% (whether ICs do is unconfirmed). ICs see depletion but can't buy — every surface needs "Notify admin".
+- **One account-level pool** with admin limits (account, per capability Hard/Soft, per user or department). A user can be stopped by their own limit while the account still has credits — the copy must say which.
 - **State preservation** isn't native for agentic tasks today — a known gap. Don't promise "your work is saved" until it is.
-- **Unknown in the context file:** reset cadence, rollover, one-time top-ups, per-feature credit costs. Spec them as open items.
-- **New users** (14-day trial, credits at Pro level) have a time lever: "you're getting value — don't let it stop". **Existing users** have none: show value received, not scarcity.
+- **Cadence:** a monthly allotment tied to the billing cycle, not the calendar month. Per-feature rates are in the context file's rate table.
+- **Still unpublished:** general rollover rule, one-time packs / overage / auto top-up, grace length. Spec them as open items.
+- **New users** (14-day Pro trial; trial credit amount unpublished) have a time lever: "you're getting value — don't let it stop". **Existing users** have none: show value received, not scarcity.
 
 ## Sources
 

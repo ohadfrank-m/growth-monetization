@@ -25,9 +25,8 @@ If you're adding CRO knowledge (a benchmark, a new best-in-class example, an ant
 - [upgrade-triggers.md](upgrade-triggers.md) — surface type 4 (tier/seat limits — not credits)
 - [credit-ui.md](credit-ui.md) — surface type 5 (credit/consumption — including metering, forecasting, top-up)
 - [cancellation.md](cancellation.md) — surface type 6
+- [trial-flows.md](trial-flows.md) — surface type 7 (trial start, mid-trial, expiry; owns trial phases)
 - [cases.md](cases.md) — shared case library: stories that apply to several surfaces, told once and cited by id
-
-Trial flow (surface type 7) has no playbook file yet — today it's owned solely by `monetization-surface-spec/references/trial-flows.md` with no counterpart in `monetization-design-reviewer` (that skill has no trial-flow surface type at all — see the open taxonomy gap noted in each skill's SKILL.md). Move it here if and when a second skill needs the same knowledge.
 
 ## Mandatory AI-native reference set
 

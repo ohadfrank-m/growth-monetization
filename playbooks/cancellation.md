@@ -159,7 +159,7 @@ The honest headline: **none of the four runs an aggressive save flow.** They ret
 
 **Where it breaks.** A 2x rollover cap still wastes credits for seasonal teams running quarterly campaigns **[Reported]**.
 
-**Steal for monday.com.** If monday credits roll over — the context file doesn't say — show the carried balance in the cancel intercept: "You have {N} unused credits — they carry into next month." An accumulated balance is a concrete loss anchor that seat-only SaaS doesn't have.
+**Steal for monday.com.** monday credits don't roll over (official for Notetaker; the general rule is still to confirm), so this doesn't apply today. If that changes, show the carried balance in the cancel intercept: "You have {N} unused credits — they carry into next month." An accumulated balance is a concrete loss anchor that seat-only SaaS doesn't have.
 
 ### Save-step design for AI credit products (synthesized from the four)
 

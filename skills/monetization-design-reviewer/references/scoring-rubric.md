@@ -63,16 +63,16 @@ Only 1, 3, and 5 are defined per dimension. A **2** is "closer to 1 than 3"; a *
 
 Weights sum to 1.0 per surface. They encode what actually moves revenue on each surface — e.g. escape-hatch quality is minor on a pricing page but dominant on a cancel flow.
 
-| Dimension | Pricing Page | Paywall / Gate | Promotion | Tier Upgrade | Credit / Consumption | Cancellation | Downgrade |
-|---|---|---|---|---|---|---|---|
-| Value clarity | 0.20 | 0.22 | 0.15 | 0.18 | 0.20 | 0.10 | 0.15 |
-| Timing / trigger | 0.05 | 0.18 | 0.20 | 0.20 | 0.20 | 0.15 | 0.12 |
-| Copy quality | 0.15 | 0.15 | 0.20 | 0.15 | 0.15 | 0.15 | 0.15 |
-| Friction & flow | 0.15 | 0.10 | 0.12 | 0.12 | 0.12 | 0.15 | 0.13 |
-| Trust signals | 0.12 | 0.08 | 0.13 | 0.08 | 0.06 | 0.05 | 0.05 |
-| Escape hatch | 0.03 | 0.07 | 0.05 | 0.07 | 0.07 | 0.25 | 0.20 |
-| Visual hierarchy | 0.20 | 0.12 | 0.10 | 0.12 | 0.12 | 0.08 | 0.12 |
-| Mobile readiness | 0.10 | 0.08 | 0.05 | 0.08 | 0.08 | 0.07 | 0.08 |
+| Dimension | Pricing Page | Paywall / Gate | Promotion | Tier Upgrade | Credit / Consumption | Cancellation | Downgrade | Trial Flow |
+|---|---|---|---|---|---|---|---|---|
+| Value clarity | 0.20 | 0.22 | 0.15 | 0.18 | 0.20 | 0.10 | 0.15 | 0.20 |
+| Timing / trigger | 0.05 | 0.18 | 0.20 | 0.20 | 0.20 | 0.15 | 0.12 | 0.22 |
+| Copy quality | 0.15 | 0.15 | 0.20 | 0.15 | 0.15 | 0.15 | 0.15 | 0.15 |
+| Friction & flow | 0.15 | 0.10 | 0.12 | 0.12 | 0.12 | 0.15 | 0.13 | 0.12 |
+| Trust signals | 0.12 | 0.08 | 0.13 | 0.08 | 0.06 | 0.05 | 0.05 | 0.08 |
+| Escape hatch | 0.03 | 0.07 | 0.05 | 0.07 | 0.07 | 0.25 | 0.20 | 0.08 |
+| Visual hierarchy | 0.20 | 0.12 | 0.10 | 0.12 | 0.12 | 0.08 | 0.12 | 0.08 |
+| Mobile readiness | 0.10 | 0.08 | 0.05 | 0.08 | 0.08 | 0.07 | 0.08 | 0.07 |
 
 **Score = Σ (dimension_score × weight) × 20** → yields a 0–100 scale.
 

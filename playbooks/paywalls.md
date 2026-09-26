@@ -149,7 +149,7 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 
 ### Figma — seat gate with instant temporary access
 
-**What they ship [Verified].** Actions that need a higher seat trigger a seat request (or instant access if the admin enabled auto-approve). With manual approval, requesters get a one-time 3-day temporary access for each paid seat type while the admin reviews. For AI: Starter and View seats have a 150-credit daily cap on top of the monthly one; when credits run out, paid AI features are disabled until reset, free AI features stay available.
+**What they ship [Verified].** Actions that need a higher seat trigger a seat request (or instant access if the admin enabled auto-approve). With manual approval, requesters get a one-time 3-day temporary access for each paid seat type while the admin reviews. [Reported — the 3-day passage was seen only in a help-center search snippet and a Figma staff forum reply, 2026-09-26; re-read the article before citing as fact] For AI: Starter and View seats have a 150-credit daily cap on top of the monthly one; when credits run out, paid AI features are disabled until reset, free AI features stay available.
 
 **Flow.** User clicks a gated action → request modal (reason field) → immediate 3-day access → admin gets email + in-app notification → approve/decline.
 
