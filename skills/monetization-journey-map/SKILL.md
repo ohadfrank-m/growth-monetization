@@ -39,7 +39,7 @@ Read first: [monday-context.md](../../context/monday-context.md), the surface's 
 
 ### Step 1 — Scenarios
 
-Write the scenarios per [references/scenario-cards.md](references/scenario-cards.md): at least 3, always including the IC / admin pair for any surface that asks for money. Each is a problem card (name · persona · trigger · frequency · current result · evidence · impact) plus a short first-person "day in the life". Stay on the problem — the screens come later.
+Write the scenarios per [references/scenario-cards.md](references/scenario-cards.md): at least 3, always including the IC / admin pair: the person who hits the surface and the admin who can act on it (buy, cancel, change the plan) are usually different people. Each is a problem card (name · persona · trigger · frequency · current result · evidence · impact) plus a short first-person "day in the life". Stay on the problem — the screens come later.
 
 ### Step 2 — Evidence
 
@@ -100,7 +100,7 @@ Build the board per the **board contract** in [references/journey-board.md](refe
 
 **Versions follow the wireframe.** The board embeds the latest wireframe version from the ledger. When the fix loop writes `03-wireframe-v{N}.html`, rebuild the board as `03-journey-v{N}.html` against it — same N, so the reviewer always walks the design it's scoring.
 
-Every on-surface step must have a state to embed. A J step whose wireframe state id doesn't exist in the wireframe is a defect: embed an empty frame labelled "missing state {id}" and list it, so the reviewer sees the gap rather than a silently skipped step.
+Every step with a wireframe state id must have that state to embed. A J step whose wireframe state id doesn't exist in the wireframe is a defect: embed an empty frame labelled "missing state {id}" and list it, so the reviewer sees the gap rather than a silently skipped step.
 
 Standalone, end with:
 ```

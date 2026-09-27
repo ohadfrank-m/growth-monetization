@@ -34,7 +34,7 @@ Map every scenario to one of these, and to its cohort in [monday-context.md → 
 ## How many scenarios, and which
 
 - **At least 3.** One per persona that meets the surface, plus the variants that change the path. Cancellation, for example, needs one scenario per top cancel reason (price, low use, switching, temporary pause), because each reason gets a different offer.
-- **IC and admin are always a pair** on any surface that asks for money. The IC hits the friction and the admin pays. Missing either half hides the handoff, which is where most of these journeys break.
+- **IC and admin are always a pair.** Only admins change billing, so on every surface the person who hits it and the person who can act (buy, cancel, downgrade, top up) may differ. The IC hits the friction and the admin pays. Missing either half hides the handoff, which is where most of these journeys break.
 - **Write for the proficient majority.** The U-curve: the loudest feedback comes from the extremes, novices and power users. It's where we listen, not what we build for. The typical, competent user is where we should listen. Size scenarios by frequency, and let the most frequent one set the main path.
 - **Edge cases earn their place by frequency.** Before adding a "what if?" scenario, ask whether the persona will actually do it. If the data says a case is common (e.g. seat overage on monthly plans), promote it to a scenario. If it's rare, leave it to the spec's edge-case list.
 

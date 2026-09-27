@@ -29,7 +29,7 @@ One row per step, in order. Branches are rows too (`J4a`, `J4b`).
 | **Branches** | Each exit: success → J#, abandon → J#, error → J#, IC path → J# |
 | **Friction → reduction** | Where they'll hesitate or drop, and the design choice that reduces it. "none — {why}" is allowed |
 | **Event** | The analytics event or metric that proves the step happened (`cancel_flow_reason_submitted`). "{event TBD}" + Open item if unknown |
-| **Wireframe state** | On-surface steps only: the state id the spec and wireframe must use (`reason`, `offer-pause`). It becomes `03-wireframe.html#{id}` and is what the board embeds |
+| **Wireframe state** | Every step rendered in the product — on-surface, and any hand-off or after step that has a screen (a `scheduled` confirmation, a banner until the end date, an access-ended screen): the state id the spec and wireframe must use (`reason`, `offer-pause`). It becomes `03-wireframe.html#{id}` and is what the board embeds |
 
 ## Stage skeletons per surface type
 
@@ -51,7 +51,7 @@ Start from the skeleton, then add or cut steps from the scenarios. Each skeleton
 
 ## Quality bar
 
-- Every on-surface step has a wireframe state id, and no two steps share one unless they are genuinely the same screen.
-- Every step that asks for money has an IC branch.
+- Every step rendered in the product has a wireframe state id, and no two steps share one unless they are genuinely the same screen.
+- Every step that changes billing (buy, top up, cancel, downgrade) has an IC branch: only admins can act on it, and the person who reaches the step often can't.
 - Every "after" stage names at least one non-app channel (email, invoice, admin notification). That's where trust is kept or lost.
 - Abandon is a branch on every on-surface step. Where does the user land, and what state is saved?
