@@ -82,6 +82,7 @@ Write from the 15; check against the 8 that you've found the real driver rather 
 - **Test the phrasing against how a real buyer talks** — their vocabulary, not yours. Language accuracy is what makes a line land; guessed language reads as an ad and gets skipped.
 - **No filler words.** *Elevate, seamless, unleash, unlock the power of, next-gen, game-changer, supercharge, empower, delve, revolutionize* — they name no reason and signal generated copy. Replace with the concrete outcome.
 - **Error and system messages are copy too.** Payment failed, purchase pending, credits not yet applied: say what happened and what to do next, plainly — no "Oops!", no exclamation marks.
+- **Guardrails before delivery.** Every option — not only the ★ — passes the pre-delivery check in `references/copy-guardrails.md`. A breaching option is rewritten, never shipped with a flag.
 
 ## Scope and handoff
 
@@ -93,11 +94,11 @@ The division is specific, not just "you do design, I do copy": `monetization-des
 
 ## References
 
-Read `references/sources.md` when the top-level guidance isn't enough — it encodes the full source material:
+Read these when the top-level guidance isn't enough:
 
-1. The 15 reasons people buy stuff (the original list)
-2. The core human drives — Josh Kaufman, *The Personal MBA*
-3. Buyer psychology cheatsheet — 19 biases mapped to buyer-journey stages, each with an action (Customer Camp)
+- `references/copy-craft.md` — evidence-backed rules for writing each line (CTAs, headlines, numbers, framing, urgency, errors, length, mobile) and the monday.com voice anchors
+- `references/copy-guardrails.md` — language never to write; run every option against its pre-delivery check before saving `02-copy.md`
+- `references/sources.md` — the 15 reasons, Kaufman's drives, the Customer Camp cheatsheet, and the primary research behind each bias
 
 ## Plugin output
 

@@ -71,8 +71,8 @@ Always identify the **surface type** first (see Surface Types), then apply the c
 | 4 | **Tier Upgrade Trigger** | Usage limit hit, seat expansion, plan upgrade nudge |
 | 5 | **Consumption / Credit Upgrade** | Running low on credits, credit meter, metering dashboard, top-up flow |
 | 6 | **Cancellation Flow** | User initiates cancel or downgrade |
-| 7 | **Downgrade Experience** | Plan reduction confirmation, loss framing |
-| 8 | **Trial Flow** | Trial start, mid-trial nudge, trial expiry |
+| 6b | **Downgrade Experience** | Plan reduction confirmation, loss framing |
+| 7 | **Trial Flow** | Trial start, mid-trial nudge, trial expiry |
 
 Trial-flow reviews score against the Trial Flow column of `references/scoring-rubric.md`.
 
@@ -84,7 +84,8 @@ CRO knowledge (benchmarks, best-in-class examples, anti-patterns, monday.com app
 - Consumption / credit upgrade (meters, forecasting, top-ups) → [../../playbooks/credit-ui.md](../../playbooks/credit-ui.md)
 - Cancellation & downgrade → [../../playbooks/cancellation.md](../../playbooks/cancellation.md)
 - Trial flows (start, mid-trial, expiry) → [../../playbooks/trial-flows.md](../../playbooks/trial-flows.md)
-- **Scoring anchors & weighting (read for every review — this stays reviewer-owned, no other skill needs it)** → `references/scoring-rubric.md`
+- **Scoring anchors & weighting (read for every review — this stays reviewer-owned, no other skill needs it)** → `references/scoring-rubric.md`: 1/3/5 anchors, the checkable criteria behind each 5 (WCAG 2.2, NN/g, Baymard, FTC/DSA), the dimension → playbook anti-pattern map, weights, verdict bands and the dark-pattern gate
+- **Calibration** → `references/calibration-examples.md`: real, cited 1/3/5 examples per dimension and a fully worked score
 
 ---
 
@@ -113,7 +114,7 @@ Score each dimension 1–5 using the anchor definitions in `references/scoring-r
 
 ### What's working — keep
 
-Before the fixes, 3–5 bullets on what the design already gets right, each tied to a rubric dimension or the stated goal ("Escape hatch: 'Not now' is visible and one click — keep it"). Fixes that break these are regressions, so name them — the fix loop and the team both need to know what not to touch.
+Before the fixes, 3–5 bullets on what the design already gets right, each tied to a rubric dimension or the stated goal ("Escape hatch: 'Not now' is visible and one click, and a frequency cap stops it recurring — keep it"). Fixes that break these are regressions, so name them — the fix loop and the team both need to know what not to touch.
 
 ### 2. Prioritized Improvements — one table, ranked
 
@@ -208,7 +209,7 @@ Automatic deductions regardless of surface type. Check every one against the des
 | Same prompt shown repeatedly after dismiss | Annoyance, unsubscribe risk |
 | Discount with no expiry or urgency mechanism | No forcing function |
 | Credit/usage depletion with no preview of what runs out | Confusion, not motivation |
-| Bare credit number with no task translation | "500 credits" is meaningless without "≈ 500 actions" |
+| Bare credit number with no task translation | "{N} credits" is meaningless without a task translation from `monday-context.md` (e.g. 1,000 credits ≈ 50 resume screenings) |
 | Hardcoded values instead of Vibe tokens | Design-system drift, inconsistency |
 
 ---

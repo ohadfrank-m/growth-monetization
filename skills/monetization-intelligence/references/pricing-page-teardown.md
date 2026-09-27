@@ -61,7 +61,7 @@ Check whether any plan exists primarily to make another look reasonable.
 
 Classic patterns:
 - Three plans where middle is clearly the intended purchase and bottom is stripped-down bait
-- Enterprise plan with no price listed (anchors perception of Suite Professional as "reasonable")
+- Enterprise plan with no price listed (anchors the highest listed price as "reasonable")
 - A plan priced only slightly below the hero that makes hero look like a bargain
 
 **Signal:** Strong decoy presence = mature pricing team applying behavioral economics. Absence = earlier-stage or less sophisticated pricing.
@@ -204,6 +204,14 @@ Rate based on: decoy presence, behavioral tactics used, CTA optimization, featur
 
 **What to borrow / what to avoid**  
 {1–2 specific tactical observations relevant to your own pricing page}
+
+### Self-serve ceiling
+{Max seats online, contact-sales-only plans, annual-only and security gates — see monetization-teardown.md checklist}
+
+Evidence: tag every dimension `[Verified]` (captured page, date) / `[Reported]` / `[Teardown needed]`.
+
+### Suggested playbook updates
+{Exact additions for playbooks/pricing-pages.md — tagged, sourced, marked new / replaces}
 ```
 
 ---
@@ -212,8 +220,11 @@ Rate based on: decoy presence, behavioral tactics used, CTA optimization, featur
 
 After the live teardown, check one historical snapshot to surface what changed:
 
-```
-WebFetch(url="https://web.archive.org/cdx/search/cdx?url={domain}/pricing&output=json&limit=5&fl=timestamp,statuscode&filter=statuscode:200&collapse=timestamp:6")
+```bash
+# List captures (curl, not WebFetch — WebFetch can't reach web.archive.org; see enrichment.md Method 1)
+curl -s -A "Mozilla/5.0" "https://web.archive.org/cdx/search/cdx?url={domain}/pricing&output=json&fl=timestamp,statuscode&filter=statuscode:200&collapse=timestamp:6&limit=50"
+# Read one capture
+curl -s -A "Mozilla/5.0" "https://web.archive.org/web/{timestamp}/https://{domain}/pricing"
 ```
 
 Fetch the earliest available snapshot and note any structural differences vs. today. A company that added "Most Popular" badges, switched to annual-default, or restructured their CTA copy since their early days has an active, iterating pricing team.
@@ -222,7 +233,7 @@ Fetch the earliest available snapshot and note any structural differences vs. to
 
 ## Step 5: Log to monday
 
-After delivering the teardown, log per [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Company} — Page Teardown`
 - Summary: GTM motion inferred + single most significant tactical observation

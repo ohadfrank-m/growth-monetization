@@ -60,10 +60,10 @@ Present as a change log:
 **Pricing changes — [date range]**
 
 {Company A} — {what changed, e.g., "raised Pro plan from $49 to $59/user/mo"}  
-→ pricingsaas.com/pulse/companies/{slug}
+→ pricingsaas.com/companies/{slug}
 
 {Company B} — {what changed}
-→ pricingsaas.com/pulse/companies/{slug}
+→ pricingsaas.com/companies/{slug}
 
 No changes detected for: {Company C}, {Company D}
 ```
@@ -111,18 +111,9 @@ get_diff_highlight(slug="notion.", period="2026W10", query="addon added new add-
 
 - If an image URL is returned in any result: embed it in the output using markdown `![Change screenshot]({image_url})`
 - If no image is returned but text match is present: use the text match as the change description
-- If both are missing: fall back to the browser MCP (see below)
+- If both are missing: use the fallback below
 
-**Browser MCP fallback (when no images returned):**
-
-If `get_diff_highlight` returns "No highlight images were returned" for all calls in a period, use the browser MCP to capture the diff page directly:
-
-```
-browser_navigate(url="https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}")
-browser_take_screenshot()
-```
-
-This gets a full-page screenshot of the PricingSaaS diff page showing all changes visually. Include the screenshot in the output and in any monday doc created.
+**If no images return:** link the diff page (`https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` — login required) and fall back to Wayback before/after snapshots (enrichment Method 1). Don't browser-capture pricingsaas.com — visual-diff.md notes the browser is blocked there.
 
 ---
 
@@ -166,7 +157,7 @@ e.g., "Pro plan: $49 → $59/user/mo (+20%). Business plan renamed to Enterprise
 **{Date}** — {what changed}
 e.g., "Added Starter plan at $19/user/mo. Free plan removed."
 
-[Link to full profile: pricingsaas.com/pulse/companies/{slug}]
+[Link to full profile: pricingsaas.com/companies/{slug}]
 ```
 
 ---
@@ -180,21 +171,21 @@ After identifying pricing changes for a period, automatically run the following 
 For each company with detected changes, fetch the live pricing page and a historical Wayback snapshot to cross-reference what changed:
 
 ```
-# Live page (always works):
+# Live page (usually works — some vendor domains return a Cloudflare 403 to fetchers):
 WebFetch(url="https://{domain}/pricing")
 
 # Wayback availability check (lightweight — less likely to be blocked than CDX):
 WebFetch(url="https://archive.org/wayback/available?url={domain}/pricing")
 
-# If a recent snapshot timestamp is returned, fetch it:
-WebFetch(url="https://web.archive.org/web/{snapshot-timestamp}/{domain}/pricing")
+# If a recent snapshot timestamp is returned, fetch it (Bash — WebFetch can't reach web.archive.org):
+curl -s -A "Mozilla/5.0" "https://web.archive.org/web/{snapshot-timestamp}/https://{domain}/pricing"
 ```
 
 Diff the two versions to surface price point wording, plan name changes, and copy rewrites. If the availability API is also blocked, rely on the live page fetch + PricingSaaS diff text alone.
 
-**Note:** The Wayback CDX bulk API (used for frequency analysis) is blocked for most large SaaS companies. Do not use it here — use the lightweight availability API or direct snapshot fetch instead.
+**Note:** Access rules for each Wayback endpoint are in [enrichment.md](enrichment.md) Method 1. CDX (frequency analysis) isn't needed here — the availability API plus one snapshot is enough.
 
-While you have the live pricing page fetched, also scan it for A/B testing tool signatures (see [ab-test-detection.md](ab-test-detection.md) Step 1). If a testing tool is detected, add it to the output as a forward-looking signal: "Testing infrastructure active — a presentation change may follow this pricing move."
+Also run the curl signature scan in [ab-test-detection.md](ab-test-detection.md) Step 1 on the same URL (WebFetch output hides testing tools). If a testing tool is detected, add it to the output as a forward-looking signal: "Testing infrastructure active — a presentation change may follow this pricing move."
 
 ### Product changelog — was it announced?
 
@@ -238,12 +229,12 @@ If yes, run [sentiment-research.md](sentiment-research.md) for each company with
 
 ## Final step: log to monday
 
-After delivering the monitoring output, follow [monday-logging.md](monday-logging.md) to log results. Create one item per company that had changes (not one item for the whole session). Run `create_item` calls in parallel.
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain. Create one item per company that had changes (not one item for the whole session). Run `create_item` calls in parallel.
 
 - Item name: `{Company} — {Period}` (e.g., "Clay — 2026W12")
 - Change Type: map the most significant change type (see status label table in monday-logging.md)
 - Summary: what specifically changed — old value → new value where known
-- PricingSaaS link: `https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}` — use the exact period string from the diff call (e.g., `2026W12`, `2025Q1`). Strip the trailing dot from the slug (`clay` not `clay.`)
+- PricingSaaS link: `https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` — use the exact period string from the diff call (e.g., `2026W12`, `2025Q1`). Strip the trailing dot from the slug (`clay` not `clay.`)
 - Workflow: `monitoring`
 
 Companies with no changes in the period: do not log them.
@@ -268,7 +259,7 @@ When `get_diff_highlight` results are collected, present each change as its own 
 ### {Company} — {Period}
 #### {Synthesised title}
 
-**Source:** [View on PricingSaaS](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period})
+**Source:** [View on PricingSaaS](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period})
 
 ---
 

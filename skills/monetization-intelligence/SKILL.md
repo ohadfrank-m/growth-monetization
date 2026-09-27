@@ -44,7 +44,7 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 | Company or category | Decides the workflow and the companies pulled | Named in the prompt |
 | Surface type (surface benchmark) | Decides what gets captured per competitor — offers and save paths for cancellation, preview and trial path for a paywall, packages for a top-up | "cancellation", "upgrade flow", "paywall"… — ask only if the prompt names none |
 | The monday.com decision it informs | Shapes "So what for monday.com" — a pricing-page test, a paywall spec and a packaging change need different takeaways | "we're about to…", the surface or team mentioned |
-| Competitor set (landscape / benchmark runs) | Who's in the table; the wrong set makes the benchmark useless | Category default: the work-management and PLG set in `monday-context.md` + the prompt's names |
+| Competitor set (landscape / benchmark runs) | Who's in the table; the wrong set makes the benchmark useless | Category default: the **Work management** bundle in [category-watchlist.md](references/category-watchlist.md) + the prompt's names |
 | Depth | Quick scan (current plans, 1 page) vs deep dive (history, enrichment, sentiment) | "quick", "overview" vs "deep dive", "full" |
 | OK to spend PricingSaaS credits | Full history and diffs cost credits | Never inferred — ask whenever a paid call would help (standing rule) |
 
@@ -53,7 +53,7 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 ## Prerequisites: PricingSaaS MCP
 
 **Claude / Claude Code:**
-Add `https://mcp.pricingsaas.com` as a remote MCP server in your environment settings.
+Add `https://mcp.pricingsaas.com` as a remote MCP server in your environment settings. Setup instructions: `https://pulse.pricingsaas.com/mcp` (sign-in required).
 
 **Cursor:** Add to `~/.cursor/mcp.json`:
 ```json
@@ -83,12 +83,13 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 | `get_company_history(slug)` | **1 credit/diff** | Full pricing change history |
 | `get_diff_highlight(slug, period, query)` | **1 credit** | Visual before/after screenshot |
 | `add_to_watchlist(slugs=[...])` | Free | Add companies to monitoring |
+| `remove_from_watchlist(slugs=[...])` | Free (unverified — MCP unreachable 2026-09-27) | Remove companies from monitoring |
 | `get_watchlist()` | Free | List monitored companies |
 | `get_pricing_news()` | Free | Recent changes across tracked companies |
 | `fetch_diffs(scope, period, period_type)` | **2 credits** | Detailed change data |
 | `search_pricing_knowledge(query)` | Free | Pricing strategy frameworks |
 | `add_page(url)` | Free | Submit a pricing page for tracking |
-| `upload_report(filename, file_path)` | Free | Generate shareable HTML landscape report |
+| `upload_report(filename, file_path)` | **Credits on delivery (per PricingSaaS); publishes a public URL** | Hosted HTML report — only on the user's go-ahead (see trend-research Step 8) |
 
 **Credit rule:** Always state cost and get explicit user confirmation before any paid tool call.
 
@@ -101,7 +102,7 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 - Use the research artifact template: [../../templates/research-output.md](../../templates/research-output.md)
 - Include header block on every artifact
 - Lead with exec summary (3 bullets) — always the first thing after the header
-- Every company name links on first mention — to `https://pricingsaas.com/pulse/companies/{slug}` when the slug is confirmed through the MCP, otherwise to the source page actually used. Never guess a slug
+- Every company name links on first mention — to `https://pricingsaas.com/companies/{slug}` (public profile) when the slug is confirmed through the MCP, otherwise to the source page actually used. Diff links use `https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` (login required). Never guess a slug. The old pattern with `/pulse/` after the main domain returns 404
 - Every standalone artifact ends with a **→ Next step** block (omitted in a Growth PM chain)
 - Every competitor research includes a **So what for monday.com** section: pricing headroom, positioning implication, experiment to consider, threat signal — and, for surface work, which pattern to adopt, adapt, or avoid on monday's version of the surface
 - **Evidence tags on every claim about a competitor's product or UI**, per [playbooks/README.md](../../playbooks/README.md): `[Verified]` (vendor docs or a capture you made), `[Reported]` (third-party), `[Teardown needed]` (behind a login or not captured). Never describe a screen you haven't seen

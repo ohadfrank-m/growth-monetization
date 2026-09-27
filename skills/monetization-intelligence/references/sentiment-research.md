@@ -30,10 +30,10 @@ WebSearch(query='site:news.ycombinator.com "{Company}" pricing')
 Or fetch HN search directly:
 
 ```
-WebFetch(url="https://hn.algolia.com/api/v1/search?query={Company}+pricing&tags=story&numericFilters=created_at_i>1735689600")
+WebFetch(url="https://hn.algolia.com/api/v1/search?query={Company}+pricing&tags=story&numericFilters=created_at_i>{unix_6_months_ago}")
 ```
 
-(The timestamp filters to posts after Jan 1 2026 — adjust as needed)
+(`{unix_6_months_ago}` = Unix seconds for today minus 6 months. For 2026-09-27 that's `1774569600` = 2026-03-27 UTC.)
 
 ### G2 / Capterra / Trustpilot
 
@@ -43,11 +43,7 @@ WebSearch(query='"{Company}" "pricing" OR "expensive" OR "value for money" site:
 WebSearch(query='"{Company}" pricing site:trustpilot.com')
 ```
 
-For G2, also try fetching the pricing-filtered review page directly:
-
-```
-WebFetch(url="https://www.g2.com/products/{company-slug}/reviews?filters[review_answers][73][]=1")
-```
+G2, Capterra and TrustRadius block direct fetches (403 / changed URL patterns) — use search snippets only, tagged `[Reported]`, per the access notes in [enrichment.md](enrichment.md) Method 7.
 
 ### LinkedIn — articles and operator commentary
 
@@ -72,7 +68,7 @@ WebSearch(query='"{Company}" price increase reaction operators founders site:lin
 
 **Thought leader search** — pricing practitioners with large followings often write about notable pricing moves:
 ```
-WebSearch(query='"{Company}" pricing (Kyle Poyar OR Patrick Campbell OR "Lenny Rachitsky" OR OpenView OR Bessemer OR ProfitWell OR "Madhavan Ramanujam")')
+WebSearch(query='"{Company}" pricing (Kyle Poyar OR Patrick Campbell OR "Lenny Rachitsky" OR "Growth Unhinged" OR Bessemer OR Paddle OR "SBI Growth" OR "Madhavan Ramanujam")')
 WebSearch(query='"{Company}" pricing "Growth Unhinged" OR "monetization" site:linkedin.com')
 ```
 
@@ -85,33 +81,25 @@ X is the highest-velocity signal source — backlash, praise, and viral pricing 
 WebSearch(query='"{Company}" pricing site:x.com OR site:twitter.com')
 WebSearch(query='"{Company}" "price increase" OR "too expensive" OR "pricing change" site:x.com')
 WebSearch(query='"{Company}" pricing (founder OR SaaS OR "product-led" OR "per seat") site:x.com')
-```
-
-**Prominent SaaS voices** — these accounts regularly comment on notable pricing moves:
-```
-WebSearch(query='"{Company}" pricing from:KylePoyar OR from:ProfitWell OR from:jasonlk OR from:hitenshah OR from:lennysan site:x.com')
 WebSearch(query='"{Company}" pricing site:x.com (VC OR "seed" OR "Series" OR "growth" OR "PLG")')
 ```
 
-**Nitter fallback** — if direct WebSearch against x.com returns sparse results, try fetching via nitter (public Twitter mirror):
-```
-WebFetch(url="https://nitter.net/search?q={Company}+pricing&f=tweets")
-WebFetch(url="https://nitter.net/search?q={Company}+%22price+increase%22&f=tweets")
-```
+**Prominent SaaS voices** — `from:` and other X operators don't work in WebSearch. Search the handle as text instead: `WebSearch(query='"{Company}" pricing "Kyle Poyar" OR "@KylePoyar" site:x.com')`.
 
-If nitter is unreachable, skip silently and note "X coverage: not retrievable via current tooling."
+**No Nitter.** nitter.net was taken down after legal demands from X in August 2026, and the repo was archived on 11 Sep 2026 [Reported — [Wikipedia](https://en.wikipedia.org/wiki/Nitter), checked 2026-09-27]. X coverage is search snippets only. Say so once in *Sources checked*.
 
 ---
 
 ### Earnings calls (public companies only)
 
-For publicly traded companies (HubSpot, Salesforce, Canva post-IPO, etc.):
+For publicly traded companies (HubSpot, Salesforce, Atlassian, Asana, Freshworks — see enrichment.md Method 4; Canva is still private):
 
 ```
 WebSearch(query='"{Company}" pricing earnings call transcript 2025 OR 2026')
 WebSearch(query='"{Company}" "pricing strategy" OR "price increase" investor relations 2026')
-WebFetch(url="https://seekingalpha.com/symbol/{TICKER}/earnings/transcripts")
 ```
+
+For filings, CIKs and transcript sources, follow [enrichment.md](enrichment.md) Method 4 (Seeking Alpha returns 403 — don't rely on it).
 
 Look for: management commentary on pricing rationale, analyst questions about pricing pressure, customer reaction mentions, churn attribution to pricing.
 
@@ -135,8 +123,8 @@ WebFetch(url="{article_url}")
 
 **Tier 2 — SaaS-specific press and newsletters** (practitioner audience, high signal-to-noise):
 ```
-WebSearch(query='"{Company}" pricing site:saastr.com OR site:openviewpartners.com OR site:a16z.com OR site:bvp.com')
-WebSearch(query='"{Company}" pricing "Growth Unhinged" OR "Kyle Poyar" OR "Lenny" OR "ProfitWell" OR "Price Intelligently"')
+WebSearch(query='"{Company}" pricing site:saastr.com OR site:a16z.com OR site:bvp.com')
+WebSearch(query='"{Company}" pricing "Growth Unhinged" OR "Kyle Poyar" OR "Lenny" OR Paddle OR "SBI Growth"')
 WebSearch(query='"{Company}" pricing site:substack.com (SaaS OR pricing OR monetization)')
 ```
 
@@ -242,5 +230,5 @@ After delivering sentiment output, offer to log it to the Pricing Intelligence b
 - Weight Reddit and HN highest for candor and depth. Weight X/Twitter highest for recency and velocity. Weight LinkedIn for practitioner/operator reaction. Weight G2 and Capterra for structured buyer reaction. Weight publications for magnitude signal.
 - A "no reaction" finding is itself useful signal — it means the change was either too small, too gradual, or targeted a segment that doesn't discuss pricing publicly.
 - Date-filter all searches to the last 6 months unless the user asks for historical sentiment.
-- X/Twitter and nitter may be unreachable in some environments — if both fail, note it once and move on. Do not block the workflow.
+- X/Twitter coverage is search snippets only (no Nitter, no `from:` operator) — note it once in *Sources checked* and move on. Do not block the workflow.
 - LinkedIn pulse articles are often the highest-quality practitioner takes — prioritize fetching full text when a relevant article URL is found.

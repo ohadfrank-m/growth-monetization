@@ -57,6 +57,28 @@ create_column(boardId={id}, columnType="text", columnTitle="Workflow")
 create_column(boardId={id}, columnType="link", columnTitle="Visual diff")
 ```
 
+Set these labels on the `Change Type` status column (every workflow's "Change Type" must be one of them):
+
+| Label | Used by |
+|---|---|
+| Price change | monitoring (Price Increased / Decreased) |
+| Plan change | monitoring (Plan Added / Removed / Renamed) |
+| Packaging change | monitoring (Feature / Capacity / Addon changes) |
+| Discount change | monitoring (Discount Added / Removed) |
+| Freemium / trial change | freemium-trial-tracker |
+| Company Research | company-research, monetization-teardown |
+| Landscape Scan | trend-research, category-watchlist |
+| Surface Benchmark | surface-benchmark |
+| Model Benchmark | monetization-model-benchmarking |
+| Battlecard | battlecard-generator |
+| Sentiment | sentiment-research |
+| Negotiation Intel | negotiation-intelligence |
+| Page Teardown | pricing-page-teardown |
+| A/B Test Signal | ab-test-detection |
+| Weekly Digest | weekly-digest |
+
+Include `"<change_type_col_id>":{"label":"{label}"}` in every `create_item` columnValues.
+
 Note: the `date` column is not needed — monday automatically captures creation date.
 
 ---
@@ -130,7 +152,7 @@ https://res.cloudinary.com/dd6dkaan9/image/upload/pricing_pages/{slug}_{YYYYMMDD
 
 If visual-diff.md returns no images (Cloudinary probe failed and no credits), populate the column with the PricingSaaS diff link as fallback:
 ```
-{"url": "https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}", "text": "View diff on PricingSaaS"}
+{"url": "https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}", "text": "View diff on PricingSaaS"}
 ```
 
 ### Update feed (image comments) — monitoring items only
@@ -153,14 +175,14 @@ After creating the board item, always post an update on it with the before/after
 <p><strong>📸 Visual diff — {Company} {period}</strong></p>
 <img src="https://res.cloudinary.com/dd6dkaan9/image/upload/pricing_pages/{slug}_{YYYYMMDD}.png" alt="{Company} pricing page — {label}" />
 <p><em>Only one snapshot available for this period.</em></p>
-<p><a href="https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}">View full diff on PricingSaaS →</a></p>
+<p><a href="https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}">View full diff on PricingSaaS →</a></p>
 ```
 
 **If no snapshots exist:**
 ```html
 <p><strong>📸 Visual diff — {Company} {period}</strong></p>
 <p><em>Screenshots not available for this period — no Cloudinary snapshots found and credits at 0.</em></p>
-<p><a href="https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}">View before/after on PricingSaaS →</a></p>
+<p><a href="https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}">View before/after on PricingSaaS →</a></p>
 ```
 
 Call `create_update(itemId={item_id}, body="{html}")` after `create_item` returns the item ID. Run in parallel with any doc creation step.
@@ -169,9 +191,9 @@ Call `create_update(itemId={item_id}, body="{html}")` after `create_item` return
 
 | Workflow | Link |
 |----------|------|
-| Monitoring | `https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}` |
-| Company research (specific period pulled) | `https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}` |
-| Company research (no specific period) | `https://pricingsaas.com/pulse/companies/{slug}` |
+| Monitoring | `https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` |
+| Company research (specific period pulled) | `https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` |
+| Company research (no specific period) | `https://pricingsaas.com/companies/{slug}` |
 | Landscape scan | leave blank (`""`) |
 
 The `{period}` is always the period string passed to `get_company_history` or `get_diff_highlight` (e.g., `2026W12`, `2025Q1`). Strip any trailing dot from the slug in the URL (use `clay` not `clay.`).
@@ -255,7 +277,7 @@ If credits = 0: use the change type labels from `discovery_only` as the section 
 ```markdown
 # {Synthesised title — e.g. "Notion launches Custom Agents add-on, opens guest seats to unlimited"}
 
-**Source:** [View on PricingSaaS](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period})
+**Source:** [View on PricingSaaS](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period})
 
 ---
 
@@ -274,7 +296,7 @@ e.g. "Guest seat limits changed to Unlimited for Plus, Business, and Enterprise 
 [Open side-by-side comparison →]({compare-viewer URL})
 
 {If no images available:}
-[View before/after on PricingSaaS →](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period})
+[View before/after on PricingSaaS →](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period})
 *(Screenshots available with 1 credit — resets {reset_date})*
 
 ---
@@ -326,7 +348,7 @@ For landscape scans: one doc for the full scan with one section per company that
 
 ## Error handling
 
-- If `search` returns no board and `create_board` fails: skip logging silently, do not surface the error to the user
+- If `search` returns no board and `create_board` fails: say so in one line ("Couldn't create the Pricing Intelligence board — not logged") and continue. Never fail silently (CLAUDE.md, MCP connections).
 - If `create_item` fails for one company: continue with the others, note at the end: "Note: monday logging failed for {Company}."
 - If `create_doc` fails: note it briefly but do not retry
 - Never block the main pricing output waiting for logging to complete — deliver the pricing results first, log after

@@ -107,7 +107,7 @@ Exact additions for `playbooks/{surface}.md` — each tagged `[Verified]` / `[Re
 ## Formatting rules
 
 - Tables over prose for plan structures and landscape comparisons
-- Every company name links to `https://pricingsaas.com/pulse/companies/{slug}` on first mention
+- Every company name links to `https://pricingsaas.com/companies/{slug}` on first mention
 - Cite all enrichment sources with URLs — never present web findings as PricingSaaS data
 - Omit empty sections entirely — no "N/A" or "no data found" rows
 - Exec summary is always 3 bullets, always the first thing after the header

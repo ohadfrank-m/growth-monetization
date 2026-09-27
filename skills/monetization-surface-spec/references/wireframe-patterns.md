@@ -88,6 +88,58 @@ Reference for structural patterns when building wireframes. The **wireframe cont
 
 ---
 
+## Promotion (surface 3)
+
+### Pattern A: In-app promo banner or modal (real anchor, real end date)
+```
+[Banner, top of workspace — or a modal for a high-value offer, once per campaign:]
+  [Offer line: "{plan} for {N}% less — until {end_date}"]
+  [Anchor: ~~${list_price}/seat/mo~~  ${offer_price}/seat/mo · billed {cadence}]
+  [Terms: "For {duration} on {what it applies to}. Then ${list_price}/seat/mo."]
+  [Ends: "Offer ends {end_date}, {end_time} {timezone}" — a fixed date; no timer that restarts]
+  [CTA: "{benefit-led action}"]   [Link: "Offer terms"]   [Dismiss ×]
+  [IC variant: CTA → "Share with {admin}"; prices stay visible]
+```
+
+**States:**
+- Live: offer line, anchor, terms, end date
+- Final window: same layout, the end-date line promoted above the offer line
+- Expired (old link or cached view): regular price plus one line, "This offer ended {end_date}"
+- Holdout: no banner at all
+
+**Why it works:** The genuine list price sits beside the offer price, so the saving is visible and checkable. The end date is fixed, so the urgency is real and survives a reload. The terms line says what the user pays after the offer, which heads off bill shock at renewal.
+
+**Apply when:** An in-product offer the user didn't ask for: campaign, lifecycle moment, launch window. Use the modal only for a high-value, one-time offer, and never over an active task.
+
+### Pattern B: Discount applied at plan summary / checkout
+```
+[Plan summary:]
+  [Plan: {plan} · {seats} seats · billed {cadence}]
+  [{plan}, {seats} seats ....................................... ${list_total}]
+  [{offer_name} — {N}% off for {duration} ....................... −${discount}]
+  [Unused time on {current_plan} (mid-cycle change only) ........ −${credit}]
+  [Tax: {tax_line}]
+  [Total today .................................................. ${total_today}]
+  [Next bill: ${next_bill} on {next_bill_date}  ·  From {discount_end_date}: ${list_total}/{period}]
+  ["Have a code?" — collapsed link, only if codes are in scope]
+     [Code field → valid: discount line appears · invalid / expired / not eligible: one-line reason, price unchanged]
+  [CTA: "{confirm action} — ${total_today}"]   [Back]
+```
+
+**States:**
+- Auto-applied: the discount line is present on load
+- Code entered: valid / invalid / expired / not eligible / already used
+- No offer: the discount line is absent (no "$0 off" line)
+- Payment failed: inline reason plus retry; the discount stays applied
+
+**Why it works:** Every number that decides the charge is on one screen: list price, discount, proration credit, tax, total today, and the price after the offer ends. The user never discovers the post-promo price on the first full invoice. Keeping the code field collapsed stops users without a code from leaving to go and find one.
+
+**Apply when:** The user is already choosing a plan, or arrived with a promo link or code. Also the default layout for any plan summary, with or without a discount.
+
+---
+
+---
+
 ## Tier upgrade trigger (surface 4)
 
 ### Pattern A: Usage limit reached — inline
@@ -106,8 +158,8 @@ Reference for structural patterns when building wireframes. The **wireframe cont
 [Modal:]
   [Headline: "Add more team members"]
   [Current: "You have {N} seats — {N} are used"]
-  [Seat selector: [−] 3 [+] additional seats]
-  [Price: "+$X/month — billed {monthly/annually}"]
+  [Bundle selector: next bundle {N} seats — seats sell in bundles, not one at a time (monday-context.md)]
+  [Price: "{bundle_total}/month for {N} seats (+{delta} vs today) — billed {monthly/annually}"]
   [CTA: "Add seats"]  [Dismiss: "Not now"]
 ```
 
@@ -162,9 +214,77 @@ Reference for structural patterns when building wireframes. The **wireframe cont
 
 ---
 
+## Cancellation flow (surface 6)
+
+### Pattern A: Reason → one matched offer → confirm (multi-step)
+```
+[Step indicator: 1 Reason · 2 Your options · 3 Confirm]        [Every step: "Continue to cancel →"]
+
+[Screen 1 — Reason:]
+  [Header: acknowledges the decision — no guilt]
+  [Notice line, only if the contract has one: "Renews {renewal_date} · notice deadline {notice_date}"]
+  [Value recap: {N} boards · {N} automations · {N} agent runs this {period}]
+  [One question, single-select: {reason_1} … {reason_n} · Other (optional free text)]
+  [CTA: "Continue"]   [Link: "Keep my plan"]
+
+[Screen 2 — One offer, matched to the reason (skipped when the map says "none"):]
+  [Offer card: {offer} — {what changes} · from {effective_date} · {price_delta}]
+  [CTA: "{accept offer}"]   [Same-weight link: "No thanks, continue to cancel"]
+
+[Screen 3 — Confirm:]
+  [Plan ends {end_date}. You won't be charged again.]
+  [Data: "{retention rule}"  · [Export data]]
+  [Way back: "Change your mind before {end_date} — reactivate in one click"]
+  [CTA: "Cancel plan"]   [Link: "Keep my plan"]
+
+[After confirm — in-app banner until {end_date}:]
+  ["{plan} ends {end_date}" · [Reactivate]]
+```
+
+**States:**
+- Reason (1), offer (2), confirm (3), offer accepted (confirmation of what changed plus undo), after-state banner
+- Routing screen instead of step 1: non-admin (request to admin) or sales-assisted (account team, date, contact)
+- Error: the cancel didn't save; inline reason plus retry
+
+**Why it works:** One question and one offer that fits the answer, with the way out on every screen. The flow asks without trapping. A notice deadline shown before the offer stops the offer from reading as a way to dodge a renewal. The confirm screen answers the three questions people cancel with: when it ends, what happens to the data, and how to come back.
+
+**Apply when:** A self-serve admin cancels. The number of offers is fixed at one; the reasons and the reason → offer map come from the spec.
+
+### Pattern B: Downgrade confirmation with loss list (keep / lose / when)
+```
+[Modal or page — "Move to {lower_plan}":]
+  [When: "Changes on {effective_date}. Until then you keep everything in {current_plan}."]
+  [You keep — listed first:]
+    ✓ {kept_item}
+    ✓ {kept_item}
+  [What changes — from this account's usage, most-used first:]
+    ✕ {feature} — used on {N} boards → {read-only | switched off, not deleted | removed} on {effective_date}
+    ✕ {feature} — {N} runs this month → {what happens}
+  [Irreversible — only if any exist:]
+    ⚠ "{item} is deleted on {effective_date} and can't be restored on re-upgrade"  [Export]
+  [Price: ${current_price}/mo → ${new_price}/mo from {effective_date} · billed {cadence}]
+  [Precondition — only for seat reductions: "Deactivate {N} users first" → link to user management]
+  [CTA: "Schedule the change"]   [Secondary: "Keep {current_plan}"]
+  [Small: "Undo anytime before {effective_date}"]
+```
+
+**States:**
+- Default: keep list, loss list, price
+- Irreversible loss present: warning row plus export beside it
+- Precondition unmet: CTA disabled, precondition line first
+- Scheduled: confirmation with the effective date and undo
+
+**Why it works:** The keep list comes first, so the lower plan reads as a place to land rather than a punishment. The loss list uses the account's own usage, so it's specific and nothing is invented. Irreversible loss sits before the confirm button, where consent can still be given, and the effective date answers "when".
+
+**Apply when:** Downgrading to a lower tier or Free, reducing seats, or moving to a smaller credit package. Also the landing screen when a right-size offer is accepted in Pattern A.
+
+---
+
+---
+
 ## Trial flow (surface 7)
 
-### Pattern A: Trial expiry modal (day 7)
+### Pattern A: Trial expiry modal (final day)
 ```
 [Modal:]
   [Headline: "Your trial ends in 2 days"]
@@ -180,7 +300,7 @@ Reference for structural patterns when building wireframes. The **wireframe cont
 
 **Why it works:** Personalised loss list anchors the value they'll lose. Secondary CTA makes downgrade explicit — users don't feel trapped.
 
-### Pattern B: Mid-trial activation nudge (day 3)
+### Pattern B: Mid-trial activation nudge (Proof phase — see playbooks/trial-flows.md)
 ```
 [Non-blocking banner at top of workspace:]
 "You have {N} days left in your Pro trial — [Set up your first AI agent →]"

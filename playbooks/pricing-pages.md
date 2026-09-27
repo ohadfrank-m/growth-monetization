@@ -65,6 +65,23 @@ Credits need their own explanation, with task translation at the tier level — 
 
 When AI moves into a higher tier, the page must justify the jump on AI value, not on the other features in the bundle — see [case: notion-2025-ai-bundling](cases.md#notion-2025-ai-bundling).
 
+### Self-serve ceiling — where self-serve stops
+
+The largest team that can still buy by card decides which deals the pricing page closes and which it hands to sales. Where a vendor publishes no cap, it's recorded as "no published cap", not "unlimited".
+
+| Company | Max seats online | Contact-sales-only | Annual-only / payment gates | Security gate to Enterprise | Tag · Source (checked 2026-09-27) |
+|---|---|---|---|---|---|
+| Asana | No published cap; stepped increments continue above 500 users (in 50s) | Enterprise, Enterprise+ | AI Studio Pro only on annual; Starter and Advanced monthly or annual | SAML SSO and SCIM on Enterprise+ | [Verified] [Asana pricing](https://asana.com/pricing) · SSO/SCIM tier [Reported] via search of [Asana help](https://help.asana.com/s/article/authentication-and-access-management-options-for-paid-plans) |
+| ClickUp | No published cap | Enterprise ("Contact sales" / "Get a custom demo") | Bank transfer only for Enterprise orders above a minimum; upgrades apply to the whole Workspace | SAML SSO, SCIM, audit log, data residency, HIPAA on Enterprise | [Verified] [ClickUp pricing](https://clickup.com/pricing) |
+| Notion | No published cap | Enterprise ("Contact Sales") | — | SAML SSO on Business; SCIM, audit log, zero data retention with LLM providers on Enterprise | [Verified] [Notion pricing](https://www.notion.com/pricing) |
+| Airtable | No published cap; billed per workspace | Enterprise Scale (sales-led only); Business is self-serve or sales-led | Self-serve is card only; PO/ACH/wire/check only on Enterprise | Not stated on the pricing page | [Verified] [Airtable pricing](https://airtable.com/pricing) · [plans overview](https://support.airtable.com/articles/2277136852-airtable-plans-overview) |
+| Smartsheet | **Pro: 1–10 members max**; Business: 3+ members | Enterprise ("10+ Members", "Contact us"), Advanced Work Management | Pro and Business monthly or yearly | SAML SSO and directory integrations on Enterprise | [Verified] [Smartsheet pricing](https://www.smartsheet.com/pricing) |
+| Atlassian (Jira) | Free up to 10 users; **Standard and Premium self-serve up to 100,000 users** | Enterprise (contact form) | **Enterprise annual-only**; annual user tiers locked for the term; 1,000+ user migrations routed to an account executive | Enterprise adds a 99.95% SLA and multiple instances | [Verified] [Jira plans](https://support.atlassian.com/jira-cloud-administration/docs/explore-jira-cloud-plans/) · [Atlassian licensing](https://www.atlassian.com/licensing/cloud) |
+
+monday.com: see seat bundles and the sales-assisted threshold in [monday-context.md](../context/monday-context.md).
+
+What the data suggests (inference, not a finding): monday's online ceiling looks like the lowest in this set. Smartsheet Pro's 10-member band is lower, but Smartsheet Business has no cap, so a team one seat past monday's largest bundle hits sales at monday while it could still buy by card at Asana, ClickUp, Notion or Jira. Question for the pricing owner: is that a deliberate sales-led gate, or friction the page should remove?
+
 ### Mobile
 
 - The recommended plan first in the stacked cards, not in the middle.
@@ -200,6 +217,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 | A billing-model change explained unclearly | Trust collapse, refunds | [case: cursor-2025-pricing](cases.md#cursor-2025-pricing) |
 | Social proof only at the bottom | Misses the buyer hesitating at the CTA | Common |
 | "Contact sales" as the only Enterprise path | Loses mid-market teams that would self-serve | Common |
+| Comparison table with no locked first column on mobile | Users lose which row they're reading; the table stops being a comparison | Most SaaS products — see [NN/g, mobile tables](https://www.nngroup.com/articles/mobile-tables/) [Verified] |
 
 ## monday.com-specific notes
 
@@ -222,3 +240,4 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - Figma credits: https://help.figma.com/hc/en-us/articles/33459875669015-How-AI-credits-work · https://www.vibecodingacademy.ai/blog/figma-ai-credits-everything-you-need-to-know
 - Notion: https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents · https://www.notion.com/help/2025-pricing-changes
 - Apple HIG: https://developer.apple.com/design/human-interface-guidelines/buttons
+- Self-serve ceiling (2026-09-27): https://asana.com/pricing · https://help.asana.com/s/article/authentication-and-access-management-options-for-paid-plans (seen via search; Reported) · https://clickup.com/pricing · https://www.notion.com/pricing · https://airtable.com/pricing · https://support.airtable.com/articles/2277136852-airtable-plans-overview · https://www.smartsheet.com/pricing · https://support.atlassian.com/jira-cloud-administration/docs/explore-jira-cloud-plans/ · https://www.atlassian.com/licensing/cloud

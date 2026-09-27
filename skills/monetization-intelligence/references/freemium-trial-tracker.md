@@ -3,13 +3,15 @@
 Detect when a company changes their free tier limits, trial structure, or freemium-to-paid conversion mechanics. These moves are among the highest-signal pricing events in PLG companies — they directly affect acquisition volume, time-to-value, and conversion rates. They often don't appear as "price changes" in monitoring tools because the list price doesn't change, yet the monetization impact can be enormous.
 
 **Examples of what this detects:**
-- Free tier block/seat/feature limit cut (e.g., Notion: unlimited blocks → 1,000 for teams)
+- Free tier block/seat/feature limit cut (e.g., {Company}: {old limit} → {new limit} on {plan}, {date} [tag, source])
 - Trial length change (30 days → 14 days, or gated → ungated)
 - Credit card requirement added or removed from trial signup
 - Reverse trial introduced (full paid features → free tier at trial end)
 - Freemium plan removed entirely
 - Feature moved from free tier to paid only
 - New free tier added to a previously paid-only product
+
+Read [playbooks/trial-flows.md](../../../playbooks/trial-flows.md) first — it owns trial phases and trial benchmarks. Add to it; don't re-derive them here.
 
 ## When to run
 
@@ -89,7 +91,8 @@ Community discussions often surface free tier changes days or weeks before they 
 ### Wayback Machine — before/after the change
 ```
 WebFetch(url="https://archive.org/wayback/available?url={domain}/pricing&timestamp={YYYYMMDD-of-change}")
-WebFetch(url="https://web.archive.org/web/{snapshot-timestamp}/{domain}/pricing")
+# Snapshot fetch needs Bash — WebFetch can't reach web.archive.org (enrichment.md Method 1):
+curl -s -A "Mozilla/5.0" "https://web.archive.org/web/{snapshot-timestamp}/https://{domain}/pricing"
 ```
 
 Fetch a snapshot from just before and just after the detected change period to show the exact limit values that changed.
@@ -132,7 +135,7 @@ Once you have the current structure and any detected changes, classify the strat
 
 **Before:** {what the free tier / trial looked like}
 **After:** {what it looks like now}
-**Source:** [PricingSaaS diff](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}) · {changelog link if found}
+**Source:** [PricingSaaS diff](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}) · {changelog link if found}
 
 {If community reaction found:}
 **Community reaction:** {tone, key quotes, source links}
@@ -172,11 +175,11 @@ When called for a category or watchlist sweep, run `get_company_details` for all
 
 ## Step 7: Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Company} — Freemium Change`
 - Summary: Move type + specific change (e.g., "Free tier guest limit cut from unlimited → 10. Monetizing existing free base.")
-- PricingSaaS link: `https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}` if a diff was pulled
+- PricingSaaS link: `https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` if a diff was pulled
 - Workflow: `freemium-trial-tracker`
 
 Only log when an actual change is confirmed — not when the current structure is simply documented with no change detected.

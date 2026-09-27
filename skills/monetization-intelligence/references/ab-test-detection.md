@@ -1,11 +1,11 @@
 # A/B test detection workflow
 
-Detect when a competitor is actively testing their pricing page. The primary method is scanning the live page source for A/B testing tool signatures — this works for every company regardless of archive access. Archive frequency analysis (Wayback CDX) is used as a secondary signal when available, but the CDX API is frequently blocked (403) for large SaaS companies, so it is never the first or only approach.
+Detect when a competitor is actively testing their pricing page. The primary method is scanning the live page source for A/B testing tool signatures — this works for every company regardless of archive access. Archive frequency analysis (Wayback CDX) is used as a secondary signal when available — it needs Bash `curl` (WebFetch can't reach web.archive.org) and is rate-limited, so it is never the first or only approach.
 
 ## When to run
 
 - User asks: "is X testing their pricing page", "is X A/B testing pricing", "check for pricing page experiments at X", "which competitors are actively changing their pricing page"
-- Automatically as part of company-research — the pricing page fetch from the teardown step already gives you the content needed for Step 1 below at zero extra cost
+- Automatically as part of company-research — run the Step 1 curl scan on the pricing page URL from the teardown step, at zero extra cost
 - As part of the weekly digest (run for top 3–5 watchlist companies in parallel)
 - As a follow-up after monitoring detects a change: "Want me to check if they're actively testing the page presentation around this change?"
 
@@ -17,23 +17,25 @@ Run signals in this order. Stop when you have enough confidence for a clear clas
 
 | Priority | Signal | Reliability | Always available? |
 |----------|--------|-------------|-------------------|
-| 1 | A/B testing tool signatures in live page source | Very High | Yes — page fetch works for all companies |
+| 1 | A/B testing tool signatures in live page source | Very High | Usually — needs Bash `curl` (raw HTML); some sites return a Cloudflare challenge |
 | 2 | BuiltWith technology stack lookup | High | Yes — public lookup |
 | 3 | Wayback Availability API (single-call, lightweight) | Medium | Usually (lighter than CDX) |
 | 4 | CRO / Growth Engineering job postings | Medium (leading indicator) | Yes — WebSearch |
-| 5 | Wayback CDX API (frequency analysis) | High when it works | No — blocked for most large SaaS |
+| 5 | Wayback CDX API (frequency analysis) | High when it works | Only via Bash `curl`; rate-limited (429) |
 
 ---
 
 ## Step 1: Fetch the pricing page and scan for testing tool signatures
 
-If the pricing page was already fetched as part of company-research or teardown, reuse that content. Otherwise:
+**Scan the raw HTML, not WebFetch output.** WebFetch converts pages to markdown and drops `<script>` tags, so it can't see testing tools. On 2026-09-27, raw asana.com/pricing contained "optimizely" 26 times, and WebFetch on the same URL reported none. Use Bash:
 
-```
-WebFetch(url="https://{domain}/pricing")
+```bash
+curl -s -L -A "Mozilla/5.0 (Macintosh) Chrome/126" "https://{domain}/pricing" \
+  | grep -o -i -E 'optimizely|statsig|launchdarkly|_vwo_|vwo\.com|abtasty|growthbook|posthog|kameleoon|split\.io|splitio|eppo|@amplitude/experiment|amplitude-experiment|monetate|unleash|flagsmith|configcat' \
+  | tr 'A-Z' 'a-z' | sort | uniq -c
 ```
 
-Once you have the page content, scan the full text (including any visible script tags, data attributes, or embedded JSON) for these signatures. Search case-insensitively.
+A bare `amplitude` match is usually analytics, not experimentation. Count it only if `experiment` appears with it. Some sites (ClickUp help, G2) return a Cloudflare challenge to curl. Record that as "not scannable", which isn't a signal. Without Bash, go straight to Step 2 (BuiltWith) and say page-source scanning wasn't possible.
 
 ### A/B testing tools
 
@@ -42,14 +44,15 @@ Once you have the page content, scan the full text (including any visible script
 | `optimizely` | Optimizely | Enterprise-grade A/B testing; if present, tests are almost certainly running |
 | `_vwo_` or `vwo.com` | Visual Website Optimizer | Popular mid-market testing tool |
 | `abtasty` | AB Tasty | Common in European SaaS |
-| `statsig` | Statsig | Very common in PLG/product-led companies (Notion, Figma, etc.) |
+| `statsig` | Statsig (acquired by OpenAI Sep 2025; platform and customers reportedly moved to Amplitude May 2026) | Common in PLG companies. Ownership is `[Reported]` ([Statsig blog](https://www.statsig.com/blog/openai-acquisition); [MarTech](https://martech.org/amplitude-and-statsig-deal-raises-questions-for-customers/)) |
 | `launchdarkly` | LaunchDarkly | Feature flags often used to gate pricing variants |
-| `split.io` or `splitio` | Split.io | Feature flag + experiment platform |
+| `split.io` or `splitio` | Split (Harness since June 2024) | Feature flag + experiment platform ([Harness](https://www.harness.io/press-and-news/harness-completes-acquisition-of-split-software)) |
+| `eppo` | Eppo | Warehouse-native experimentation |
 | `amplitude-experiment` or `@amplitude/experiment` | Amplitude Experiments | Used by companies already on Amplitude analytics |
 | `growthbook` | GrowthBook | Open-source; common in engineering-led companies |
 | `posthog` | PostHog | Open-source; popular with startups |
 | `kameleoon` | Kameleoon | Enterprise testing, common in France/EU |
-| `google-optimize` or `gtag.*optimize` | Google Optimize (deprecated) | Occasionally still running on older setups |
+| `google-optimize` or `gtag.*optimize` | Google Optimize — **sunset 30 Sep 2023** | A leftover tag, not an active test ([Google](https://support.google.com/analytics/answer/12979939)) |
 | `monetate` | Monetate | Enterprise personalization + testing |
 
 ### Feature flag / experimentation platforms (also count)
@@ -92,7 +95,7 @@ WebSearch(query='"{domain}" Optimizely OR VWO OR Statsig OR LaunchDarkly OR "AB 
 
 ## Step 3: Wayback Availability API (lightweight archive check)
 
-Unlike the CDX API (which is frequently blocked), the Availability API is a single lightweight call:
+Unlike the CDX API (Bash `curl` only), the Availability API is a single lightweight call that works through WebFetch. It can return `{}` even when captures exist, so an empty result isn't evidence:
 
 ```
 WebFetch(url="https://archive.org/wayback/available?url={domain}/pricing")
@@ -137,11 +140,12 @@ Cross-reference the PricingSaaS diff history with any signals found above to dis
 
 ## Step 6: Wayback CDX (frequency analysis — when available)
 
-Only attempt this if Steps 1–4 gave ambiguous results and you want to validate. The CDX API is blocked for most large SaaS companies (returns 403).
+Only attempt this if Steps 1–4 gave ambiguous results and you want to validate.
 
+```bash
+curl -s -A "Mozilla/5.0" "https://web.archive.org/cdx/search/cdx?url={domain}/pricing&output=json&fl=timestamp,statuscode&filter=statuscode:200&from={90-days-ago-YYYYMMDD}&to={today-YYYYMMDD}&limit=200"
 ```
-WebFetch(url="https://web.archive.org/cdx/search/cdx?url={domain}/pricing&output=json&limit=50&fl=timestamp,statuscode&filter=statuscode:200&from={90-days-ago-YYYYMMDD}&to={today-YYYYMMDD}")
-```
+(Bash, not WebFetch — WebFetch can't reach web.archive.org. A 429 is rate limiting, not a signal.)
 
 If it works, parse the response: count snapshots per 30-day window and look for dense clusters (5+ snapshots in a single week = active test signal).
 
@@ -157,7 +161,7 @@ If it works, parse the response: count snapshots per 30-day window and look for 
 
 Clustering matters more than raw count: 5 snapshots spread over 90 days = low signal. 5 snapshots in one week = high signal.
 
-If CDX returns 403: note it, skip this step entirely. Do not treat the 403 as a finding.
+If CDX returns 403 or 429 (or Bash isn't available): note it, skip this step entirely. Do not treat it as a finding.
 
 ---
 
@@ -226,11 +230,11 @@ If CDX returns 403: note it, skip this step entirely. Do not treat the 403 as a 
 If the signal is Medium or above, offer to fetch an earlier version of the page from Wayback to show what already changed:
 
 ```
-# Most recent available snapshot (from Availability API result)
-WebFetch(url="https://web.archive.org/web/{recent-timestamp}/{domain}/pricing")
+# Most recent available snapshot (from Availability API result) — Bash, not WebFetch
+curl -s -A "Mozilla/5.0" "https://web.archive.org/web/{recent-timestamp}/https://{domain}/pricing"
 
 # Earlier snapshot for comparison (try 30–60 days prior)
-WebFetch(url="https://web.archive.org/web/{earlier-timestamp}/{domain}/pricing")
+curl -s -A "Mozilla/5.0" "https://web.archive.org/web/{earlier-timestamp}/https://{domain}/pricing"
 ```
 
 Diff the two versions and present as a before/after table:
@@ -248,7 +252,7 @@ If Wayback snapshots are unavailable, offer the pricing page teardown as an alte
 
 ## Step 9: Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Company} — A/B Test Signal`
 - Summary: Tool detected + classification + one-line on what's likely being tested
@@ -264,10 +268,9 @@ Only log if signal level is Medium or above. Low/None signals don't need a monda
 When called as part of the weekly digest, run all page fetches and BuiltWith lookups in parallel:
 
 ```
-# Fetch all pricing pages simultaneously:
-WebFetch(url="https://{company1-domain}/pricing")
-WebFetch(url="https://{company2-domain}/pricing")
-WebFetch(url="https://{company3-domain}/pricing")
+# Run the Step 1 curl signature scan for each domain simultaneously (raw HTML, not WebFetch):
+curl -s -L -A "Mozilla/5.0 (Macintosh) Chrome/126" "https://{company1-domain}/pricing" | grep -o -i -E '{signature regex from Step 1}' | sort | uniq -c
+curl -s -L -A "Mozilla/5.0 (Macintosh) Chrome/126" "https://{company2-domain}/pricing" | grep -o -i -E '{signature regex from Step 1}' | sort | uniq -c
 
 # BuiltWith lookups simultaneously:
 WebSearch(query='site:builtwith.com "{company1-domain}"')

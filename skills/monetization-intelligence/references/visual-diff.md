@@ -104,7 +104,7 @@ From the response:
 
 ## Step 3: Embed in the monday doc
 
-Once you have at least one Cloudinary URL (both from browser path; after-only from `get_diff_highlight`), pass this to `add_content_to_doc`:
+Once you have at least one Cloudinary URL (both from the Cloudinary probe; after-only from `get_diff_highlight`), pass this to `create_doc` (new doc) or `update_doc` (existing doc):
 
 ```markdown
 ### Visual diff — {period}
@@ -127,7 +127,7 @@ If only the after image is available (from `get_diff_highlight`):
 
 ![Pricing page — after change ({label_after})]({cloudinary_after})
 
-[View full diff on PricingSaaS →](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period})
+[View full diff on PricingSaaS →](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period})
 ```
 
 **Note on rendering:** Monday Workdocs render external images inline when the URL is publicly accessible. Cloudinary URLs are public — images should appear directly in the doc. If the image renders as a link instead of an inline image, the compare-viewer link still provides the visual.
@@ -143,7 +143,7 @@ Add a clearly labelled visual placeholder to the doc:
 
 *Screenshots not available — PricingSaaS credits at 0 and browser MCP not active.*
 
-[View before/after on PricingSaaS →](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period})
+[View before/after on PricingSaaS →](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period})
 *(Unlock with {N} credit when available — resets {reset_date})*
 ```
 
