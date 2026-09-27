@@ -25,6 +25,7 @@ Accept any of the following as input:
 - **Screenshot or image** — analyze the existing design, then spec it
 - **Existing partial spec** — fill the gaps and produce the wireframe
 - **Benchmark output** — from `monetization-intelligence`, translate findings directly into a surface spec
+- **Journey map** — `00-journey.md` from `monetization-journey-map`: the scenarios, the steps and the wireframe state ids come from it (see the flow map rule in Step 4). Read it before anything else when it exists
 
 When input is minimal (just a surface name), run the brief intake before proceeding — don't produce a spec from vague input.
 
@@ -108,6 +109,8 @@ Apply monday.com context from [monday-context.md](../../context/monday-context.m
 
 **Flow map — every surface is a journey, not a screen.** Monetization surfaces rarely live on one screen: cancel → reason → save offer → confirmation; limit hit → upgrade prompt → checkout → back to work. Map the journey before the layout:
 
+- **When `00-journey.md` exists, the journey owns the steps.** The flow map is its on-surface and hand-off rows, in order, each cited by J#, with the journey's friction → reduction carried over. Don't re-derive or reorder them. User context lists the journey's scenarios (S1…Sn) with their frequencies, and the scenario-ranked primary edge cases are treated as main paths. If the spec needs a step the journey lacks, add it as `J{n}+` and say why, so the journey can be updated.
+
 - **Multi-screen surfaces** (cancellation, upgrade → checkout, trial start and expiry, credit top-up, paywall → trial start): a flow map table, one row per screen, in order — `# · Screen · Purpose · Key elements · Arrives from · Goes to (incl. abandon) · Friction point · Reduction`. Every screen names its friction point — where a user is likely to hesitate, get confused, or drop off — and the design choice that reduces it. If a screen truly has none, write "none" and why.
 - **Single-screen surfaces** (a banner, an inline gate): one line naming the screen before (what the user was doing) and the screen after (where each action lands), with the friction at the hand-off.
 - If a surface benchmark exists for this surface, build the flow map from its "Flow implications for the spec" and cite the competitors each screen borrows from.
@@ -142,7 +145,7 @@ Produce a low-fi HTML wireframe that follows the **wireframe contract** below. T
 | **File** | One self-contained `.html` — inline CSS and JS, no external assets, readable in light and dark mode |
 | **Header comment** | The artifact header fields, plus `Built from:` (which spec and copy versions) and, in revision mode, `fix-loop pass:` and `Fixes:` (the review rows applied) |
 | **Copy** | Every visible string is the ★ Recommended option from the latest copy version, verbatim. Slots stay as `{slot}`; sample values (names, counts) are allowed only if the annotation panel says they're samples |
-| **States** | Every state the spec defines (e.g. healthy / warning / critical / depleted, default / non-admin / trial-used), each reachable from a **state switcher** row of buttons at the top **and** from the URL hash — `03-wireframe.html#critical` opens that state, so each can be rendered for review without clicking |
+| **States** | Every state the spec defines (e.g. healthy / warning / critical / depleted, default / non-admin / trial-used), each reachable from a **state switcher** row of buttons at the top **and** from the URL hash — `03-wireframe.html#critical` opens that state, so each can be rendered for review without clicking. When `00-journey.md` exists, every on-surface J step's **Wireframe state** id is a state here with exactly that id: the journey board embeds `03-wireframe.html#{id}` |
 | **Hierarchy** | Sections in the spec's top-to-bottom order; the primary CTA is the only filled button on screen |
 | **Escape hatch** | Always visible in every state that asks for anything |
 | **Flow strip** | Multi-screen surfaces show the screens as a left-to-right sequence with arrows between them, in flow-map order, above or instead of the state switcher (each screen still opens by URL hash). Abandon paths are drawn as a branch off the step where they happen |

@@ -45,6 +45,7 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 | Cohort (new vs existing) | Changes which hook and urgency lever are right | Surface type, copy on screen ("trial", "your plan") |
 | Goal or metric | "Fix conversion" vs "fix complaints" re-ranks the fix list | The prompt's problem statement |
 | Single screen vs full flow | Timing and friction can't be judged from one screen | Number of screens shared; ask for the rest only if timing is the question |
+| Journey map (optional) | Enables the scenario walkthrough | `00-journey.md` / `03-journey.html` in the feature folder; never ask for one |
 | Review only vs fix + requirements | Whether the Review → Fix → Synthesize chain runs after | "just score", "review only" → review only; otherwise the chain |
 
 ### Figma ingestion (preferred path)
@@ -137,6 +138,21 @@ Column rules:
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
 **Judge friction per touchpoint.** When the spec has a flow map, score Friction & flow screen by screen: for each touchpoint, check whether the named friction is real on the design and whether its reduction was actually applied. A reduction that's in the spec but not on screen is a row.
+
+**Scenario walkthrough — when `00-journey.md` exists.** Before writing the fix table, walk every scenario through the design, step by step along its path (J#s), using the journey board `03-journey.html#S{n}` or the wireframe states. This is a cognitive walkthrough ([NN/g](https://www.nngroup.com/articles/cognitive-walkthroughs/)). At each step, answer the four questions for that persona:
+
+1. Will they try to do the right thing (does the step match their goal and state of mind)?
+2. Will they see the control that does it?
+3. Will they recognise it as the thing that does what they want?
+4. Once they act, will they understand what happened?
+
+Write the result as a table under the rubric: `Scenario · Path · Step where it breaks (J#) · Which question failed · End state reached?`.
+
+- A scenario that can't reach its end state is a 🔴 row (Category: Structure).
+- A "no" on questions 2–4 is a row at the severity its frequency justifies. Use the journey's sizing: a failure in the most frequent scenario outranks the same failure in a rare one.
+- Fix path is `wireframe` for a missing or unclear control, `spec` for a missing state, and `copy` when question 3 fails on the words.
+- Score Timing and Value clarity against each scenario's trigger and goal, not a generic user.
+- Without a journey file, skip this section with one line ("no journey map — scenario walkthrough not run"), not an error.
 
 ### One alternative worth testing
 
@@ -244,6 +260,7 @@ Before returning the review, verify all of the following. If any fail, fix befor
 14. **One alternative worth testing** is present, with its goal, evidence, and test.
 15. **When a flow map exists, Friction & flow was judged per touchpoint** — every screen's named friction checked on the design, and every reduction in the spec that isn't on screen is a row.
 16. **Every row has a Fix path**, and `blocked` is used only when the fix truly needs a fact or decision not in `monday-context.md` or the artifacts.
+17. **When `00-journey.md` exists, every scenario was walked** through the design, the walkthrough table is present, and every scenario that fails to reach its end state is a 🔴 row.
 
 ---
 
