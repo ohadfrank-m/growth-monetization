@@ -192,6 +192,7 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 | Silent degradation in an agent flow | The task quietly gets worse or stops; state is lost | Risk flagged by ChatGPT's fallback [Reported] |
 | Full pricing page at seat expansion | The user needs seats, not a plan re-evaluation | Common |
 | Guest auto-converted to paid without admin action | Bill shock, broken trust | ClickUp [Reported] |
+| Decline or close control under 24×24 CSS px, or below the fold on mobile | The "no" path fails WCAG 2.2 AA and reads as obstruction | Most SaaS products — floor per [WCAG 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) [Verified] |
 
 ## Copy bank — upgrade triggers
 

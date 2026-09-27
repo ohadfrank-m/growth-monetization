@@ -228,6 +228,7 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 | Hard-blocking modal mid-workflow | Destroys momentum | Common |
 | Generic "This feature requires Pro" with no outcome | Functional, not motivating | Common |
 | Promising "unlimited" when the tier is capped | A broken promise at the moment of purchase | Risk for monday — Pro automations are 25,000/mo, not unlimited |
+| Decline or close control under 24×24 CSS px, or below the fold on mobile | The "no" path fails WCAG 2.2 AA and reads as obstruction | Most SaaS products — floor per [WCAG 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) [Verified] |
 
 ## monday.com-specific notes
 

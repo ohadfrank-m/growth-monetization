@@ -200,6 +200,7 @@ Mandatory reference set for every playbook. Each teardown follows the same shape
 | A billing-model change explained unclearly | Trust collapse, refunds | [case: cursor-2025-pricing](cases.md#cursor-2025-pricing) |
 | Social proof only at the bottom | Misses the buyer hesitating at the CTA | Common |
 | "Contact sales" as the only Enterprise path | Loses mid-market teams that would self-serve | Common |
+| Comparison table with no locked first column on mobile | Users lose which row they're reading; the table stops being a comparison | Most SaaS products — see [NN/g, mobile tables](https://www.nngroup.com/articles/mobile-tables/) [Verified] |
 
 ## monday.com-specific notes
 
