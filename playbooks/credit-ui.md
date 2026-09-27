@@ -23,7 +23,7 @@ Credits create a different anxiety than seat limits: users fear running out *mid
 | Critical | 5% left (95% used) | Persistent banner | Says what stops next and when it refills |
 | Depleted | 0 | Inline in the feature, never a blocking modal in an agent flow | Names what stopped, saves the work, offers the paths |
 
-These match monday's admin alerts at 80% and 100% ([monday-context.md](../context/monday-context.md)). They're a convention, not a tested optimum — A/B test before treating them as tuned. States must differ without colour too (pattern, glyph, border weight), so they read for colour-blind users and in low-fi wireframes.
+These match monday's admin alerts at 80% and 100% ([monday-context.md](../context/monday-context.md)). Other ladders in the market: HubSpot alerts at 75/85/90/100% [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)]; Atlassian Rovo at 80/100% [Verified — [Rovo credits](https://support.atlassian.com/rovo/docs/rovo-usage-limits/)]. They're a convention, not a tested optimum — A/B test before treating them as tuned. States must differ without colour too (pattern, glyph, border weight), so they read for colour-blind users and in low-fi wireframes.
 
 ### Task translation is mandatory
 
@@ -60,7 +60,7 @@ Rate-based framing ("at this pace you'll run out around {date}") turns awareness
 
 ### Admin controls
 
-HubSpot lets Super Admins and Billing Admins set account, feature and action-level limits; at a limit, features pause until the next cycle, and by default usage pauses when included credits run out — overage is opt-in [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)]. Cursor's team spend limits stop on-demand usage at the cap [Verified — [Cursor help](https://cursor.com/help/account-and-billing/spend-limits)]. Caps remove the fear that makes admins switch AI off pre-emptively. monday already ships caps: admins can set limits account-wide, per capability (Hard or Soft) and per user or department ([monday-context.md](../context/monday-context.md)). The surface gap is making those limits visible to the IC who hits one — say which limit stopped them and who set it.
+HubSpot lets Super Admins and Billing Admins set account, feature and action-level limits; at a limit, features pause until the next cycle, and by default usage pauses when included credits run out — overage is opt-in [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)] — but once a capacity pack is bought, the default flips to an auto-upgrade for the rest of the term; see [case: hubspot-2025-credits-ratchet](cases.md#hubspot-2025-credits-ratchet). Cursor's team spend limits stop on-demand usage at the cap [Verified — [Cursor help](https://cursor.com/help/account-and-billing/spend-limits)]. Caps remove the fear that makes admins switch AI off pre-emptively. monday already ships caps: admins can set limits account-wide, per capability (Hard or Soft) and per user or department ([monday-context.md](../context/monday-context.md)). The surface gap is making those limits visible to the IC who hits one — say which limit stopped them and who set it.
 
 ### Top-up and package choice
 
@@ -271,3 +271,4 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - Salesforce: https://www.salesforce.com/news/press-releases/2025/05/15/agentforce-flexible-pricing-news/
 - Airtable: https://support.airtable.com/articles/3378106230-airtable-ai-billing
 - Replit / PostHog / Clay: https://www.lowcode.agency/blog/replit-pricing-explained · https://posthog.com/docs/billing/pre-paid-plans · https://university.clay.com/docs/credit-usage
+- Rovo credits (2026-09-27): https://support.atlassian.com/rovo/docs/rovo-usage-limits/

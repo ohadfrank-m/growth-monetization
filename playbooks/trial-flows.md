@@ -10,19 +10,26 @@ A trial exists to get the user to one activation milestone before the clock or t
 
 | Metric | Number | Tag | Applies to | Source | Checked |
 |---|---|---|---|---|---|
-| Free-to-paid, free trial, **no card** (50th / 75th percentile, within 6 months) | 4–6% / 10–15% | [Verified] | B2B SaaS | [ChartMogul × Kyle Poyar, SaaS Conversion Report 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-26 |
-| Free-to-paid, free trial, **card required** (50th / 75th) | 25–35% / 50–60% | [Verified] | B2B SaaS | [ChartMogul 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-26 |
-| Most common trial length | 14 days (62% of products; 7 and 30 days 14% each) | [Verified] | B2B SaaS | [ChartMogul 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-26 |
-| Trial-to-paid, opt-in (no card) vs opt-out (card), organic | 18.2% vs 48.8% | [Verified] | mixed | [First Page Sage, Sept 2025](https://firstpagesage.com/seo-blog/saas-free-trial-conversion-rate-benchmarks/) | 2026-09-26 |
-| Activation rate, SaaS (median / average; each company defines activation) | 30% / 36% | [Verified] | mixed | [Lenny's Newsletter activation survey, 2022](https://www.lennysnewsletter.com/p/what-is-a-good-activation-rate) | 2026-09-26 |
-| Time to value, best-in-class (90th percentile) | 0.2 days | [Verified] | mixed | [Pendo Product Benchmarks](https://www.pendo.io/product-benchmarks/) | 2026-09-26 |
-| Trial-to-paid by length (median): ≤4d / 5–9d / 17–32d | 25.5% / 37.4% / 42.5% | [Verified] | mobile app | [RevenueCat State of Subscription Apps 2026](https://www.revenuecat.com/state-of-subscription-apps) | 2026-09-26 |
-| Trial-to-paid by length, monthly plans: ≤4d / 5–9d / 10–16d / 17–32d | 39.6% / 45.9% / 46.6% / 43.7% | [Verified] | mobile app | [RevenueCat, free-trial length](https://www.revenuecat.com/blog/growth/free-trial-length) | 2026-09-26 |
+| Free-to-paid, free trial, **no card** (50th / 75th percentile, within 6 months) | 4–6% / 10–15% | [Verified] | B2B SaaS | [ChartMogul × Kyle Poyar, SaaS Conversion Report 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-27 |
+| Free-to-paid, free trial, **card required** (50th / 75th) | 25–35% / 50–60% | [Verified] | B2B SaaS | [ChartMogul 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-27 |
+| Most common trial length | 14 days (62% of products; 7 and 30 days 14% each) | [Verified] | B2B SaaS | [ChartMogul 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-27 |
+| Trial-to-paid, opt-in (no card) vs opt-out (card), organic | 18.2% vs 48.8% | [Verified] | mixed | [First Page Sage, Sept 2025](https://firstpagesage.com/seo-blog/saas-free-trial-conversion-rate-benchmarks/) | 2026-09-27 |
+| Activation rate, SaaS (median / average; each company defines activation) | 30% / 36% | [Verified] | mixed | [Lenny's Newsletter activation survey, 2022](https://www.lennysnewsletter.com/p/what-is-a-good-activation-rate) | 2026-09-27 |
+| Time to value, best-in-class (90th percentile) | 0.2 days | [Verified] | mixed | [Pendo Product Benchmarks](https://www.pendo.io/product-benchmarks/) | 2026-09-27 |
+| Trial-to-paid by length (median): ≤4d / 5–9d / 17–32d | 25.5% / 37.4% / 42.5% | [Verified] | mobile app | [RevenueCat State of Subscription Apps 2026](https://www.revenuecat.com/state-of-subscription-apps) | 2026-09-27 |
+| Trial-to-paid by length, monthly plans: ≤4d / 5–9d / 10–16d / 17–32d | 39.6% / 45.9% / 46.6% / 43.7% | [Verified] | mobile app | [RevenueCat, free-trial length](https://www.revenuecat.com/blog/growth/free-trial-length) | 2026-09-27 |
+| Free-to-paid, reverse trial (50th / 75th percentile) | 4–6% / 8–12% | [Verified] | B2B SaaS | [ChartMogul 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-27 |
+| Spread of self-serve conversion, top 20% vs bottom 20% of products | ~10x | [Verified] | B2B SaaS | [Growth Unhinged, 2026 free-to-paid report](https://www.growthunhinged.com/p/free-to-paid-conversion-report) | 2026-09-27 |
+| Activation rate, product-led vs sales-led (547 SaaS companies, Userpilot customers, 2024) | 34.6% vs 41.6% | [Verified] | B2B SaaS | [Userpilot Product Metrics Benchmark Report 2024](https://userpilot.com/blog/product-metrics-benchmark-report/) | 2026-09-27 |
+| Onboarding checklist completion rate (average) | 19.2% | [Verified] | B2B SaaS | [Userpilot 2024](https://userpilot.com/blog/product-metrics-benchmark-report/) | 2026-09-27 |
+| Time to value, product-led vs sales-led (average) | 1 day 12 h vs 1 day 11 h | [Verified] | B2B SaaS | [Userpilot 2024](https://userpilot.com/blog/product-metrics-benchmark-report/) | 2026-09-27 |
 
 How to read these:
 - **The two no-card figures differ ~3x** (ChartMogul median 4–6% vs First Page Sage 18.2%) because they measure different things: a self-reported survey of 200 B2B products over a 6-month window vs one agency's client book (86 companies, 71% B2B) measured trial-to-paid. Cite both; never average them or quote one alone.
 - **monday's trial is no-card**, so the no-card rows are the comparison, not the card-required ones (inference from [monday-context.md](../context/monday-context.md#trial)).
 - **Mobile rows are directional only.** The two RevenueCat cuts disagree on whether longer trials win; neither can set monday's B2B trial length.
+- **Activation, three sources, three definitions.** Lenny's SaaS median (30%), Userpilot's PLG average (34.6%) and Pendo's time to value are each measured against every company's own milestone. They bound what "normal" looks like; none sets monday's target. Userpilot's sample is its own customer base, which is self-selected.
+- **A checklist is not the milestone.** Average checklist completion is 19.2%, so four in five users never finish one. Phase 1 should point at one action, not a list (inference from the number).
 - **Dropped as unsourced:** "OpenView 2025" 14.7% (OpenView closed in Dec 2023), ChurnZero 52% day-7–14 disengagement, Gainsight 2.7x for 3+ features, Totango 61% email-only, Pulseahead "4x behavioural triggers" and "~1% by day 14". None traces to an openable report with a method.
 
 ## Patterns
@@ -273,3 +280,4 @@ Checked 2026-09-26 unless noted.
 - Cursor (2026-09-25): https://cursor.com/pricing · https://www.nxcode.io/resources/news/is-cursor-ai-free-plans-limits-worth-upgrading-2026
 - AI-native set: see its Sources block above
 - monday: [context/monday-context.md](../context/monday-context.md) · https://support.monday.com/hc/en-us/articles/360010594079-All-about-the-monday-com-free-trial
+- Benchmarks added 2026-09-27: https://userpilot.com/blog/product-metrics-benchmark-report/ · https://www.growthunhinged.com/p/free-to-paid-conversion-report

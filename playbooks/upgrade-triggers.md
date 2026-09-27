@@ -12,7 +12,16 @@ Propose the upgrade when the user is actively running into the ceiling — the i
 
 | Metric | Number | Tag | Applies to | Source | Checked |
 |---|---|---|---|---|---|
-| S&M spend per $1 of new ARR: expansion vs. new logo | $1.00 vs. $2.00 (medians, 2024 data) | [Verified] | B2B SaaS | [Benchmarkit 2025 SaaS Performance Metrics](https://www.benchmarkit.ai/2025benchmarks) | 2026-09-25 |
+| S&M spend per $1 of new ARR: expansion vs. new logo | $1.00 vs. $2.00 (medians, 2024 data) | [Verified] | B2B SaaS | [Benchmarkit 2025 SaaS Performance Metrics](https://www.benchmarkit.ai/2025benchmarks) | 2026-09-27 |
+| Expansion ARR as a share of total new ARR (median, 2024 data) | 40%, up 5 points YoY; 58% at $50–100M ARR, 67% above $100M | [Verified] | B2B SaaS | [Benchmarkit 2025](https://www.benchmarkit.ai/2025benchmarks) | 2026-09-27 |
+| Net revenue retention (median, 2024 data) | 101% | [Verified] | B2B SaaS | [Benchmarkit 2025](https://www.benchmarkit.ai/2025benchmarks) | 2026-09-27 |
+| Free-trial conversion when product-qualified leads (PQLs) are used (600+ SaaS companies, Feb 2025 survey) | 25% average; 30% at $1K–5K ACV; 39% at $5K–10K ACV — vs 9% overall free-to-paid | [Verified] | B2B SaaS | [ProductLed PLG Benchmarks 2025](https://productled.com/blog/product-led-growth-benchmarks) | 2026-09-27 |
+
+How to read these:
+- **Expansion is almost half of new ARR at the median, and most of it at scale.** Each $1 costs half as much to sell as new-logo ARR. That's the economic case for investing in the seat and limit prompts in this playbook. It isn't a conversion rate for any one prompt.
+- **NRR at 101% means the median company barely expands net of churn.** Expansion triggers are where the gap between median and good companies sits (inference).
+- **The PQL figure measures a sales-assisted motion,** where usage signals route an account to a person. It isn't a self-serve upgrade prompt. For monday it supports the "admin at capacity" trigger and routing high-usage accounts to sales. It says nothing about the conversion of an in-product banner.
+- **No sourced benchmark was found for "limit prompt → upgrade" conversion.** Figures like "contextual triggers convert at 4.2% vs 1.3%" or "usage limits convert 1.5–2x feature limits" circulate on agency blogs with no dataset or method. Don't cite them.
 
 ## Patterns
 
@@ -43,6 +52,7 @@ The strongest triggers are tied to something the user is trying to do.
 When a user tries to invite a teammate at the seat limit, offer the seats right there — not a pricing-page re-evaluation.
 
 **Show:** seats used vs. total; how many they need (inferred from the invite); the price delta **for the next bundle** — monday sells seats in bundles of 3/5/10/15/20/25/30/40 ([monday-context.md](../context/monday-context.md)); one "Add seats" action.
+**Contrast — seat right-sizing.** Slack's Fair Billing Policy marks members inactive after 28 days and credits the prorated unused time automatically [Verified — [Slack help](https://slack.com/help/articles/218915077-Slacks-Fair-Billing-Policy)]. Paying only for active seats removes the fear that makes admins hold invites back.
 **Don't show:** a full pricing page; "Upgrade to Pro" to someone already on Pro; a wall with no immediate path.
 
 ### Seat-expansion modal
@@ -221,3 +231,5 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - ClickUp: https://clickup.com/pricing · https://quackback.io/blog/clickup-pricing · https://www.eesel.ai/blog/clickup-pricing · https://get-alfred.ai/blog/clickup-pricing
 - Clay: https://university.clay.com/docs/actions-data-credits
 - Claude: https://support.claude.com/en/articles/12005970-manage-usage-credits-for-team-and-seat-based-enterprise-plans · https://www.ai-toolbox.co/claude-management-and-productivity/claude-usage-limits-2026
+- ProductLed: https://productled.com/blog/product-led-growth-benchmarks
+- Slack Fair Billing Policy (2026-09-27): https://slack.com/help/articles/218915077-Slacks-Fair-Billing-Policy

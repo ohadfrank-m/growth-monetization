@@ -10,10 +10,17 @@ Save the customers worth saving by matching one honest offer to the real reason 
 
 | Metric | Number | Tag | Applies to | Source | Checked |
 |---|---|---|---|---|---|
-| Top stated cancel reasons (≈3M cancel sessions) | "Budget limitations" 33%, "infrequent usage" 31% | [Verified] | mixed | [Churnkey State of Retention 2025](https://churnkey.co/reports/state-of-retention-2025) | 2026-09-25 |
-| Pause offer acceptance, across all cancel sessions | 19% | [Verified] | mixed | [Churnkey State of Retention 2025](https://churnkey.co/reports/state-of-retention-2025) | 2026-09-25 |
+| Top stated cancel reasons (≈3M cancel sessions) | "Budget limitations" 33%, "infrequent usage" 31% | [Verified] | mixed | [Churnkey State of Retention 2025](https://churnkey.co/reports/state-of-retention-2025) | 2026-09-27 |
+| Share of **accepted** retention offers, by offer type | Discounts 53.9%, pauses 19.2%, plan changes 6.7%, other 20.2% | [Verified] | mixed | [Churnkey State of Retention 2025](https://churnkey.co/reports/state-of-retention-2025) | 2026-09-27 |
+| Share of detected involuntary churn recovered, full stack (retries, dunning, card update), 2024 | 70% | [Verified] | mixed | [Churnkey State of Retention 2025](https://churnkey.co/reports/state-of-retention-2025) | 2026-09-27 |
+| Failed-payment recovery: processor retries only vs processor + vendor retries (5.4M failed payments, 25M subscriptions) | 51% vs 55% | [Verified] | mixed | [Churnkey, involuntary churn benchmarks (Nov 2025)](https://churnkey.co/blog/involuntary-churn-benchmarks/) | 2026-09-27 |
+| Payment failure as a share of all churn, B2B vs B2C | 16% vs 24% | [Reported] | mixed | [Churnkey, citing Stripe](https://churnkey.co/blog/involuntary-churn-benchmarks/) | 2026-09-27 |
 
-Price is the stated reason in about a third of cancellations, not most — so a discount answers only one reason in three.
+How to read these:
+- **Price is the stated reason in about a third of cancellations, not most**, so a discount answers only one reason in three.
+- **The offer-mix row is a distribution of saves, not an acceptance rate.** Of the offers customers accepted, just over half were discounts. It doesn't say how often a discount works when shown. Plan changes were only 6.7% of saves in this consumer-heavy dataset; B2B seat right-sizing may behave differently (inference). Treat it as untested for monday, not as evidence against it.
+- **Involuntary churn is the cheapest churn to fix.** Most failed payments are recovered by retries before any email or save flow. For B2B, the Stripe split (16% of churn) is second-hand; the original Stripe source wasn't opened.
+- **Excluded:** Churnkey's "customers save 20–40% of revenue lost to churn" is a vendor outcome claim with no stated method. ProsperStack's "10–39% of churn prevented" is the same kind of claim. Neither qualifies.
 
 ## Legal context — guidance, not legal advice
 
@@ -77,13 +84,39 @@ A confirmation email with the end date and data-retention terms; an easy reactiv
 
 ### Downgrade is not a mini-cancel
 
-A customer who downgrades and stays is worth more than one who churns.
+A customer who downgrades and stays is worth more than one who churns. The downgrade flow has one job: an informed decision, where the customer sees what they keep, what stops, and what can't come back, before confirming.
 
-1. Show what they're losing — the features they actually use, not plan names. Omit what they've never used; don't manufacture fear.
-2. Show what they keep — lead with it if the lower plan is solid.
-3. Offer a delay — "stay on Pro until {date} while you decide".
-4. Confirm the exact date the change takes effect.
-5. State any **irreversible loss in the flow**, before confirm — e.g. Airtable permanently removes snapshots outside Free's two-week window on downgrade [Verified — [Airtable support](https://support.airtable.com/articles/3051898591)].
+1. **Show what they're losing**, meaning the features they actually use, not plan names. Omit what they've never used; don't manufacture fear.
+2. **Show what they keep**, and lead with it if the lower plan is solid.
+3. **Offer a delay or a choice of timing.** "Stay on Pro until {date} while you decide", or let the admin choose immediate vs at renewal.
+4. **Confirm the exact date the change takes effect.**
+5. **State any irreversible loss in the flow, before confirm.** Airtable permanently removes snapshots outside Free's two-week window on downgrade, "even if you upgrade later" [Verified — [Airtable support](https://support.airtable.com/articles/3051898591)].
+6. **Surface blocking preconditions before the flow**, not at the last step. See Atlassian below.
+
+**What the flow must say — five questions, and who answers them in writing:**
+
+| Question | Best documented answer | Who |
+|---|---|---|
+| When does it take effect? | Admin chooses immediately or at renewal | Slack: "decide whether your plan change will take effect immediately or on your next renewal date" [Verified — [Slack help](https://slack.com/help/articles/48764458651795-Change-or-cancel-your-paid-Slack-plan)] |
+| What happens to unused paid time? | Credited, and the terms stated | Slack credits the unused portion as Slack credits, which are non-refundable and expire when the paid plan ends [Verified — same article] |
+| What stops, item by item? | A named list per feature | Slack Free: 90 days of visible history, data older than a year deleted, group huddles and Slack Connect channels end, existing workflows stop, canvases and lists read-only, 10-app cap [Verified — [Slack help](https://slack.com/help/articles/27204752526611-Feature-limitations-on-the-free-version-of-Slack)] |
+| Is my content deleted? | "No", stated plainly, with what becomes read-only | Confluence Free: "you'll still have access to all of your content" [Verified — [Atlassian](https://support.atlassian.com/confluence-cloud/docs/removing-users-and-downgrading-to-confluence-free/)]; Notion: Custom Agents "switched off, but not deleted" [Verified — [Notion help](https://www.notion.com/help/plan-downgrade)]; Asana: data not deleted; projects using paid features become inaccessible but exportable to CSV [Reported — Asana help-center text seen via search; the page didn't render] |
+| Does a lower *paid* tier lose less? | Yes, and say so | Asana: Advanced → Starter removes only Advanced features [Reported — same]; Notion lets the user pick any lower plan, with consequences documented per target plan [Verified — [Notion help](https://www.notion.com/help/plan-downgrade)] |
+
+**Preconditions and locks, the parts that feel like traps:**
+- **Atlassian** won't let a site move to Confluence Free with more than 10 users; the admin must remove users first [Verified — [Atlassian](https://support.atlassian.com/confluence-cloud/docs/removing-users-and-downgrading-to-confluence-free/)]. For Jira, third-party-visible support text says the change fails and the site stays on its plan if it's over the limit [Reported — Atlassian support text via search].
+- **Figma** locks the whole team from editing if it's over Starter's limits (3 Design/Sites files, 3 per other product, one folder) and unpublishes Sites. Its help center gives a pre-downgrade checklist, but the checklist lives outside the flow [Verified — [Figma help](https://help.figma.com/hc/en-us/articles/360046216313-Upgrade-or-downgrade-your-plan)].
+- **Lesson for monday:** if a downgrade has a precondition (seats above the lower plan's bundle, automations above its cap, AI Blocks on a tier that lacks them), run the check when the user opens "Change plan" and show the fix list there. Never let the confirm button be where they find out.
+
+**Steal for monday.com.** Slack's immediate-vs-renewal choice, Confluence's "all of your content" sentence, Notion's "switched off, not deleted" for agents and AI Blocks (if true in monday), and a personalised consequence list, e.g. "{N} automations on {M} boards stop on {date}". Put the precondition check at the start of the flow, not at the end.
+
+### Billing-platform reference flows
+
+The subscription platforms encode the same five-step architecture as configurable defaults — useful vocabulary for a spec:
+
+- **Paddle Retain:** reason survey (up to 5 options) → satisfaction check → a salvage attempt mapped to the answer (contact support, book a meeting, pause, plan switch, or none) → optional final discount → feedback. In click-to-cancel jurisdictions it shows a cancel-now link on every step, with location detected automatically [Verified — [Paddle docs](https://developer.paddle.com/build/retain/configure-cancellation-flows-surveys/), [changelog](https://developer.paddle.com/changelog/2024/cancellation-flows-cancel-compliance)]. Paddle's "up to 30%" churn claim has no method, so it isn't a benchmark.
+- **Stripe customer portal:** 8 preset cancellation reasons, one optional retention coupon, cancel immediately or at period end, reactivation until the period ends, downgrades schedulable to period end [Verified — [Stripe cancellation page](https://docs.stripe.com/customer-management/cancellation-page), [portal config](https://docs.stripe.com/customer-management/configure-portal)].
+- **Chargebee Retention:** recommends a no-offer control page on 1–5% of cancel traffic as the baseline for measuring saves [Verified — [Chargebee docs](https://www.chargebee.com/docs/growth/experiences/setting-up-cancel-pages)]. That's the holdout the save rate needs before anyone quotes it.
 
 ## Company teardowns
 
@@ -123,7 +156,7 @@ The honest headline: **none of the four runs an aggressive save flow.** They ret
 
 ### Figma — clean mechanics, harsh landing
 
-**What they ship [Verified].** Cancel from Admin → Settings → Plan → Cancel plan; Figma asks for a cancellation reason, then confirms. Paid features run until the end of the billing period, then the team drops to Starter: 3 Figma Design/Sites files and 3 files per other product in a project, one project per team. Over the limit, the team is locked and files become view-only until reorganized; files are not deleted. Published Sites are unpublished; Make apps stay live on the figma.site subdomain but lose custom domains. The Help Center gives a pre-downgrade checklist (move files to drafts, consolidate to one project).
+**What they ship [Verified].** Cancel from Admin → Settings → Plan → Cancel plan; Figma asks for a cancellation reason, then confirms. Paid features run until the end of the billing period, then the team drops to Starter: 3 Figma Design/Sites files and 3 files per other product in one folder per team. Over the limit, the team is locked and files become view-only until reorganized; files are not deleted. Published Sites are unpublished; Make apps stay live on the figma.site subdomain but lose custom domains. The Help Center gives a pre-downgrade checklist (move files to drafts, consolidate to one folder).
 
 **Why it works.** Nothing is deleted, and the "what happens" consequences are specific and documented. A one-question reason capture is the minimum viable exit survey.
 
@@ -203,6 +236,9 @@ The honest headline: **none of the four runs an aggressive save flow.** They ret
 | Irreversible loss behind a downgrade, not stated in the flow | Re-upgrading can't restore it, so consent must come before confirm | Airtable snapshots [Verified] |
 | An advance-notice window for self-serve reductions | Late deciders pay another term | Asana — 30 days' notice [Verified] |
 | Early-termination fee hidden at signup | Bill shock at cancel; enforcement risk | Adobe (alleged) — see [case: ftc-cancellation-enforcement](cases.md#ftc-cancellation-enforcement) |
+| A downgrade precondition discovered at the last step | The customer did the work to leave and gets blocked; it reads as obstruction | Atlassian — Confluence Free requires ≤10 users first [Verified — [Atlassian](https://support.atlassian.com/confluence-cloud/docs/removing-users-and-downgrading-to-confluence-free/)] |
+| Deletion as a consequence of the landing plan, not stated at downgrade | An irreversible loss the customer didn't choose | Slack Free deletes data older than one year [Verified — [Slack help](https://slack.com/help/articles/27204752526611-Feature-limitations-on-the-free-version-of-Slack)] |
+| Refund of unused time as expiring, non-refundable credit | Reads as keeping the money | Slack — credits expire when the paid plan ends [Verified — [Slack help](https://slack.com/help/articles/48764458651795-Change-or-cancel-your-paid-Slack-plan)] |
 
 ## monday.com-specific notes
 
@@ -230,3 +266,5 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - Asana: https://asana.com/terms/subscriber-terms · https://userpilot.com/blog/cancellation-flow-examples/
 - Airtable: https://support.airtable.com/articles/3051898591
 - Figma: https://help.figma.com/hc/en-us/articles/360046216313-Upgrade-or-downgrade-your-plan
+- Downgrade (2026-09-27): https://slack.com/help/articles/48764458651795-Change-or-cancel-your-paid-Slack-plan · https://slack.com/help/articles/27204752526611-Feature-limitations-on-the-free-version-of-Slack · https://support.atlassian.com/confluence-cloud/docs/removing-users-and-downgrading-to-confluence-free/ · https://help.asana.com/s/article/modify-your-asana-plan?language=en_US (did not render; Reported)
+- Billing platforms (2026-09-27): https://developer.paddle.com/build/retain/configure-cancellation-flows-surveys/ · https://docs.stripe.com/customer-management/cancellation-page · https://www.chargebee.com/docs/growth/experiences/setting-up-cancel-pages · https://churnkey.co/blog/involuntary-churn-benchmarks/

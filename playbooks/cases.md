@@ -1,6 +1,6 @@
 # Case library — stories that span surfaces
 
-Some stories teach something on several surfaces at once. Each is told **once** here, with its evidence, and cited from the playbooks as `[case: {id}]`. The citing playbook adds only the lesson for its own surface. Evidence tags per [README.md](README.md). Checked 2026-09-25.
+Some stories teach something on several surfaces at once. Each is told **once** here, with its evidence, and cited from the playbooks as `[case: {id}]`. The citing playbook adds only the lesson for its own surface. Evidence tags per [README.md](README.md). Checked 2026-09-27.
 
 ---
 
@@ -66,3 +66,68 @@ Some stories teach something on several surfaces at once. Each is told **once** 
 |---|---|
 | [cancellation.md](cancellation.md) | Cancel reachable in plain steps; offers shown alongside the way out; fees disclosed at signup |
 | [promotions.md](promotions.md) | Terms that surprise at cancellation, such as early-termination fees, are an enforcement target |
+
+---
+
+## hubspot-2025-credits-ratchet
+
+**HubSpot Credits: pause by default, auto-upgrade once you've bought more, 2025–2026.**
+
+**What happened.**
+- **Credits per edition.** Seat-based HubSpot subscriptions include monthly credits: Starter 500, Professional 3,000, Enterprise 5,000. Rates are published per action: 50 credits per resolved Customer Agent conversation, 100 per Prospecting Agent lead recommendation, 10 per workflow AI action [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)].
+- **Buying more.** Capacity packs cost $10 per 1,000 credits a month for the rest of the term, or pay-as-you-go at $0.010 per credit [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)].
+- **June 2, 2025.** Breeze Customer Agent opened to all Pro and Enterprise customers across Hubs, paid through credits [Verified — [HubSpot news](https://www.hubspot.com/company-news/customer-agent-expansion)]. Existing Service Hub customers moved to credit billing for it on August 4, 2025 [Reported — HubSpot IR release seen via search; the page returned 403].
+- **The two defaults.** Without a capacity pack, credit features "pause until your next reset date". Once a pack has been bought, the default flips: at the limit, the account "will automatically be upgraded to include a higher HubSpot Credits capacity pack", and packs can only be reduced "at the end of your contractual commitment term". Pay-as-you-go overage is the opt-in alternative. Unused credits don't roll over. Alerts fire at 75%, 85%, 90% and 100% [Verified — [HubSpot KB](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing)].
+- **April 14, 2026.** Customer Agent moved to $0.50 per resolved conversation (from $1.00 per conversation), and Prospecting Agent to $1.00 per recommended lead (from a recurring monthly charge) [Verified — [HubSpot news](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete)].
+- **Customer reaction** to the auto-upgrade default wasn't captured from a readable source [Teardown needed].
+
+**The mechanism.** A ratchet. A single spike month after the first top-up moves the account to a higher pack for the rest of the contract. The account is upgraded without the admin making an upgrade decision, and it can't be reversed until renewal. The pause-by-default path for accounts that never bought extra is the safe version of the same wall.
+
+| Playbook | Lesson there |
+|---|---|
+| [credit-ui.md](credit-ui.md) | Default behaviour at the limit is a design decision: pause, overage, or auto-upgrade. Say which on the meter, and never let buying once silently change it |
+| [upgrade-triggers.md](upgrade-triggers.md) | An automatic upgrade is a trigger with no decision in it; the payer should opt in, with the cost for the rest of the term shown |
+| [pricing-pages.md](pricing-pages.md) | Publishing the rate sheet and outcome-based units makes credits comparable; the auto-upgrade default belongs on the page too |
+| [cancellation.md](cancellation.md) | Reductions allowed "only at the end of the term" are a notice window by another name; a right-size offer must be available when the customer asks |
+
+---
+
+## atlassian-2025-rovo-bundle-then-meter
+
+**Atlassian bundles Rovo into paid Cloud plans (2025), then meters it with default-on overage (2026).**
+
+**What happened.**
+- **April 9, 2025.** Rovo became "available at no additional upfront cost" to organisations with active Standard, Premium and Enterprise Cloud subscriptions [Verified — [Atlassian support](https://support.atlassian.com/rovo/kb/understand-rovo-billing-and-managing-costs-in-atlassian-cloud/)]. Premium and Enterprise were enabled from April to July 2025 and Standard later in 2025 [Reported — Atlassian support text seen via search].
+- **The allowance.** Credits per user per month, pooled across the org: Jira and Confluence get 25 (Standard), 70 (Premium) and 150 (Enterprise); Service and Teamwork Collections get 250, 700 and 1,500. Allowances refresh monthly and don't roll over. Search, definitions and summaries are free; chat and agents consume credits by complexity [Verified — [Rovo credits](https://support.atlassian.com/rovo/docs/rovo-usage-limits/), [Rovo plans](https://www.atlassian.com/licensing/rovo)].
+- **December 3, 2026.** Extra-usage billing takes effect at $0.01 per credit ($10 per 1,000). **Extra usage is on by default**, with admin-set spending caps. With it off, billable interactions "pause until the credit allowance resets". Admins are alerted at 80% and 100% [Verified — [Rovo credits](https://support.atlassian.com/rovo/docs/rovo-usage-limits/)]. The change was announced around September 1, 2026 [Reported — third-party coverage, e.g. [SPK](https://www.spkaa.com/blog/atlassian-is-changing-how-you-pay-for-usage-what-you-need-to-know)].
+
+**The mechanism.** Bundle first, meter later. Including Rovo in every paid plan removed the add-on purchase decision and drove adoption. The meter then arrived with the allowance set by tier and overage switched on. With overage on by default, the first depletion shows up as a bill, not a wall, unless an admin set a cap. Keeping search and summaries free protects the everyday habit, and the metering falls on the agentic work.
+
+| Playbook | Lesson there |
+|---|---|
+| [paywalls.md](paywalls.md) | Free for the habit (search, summaries), metered for the agentic job: the gate falls on the expensive work, not the everyday feature |
+| [credit-ui.md](credit-ui.md) | Default-on overage needs a visible cap and a clear line between free and metered actions, or the first overage feels like a surprise charge |
+| [upgrade-triggers.md](upgrade-triggers.md) | An allowance that grows with the tier (25 → 70 → 150) makes the next tier an AI-capacity argument |
+| [pricing-pages.md](pricing-pages.md) | State the per-user allowance by tier, and that it pools at the org level |
+| [promotions.md](promotions.md) | "Included at no extra cost" followed by metering is a takeaway: announce the metered terms with lead time, and say from launch that metering will come |
+
+---
+
+## asana-2025-ai-studio-credits
+
+**Asana AI Studio: pooled credits on every paid plan, then a large first paid step, 2025.**
+
+**What happened.**
+- **Included.** AI Studio Basic is included on Starter, Advanced, Enterprise and Enterprise+, with credits **per billing account per month**, not per seat: 50K (Starter), 75K (Advanced), 200K (Enterprise and Enterprise+) [Verified — [Asana pricing](https://asana.com/pricing)].
+- **August 11, 2025.** AI Studio Plus, previously sales-only, opened to direct purchase. It starts at $1,620 a year, follows the base plan's billing cadence, and scales "up to 1M credits"; Basic credits stack with Plus credits [Verified — [Asana staff announcement](https://forum.asana.com/t/introducing-ai-studio-plus-for-direct-purchase/1085642)].
+- **Package shapes.** Plus includes 100,000 credits that reset monthly, with extra in 100,000 increments, or 1.2M credits valid for the annual term. Pro is 20M credits a year [Reported — Asana help-center text seen via search; the page didn't render].
+- **Reaction.** In an October 2025 community thread, a customer on Advanced calculated AI Studio's cost against their usage and called it expensive next to Asana's free AI features. No Asana staff reply appears in the thread [Reported — [Asana forum](https://forum.asana.com/t/price-of-ai-studio-plus-seems-a-little-expensive/1102187)].
+
+**The mechanism.** Pooled, account-level credits remove the seat tax: AI cost doesn't scale with headcount. But the included allowance is followed by a big fixed step. A team slightly over Basic faces a $1,620-a-year minimum purchase, so going over the free allowance feels like a cliff, not a top-up.
+
+| Playbook | Lesson there |
+|---|---|
+| [credit-ui.md](credit-ui.md) | Pooled account credits are the right unit; the first paid step must be sized close to the overage, or depletion becomes a budget decision |
+| [upgrade-triggers.md](upgrade-triggers.md) | A large jump between included and paid capacity turns a usage trigger into a procurement conversation; offer a small step first |
+| [pricing-pages.md](pricing-pages.md) | Moving from "contact sales" to a listed price removes friction; the included allowance per plan belongs on the plan card |
+| [paywalls.md](paywalls.md) | Including a base AI allowance on every paid plan is sample-then-scale; the gate is the step size, not access |

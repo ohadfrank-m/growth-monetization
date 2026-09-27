@@ -10,9 +10,17 @@ Show the value before the ask. A gate the user meets before seeing what the feat
 
 | Metric | Number | Tag | Applies to | Source | Checked |
 |---|---|---|---|---|---|
-| Day-35 download-to-paid, hard paywall vs. freemium | 12.11% vs. 2.18% (~75K apps) | [Verified] | mobile app | [RevenueCat State of Subscription Apps 2025](https://www.revenuecat.com/state-of-subscription-apps-2025) | 2026-09-25 |
+| Free-to-paid, freemium (50th / 75th percentile, within 6 months; 200 B2B products, Jan 2026 survey) | 3–5% / 8–12% | [Verified] | B2B SaaS | [ChartMogul × Kyle Poyar, SaaS Conversion Report 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-27 |
+| Free-to-paid, reverse trial (50th / 75th percentile) | 4–6% / 8–12% | [Verified] | B2B SaaS | [ChartMogul 2026](https://chartmogul.com/reports/saas-conversion-report/) | 2026-09-27 |
+| Freemium conversion spread (same 200-product survey) | 25% of freemium products convert below 2.5%; 25% convert 10–15% | [Verified] | B2B SaaS | [Growth Unhinged, 2026 free-to-paid report](https://www.growthunhinged.com/p/free-to-paid-conversion-report) | 2026-09-27 |
+| Free-to-paid, freemium **self-serve** vs **with sales assist** (good / great, 6-month window, 1,000+ products, 2023) | 3–5% / 6–8% vs 5–7% / 10–15% | [Verified] | B2B SaaS | [Lenny's Newsletter × Kyle Poyar, 2023](https://www.lennysnewsletter.com/p/what-is-a-good-free-to-paid-conversion) | 2026-09-27 |
+| Day-35 download-to-paid, hard paywall vs freemium (2026 edition) | 10.7% vs 2.1% median; one-year retention "nearly identical" | [Verified] | mobile app | [RevenueCat State of Subscription Apps 2026](https://www.revenuecat.com/state-of-subscription-apps) | 2026-09-27 |
 
-The one sourced paywall dataset is mobile subscription apps, not B2B SaaS — a direction for monday, never a target.
+How to read these:
+- **The B2B rows are the comparison for monday; the RevenueCat row is directional only.** A hard paywall wins on early conversion in mobile apps, but RevenueCat's own data shows retention converging after a year. That supports "gate after value" rather than contradicting it.
+- **Sales assist is the B2B lever a paywall can't pull alone.** At the "great" end, freemium with sales assist converts about 2x better than self-serve (10–15% vs 6–8%). This supports the IC → admin path: a gate the IC can't pay for should hand off to someone who can (inference).
+- **The distribution matters more than the median.** A quarter of freemium products convert under 2.5%. A median target hides whether monday's Free plan sits in that tail — only monday's own data can say.
+- **Superseded:** the 2025 RevenueCat figure (12.11% vs 2.18%) is replaced by the 2026 edition. Same source, newer year.
 
 ## Patterns
 
@@ -245,3 +253,4 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - ClickUp: https://help.clickup.com/hc/en-us/articles/10129535087383-Intro-to-pricing · https://feedback.clickup.com/feature-requests/p/limited-uses-warning
 - Slack: https://slack.com/help/articles/360002044828-Manage-who-can-upgrade-a-free-workspace
 - Figma: https://help.figma.com/hc/en-us/articles/1500003870721-Approve-or-decline-seat-upgrade-requests · https://help.figma.com/hc/en-us/articles/4414038570007-Set-approval-settings-for-new-seats · https://forum.figma.com/suggest-a-feature-11/temporary-3-day-access-when-requesting-an-upgrade-please-turn-this-off-39239
+- Benchmarks (2026-09-27): https://chartmogul.com/reports/saas-conversion-report/ · https://www.growthunhinged.com/p/free-to-paid-conversion-report · https://www.lennysnewsletter.com/p/what-is-a-good-free-to-paid-conversion · https://www.revenuecat.com/state-of-subscription-apps

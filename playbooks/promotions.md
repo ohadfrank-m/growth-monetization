@@ -6,6 +6,16 @@ Surface type 3: discounts, limited-time offers, annual upsells, bundles and cros
 
 Only use urgency when the deadline is real, and anchor every offer to the genuine regular price. Promotions train users: run them too often or too deep and the cohort learns to wait. The goal is urgency without dependency — an offer that feels like a reward for a specific moment, not a standing discount.
 
+## Benchmarks
+
+| Metric | Number | Tag | Applies to | Source | Checked |
+|---|---|---|---|---|---|
+| Customer LTV at companies that discount aggressively vs minimally (88 companies: 33 vs 55; 2022) | 32.41% lower | [Verified] | mixed | [Paddle / ProfitWell, SaaS discounting study](https://www.paddle.com/blog/saas-discounting-strategy) | 2026-09-27 |
+
+A thin, old dataset: 88 companies, published July 2022, comparing companies rather than randomised cohorts. It points the same way as the playbook's rule (discounted cohorts are worth less), but it can't size the effect for monday. Use it to justify tracking the retention of the discounted cohort, not as a target.
+
+Excluded: Paddle's Black Friday claims (7x orders, 6x revenue, "best-performing discount is 30–40%", Cyber Weekend buyers have longer lifetime value) state no dataset, period or method. They're vendor marketing, not a benchmark.
+
 ## Legal context — guidance, not legal advice
 
 **Reviewed by legal: not yet.** These rules protect **consumers**; monday's team buyers are mostly B2B, which falls under separate misleading-marketing law (e.g. the UK Business Protection from Misleading Marketing Regulations 2008, EU Directive 2006/114/EC — not verified here; flag for legal).
@@ -50,7 +60,7 @@ When prices rise or AI moves into a tier, the cohort below decides whether it re
 
 ### Stacking — define it every time
 
-Every promotion spec answers: Does it combine with the annual discount? With nonprofit, education or startup pricing? Does a user who had a prior promotion see this one? When two run at once, which wins? Linear's program discounts show why this matters — 100% for full-time students, 75% for university staff and nonprofits, and up to 6 months of Business free through startup partners [Verified — [Linear docs](https://linear.app/docs/billing-and-plans)].
+Every promotion spec answers: Does it combine with the annual discount? With nonprofit, education or startup pricing? Does a user who had a prior promotion see this one? When two run at once, which wins? Linear's program discounts show why this matters — free for one year for full-time students, 75% for nonprofits, and up to 6 months of Business free through startup partners [Verified — [Linear docs](https://linear.app/docs/billing-and-plans)].
 
 ### Measurement — redemption rate is the wrong metric
 
@@ -195,3 +205,4 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - TouchNote (Chargebee): https://www.chargebee.com/customers/touchnote/
 - UK: https://www.legislation.gov.uk/ukpga/2024/13/section/226 · https://www.legislation.gov.uk/ukpga/2024/13/schedule/20 · https://www.gov.uk/government/publications/unfair-commercial-practices-cma207/unfair-commercial-practices
 - EU: https://www.hsfkramer.com/notes/ip/2024-posts/cjeu-confirms-that-price-reduction-claims-must-be-based-on-lowest-price-in-last-30-days
+- Paddle discounting study (2026-09-27): https://www.paddle.com/blog/saas-discounting-strategy
