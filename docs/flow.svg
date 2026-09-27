@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1394 600" width="1394" height="600" role="img" aria-labelledby="t d">
   <title id="t">How the growth-monetization plugin works</title>
-  <desc id="d">The Monetization Growth PM runs six steps left to right: research, spec, copy, wireframe, review, requirements. A fix loop sends review findings back to spec, copy and wireframe. Every skill can also be used on its own.</desc>
+  <desc id="d">The Monetization Growth PM runs seven steps left to right: research, journey map, spec, copy, wireframe with the journey board, review, requirements. A fix loop sends review findings back to spec, copy and wireframe. Every skill can also be used on its own.</desc>
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#6b6b73"/>
@@ -28,16 +28,15 @@
   </defs>
 
   <!-- canvas -->
-  <rect x="0" y="0" width="1200" height="600" rx="16" fill="#ffffff"/>
-  <rect x="0.5" y="0.5" width="1199" height="599" rx="16" fill="none" stroke="#e4e4e7"/>
+  <rect x="0" y="0" width="1394" height="600" rx="16" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="1393" height="599" rx="16" fill="none" stroke="#e4e4e7"/>
   <text x="28" y="40" class="h1">How it works</text>
   <text x="172" y="40" class="note">One skill runs the whole job. Or use any single skill on its own.</text>
 
   <!-- Growth PM band -->
-  <rect x="28" y="58" width="1144" height="62" rx="12" fill="#5b5bd6"/>
+  <rect x="28" y="58" width="1338" height="62" rx="12" fill="#5b5bd6"/>
   <text x="48" y="85" class="band">/monetization-growth-pm — the Monetization Growth PM</text>
   <text x="48" y="106" class="bandsub">Asks how far &amp; how deep (only if your prompt doesn't say) · runs every step below with no re-prompting · writes the requirements doc</text>
-
 
   <!-- stage cards: x = 28 + i*194, w = 178 -->
   <g>
@@ -53,57 +52,71 @@
     <text x="44" y="300" class="file">research/…md</text>
     <text x="44" y="316" class="tag">OPTIONAL · CAN END HERE</text>
 
-    <!-- 2 Spec -->
+    <!-- 2 Journey -->
     <rect x="222" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#d4d4d8"/>
     <circle cx="244" cy="174" r="11" fill="#1f1f23"/><text x="244" y="178" class="n" text-anchor="middle">2</text>
-    <text x="262" y="179" class="step">Spec</text>
+    <text x="262" y="179" class="step">Journey</text>
     <text x="238" y="204" class="skill">/monetization-</text>
-    <text x="238" y="219" class="skill">surface-spec</text>
-    <text x="238" y="242" class="role">What to build, for whom,</text>
-    <text x="238" y="260" class="role">and why it converts</text>
-    <text x="238" y="300" class="file">01-spec.md</text>
+    <text x="238" y="219" class="skill">journey-map</text>
+    <text x="238" y="242" class="role">Who hits it, how often,</text>
+    <text x="238" y="260" class="role">and every step before,</text>
+    <text x="238" y="278" class="role">on and after the surface</text>
+    <text x="238" y="300" class="file">00-journey.md</text>
+    <text x="238" y="316" class="tag">SKIPPED AT QUICK</text>
 
-    <!-- 3 Copy -->
+    <!-- 3 Spec -->
     <rect x="416" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#d4d4d8"/>
     <circle cx="438" cy="174" r="11" fill="#1f1f23"/><text x="438" y="178" class="n" text-anchor="middle">3</text>
-    <text x="456" y="179" class="step">Copy</text>
-    <text x="432" y="204" class="skill">/improve-conversion-</text>
-    <text x="432" y="219" class="skill">surfaces-copy</text>
-    <text x="432" y="242" class="role">Every word: 2–3 options,</text>
-    <text x="432" y="260" class="role">one ★ recommended</text>
-    <text x="432" y="300" class="file">02-copy.md</text>
-    <text x="432" y="316" class="tag">CAN END HERE</text>
+    <text x="456" y="179" class="step">Spec</text>
+    <text x="432" y="204" class="skill">/monetization-</text>
+    <text x="432" y="219" class="skill">surface-spec</text>
+    <text x="432" y="242" class="role">What to build, for whom,</text>
+    <text x="432" y="260" class="role">and why it converts</text>
+    <text x="432" y="300" class="file">01-spec.md</text>
 
-    <!-- 4 Wireframe -->
+    <!-- 4 Copy -->
     <rect x="610" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#d4d4d8"/>
     <circle cx="632" cy="174" r="11" fill="#1f1f23"/><text x="632" y="178" class="n" text-anchor="middle">4</text>
-    <text x="650" y="179" class="step">Wireframe</text>
-    <text x="626" y="204" class="skill">/monetization-</text>
-    <text x="626" y="219" class="skill">surface-spec</text>
-    <text x="626" y="242" class="role">Low-fi screens, every</text>
-    <text x="626" y="260" class="role">state, with the real copy</text>
-    <text x="626" y="300" class="file">03-wireframe.html</text>
+    <text x="650" y="179" class="step">Copy</text>
+    <text x="626" y="204" class="skill">/improve-conversion-</text>
+    <text x="626" y="219" class="skill">surfaces-copy</text>
+    <text x="626" y="242" class="role">Every word: 2–3 options,</text>
+    <text x="626" y="260" class="role">one ★ recommended</text>
+    <text x="626" y="300" class="file">02-copy.md</text>
     <text x="626" y="316" class="tag">CAN END HERE</text>
 
-    <!-- 5 Review -->
+    <!-- 5 Wireframe + board -->
     <rect x="804" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#d4d4d8"/>
     <circle cx="826" cy="174" r="11" fill="#1f1f23"/><text x="826" y="178" class="n" text-anchor="middle">5</text>
-    <text x="844" y="179" class="step">Review</text>
+    <text x="844" y="179" class="step">Wireframe</text>
     <text x="820" y="204" class="skill">/monetization-</text>
-    <text x="820" y="219" class="skill">design-reviewer</text>
-    <text x="820" y="242" class="role">Independent score /100,</text>
-    <text x="820" y="260" class="role">each fix routed to its owner</text>
-    <text x="820" y="300" class="file">04-review.md</text>
+    <text x="820" y="219" class="skill">surface-spec · journey-map</text>
+    <text x="820" y="242" class="role">Every state with the real</text>
+    <text x="820" y="260" class="role">copy, and the journey board</text>
+    <text x="820" y="286" class="file">03-wireframe.html</text>
+    <text x="820" y="300" class="file">03-journey.html</text>
+    <text x="820" y="316" class="tag">CAN END HERE</text>
 
-    <!-- 6 Requirements -->
-    <rect x="998" y="150" width="174" height="176" rx="12" fill="#eeeefc" stroke="#5b5bd6" stroke-width="1.5"/>
-    <circle cx="1020" cy="174" r="11" fill="#5b5bd6"/><text x="1020" y="178" class="n" text-anchor="middle">6</text>
-    <text x="1038" y="179" class="step">Requirements</text>
+    <!-- 6 Review -->
+    <rect x="998" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#d4d4d8"/>
+    <circle cx="1020" cy="174" r="11" fill="#1f1f23"/><text x="1020" y="178" class="n" text-anchor="middle">6</text>
+    <text x="1038" y="179" class="step">Review</text>
     <text x="1014" y="204" class="skill">/monetization-</text>
-    <text x="1014" y="219" class="skill">growth-pm</text>
-    <text x="1014" y="242" class="role">Build target, final copy,</text>
-    <text x="1014" y="260" class="role">open items, build order</text>
-    <text x="1014" y="300" class="file">05-requirements.md</text>
+    <text x="1014" y="219" class="skill">design-reviewer</text>
+    <text x="1014" y="242" class="role">Independent score /100,</text>
+    <text x="1014" y="260" class="role">each scenario walked</text>
+    <text x="1014" y="278" class="role">through, fixes routed</text>
+    <text x="1014" y="300" class="file">04-review.md</text>
+
+    <!-- 7 Requirements -->
+    <rect x="1192" y="150" width="174" height="176" rx="12" fill="#eeeefc" stroke="#5b5bd6" stroke-width="1.5"/>
+    <circle cx="1214" cy="174" r="11" fill="#5b5bd6"/><text x="1214" y="178" class="n" text-anchor="middle">7</text>
+    <text x="1232" y="179" class="step">Requirements</text>
+    <text x="1208" y="204" class="skill">/monetization-</text>
+    <text x="1208" y="219" class="skill">growth-pm</text>
+    <text x="1208" y="242" class="role">Build target, final copy,</text>
+    <text x="1208" y="260" class="role">open items, build order</text>
+    <text x="1208" y="300" class="file">05-requirements.md</text>
   </g>
 
   <!-- arrows between cards -->
@@ -112,40 +125,43 @@
   <path d="M594,238 L608,238" stroke="#6b6b73" stroke-width="2" marker-end="url(#arr)"/>
   <path d="M788,238 L802,238" stroke="#6b6b73" stroke-width="2" marker-end="url(#arr)"/>
   <path d="M982,238 L996,238" stroke="#6b6b73" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M1176,238 L1190,238" stroke="#6b6b73" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- existing design entry -->
-  <path d="M893,134 L893,148" stroke="#6b6b73" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="903" y="143" class="note">existing design? starts here, no loop</text>
+  <path d="M1087,134 L1087,148" stroke="#6b6b73" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+  <text x="1097" y="143" class="note">existing design? starts here, no loop</text>
 
   <!-- fix loop: from review back under spec..wireframe -->
-  <path d="M893,326 L893,372 L505,372 L505,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
-  <path d="M311,372 L699,372" fill="none" stroke="#5b5bd6" stroke-width="2.5"/>
-  <path d="M311,372 L311,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
-  <path d="M699,372 L699,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
+  <path d="M1087,326 L1087,372 L699,372 L699,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
+  <path d="M505,372 L893,372" fill="none" stroke="#5b5bd6" stroke-width="2.5"/>
+  <path d="M505,372 L505,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
+  <path d="M893,372 L893,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
 
-  <text x="222" y="400" class="loop">Fix loop</text>
-  <text x="284" y="400" class="loopsub">each finding goes back to the skill that owns it, then a fresh reviewer checks the fix. Blocked items go to the doc with an owner.</text>
+  <text x="416" y="400" class="loop">Fix loop</text>
+  <text x="478" y="400" class="loopsub">each finding goes back to the skill that owns it, then a fresh reviewer checks the fix. Blocked items go to the doc with an owner.</text>
 
   <!-- depth pills -->
-  <text x="222" y="432" class="note">You choose the depth:</text>
-  <rect x="350" y="416" width="176" height="26" rx="13" fill="#f4f4f5" stroke="#d4d4d8"/>
-  <text x="438" y="433" class="pill" text-anchor="middle">Quick · 1 review, no loop</text>
-  <rect x="538" y="416" width="236" height="26" rx="13" fill="#eeeefc" stroke="#5b5bd6"/>
-  <text x="656" y="433" class="pill" text-anchor="middle">Standard · up to 2 passes (default)</text>
-  <rect x="786" y="416" width="230" height="26" rx="13" fill="#f4f4f5" stroke="#d4d4d8"/>
-  <text x="901" y="433" class="pill" text-anchor="middle">Thorough · until 85/100, max 3</text>
+  <text x="416" y="432" class="note">You choose the depth:</text>
+  <rect x="544" y="416" width="176" height="26" rx="13" fill="#f4f4f5" stroke="#d4d4d8"/>
+  <text x="632" y="433" class="pill" text-anchor="middle">Quick · 1 review, no loop</text>
+  <rect x="732" y="416" width="236" height="26" rx="13" fill="#eeeefc" stroke="#5b5bd6"/>
+  <text x="850" y="433" class="pill" text-anchor="middle">Standard · up to 2 passes (default)</text>
+  <rect x="980" y="416" width="230" height="26" rx="13" fill="#f4f4f5" stroke="#d4d4d8"/>
+  <text x="1095" y="433" class="pill" text-anchor="middle">Thorough · until 85/100, max 3</text>
 
   <!-- standalone strip -->
-  <rect x="28" y="476" width="1144" height="96" rx="12" fill="#f4f4f5"/>
+  <rect x="28" y="476" width="1338" height="96" rx="12" fill="#f4f4f5"/>
   <text x="48" y="504" class="strip">Just need one piece? Call a skill directly</text>
   <text x="358" y="504" class="note">It asks for anything your prompt is missing, then does only that job.</text>
 
   <rect x="48" y="520" width="236" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
   <text x="166" y="542" class="skill" text-anchor="middle">/monetization-intelligence</text>
-  <rect x="296" y="520" width="272" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="432" y="542" class="skill" text-anchor="middle">/monetization-surface-spec</text>
-  <rect x="580" y="520" width="300" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="730" y="542" class="skill" text-anchor="middle">/improve-conversion-surfaces-copy</text>
-  <rect x="892" y="520" width="260" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="1022" y="542" class="skill" text-anchor="middle">/monetization-design-reviewer</text>
+  <rect x="294" y="520" width="250" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="419" y="542" class="skill" text-anchor="middle">/monetization-journey-map</text>
+  <rect x="554" y="520" width="250" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="679" y="542" class="skill" text-anchor="middle">/monetization-surface-spec</text>
+  <rect x="814" y="520" width="290" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="959" y="542" class="skill" text-anchor="middle">/improve-conversion-surfaces-copy</text>
+  <rect x="1114" y="520" width="232" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="1230" y="542" class="skill" text-anchor="middle">/monetization-design-reviewer</text>
 </svg>

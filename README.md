@@ -2,7 +2,7 @@
 
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-000?style=flat-square)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-compatible-000?style=flat-square)](https://cursor.com)
-[![Skills](https://img.shields.io/badge/skills-5-333?style=flat-square)](#the-skills)
+[![Skills](https://img.shields.io/badge/skills-6-333?style=flat-square)](#the-skills)
 [![monday.com](https://img.shields.io/badge/built_for-monday.com-ff3366?style=flat-square)](https://monday.com)
 
 A monetization copilot for growth product squads. Hand the **Monetization Growth PM** a surface and it does the full product work — competitor research, spec, conversion copy, wireframe, an independent CRO review that loops until the fixes land, and one requirements doc design and engineering can build from. Or call any single skill on its own when you only need one piece.
@@ -13,14 +13,14 @@ Built for: pricing pages · paywalls · upgrade flows · credit/consumption UI �
 
 ## How it works
 
-![How the plugin works: the Monetization Growth PM runs research, spec, copy, wireframe, review and requirements left to right, with a fix loop from review back to spec, copy and wireframe; every skill can also be called on its own](docs/flow.svg)
+![How the plugin works: the Monetization Growth PM runs research, journey map, spec, copy, wireframe with the journey board, review and requirements left to right, with a fix loop from review back to spec, copy and wireframe; every skill can also be called on its own](docs/flow.svg)
 
 ### Two ways to use it
 
 | You want | Do this | What happens |
 |----------|---------|--------------|
 | **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go (asking one short message only if your prompt doesn't say), runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
-| **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-intelligence`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing — all in one message — then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
+| **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing — all in one message — then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
 
 You never have to use the Growth PM, and you never have to use every skill. Every skill reads what's already in the feature folder and picks up from there.
 
@@ -58,6 +58,7 @@ In the order they run:
 |-------|----------------|----------|------------|
 | `monetization-growth-pm` | The PM on the job: scopes how far and how deep, runs every skill below in order, runs the fix loop, keeps the artifact ledger, and writes the final requirements | `05-requirements.md` | Write copy or score designs itself |
 | `monetization-intelligence` | How competitors monetize and how they run each surface: surface benchmarks (e.g. five competitors' cancellation flows, screen by screen), full monetization teardowns, model benchmarks, landscapes, battlecards, change monitoring | `research/{topic}-{YYYY-MM}.md` | Spec or design anything |
+| `monetization-journey-map` | Who hits the surface and why — scenarios per persona (IC and admin always a pair), sized with live data — and every step before, on and after it, with each step's state of mind; then a journey board showing the real wireframe on every step | `00-journey.md`, `03-journey.html` | Design screens or write copy — it names the steps and hands off |
 | `monetization-surface-spec` | What to build: trigger, cohort, the screen-by-screen flow with its friction points, layout, edge cases — then the low-fi HTML wireframe of every state, and revisions of both when a review sends fixes back | `01-spec.md`, `03-wireframe.html` | Write final copy — it names the reason and hands off |
 | `improve-conversion-surfaces-copy` | Every word the user reads: 2–3 options per element, one ★ recommended, grounded in a real reason people buy | `02-copy.md` | Layout, hierarchy, or scoring |
 | `monetization-design-reviewer` | Scoring against an 8-dimension CRO rubric, a ranked fix list with a **Fix path** per row, and verifying fixes on re-review | `04-review.md` | Write the fix — it routes it to the skill that owns it |
@@ -131,7 +132,7 @@ The full product work in one command. It scopes the job (how far, how deep), run
 
 **What you get:** `05-requirements.md` — the **build target** (the approved wireframe version), the depth used and passes run, final copy strings (verbatim ★ picks, each next to the line it replaces), what the loop already fixed, remaining design changes, open items (including any suggested playbook updates from the research, so they land in `playbooks/`), and a sorted build order. Every design change and build step carries **acceptance criteria** a tester can check, every owner is a named person or a role marked "name TBD", and vague words ("intuitive", "fast", "as needed") are quantified or cut. Every row traces back to the review row it came from, and the Growth PM re-checks the reviewer's factual claims before they go in.
 
-Claude's `/` menu lists skills namespaced by plugin: type `/growth-monetization` to see all five, and pick `/growth-monetization:monetization-growth-pm` for the full flow. (This README uses the short names.)
+Claude's `/` menu lists skills namespaced by plugin: type `/growth-monetization` to see all six, and pick `/growth-monetization:monetization-growth-pm` for the full flow. (This README uses the short names.)
 
 ---
 
@@ -157,6 +158,19 @@ Not just what competitors charge — how they make money and how they run the su
 Every claim about a competitor's product is evidence-tagged — `[Verified]` from vendor docs or a capture, `[Reported]` from third parties, `[Teardown needed]` when a screen sits behind a login and couldn't be seen (it never describes a screen it hasn't seen). Surface findings end with **suggested playbook updates**, so what's learned moves into the shared `playbooks/` instead of staying in one report.
 
 After a company research or monetization teardown it offers a battlecard. It offers to log each output to the **Pricing Intelligence** board on monday.com — right after a standalone run, or once at the end of a Growth PM chain. Nothing posts without your go-ahead.
+
+---
+
+### `/monetization-journey-map` — Scenarios and journey
+
+Maps the story around a surface before anyone designs it: who hits it, why, and how often, and every step they take — including the ones off the surface, like the admin request, the confirmation email, the invoice and the renewal. **Runs twice**: once before the spec, and again after the wireframe to build the board.
+
+**Asks for, if your prompt doesn't say:** the surface type, the cohorts and tiers in scope, and whether the surface is new or live (a live one is mapped as it is today, from screenshots).
+
+**What you get:**
+
+- `00-journey.md` — scenario cards (problem, persona, trigger, frequency, current result, evidence, impact — adapted from Pragmatic Institute use scenarios), sized with read-only queries to monday's Snowflake data (every question and source shown; slots and Open items when data isn't available), and a step table across five stages (before → trigger → on-surface → hand-off → after) with each step's channel, state of mind, branches, friction, event and wireframe state id. The spec takes its flow map from it, copy writes to each step, and the reviewer walks every scenario through the design
+- `03-journey.html` — the journey board: one lane per scenario, one column per step, the real wireframe state embedded on every on-surface step and the real copy on every email or notification card, viewable per scenario by URL hash
 
 ---
 
@@ -215,9 +229,11 @@ Every artifact lands in `.monetization/` in your working directory, numbered by 
 ```
 .monetization/
 ├── credit-depletion-ic-pro/        ← new surface, full flow
+│   ├── 00-journey.md               ← scenarios + every step; the spec's flow map comes from here
 │   ├── 01-spec.md                  ← spec (names the reason, hands off)
 │   ├── 02-copy.md                  ← copy — the wireframe is built from this
 │   ├── 03-wireframe.html           ← wireframe, every state
+│   ├── 03-journey.html             ← journey board: each scenario's path, real wireframe on every step
 │   ├── 04-review.md                ← independent review, a Fix path on every row
 │   ├── 01-spec-v2.md               ← fix loop: only the spec rows the review sent back
 │   ├── 02-copy-v2.md, -v3          ← fix loop: only the copy rows sent back, per pass
