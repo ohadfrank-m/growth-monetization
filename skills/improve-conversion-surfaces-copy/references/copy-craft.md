@@ -162,6 +162,16 @@ Research effects come from other categories (web usability, retail, lab studies)
 - Surfaces: 1, 2, 4, 5 (payment failed, purchase pending, credits not yet applied).
 - Pattern: `Your card ending {last4} was declined. Update your payment method to keep {plan} active.` · `Credits are on the way — they'll appear within {time}.`
 
+**E1a. monday-caused errors take "we"; user-caused errors take no subject.**
+- Why: monday's UX writing voice rules: "own monday-caused errors with 'we' — when the failure is on monday's end, say 'We couldn't process your payment,' not the subjectless 'Couldn't process your payment.' The 'we' takes responsibility." Pair with "please" when the user still has to act on the fix (e.g. "We couldn't process your payment. Please try again.") — monday caused it, so asking for the user's effort is softened. **Don't use "we" for user-caused errors** (wrong card number, missing field, input out of range): the subject in those cases implies monday failed when the user made an error, which reads as evasive ([Vibe UX Writing Handbook, Values](https://github.com/mondaycom/vibe/blob/master/packages/docs/src/pages/foundations/ux-writing-handbook/values/valuesUXWriting.tsx)) [Verified].
+- Surfaces: 1, 2, 4, 5.
+- Pattern: Monday-caused (API error, timeout, system fault): `We couldn't process your payment. Please try again.` · `We couldn't apply your credits. Refresh and try again.` User-caused (declined card, invalid input): `Card number isn't valid. Check the number and try again.` · `{Field} is required.`
+
+**E1b. Billing copy: never imply imminent shutdown unless shutdown is genuinely imminent.**
+- Why: monday's UX writing strategic priorities: "never imply imminent shutdown unless shutdown is genuinely imminent. 'Keep your account active' is too threatening for a routine payment failure — use neutral framing like 'to continue using monday.com.'" Copy that over-dramatizes a routine billing retry damages trust and reads as manipulation ([Vibe UX Writing Handbook](https://github.com/mondaycom/vibe/blob/master/packages/docs/src/pages/foundations/ux-writing-handbook/ux-writing-handbook.mdx)) [Verified].
+- Surfaces: 1, 4, 5, 7.
+- Pattern: Routine payment retry: `Update your payment method to continue using monday.com.` Genuine imminent shutdown (confirmed from monday-context, at or past a hard cutoff date): `Your account will be suspended on {date}. Update your payment method to avoid losing access.` Never use "Keep your account active", "Avoid a service interruption", or "Don't lose access" for a first missed payment — those are copy-guardrail G23.
+
 **E2. Specific, adaptive messages — never a generic "Invalid {field}".**
 - Why: 98% of sites use generic validation messages; test users spent up to 5 minutes fixing simple errors; write several field-specific messages because the back end already knows the failure ([Scott, Baymard 2023](https://baymard.com/research-articles/adaptive-validation-error-messages)) [Verified].
 - Surfaces: checkout, top-up, seat entry (1, 4, 5).
@@ -219,6 +229,48 @@ Research effects come from other categories (web usability, retail, lab studies)
 - Why: phones have no hover; the FTC lists fees hidden behind tooltips as hiding material information ([Bringing Dark Patterns to Light, 2022, pp.7–9](https://www.ftc.gov/reports/bringing-dark-patterns-light)) [Verified].
 - Surfaces: 1, 4, 5, 7.
 - Pattern: price, billing period, renewal and credit expiry sit in body text on the same card as the CTA.
+
+---
+
+## Empty states
+
+Monetization empty states — zero credits, no active agents, expired trial, unused feature — are persuasion surfaces. The user who sees them is closest to the decision; copy that names absence instead of action loses that moment.
+
+**ES1. Never a negative opening. Lead with the action or the possibility.**
+- Why: monday's UX writing: "avoid negative openings — don't lead with absence. Lead with possibility or the action that fills it." ([Vibe components, Empty states](https://github.com/mondaycom/vibe/blob/master/packages/docs/src/pages/components)) [Verified]. A heading that starts with "No" or "You've run out of" is the copy equivalent of a closed door — it confirms failure without opening a path forward. The 15 reasons framework applies here too: the empty state is an opportunity to name the reason people buy (save time, avoid effort, make money) even before they've acted.
+- Surfaces: 5 (zero credits), 2 (no features unlocked yet), 7 (expired trial with nothing to show).
+- Pattern: `{Action verb} {what they gain}` or `{Their asset} {lives here / waits here}` — not `No credits left` or `Nothing here yet.` Zero-credit state: `Add credits to keep {agent_name} running` not `You've run out of credits`. Expired trial: `Pick a plan to keep {N} automations running` not `Your trial has ended`.
+
+**ES2. Sub-header: lead with the benefit, illustrate with two concrete examples.**
+- Why: monday's UX writing: "lead with the benefit, then illustrate with examples using 'like X or Y.' Use two examples — two is enough to show the pattern; three crowds the line." ([Vibe components](https://github.com/mondaycom/vibe/blob/master/packages/docs/src/pages/components)) [Verified]. This structure is warmer and more specific than a feature list.
+- Surfaces: 2 (paywall for unused feature), 7 (trial day-1 state).
+- Pattern: `{Benefit}, like {example 1} or {example 2}.` — `Automate the repetitive parts, like moving items when a deadline passes or notifying your team when credits run low.`
+
+**ES3. For monetization empty states, name the first action and its friction.**
+- Why: extends ES1 and ES2 with the conversion angle. A user staring at a zero-credit state is a purchase intent moment — the copy should remove perceived effort (reason 1: avoid effort), not just describe the state.
+- Surfaces: 5.
+- Pattern: CTA maps directly to the heading: heading `Add credits to keep {agent_name} running` → CTA `Add 1,000 credits` (specific package, from monday-context) — not a generic `Top up` that asks the user to re-derive what they need.
+
+---
+
+## Loading and latency
+
+Loading states in monetization flows are trust moments — a payment button that goes silent after a click creates anxiety and double-submits. Copy on or around loading states must confirm the system heard the action.
+
+**LD1. Short async operations (<~2 seconds): change the button label.**
+- Why: monday's UX writing: "short operations (under a few seconds): a loading toast is enough." For monetization CTAs specifically, changing the button label is even better — it confirms the click without a separate component entering the viewport at a moment of high anxiety. It also physically prevents double-submits ([Vibe handbook](https://github.com/mondaycom/vibe/blob/master/packages/docs/src/pages/foundations/ux-writing-handbook/ux-writing-handbook.mdx)) [Verified].
+- Surfaces: 1, 4, 5.
+- Pattern: `Pay ${total} and upgrade` → `Processing…` (disabled) → `Done — you're on {plan}` or revert to the original label + inline error. The loading label is 1–3 words in progressive form: "Processing…", "Adding credits…", "Confirming…". Not "Loading…" — name the action, not the mechanism.
+
+**LD2. Longer operations (>~2 seconds): short rotating phrases that signal real progress.**
+- Why: monday's UX writing: "longer operations: short rotating phrases (1–5 words) that progress naturally… don't over-promise: avoid 'almost done' or 'just a moment' unless you can back it up." ([Vibe components](https://github.com/mondaycom/vibe/blob/master/packages/docs/src/pages/components)) [Verified]. A static "Processing…" for 10 seconds reads as a frozen state.
+- Surfaces: 5 (credit top-up), 4 (seat bulk upgrade with contract provisioning).
+- Pattern: Write a set of 3–4 phrases that progress naturally: `Processing payment…` → `Setting up your credits…` → `Almost there…` (only if progress data confirms). If time is genuinely unknown: `Processing payment…` → `Still working on it…` → `Taking a bit longer than usual…` — never "just a moment" without knowing it's a moment.
+
+**LD3. Never promise specific time unless you know it.**
+- Why: extends LD2. "Almost done" and "just a moment" are measurable claims — when they're wrong, they flip from reassurance to deception. The user now has a concrete expectation to violate.
+- Surfaces: all.
+- Pattern: when you don't know how long: `Still working on it…` · `Hang tight…`. When you do: `This usually takes about {N} seconds.` (from monday-context or engineering spec, not guessed).
 
 ---
 

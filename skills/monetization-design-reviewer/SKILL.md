@@ -14,6 +14,19 @@ This skill is used by monday.com's monetization teams — designers, PMs, and pr
 
 ---
 
+## Relationship to sibling plugins
+
+This skill focuses on **conversion and revenue quality** — timing, value clarity, copy hooks, trust signals, escape hatches, and the CRO patterns that move people through a monetization surface. It covers accessibility and interaction states at the level relevant to monetization (dark-pattern gates, mobile CTAs, loading and error states on payment flows).
+
+Two other installed plugins cover adjacent ground and are complementary, not redundant:
+
+- **`design-critique`** — general UX quality review (Nielsen's heuristics, loading states, empty states, keyboard navigation, information architecture). Invoke it when the change involves new components, forms, or interaction patterns beyond monetization surfaces, or when the reviewer asks for a full UX audit rather than a conversion review.
+- **`ux-writing`** — monday.com-specific product microcopy (tone zones, component formats, terminology, feature naming). Invoke it when the ask is general product copy quality rather than conversion angle — error messages, tooltips, settings labels, onboarding copy that doesn't need the 15-reasons persuasion framework.
+
+When a design review surfaces a copy issue, the handoff to `improve-conversion-surfaces-copy` is the right path inside this plugin's chain. When it surfaces a general UX writing issue (wrong tone zone, terminology drift, component format), note it and route to `ux-writing` outside the chain.
+
+---
+
 ## Scope and handoff
 
 This skill scores and flags copy quality as one of eight rubric dimensions — that's a diagnosis, not a rewrite. When a "Copy / CRO" issue is identified, name the problem and the reason it's failing on (which of the 15 reasons people buy, per the copy skill's framework, is missing or buried), but don't write the replacement line here. Hand off to `improve-conversion-surfaces-copy` for the actual rewrite options — that skill's whole job is producing 2–3 copy options with one recommended, and duplicating that logic here means two skills maintaining the same judgment calls separately.
@@ -227,6 +240,10 @@ Automatic deductions regardless of surface type. Check every one against the des
 | Credit/usage depletion with no preview of what runs out | Confusion, not motivation |
 | Bare credit number with no task translation | "{N} credits" is meaningless without a task translation from `monday-context.md` (e.g. 1,000 credits ≈ 50 resume screenings) |
 | Hardcoded values instead of Vibe tokens | Design-system drift, inconsistency |
+| No loading state on async CTA | A payment or top-up button that shows no feedback while the API call runs causes double-submits, perceived bugs, and broken trust at exactly the highest-value moment (FF6) |
+| No error recovery state designed | Payment declined, API timeout, or session expired with no specced recovery path means production ships a silent blank or browser default — discovered in user sessions, not reviews (FF7) |
+| Color-only status indicator | A credit meter, status badge, or alert that signals state by color alone excludes color-blind users and fails in high-glare environments; icon or text must accompany the color (VH6) |
+| Interactive elements not keyboard-reachable | CTAs, close controls, and form fields not in a logical Tab order exclude keyboard-only users and fail assistive-technology audits (MR6) |
 
 ---
 
@@ -260,7 +277,10 @@ Before returning the review, verify all of the following. If any fail, fix befor
 14. **One alternative worth testing** is present, with its goal, evidence, and test.
 15. **When a flow map exists, Friction & flow was judged per touchpoint** — every screen's named friction checked on the design, and every reduction in the spec that isn't on screen is a row.
 16. **Every row has a Fix path**, and `blocked` is used only when the fix truly needs a fact or decision not in `monday-context.md` or the artifacts.
-17. **When `00-journey.md` exists, every scenario was walked** through the design, the walkthrough table is present, and every scenario that fails to reach its end state is a 🔴 row.
+17. **Interaction states checked** — every async CTA has a designed loading state (FF6) and every async path that can fail has a designed error recovery state (FF7). If neither was visible in the input, add a Pending row for each unverified async action.
+18. **Color-independent status verified** — no status indicator in the design relies on color alone; if the input was a screenshot that doesn't confirm icon/text alongside color, flag as Pending rather than passing (VH6).
+19. **Focus management checked or flagged** — modal open/close focus lifecycle was confirmed in the design, or added as a Pending row if the input didn't include a prototype or code to verify Tab behavior (MR6).
+20. **When `00-journey.md` exists, every scenario was walked** through the design, the walkthrough table is present, and every scenario that fails to reach its end state is a 🔴 row.
 
 ---
 

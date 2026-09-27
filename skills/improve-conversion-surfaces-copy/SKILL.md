@@ -87,6 +87,15 @@ Write from the 15; check against the 8 that you've found the real driver rather 
 - **Error and system messages are copy too.** Payment failed, purchase pending, credits not yet applied: say what happened and what to do next, plainly — no "Oops!", no exclamation marks.
 - **Guardrails before delivery.** Every option — not only the ★ — passes the pre-delivery check in `references/copy-guardrails.md`. A breaching option is rewritten, never shipped with a flag.
 
+## Relationship to sibling plugins
+
+This skill covers **persuasion mechanics** — the 15 reasons, angle differentiation, evidence-backed copy rules, and conversion guardrails. It produces the copy that goes into wireframes and that the design reviewer scores.
+
+Two other installed plugins cover adjacent ground:
+
+- **`ux-writing`** — monday.com-specific microcopy craft (tone zones, component formats, terminology, feature naming, general UX writing audit). When the request is about product microcopy quality rather than conversion angle — wrong tone for a toast, legacy term in a tooltip, onboarding copy that doesn't need persuasion — route there. This skill's rules (E1a, E1b, ES1–ES3, LD1–LD3) are the monetization subset of what ux-writing covers more broadly; both are consistent with monday's Vibe handbook.
+- **`monetization-design-reviewer`** — CRO and design quality scoring. When a copy pass surfaces a layout or flow problem beyond the words (wrong component choice, friction in the step count, timing issue), name it and route to the reviewer rather than speccing the fix here.
+
 ## Scope and handoff
 
 This skill covers copy only — naming the reason and rewriting the words. It does not cover layout, visual hierarchy, credit-meter UI patterns, or scoring a page against a design rubric.
