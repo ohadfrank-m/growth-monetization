@@ -126,7 +126,7 @@ The 15 reasons people buy (source: `improve-conversion-surfaces-copy` skill):
 **Hook direction (day 1 / activation nudge):**
 - Lead with the outcome: "Set up your first AI agent in 5 minutes"
 - No pressure, no urgency — they just signed up
-- CTA: "Get started" or "Try AI Agents"
+- CTA: verb + outcome, e.g. "Try AI Agents" or "Set up your first {agent}". A bare "Get started" only if the headline already names the outcome ([copy-craft.md](../../improve-conversion-surfaces-copy/references/copy-craft.md), rule C1)
 
 **What to avoid:** Trial expiry without naming what's lost, countdown timers before value is established, upgrade ask before aha moment
 
