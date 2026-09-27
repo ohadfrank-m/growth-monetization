@@ -274,6 +274,7 @@ Read the **latest version** of each numbered artifact — per the ledger — in 
 - **Check the reviewer's factual claims before they land.** An independent reviewer can still misread the input. For every row that asserts a fact — especially "contradicts monday-context.md", a price, a limit, or something "missing" from the design — re-derive it from the input (screenshot, Figma, artifact) and the context file. If it doesn't hold, keep the row for traceability but say so in its Open item ("R1.13 reading likely wrong: {why}") and never propose a context-file change built on it.
 - **No direction-only rows.** "Improve", "consider", "strengthen", "make more X" are not requirements. If two people acting on a row would build different things, rewrite it.
 - **Every row is testable.** Each Design change and Build-order row carries **acceptance criteria** — a pass condition two people would judge the same way: "At a true 375px viewport, the CTA is visible without scrolling", not "works on mobile". A subjective property becomes an objective proxy (task completion, a visible element, a measured value); if none exists, it's a research question — say so in Open items.
+- **Success metrics are decision-grade.** Write the Measurement plan block from [references/experiment-design.md](references/experiment-design.md): one revenue-proximate primary, guardrails that block ship, MDE and runtime computed from data-owner slots, and a pre-registered ship table. Never a bare "+X%" target. Every slot still open becomes an Open item.
 - **No vague words.** Scan Design changes, Open items and Build order (never the verbatim copy strings) for: *appropriate, suitable, reasonable, user-friendly, intuitive, efficient, fast, simple, easy, seamless, flexible, optimized, as needed, where applicable, if necessary, etc., and/or, may, might, could*. Quantify each hit or cut it. If the number isn't decided, don't invent one — write "pending: {what}" and add an Open item.
 - **Real owners.** Owner is a named person when the user or `monday-context.md` names one; otherwise the owning role plus "name TBD" (e.g. "Billing — name TBD"), and one Open item lists the owners to assign. Never "the team", "product", or a blank.
 - **Playbook updates travel.** If the chain produced a research doc with Suggested playbook updates, add one Open item: owner "Growth Monetization PM — name TBD" (the playbook owner), what's needed "apply the suggested updates to `playbooks/{surface}.md`", Source: the research file. Knowledge that stays in one report is lost to the next spec.
@@ -318,6 +319,10 @@ Anything the review couldn't assess or that needs an input before build — pend
 |---|-------|---------------|--------|--------|
 | O1 | Design — name TBD | 375px screenshot to confirm CTA stays above fold | D1 on mobile | R1.9 |
 
+## Measurement plan
+
+{The block from references/experiment-design.md §9, filled — decision (test / ship + holdout / ship, no test), hypothesis, primary · secondary · guardrail metrics, design, holdout, threats, ship table}
+
 ## Build order
 
 | # | Priority | Owner | Task | Covers | Acceptance criteria | Effort |
@@ -346,6 +351,7 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 9. Every owner is a named person or "{role} — name TBD"; none says "the team".
 10. If a research doc with Suggested playbook updates exists, its Open item is present.
 11. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
+12. Measurement plan present, with one primary metric per account and a filled ship table; every unfilled slot has an Open item, and instrumentation rows are in Build order.
 
 After delivering, one line only — existing-design chains: offer to build a wireframe of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input. Fix-loop chains: no offer; the build target is already the fixed wireframe.
 
