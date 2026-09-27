@@ -48,4 +48,10 @@ Mark non-applicable cases `N/A` with a one-line reason. Never skip silently.
 
 **Billing cadence.** Does the surface behave differently for monthly vs. annual customers (e.g. mid-cycle top-up proration)?
 
+**Multiple monetization asks in one session.** When more than one surface could fire, show one at a time, in this order: a functional state the user is in (depletion, an at-limit gate on the action they just tried, the trial expiry decision) → an intent gate the user clicked → a lifecycle prompt (trial phases) → a promotion. A lower-priority ask waits for the next session. It never stacks on screen with a higher one.
+
+**Deep links.** If the surface can be reached by URL (email, shared board, campaign link, support macro), spec what the link opens for each state: eligible, ineligible, expired, wrong role, logged out. An invalid link falls back to the default state with a one-line reason, never an error page.
+
+**Localized pricing and currency.** Any price on the surface is in the currency the account is billed in (in-app), or the region currency the context file publishes (public). A currency or tax treatment the context file doesn't list is an open item. Never convert a USD price for display.
+
 **Loading, empty, and error states.** Monetization surfaces fail at the worst moment. Spec each that applies: purchase pending (what shows between click and confirmation), payment failed (inline, with a retry and the reason when known — never a generic error), credits or plan not yet applied (what the user sees until it lands), and the empty state (no usage yet, no plan history).

@@ -83,10 +83,12 @@ Full intake protocol: [brief-intake.md](references/brief-intake.md)
 ### Step 2: Load surface type reference
 
 Read the reference file for the identified surface type. It contains:
+- The states the surface can be in
 - Mandatory spec sections for this surface
-- Best-in-class patterns
-- Anti-patterns to flag
-- monday.com specific considerations
+- The trigger logic block (conditions, frequency cap, dismiss, re-show)
+- Pattern decision rules and surface-specific edge cases
+
+Best-in-class patterns, benchmarks and anti-patterns live in the surface's playbook, which the reference links to — read both.
 
 ### Step 3: Research (optional but recommended)
 
