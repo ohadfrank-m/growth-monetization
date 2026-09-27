@@ -42,6 +42,12 @@ Taxonomy sources: [FTC staff report *Bringing Dark Patterns to Light*, Sept 2022
 | G18 | "Unlimited AI" (or unlimited anything) when fair-use caps, credit limits or throttling apply | Hidden information | FTC 2022 pp.6–8: net impression; material terms not hidden [Verified]; UCPD Art. 7 misleading omission [Verified] | Consumer law + Trust | 1, 2, 5 | `Includes {N} AI credits/mo · then {overage_rule}` (terms from monday-context) |
 | G19 | Unsubstantiated superlatives — "the #1 work platform", "the most awarded" | Hype claim | monday brand voice: no overpromising, no unsubstantiated superlatives ([brand-monday.com](https://www.brand-monday.com/tone-of-voice)) [Verified]; comparative-claim rules vary by market — flag for legal | Trust | 1, 3 | Specific proof with a source: `{N} customers` (monday-context) · a named badge with date |
 
+| G20 | Passive voice in a CTA or headline where active reads naturally — "Your plan will be upgraded", "Seats will be added", "Credits will be applied" | Passive construction | monday's UX writing voice rules: "active voice" as a standing style rule [Verified]. Passive voice in a CTA removes the subject (the user) from the action, which weakens the sense of control and makes the line feel bureaucratic. | Trust | all | `You're upgrading to {plan}` · `{N} seats added` · `Credits applied` |
+| G21 | "Please" in a user-caused error: "Please enter a valid card number", "Please try again" when the user made the mistake | Misplaced "please" | monday's UX writing voice: "avoid 'please' — except in errors we caused but the user needs to fix, where it smooths over natural frustration." [Verified] "Please" in a user-caused error softens something the user did wrong, which reads as evasive about responsibility. Reserve "please" for errors monday caused. | Trust | all | User-caused: `Card number isn't valid. Check the number and try again.` Monday-caused: `We couldn't process this. Please try again.` |
+| G22 | "Click here", "tap here", or "here" as a link's only text | Non-descriptive link | WCAG 2.2 SC 2.4.6 Link Purpose (In Context), AA ([link](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html)). Screen readers navigate by link list — "click here" is meaningless out of context. | Trust | all | Name the destination: `View billing history` · `See plans` · `Contact support` |
+| G23 | Implying imminent shutdown for a routine billing event — "Keep your account active", "Avoid a service interruption", "Don't lose access" — when the account is not actually about to be suspended | False urgency / threat | monday's UX writing strategic priorities: "never imply imminent shutdown unless shutdown is genuinely imminent. 'Keep your account active' is too threatening for a routine payment failure." [Verified] Oversized threat damages trust and reads as manipulation at the moment customers are most likely to form a lasting brand opinion. See E1b in copy-craft.md. | Trust | 1, 4, 5, 7 | `Update your payment method to continue using monday.com.` Reserve shutdown framing for a confirmed, imminent cutoff date from monday-context — never for a first missed payment or a routine retry. |
+| G24 | "Upgrade now" as the CTA for any upgrade prompt that is not the final payment confirmation step | Premature commit | monday's UX writing components: "use 'See plans' as the standard CTA for all upgrade prompts. Reserve 'Upgrade now' only for the final payment moment — when the user is about to enter their credit card. Never use it earlier." [Verified] A commit label before the user has seen the price or plan details raises anxiety and prematurely closes the decision frame. This nuances C1: the specific CTA rule still applies — the right specificity for a pre-purchase CTA is where it goes, not that it commits. | Trust | 2, 4, 5, 7 | Pre-purchase: `See plans` (when the next screen is a pricing or plan comparison page) · `View {plan} features` (when the next screen is a plan detail). Final commit step: `Start {plan} — ${price}/mo` · `Confirm upgrade` (C3 still applies here). |
+
 ## Pre-delivery check (every option, not just ★)
 
 1. Does any decline label judge the user? (G1)
@@ -50,6 +56,11 @@ Taxonomy sources: [FTC staff report *Bringing Dark Patterns to Light*, Sept 2022
 4. Does every paid CTA say what it charges and that it renews? (G7, G8)
 5. Does each label mean exactly one outcome, and is the way out a named button? (G9, G10)
 6. Is every consequence true, specific and dated? (G16)
+7. Is every CTA in active voice, and does it name what the click does rather than what happens as a result? (G20)
+8. Is "please" used only in monday-caused errors, never in user-caused ones? (G21)
+9. Is every link labelled by its destination, not "click here"? (G22)
+10. Does any billing or depletion message imply imminent shutdown for a routine event? (G23)
+11. Is "Upgrade now" used only at the final payment confirmation step? (G24)
 
 ## Sources
 
