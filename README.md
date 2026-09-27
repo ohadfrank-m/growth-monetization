@@ -5,9 +5,9 @@
 [![Skills](https://img.shields.io/badge/skills-6-333?style=flat-square)](#the-skills)
 [![monday.com](https://img.shields.io/badge/built_for-monday.com-ff3366?style=flat-square)](https://monday.com)
 
-A monetization copilot for growth product squads. Hand the **Monetization Growth PM** a surface and it does the full product work — competitor research, spec, conversion copy, wireframe, an independent CRO review that loops until the fixes land, and one requirements doc design and engineering can build from. Or call any single skill on its own when you only need one piece.
+A monetization copilot for growth product squads. Hand the **Monetization Growth PM** a surface and it does the full product work — competitor research, a journey map of who hits the surface and every step around it, spec, conversion copy, wireframe, an independent CRO review that loops until the fixes land, and one requirements doc design and engineering can build from. Or call any single skill on its own when you only need one piece.
 
-Built for: pricing pages · paywalls · upgrade flows · credit/consumption UI · trial flows · cancellation flows
+Built for: pricing pages · paywalls · promotions · upgrade flows · credit/consumption UI · trial flows · cancellation and downgrade flows
 
 ---
 
@@ -31,18 +31,18 @@ When your prompt is clear ("wireframe a credit depletion surface for Pro"), it a
 | Question | Options |
 |----------|---------|
 | **How far should this go?** | New surface: spec + copy · up to a wireframe · all the way to a requirements doc. Existing surface: review + fixed copy + requirements · review only · start fresh · redesign all the way |
-| **Start with a benchmark of how competitors run this surface?** | Yes / No — recommended for a new surface; the spec's flow map is then built from real competitor flows |
+| **Start with a benchmark of how competitors run this surface?** | Yes / No — recommended for a new surface; the journey and the spec's flow map are then built from real competitor flows |
 | **How thorough should the review be?** *(only when the chain reviews a wireframe it built)* | Standard *(recommended)* · Quick · Thorough — see below |
 
 If the surface is live and public (e.g. monday.com/pricing), it captures the page itself instead of asking for a screenshot. On a new surface where research wasn't chosen, the announcement adds one line — `Say "add research" to benchmark competitors first` — so you can still add it without a question up front. A research-only ask ends at the research doc.
 
 ### The review loop, and how deep it goes
 
-A review that only lists problems hands dev a wrong wireframe plus a to-do list. So for a new surface, the Growth PM sends every fixable finding back to the skill that owns it — copy lines to the copy skill, layout and states to the wireframe, a wrong trigger or missing state to the spec — and a **fresh reviewer that sees only the files** (not the reasoning that produced them) checks the fixes.
+A review that only lists problems hands dev a wrong wireframe plus a to-do list. So for a new surface, the Growth PM sends every fixable finding back to the skill that owns it — copy lines to the copy skill, layout and states to the wireframe, a wrong trigger or missing state to the spec, a missing step or wrong path to the journey — and a **fresh reviewer that sees only the files** (not the reasoning that produced them) checks the fixes.
 
 | Depth | What happens | Stops when |
 |-------|--------------|-----------|
-| **Quick** | One review, no loop. One copy pass writes the strings every finding needs; the rest go into the requirements doc as design changes on top of the v1 wireframe, and the fixed wireframe is offered at the end | After the review |
+| **Quick** | One review, no loop, and no journey map. One copy pass writes the strings every finding needs; the rest go into the requirements doc as design changes on top of the v1 wireframe, and the fixed wireframe is offered at the end | After the review |
 | **Standard** *(default)* | Critical and major findings loop back | Every fixable 🔴/🟠 finding is resolved and the re-review found no new 🔴/🟠 — max 2 passes. Polish (🟡) findings get one copy pass after the loop, then go into the doc |
 | **Thorough** | Every fixable finding loops, polish included | Score ≥85/100 and every fixable finding resolved — max 3 passes, earlier if only human-blocked items remain |
 
@@ -116,6 +116,7 @@ Only web search is needed, and it's built in. None of the MCPs are required — 
 | **PricingSaaS** | Structured, current competitor pricing data — live plans, historical change diffs, watchlists, pricing-news feed. This is what makes `monetization-intelligence` fast and precise instead of a slow manual Google-and-guess exercise, and it's the only source with real historical diffs (before/after a pricing change, dated). | Falls back to enrichment-only research — Wayback Machine, changelogs, sentiment, job postings. Still usable, but slower and with no structured change history. | Add `https://mcp.pricingsaas.com` — see [mcp-setup.md](mcp-setup.md) |
 | **Figma** | Pull a design directly from a Figma link or frame — layer structure, exact copy text (not read off pixels), and variable bindings, so `monetization-design-reviewer` can catch hardcoded colors/spacing that have drifted from Vibe design tokens and the wireframe can name real tokens instead of "token TBD". | Paste a screenshot instead — full visual review still works, you just lose token-binding checks and have to transcribe copy by eye instead of reading it exactly. | Add `https://mcp.figma.com/mcp` |
 | **Slack** | The weekly pricing digest (`monetization-intelligence`) comes formatted as a paste-ready Slack message for the channel your team watches. | Digest is delivered in chat — same content, formatted for pasting. | See your Slack app's MCP setup |
+| **Snowflake data** (monday internal) | `monetization-journey-map` sizes every scenario with real counts — how many accounts hit this surface, by tier, role and billing period — through the read-only `data-expert-agent` / `run-sql` tools, showing every question and source table. Aggregates only, never user-level rows. | Frequencies stay as `{slot}` with an Open item for Data, and the journey says so in one line. | monday's internal data MCP — see [mcp-setup.md](mcp-setup.md) |
 | **Web search** | Enrichment sources for `monetization-intelligence` — Wayback Machine snapshots, product changelogs, earnings-call commentary, sentiment from Reddit/G2/HN. This is what grounds research in evidence beyond whatever PricingSaaS alone returns. | Research is limited to PricingSaaS/monday.com MCP data alone — meaningfully reduced coverage on anything PricingSaaS doesn't track. | Native to Claude — no setup needed |
 
 Skills degrade gracefully when an MCP is unavailable and tell you what's affected — they never fail silently.
@@ -128,9 +129,9 @@ Listed in the order the Growth PM runs them. Each one also works on its own.
 
 ### `/monetization-growth-pm` — the Monetization Growth PM
 
-The full product work in one command. It scopes the job (how far, how deep), runs research → spec → copy → wireframe → independent review → fix loop, and synthesizes everything into one doc a designer and engineer can start from without opening anything else. After every step it prints a one-line **ledger** of the current version of each artifact, so it's always clear which spec, copy, and wireframe are the latest — even in a chat session with no real files.
+The full product work in one command. It scopes the job (how far, how deep), runs research → journey map → spec → copy → wireframe → journey board → independent review → fix loop, and synthesizes everything into one doc a designer and engineer can start from without opening anything else. After every step it prints a one-line **ledger** of the current version of each artifact, so it's always clear which spec, copy, and wireframe are the latest — even in a chat session with no real files.
 
-**What you get:** `05-requirements.md` — the **build target** (the approved wireframe version), the depth used and passes run, final copy strings (verbatim ★ picks, each next to the line it replaces), what the loop already fixed, remaining design changes, open items (including any suggested playbook updates from the research, so they land in `playbooks/`), and a sorted build order. Every design change and build step carries **acceptance criteria** a tester can check, every owner is a named person or a role marked "name TBD", and vague words ("intuitive", "fast", "as needed") are quantified or cut. Every row traces back to the review row it came from, and the Growth PM re-checks the reviewer's factual claims before they go in.
+**What you get:** `05-requirements.md` — the **build target** (the approved wireframe version), the depth used and passes run, final copy strings (verbatim ★ picks, each next to the line it replaces), what the loop already fixed, remaining design changes, open items (including any suggested playbook updates from the research, so they land in `playbooks/`), a **measurement plan** (one revenue-proximate primary metric, guardrails that block ship, sample size and runtime from real baselines, a pre-registered ship table — grounded in its `references/experiment-design.md`), and a sorted build order in which every journey scenario gets its own acceptance criterion. Every design change and build step carries **acceptance criteria** a tester can check, every owner is a named person or a role marked "name TBD", and vague words ("intuitive", "fast", "as needed") are quantified or cut. Every row traces back to the review row it came from, and the Growth PM re-checks the reviewer's factual claims before they go in.
 
 Claude's `/` menu lists skills namespaced by plugin: type `/growth-monetization` to see all six, and pick `/growth-monetization:monetization-growth-pm` for the full flow. (This README uses the short names.)
 
@@ -146,11 +147,11 @@ Not just what competitors charge — how they make money and how they run the su
 
 | What you ask | What you get |
 |-------------|-------------|
-| "How do Notion, ClickUp and Asana handle cancellation?" | **Surface benchmark** — each competitor's flow screen by screen (entry, offer, escape, what happens after), patterns to steal and avoid, flow implications for the spec, and what it means for monday.com |
-| "Tear down Notion's monetization" | **Monetization teardown** — value metric, packaging, price, free/trial model, expansion paths, a map of every surface where they charge, and a layer-by-layer comparison with monday.com |
+| "How do Notion, ClickUp and Asana handle cancellation?" | **Surface benchmark** — each competitor's flow screen by screen (entry, offer, escape, what happens after, win-back and seat-expansion mechanics), patterns to steal and avoid, flow implications for the journey and spec, and what it means for monday.com |
+| "Tear down Notion's monetization" | **Monetization teardown** — value metric, packaging, price, free/trial model, expansion paths, where self-serve stops and sales starts, a map of every surface where they charge, and a layer-by-layer comparison with monday.com |
 | "How does Notion price?" | Company deep-dive — plans, packaging logic, history, what it means for monday.com |
 | "How do AI companies sell credits?" | Model benchmark — credit unit names, package sizes, rollover policies, top-up UX across the category |
-| "Map the work management pricing landscape" | HTML landscape report — all players, price bands, model patterns, market-level signals |
+| "Map the work management pricing landscape" | Landscape report in `research/` — all players, price bands, model patterns, market-level signals. A hosted HTML version only on your go-ahead (PricingSaaS charges credits for it and the link is public) |
 | "What changed in pricing this week?" | Weekly digest — watchlist changes, key moves, signal vs. noise |
 | "Tear down Asana's pricing page" | Page teardown — hierarchy, copy psychology, what works and what doesn't |
 | "Build a battlecard: monday vs Asana" | Battlecard — plan comparison, objection handling, negotiation intelligence |
@@ -170,7 +171,7 @@ Maps the story around a surface before anyone designs it: who hits it, why, and 
 **What you get:**
 
 - `00-journey.md` — scenario cards (problem, persona, trigger, frequency, current result, evidence, impact — adapted from Pragmatic Institute use scenarios), sized with read-only queries to monday's Snowflake data (every question and source shown; slots and Open items when data isn't available), and a step table across five stages (before → trigger → on-surface → hand-off → after) with each step's channel, state of mind, branches, friction, event and wireframe state id. The spec takes its flow map from it, copy writes to each step, and the reviewer walks every scenario through the design
-- `03-journey.html` — the journey board: one lane per scenario, one column per step, the real wireframe state embedded on every on-surface step and the real copy on every email or notification card, viewable per scenario by URL hash
+- `03-journey.html` — the journey board: one lane per scenario, one column per step, the real wireframe state embedded on every in-app step and the real copy on every email or notification card, viewable per scenario by URL hash
 
 ---
 
@@ -192,7 +193,7 @@ A complete spec and a low-fi HTML wireframe for any monetization surface, from a
 
 **What you get:**
 
-- `01-spec.md` — trigger, cohort, a **flow map** (every screen in the journey, where users arrive from and go next, and the friction point at each touchpoint with its fix), section-by-section layout, copy strategy (the reason and direction — never final copy), success metrics, and every edge case (credit debt, admin-gated purchase, mobile, repeat exposure, enterprise, loading/empty/error states)
+- `01-spec.md` — trigger, cohort, the scenarios from the journey map (when one exists), a **flow map** (every screen in the journey, where users arrive from and go next, and the friction point at each touchpoint with its fix — taken from `00-journey.md` when it exists), a **trigger-logic block** (conditions, frequency cap, dismiss and re-show rules, with thresholds cited from the surface's playbook), a pattern decision table, section-by-section layout, copy strategy (the reason and direction — never final copy), success metrics, and every edge case (credit debt, admin-gated purchase, mobile, repeat exposure, enterprise, loading/empty/error states)
 - `03-wireframe.html` — one self-contained file built to a fixed **wireframe contract**: every state in a state switcher (and reachable by URL hash, so each can be rendered for review), the real ★ copy, for multi-screen surfaces a left-to-right **flow strip** with a `T{n}` pin on every friction point, pins that tie elements to spec sections and review rows (dashed when blocked on an open item), an annotation panel, neutral colors named for their Vibe token, and a true-375px mobile layout
 - `01-spec-v2.md` / `03-wireframe-v2.html` — fix-loop revisions: only the rows the review sent back, each change pinned with its row number
 - A wireframe of the fixed version after an existing-design review — built from `05-requirements.md`, with each element pinned to its final-copy, design-change or open-item code
@@ -204,6 +205,8 @@ A complete spec and a low-fi HTML wireframe for any monetization surface, from a
 Every line maps to a real reason people buy, not a feature description. The deliverable is always the same shape: for each element, 2–3 options that differ by angle, one marked **★ Recommended** with a one-line why.
 
 **Asks for, if your prompt doesn't say:** the surface and element(s), the cohort / journey stage, the action the copy must drive, the current copy (when rewriting), and hard constraints — length, and facts that must stay true.
+
+Every option is written to the evidence-backed rules in its `references/copy-craft.md` (CTA labels, numbers and prices, loss vs gain framing, urgency, error states, mobile — each rule sourced to NN/g, Baymard or the original study) and monday's own voice from the Vibe UX Writing Handbook, then checked against `references/copy-guardrails.md` — the language it never writes (confirmshaming, fake urgency, drip pricing, hidden renewal terms, trick wording), grounded in the FTC dark-patterns report, ROSCA, the California ARL, the UK DMCC Act and EU consumer law. A breaching option is rewritten, never shipped with a flag. With a journey map, each element is labelled with its step and written to that step's state of mind, and off-surface steps (the confirmation email, the admin notification) get copy too.
 
 **What you get:**
 
@@ -218,7 +221,9 @@ Scores any monetization design, screenshot, Figma frame, live URL, or wireframe 
 
 **Asks for, if your prompt doesn't say:** the design itself, surface type, cohort, the goal or metric, single screen vs full flow, and whether you want the review only or the full fix-and-requirements chain.
 
-**What you get:** `04-review.md` — weighted score out of 100, projected score if the Critical and Major fixes ship, a ship / don't-ship verdict, **what's working — keep** (so fixes don't break it), one ranked fix list where every row carries a **Fix path** (`copy`, `wireframe`, `spec`, `design team`, or `blocked — {owner}`), **one alternative worth testing** (a different pattern for the same goal, with the A/B to run), and one benchmark example. When the spec has a flow map, friction is judged touchpoint by touchpoint. Inside the Growth PM it runs as a fresh subagent so it isn't grading work it wrote; on re-review (`04-review-v2.md`) it verifies each fix and ends with `Exit loop` or `Another pass`. Called directly, it continues into copy rewrites and `05-requirements.md` unless you say "review only" — in which case it offers a low-fi prototype of the fixes instead. Trial flows don't have their own rubric column yet; they're scored against the paywall weights.
+**What you get:** `04-review.md` — weighted score out of 100, projected score if the Critical and Major fixes ship, a ship / don't-ship verdict, **what's working — keep** (so fixes don't break it), one ranked fix list where every row carries a **Fix path** (`copy`, `wireframe`, `spec`, `journey`, `design team`, or `blocked — {owner}`), **one alternative worth testing** (a different pattern for the same goal, with the A/B to run), and one benchmark example. When the spec has a flow map, friction is judged touchpoint by touchpoint. With a journey map, every scenario is walked through the design step by step (a cognitive walkthrough), and a scenario that can't reach its end state is a critical finding. Inside the Growth PM it runs as a fresh subagent so it isn't grading work it wrote; on re-review (`04-review-v2.md`) it verifies each fix and ends with `Exit loop` or `Another pass`. Called directly, it continues into copy rewrites and `05-requirements.md` unless you say "review only" — in which case it offers a low-fi prototype of the fixes instead.
+
+Scores aren't intuition: every 5 has checkable criteria behind it (WCAG 2.2 AA target sizes and reflow, NN/g heuristics, Baymard findings, the FTC dark-patterns taxonomy, DSA Art. 25), each dimension maps to the playbooks' anti-pattern rows, and `references/calibration-examples.md` shows what a 1, 3 and 5 look like on real, cited surfaces — including a fully worked score of the FTC-documented Amazon cancel flow. A **dark-pattern gate** caps the verdict at "Not yet" whenever the escape hatch scores ≤2 or a starred criterion fails, so weighting can never average an obstructive flow into "ship after fixes". Every surface type, trial flows and downgrades included, has its own weight column.
 
 ---
 
@@ -239,7 +244,7 @@ Every artifact lands in `.monetization/` in your working directory, numbered by 
 │   ├── 02-copy-v2.md, -v3          ← fix loop: only the copy rows sent back, per pass
 │   ├── 03-wireframe-v2.html, -v3   ← fix loop: rebuilt; the last approved one is the build target
 │   ├── 04-review-v2.md, -v3        ← re-reviews: verify each fix, exit or loop
-│   ├── renders/                    ← every wireframe state, desktop + true 375px, for the reviewer
+│   ├── renders/                    ← every wireframe state and the journey board, desktop + true 375px, for the reviewer
 │   └── 05-requirements.md          ← what design + eng build from
 ├── pricing-page/                   ← existing design (no fix loop — it's your live design)
 │   ├── input/                      ← screenshots, or captures of the public page
@@ -270,6 +275,8 @@ Every file carries the same header block (plugin, skill, feature, cohort, date, 
 
 **Copy is always handed off — and runs before the wireframe.** Only `/improve-conversion-surfaces-copy` writes final copy. The spec names the reason from the 15 reasons people buy; the copy skill writes the lines; the wireframe and the review both use those real lines.
 
+**Scenarios before screens.** On a new surface the journey comes first: who hits it, how often (from real data), and every step before, on and after it. The spec, the copy and the review all read that one file, so an IC and an admin at the same screen get different lines and the reviewer checks both get through.
+
 **Nothing degrades silently.** A missing MCP, a missing reference file, or no independent reviewer — the skill says what's affected and takes the best fallback.
 
 ---
@@ -282,15 +289,19 @@ growth-monetization/
 │   ├── plugin.json
 │   └── marketplace.json
 ├── CLAUDE.md                          ← plugin-wide rules: intake, chain mode, artifacts
+├── HANDOFF.md                         ← design decisions and history for the next maintainer
 ├── docs/
 │   └── flow.svg                       ← the "How it works" diagram
 ├── context/
 │   └── monday-context.md              ← monday.com source of truth (owned, versioned)
-├── playbooks/                         ← CRO knowledge, one file per surface type — cited by spec + reviewer, never duplicated
+├── playbooks/                         ← CRO knowledge, one file per surface type + cases.md — cited by spec + reviewer, never duplicated
+├── scripts/
+│   └── lint-playbooks.py              ← checks playbook structure, benchmark rows, evidence tags, links and source dates
 ├── templates/                         ← artifact header + research and spec templates
 ├── skills/
-│   ├── monetization-growth-pm/        ← the Growth PM: scoping, chain, fix loop, synthesis
+│   ├── monetization-growth-pm/        ← the Growth PM: scoping, chain, fix loop, synthesis (+ experiment-design reference)
 │   ├── monetization-intelligence/
+│   ├── monetization-journey-map/      ← scenarios, journey steps, scenario sizing, journey board
 │   ├── monetization-surface-spec/
 │   ├── improve-conversion-surfaces-copy/
 │   └── monetization-design-reviewer/
@@ -300,10 +311,10 @@ growth-monetization/
 ## Contributing
 
 - **Updating monday.com facts:** edit `context/monday-context.md`, bump `last-updated`, add a changelog row
-- **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never copy it into a skill's own `references/`. Tag every claim `[Verified]` / `[Reported]` / `[Teardown needed]` and date your sources. See [playbooks/README.md](playbooks/README.md).
+- **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never copy it into a skill's own `references/`. Tag every claim `[Verified]` / `[Reported]` / `[Teardown needed]` and date your sources, then run `python3 scripts/lint-playbooks.py` before committing. See [playbooks/README.md](playbooks/README.md).
 - **Adding a playbook**: it isn't finished until it carries the mandatory AI-native reference set — Clay, Figma, ClickUp, and Claude teardowns in the standard shape, an at-a-glance comparison, a copy bank, and dated sources. See [playbooks/README.md](playbooks/README.md).
 - **Changing a skill:** keep `SKILL.md` lean and self-sufficient (its minimum must work even without `references/`); put mechanics specific to that skill in its `references/`; put anything a second skill needs in `playbooks/`. Keep its **Required context** table current.
-- **Adding a skill:** add a folder under `skills/`, give it a Required context table, add it to the Growth PM's deliverables table in `skills/monetization-growth-pm/SKILL.md`, to `docs/flow.svg`, and to this README
+- **Adding a skill:** add a folder under `skills/`, give it a Required context table, add it to the skills table and output-folder tree in `CLAUDE.md`, to the Growth PM's deliverables table in `skills/monetization-growth-pm/SKILL.md`, to `templates/ARTIFACT_HEADER.md`, to `docs/flow.svg`, and to this README
 
 ---
 
