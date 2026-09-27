@@ -110,7 +110,7 @@ Note which companies have the most active change history (highest diff count) �
 
 ## Key patterns in this category
 
-{2–3 sentences on what the snapshot reveals about the category's pricing dynamics — e.g., "The category is bifurcated: PLG-first tools (Linear, Height) lead with generous free tiers and per-seat paid; legacy players (Jira) are migrating toward usage-based AI add-ons. Entry paid tier ranges from $8 to $25/seat — a wide spread that signals different buyer archetypes are being targeted."}
+{2–3 sentences on what the snapshot reveals about the category's pricing dynamics — e.g., "The category is bifurcated: PLG-first tools ({Company A}, {Company B}) lead with generous free tiers and per-seat paid; {Company C} and {Company D} {what the other group does, with its evidence tag}. Entry paid tier ranges from ${min} to ${max}/seat — a wide spread that signals different buyer archetypes are being targeted."}
 
 ---
 
@@ -126,10 +126,10 @@ Note which companies have the most active change history (highest diff count) �
 
 ## Step 6: Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Category} — Category Watchlist`
-- Change Type: `Company Research` (closest available)
+- Change Type: `Landscape Scan`
 - Summary: "{N} companies added to the {Category} category watchlist. Entry paid range: ${x}–${y}/seat. {Top observation from key patterns.}"
 - PricingSaaS link: blank (category-level, no single diff URL)
 - Workflow: `category-watchlist`
@@ -155,12 +155,13 @@ Use these as starting points when the user names a category. Adjust based on wha
 
 | Category | Default companies to include |
 |----------|------------------------------|
-| Dev project management | Linear, Jira, Asana, Shortcut, Height, Plane, ClickUp, Notion |
-| CRM | HubSpot, Salesforce, Pipedrive, Attio, Close, Monday CRM |
+| **Work management (monday.com default)** | Asana, ClickUp, Notion, Airtable, Smartsheet, Wrike, Atlassian (Jira + Confluence) + AI-native reference set: Clay, Figma, Claude (ClickUp already listed) |
+| CRM (monday CRM) | HubSpot, Salesforce, Pipedrive, Attio, Zoho CRM, Close |
+| Service (monday Service) | Zendesk, Freshworks (Freshservice/Freshdesk), Jira Service Management, ServiceNow, Intercom |
+| Dev (monday Dev) | Jira, Linear, ClickUp, Asana, Shortcut, Plane |
 | Customer support | Zendesk, Intercom, Front, Help Scout, Freshdesk, Kustomer |
-| Data / BI | Tableau, Looker, Metabase, Mode, Sigma, ThoughtSpot |
-| Work management | monday.com, Asana, ClickUp, Wrike, Smartsheet, Teamwork |
-| AI writing / content | Notion AI, Jasper, Copy.ai, Writer, Grammarly Business |
-| Sales engagement | Outreach, Salesloft, Apollo, Instantly, Lemlist |
+| Data / BI | Tableau, Looker, Metabase, ThoughtSpot (incl. Mode), Sigma |
+| AI writing / content | Notion (AI now bundled in Business), Jasper, Copy.ai, Writer, Grammarly (Superhuman) |
+| Sales engagement | Outreach, Salesloft (merged with Clari), Apollo, Instantly, Lemlist |
 
-For monday.com-specific competitive research, default to the **Work management** bundle.
+For monday.com-specific competitive research, default to **Work management**. Re-check this table each quarter — bundle members get acquired, renamed and shut down.

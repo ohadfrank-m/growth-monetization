@@ -17,7 +17,7 @@ For a pricing page, run [pricing-page-teardown.md](pricing-page-teardown.md) per
 ## Step 1: Fix the surface and the set
 
 - **Surface type** — one of the seven. If the prompt names a flow that spans two (e.g. "upgrade after the trial ends"), benchmark the flow as one surface and say which types it spans.
-- **Competitor set: 5–8 companies.** Default: the work-management and PLG set that monday.com competes with, plus every company the prompt names, plus at least one AI-native company from the playbook's reference set (Clay, Figma, ClickUp, Claude) — they monetize AI in different ways and most monday surfaces now involve credits.
+- **Competitor set: 5–8 companies.** Default: the **Work management** bundle in [category-watchlist.md](category-watchlist.md) (the monday.com default set), plus every company the prompt names, plus at least one AI-native company from the playbook's reference set (Clay, Figma, ClickUp, Claude) — they monetize AI in different ways and most monday surfaces now involve credits.
 - **Cohort** — which user the surface serves (new / existing, IC / admin). It decides which state of the competitor's flow matters.
 
 ## Step 2: Read the playbook first
@@ -55,6 +55,58 @@ Capture per company — and leave a field out rather than guess it:
 | After | Confirmation, resume path, data retention, win-back emails |
 | Main friction | The one step most likely to cause drop-off or resentment, and why |
 | Evidence | Tag + source URL + date checked, per field where they differ |
+
+### Surface-specific capture checklists
+
+Use the checklist that matches the surface, on top of the table above. Leave a row blank rather than guess, and tag every filled row.
+
+**Win-back / reactivation after cancel** (part of surface 6, cancellation; the lapsed-user offer belongs to promotions)
+
+| Capture | What to record |
+|---|---|
+| Access end | Immediate vs end of term; can the user undo before the end date, and where |
+| What happens to data | Kept, locked read-only, hidden, or deleted — per object (content, history, automations, AI agents, guests, integrations) |
+| Retention window | How long data survives after cancel or deactivation, and what's permanently lost after it (quote the vendor's number) |
+| Irreversible losses | Anything re-upgrading can't restore (e.g. history past a free-plan window), and whether the flow says so before confirm |
+| Restore path | Where reactivation lives (billing page, "restore workspace", new trial on the same site, support ticket); steps to get back to the prior plan; are settings, seats and integrations restored |
+| Win-back emails | Count, timing (days after cancel), angle (what's new / your data is still here / offer), sender. Only from a received email or a third-party capture → `[Reported]` or `[Teardown needed]` |
+| Reactivation offer | Discount, free period, or plan credit on return; eligibility; time limit |
+| Lapsed-state in-product | What a returning user sees on login (banner, locked content, upgrade wall) |
+| Billing on return | Prorated, new term, old price honoured or current list price |
+
+Search patterns:
+
+```
+WebSearch(query="{Company} reactivate subscription help center")
+WebSearch(query="{Company} what happens to my data when I cancel OR downgrade")
+WebSearch(query="{Company} data retention after cancellation days deleted")
+WebSearch(query="{Company} win-back email cancelled \"we miss you\" OR \"come back\"")
+```
+
+**Seat expansion mechanics** (surface 4, upgrade triggers; thresholds are owned by `playbooks/upgrade-triggers.md`)
+
+| Capture | What to record |
+|---|---|
+| Seat unit | Per seat, fixed bundles/buckets (list the steps), annual user tiers, or active-user billing |
+| Billable definition | Who counts (member, editor, commenter, invited-but-not-accepted, guest) — quote the vendor's rule |
+| Add-seat flow | Where the admin adds seats; steps; whether the price delta is shown before confirm |
+| Auto-add at invite | Does inviting a member add a paid seat automatically, fill an open seat first, or block |
+| IC → admin path | Can a non-admin request a seat or invite; how the admin is notified; approve or deny; any temporary access |
+| Proration / true-up | Mid-term adds: prorated now, at the next month mark, or at renewal; annual true-up rules; tier jump costs |
+| Removal / right-size | Credit on removal, or kept until period end; auto-credit for inactive users |
+| Admin controls | Who may invite or upgrade; restrict-to-admin settings; approval queues; spend caps |
+| Ceiling | Largest seat count purchasable online before sales takes over — cross-reference the teardown's Self-serve ceiling |
+
+Search patterns:
+
+```
+WebSearch(query="{Company} add seats billing prorated help center")
+WebSearch(query="{Company} invite member automatically charged seat")
+WebSearch(query="{Company} request seat admin approval")
+WebSearch(query="{Company} annual plan add users mid-term true-up")
+```
+
+Examples found while building these checklists go to the playbooks (see this skill's *Suggested playbook updates*). They don't belong in this reference.
 
 ## Step 4: Write each company in the playbook shape
 

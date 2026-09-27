@@ -10,27 +10,9 @@ Produce a sales- and product-ready pricing battlecard comparing your company aga
 
 ---
 
-## Step 1: Establish your company's pricing
+## Step 1: Load monday.com's pricing
 
-Ask the user upfront (do not skip):
-
-> "To build the battlecard, I need your current pricing. Share your plan names, prices, and key included features — or point me to your pricing page and I'll pull it."
-
-If the user provides a URL:
-```
-WebFetch(url="{your pricing page URL}")
-```
-
-If the user provides a monday.com internal page or doc, read it directly.
-
-Extract:
-- Plan names and prices (monthly + annual)
-- Pricing metric (per seat, usage, flat)
-- Key features per tier
-- Free tier / trial details
-- Add-ons
-
-Store as "Your Company" data for the comparison.
+Read [context/monday-context.md](../../../context/monday-context.md): tiers, seat minimums and bundles, annual vs monthly, AI credits by tier, feature gating, trial. That's the "Your company" side. Never ask the user for it, and never quote a monday price from memory. If the context file looks stale against the live pricing page, say which line and suggest the update to the file's owner (CLAUDE.md, Source of truth).
 
 ---
 
@@ -45,6 +27,8 @@ get_company_history(slug="{slug}", discovery_only=true)
 WebFetch(url="https://{competitor domain}/pricing")
 WebSearch(query='"{Competitor}" pricing objections "too expensive" OR "vs {your company}" site:reddit.com OR site:g2.com')
 ```
+
+G2 and Reddit block direct fetches — use search snippets only, tagged `[Reported]`, per the access notes in [enrichment.md](enrichment.md) Method 7.
 
 Extract from PricingSaaS:
 - All plan names, prices, and metrics
@@ -182,20 +166,22 @@ Generated: {date} | Source: PricingSaaS + live page data
 
 *Populated from [negotiation-intelligence.md](negotiation-intelligence.md) — Steps 1–4 run in Step 2b above.*
 
-| Metric | Value |
-|--------|-------|
-| Median contract value | ${amount} (source: Vendr) |
-| Typical discount off list | {range} |
-| Best documented discount | {amount or %} |
-| Most common contract length | {1-year / 2-year / mixed} |
+Third-party deal data — every row carries its tag; never present it to a buyer as fact.
+
+| Metric | Value | Tag · Source |
+|--------|-------|--------------|
+| Median contract value | ${amount} | `[Reported]` · Vendr ({url}, checked {date}) |
+| Typical discount off list | {range} | `[Reported]` · {Vendr / G2 / Reddit} ({url}) |
+| Best documented discount | {amount or %} | `[Reported]` · {source} ({url}) |
+| Most common contract length | {1-year / 2-year / mixed} | `[Reported]` · {source} ({url}) |
 
 **What moves the deal:**
-- {Pressure point 1 — with source}
+- {Pressure point 1 — with tag and source}
 - {Pressure point 2}
 - {Timing: best quarter to negotiate}
 
 **What buyers actually report paying:**
-- "{Quote or paraphrase}" — [{source}]({url})
+- "{Quote or paraphrase}" — `[Reported]` [{G2 / Reddit / community}]({url})
 
 **What they defend (don't expect movement):**
 - {Line item 1}
@@ -207,7 +193,7 @@ Generated: {date} | Source: PricingSaaS + live page data
 - *Opening:* "{Suggested opener using competitor mention or timing}"
 - *If they won't move on seat price:* "{Alternative concession to ask for}"
 
-*Sources: Vendr · G2 · Reddit · Community disclosures*
+*Sources: Vendr · G2 · Reddit · Community disclosures — all `[Reported]`*
 
 ---
 
@@ -237,7 +223,7 @@ After delivering the battlecard, offer:
 
 ## Step 6: Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Competitor} — Battlecard`
 - Summary: Quick verdict — where you win, where you lose, in 1–2 sentences

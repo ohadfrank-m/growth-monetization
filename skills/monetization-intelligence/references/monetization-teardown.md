@@ -28,7 +28,24 @@ For each layer, state what the company does, the evidence (tag + source), and th
 | **Expansion paths** | How revenue per account grows: seats, usage/credits, tier upgrades, add-ons, new products — and which one the product pushes hardest |
 | **Surface map** | Every place the product asks for money — see Step 3 |
 | **Retention & cancellation** | Save offers, pause, downgrade paths, what's lost on cancel |
-| **Sales-assist handoff** | Where self-serve stops and sales starts (seat count, plan, feature), and how the product routes to sales |
+| **Self-serve ceiling** | Where self-serve stops and sales starts — see *Self-serve ceiling checklist* below |
+
+### Self-serve ceiling checklist
+
+Record each line with its evidence tag, source URL and checked date. Where the vendor publishes no cap, say "no published cap", not "unlimited".
+
+| Capture | What to record |
+|---|---|
+| Max seats online | Largest seat count purchasable by card without talking to sales; seat steps near the top (e.g. bundles, increments) |
+| Contact-sales-only plans | Which tiers have no self-serve checkout; the CTA text used ("Contact sales", "Get a demo") |
+| Plan-level seat bands | Minimums and maximums per plan (e.g. "1–10 members", "10+ members") |
+| Annual-only thresholds | Plans, add-ons or seat counts that require annual billing |
+| Payment-method gates | Card only vs invoice/PO/ACH/wire, and the minimum order for invoicing |
+| Security and procurement gates | Which tier first gets SAML SSO, SCIM, audit log, data residency, HIPAA/BAA, DPA/security review — the usual reasons an account is forced to Enterprise |
+| Routing in product | How the product sends a large or blocked account to sales (seat picker cap, "talk to us" at checkout, admin console banner) |
+| Signal | What the ceiling says about their motion — a low ceiling pushes deals to sales; a high one keeps mid-market self-serve |
+
+Compare against monday's ceiling from [context/monday-context.md](../../../context/monday-context.md) (seat bundles and where custom quotes start). Never state it from memory.
 
 ## Step 3: Surface map
 

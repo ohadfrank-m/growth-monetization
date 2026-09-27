@@ -43,8 +43,9 @@ G2 and Capterra have pricing reviews where buyers disclose what they actually pa
 ```
 WebSearch(query='"{Company}" pricing "what we paid" OR "negotiated" OR "discount" site:g2.com')
 WebSearch(query='"{Company}" pricing review "contract" OR "annual" OR "per seat" site:capterra.com')
-WebFetch(url="https://www.g2.com/products/{company-slug}/pricing")
 ```
+
+Don't fetch G2 or Capterra pages directly — both block fetchers (403 / changed URL patterns). Use search snippets only, tagged `[Reported]`, per the access notes in [enrichment.md](enrichment.md) Method 7.
 
 Look for:
 - Specific dollar amounts disclosed in reviews
@@ -96,10 +97,12 @@ Compile everything gathered into a structured pressure point map. For each point
 ### Volume and term leverage
 
 - Multi-year commit: typical additional discount for 2-year vs. 1-year, 3-year vs. 2-year
-- Seat volume: at what seat count do discounts typically jump? (e.g., enterprise tiers often have a hard break at 50, 100, 250 seats)
+- Seat volume: at what seat count do discounts typically jump? (Directional heuristic, unsourced: breaks are often assumed at round numbers such as 50, 100 or 250 seats — confirm per company from Vendr or buyer disclosures before stating one)
 - Prepay discount: some companies offer additional % for annual upfront vs. invoiced
 
 ### What is typically negotiable vs. what isn't
+
+Directional heuristic, not sourced — use it as a checklist of what to look for, and state a line item as negotiable for a specific company only with a `[Reported]` source from Steps 1–3.
 
 | Usually negotiable | Usually not negotiable |
 |-------------------|----------------------|
@@ -202,7 +205,7 @@ Compile everything gathered into a structured pressure point map. For each point
 
 ## Step 6: Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Company} — Negotiation Intel`
 - Summary: Median contract value + typical discount range in 1–2 sentences

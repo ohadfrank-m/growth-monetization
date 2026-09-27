@@ -25,21 +25,17 @@ Note the full raw output — you'll need it for classification in Step 3.
 
 ## Step 2: Enrich with web signals
 
-Run all in parallel — these catch things the MCP misses (announcements, soft launches, community reactions):
+Run all in parallel — these catch things the MCP misses (announcements, soft launches, community reactions). "Last week" in a query string isn't a date filter, so put the month and year in the query instead:
 
 ```
-WebSearch(query='SaaS pricing change OR "price increase" OR "new pricing" OR "pricing update" 2026 last week')
-WebSearch(query='{watchlist company 1} OR {watchlist company 2} OR {watchlist company 3} pricing change site:reddit.com OR site:news.ycombinator.com last week')
+WebSearch(query='SaaS pricing change OR "price increase" OR "new pricing" OR "pricing update" {month} {year}')
+WebSearch(query='{watchlist company 1} OR {watchlist company 2} OR {watchlist company 3} pricing change site:reddit.com OR site:news.ycombinator.com {month} {year}')
 WebSearch(query='SaaS pricing "announced" OR "launching" OR "effective" {current month} {year}')
 ```
 
-Also run A/B test detection signals for your top 3–5 watchlist companies (see [ab-test-detection.md](ab-test-detection.md) — run Steps 1–2 only, not the full report). Since CDX is blocked for most large SaaS companies, use the tool-detection approach:
+Also run A/B test detection signals for your top 3–5 watchlist companies (see [ab-test-detection.md](ab-test-detection.md) — run Steps 1–2 only, not the full report). Use the tool-detection approach — for each pricing page, run the curl signature scan in [ab-test-detection.md](ab-test-detection.md) Step 1 (WebFetch output hides testing tools):
 
 ```
-# Fetch each pricing page (run in parallel — reuse content if already fetched above):
-WebFetch(url="https://{company1-domain}/pricing")
-WebFetch(url="https://{company2-domain}/pricing")
-
 # BuiltWith lookups in parallel:
 WebSearch(query='site:builtwith.com "{company1-domain}"')
 WebSearch(query='site:builtwith.com "{company2-domain}"')
@@ -136,14 +132,14 @@ Output the digest in this exact structure. Keep it scannable — executives and 
 
 ---
 
-*Sources: PricingSaaS MCP · Wayback Machine CDX · WebSearch. Watchlist: {list of tracked companies}.*
+*Sources: PricingSaaS MCP · WebSearch · page-source scan · {Wayback, if used}. Watchlist: {list}. Not reachable this run: {list, or "none"}.*
 ```
 
 ---
 
 ## Step 5: Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `Weekly Digest — {week of date, e.g., "Mar 17–23 2026"}`
 - Summary: Must-know summary from the digest — the 1–2 most significant changes

@@ -52,7 +52,16 @@ The strongest triggers are tied to something the user is trying to do.
 When a user tries to invite a teammate at the seat limit, offer the seats right there — not a pricing-page re-evaluation.
 
 **Show:** seats used vs. total; how many they need (inferred from the invite); the price delta **for the next bundle** — monday sells seats in bundles of 3/5/10/15/20/25/30/40 ([monday-context.md](../context/monday-context.md)); one "Add seats" action.
-**Contrast — seat right-sizing.** Slack's Fair Billing Policy marks members inactive after 28 days and credits the prorated unused time automatically [Verified — [Slack help](https://slack.com/help/articles/218915077-Slacks-Fair-Billing-Policy)]. Paying only for active seats removes the fear that makes admins hold invites back.
+**Contrast — seat right-sizing.** Slack's Fair Billing Policy marks members inactive after 28 days and credits the prorated unused time automatically [Verified — [Slack help](https://slack.com/help/articles/218915077-Slacks-Fair-Billing-Policy)]. Paying only for active seats removes the fear that makes admins hold invites back. When an inactive member comes back, the prorated cost for the rest of the period is charged; the policy covers self-serve (card and invoice) plans only, and credits are non-transferable and expire when the paid plan ends [Verified — same page, checked 2026-09-27].
+
+**Seat-billing mechanics in the market:**
+- **Atlassian — maximum-quantity billing.** Monthly plans charge the highest seat count assigned at any point in the cycle; mid-cycle adds are prorated, and removals don't reduce that month. Annual plans use fixed user tiers that can't change during the term, and invited users count toward billing even if they never accept [Verified — [Atlassian licensing](https://www.atlassian.com/licensing/cloud), [Atlassian support](https://support.atlassian.com/subscriptions-and-billing/docs/manage-users-and-user-tiers/)].
+- **Notion — refill until period end.** Adding a member to a paid workspace is billable automatically; annual plans invoice at the next month mark, prorated by time in the workspace. Removals aren't prorated mid-cycle — the paid seat stays until the interval ends and can be refilled at no charge [Verified — [Notion help](https://www.notion.com/help/members-and-billing)]. At renewal, billing trues up to current members [Reported — search snippet of the same page].
+- **Asana — stepped increments.** Seats sell 1 at a time from 2 to 5 users, in 5s to 30, 10s to 100, 25s to 500, then 50s above 500 [Verified — [Asana pricing FAQ](https://asana.com/pricing)].
+- **Asana — automatic true-up.** If internal users exceed the plan size, the account is charged for the seat bucket that matches actual users; manual-invoice accounts are routed to sales [Reported — help-center text seen via search; the page didn't render — [Asana help](https://help.asana.com/s/article/subscription-size-and-users)].
+- **ClickUp — fill open seats first.** New members fill open seats first; once none are left, new seats are charged prorated for the days left in the cycle, on monthly and yearly plans [Reported — help-center text seen via search; the page returned 403 — [ClickUp help](https://help.clickup.com/hc/en-us/articles/6303244318999-Pricing-per-user-role-and-plan)].
+
+**The pattern: "fill open seats first, prorate after"** (ClickUp, Notion's refill-until-period-end) removes the fear of paying twice for churned seats. Atlassian's annual tiers do the opposite — one extra user can force a whole tier jump. The size of that jump is only third-party-reported, so don't quote a number.
 **Don't show:** a full pricing page; "Upgrade to Pro" to someone already on Pro; a wall with no immediate path.
 
 ### Seat-expansion modal
@@ -192,6 +201,7 @@ Mandatory reference set for every playbook. Evidence tags: **[Verified]** vendor
 | Silent degradation in an agent flow | The task quietly gets worse or stops; state is lost | Risk flagged by ChatGPT's fallback [Reported] |
 | Full pricing page at seat expansion | The user needs seats, not a plan re-evaluation | Common |
 | Guest auto-converted to paid without admin action | Bill shock, broken trust | ClickUp [Reported] |
+| Two conflicting definitions of a billable seat | The admin can't predict the bill from who they invite | Airtable — the pricing page charges "all users who have edit permissions", while the plans overview bills Team for "Commenter or higher" and Business for "Editor or higher" [Verified — [pricing](https://airtable.com/pricing), [plans overview](https://support.airtable.com/articles/2277136852-airtable-plans-overview)] |
 | Decline or close control under 24×24 CSS px, or below the fold on mobile | The "no" path fails WCAG 2.2 AA and reads as obstruction | Most SaaS products — floor per [WCAG 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) [Verified] |
 
 ## Copy bank — upgrade triggers
@@ -234,3 +244,8 @@ Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 - Claude: https://support.claude.com/en/articles/12005970-manage-usage-credits-for-team-and-seat-based-enterprise-plans · https://www.ai-toolbox.co/claude-management-and-productivity/claude-usage-limits-2026
 - ProductLed: https://productled.com/blog/product-led-growth-benchmarks
 - Slack Fair Billing Policy (2026-09-27): https://slack.com/help/articles/218915077-Slacks-Fair-Billing-Policy
+- Atlassian seat billing (2026-09-27): https://www.atlassian.com/licensing/cloud · https://support.atlassian.com/subscriptions-and-billing/docs/manage-users-and-user-tiers/
+- Notion members and billing (2026-09-27): https://www.notion.com/help/members-and-billing
+- Asana seat increments and true-up (2026-09-27): https://asana.com/pricing · https://help.asana.com/s/article/subscription-size-and-users
+- ClickUp per-user billing (2026-09-27): https://help.clickup.com/hc/en-us/articles/6303244318999-Pricing-per-user-role-and-plan
+- Airtable billable seats (2026-09-27): https://airtable.com/pricing · https://support.airtable.com/articles/2277136852-airtable-plans-overview

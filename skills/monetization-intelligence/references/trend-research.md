@@ -80,11 +80,9 @@ Run these in parallel with Step 4 to add depth. See [enrichment.md](enrichment.m
 
 ### Wayback Machine — detect legacy pricing patterns
 
-For the 3–5 most relevant companies in the landscape, pull Wayback Machine snapshots to see how their pricing page has evolved over the past 12–24 months:
+For the 3–5 most relevant companies in the landscape, pull Wayback Machine snapshots to see how their pricing page has evolved over the past 12–24 months.
 
-```
-WebFetch(url="https://web.archive.org/cdx/search/cdx?url={domain}/pricing&output=json&limit=10&fl=timestamp,statuscode&filter=statuscode:200&collapse=timestamp:6")
-```
+Follow [enrichment.md](enrichment.md) Method 1 (Wayback). WebFetch can't reach `web.archive.org`: use the Availability API through WebFetch, and CDX or snapshot fetches through Bash `curl`, at most ~1 request per second.
 
 Use the earliest and latest snapshots to characterize the trajectory (e.g., "moved from flat to per-seat", "added enterprise tier", "removed freemium").
 
@@ -145,37 +143,25 @@ Group companies by market layer — use price bands, feature depth, and employee
 - Who has freemium in a mostly paid market, or vice versa?
 - Who is moving to AI-based pricing or usage-based in a per-seat market?
 
-## Step 8: Generate landscape report
+## Step 8: Write the landscape report
 
-Generate a self-contained HTML report using the PricingSaaS monochrome template. The full CSS template lives at:
-`https://raw.githubusercontent.com/pricingsaas/pricingsaas-claude-skills/main/plugins/pricingsaas/skills/pulse-scan/references/report-structure.md`
+**Default output — markdown, always.** Write the report to `.monetization/research/{category-slug}-landscape-{YYYY-MM}.md` using [../../../templates/research-output.md](../../../templates/research-output.md) and the structure below. This is the deliverable; the next skill reads it from there.
 
-**Read that file and copy the CSS verbatim.** Do NOT write custom styles, import Google Fonts, use colored headers, add box-shadows, or deviate from the monochrome design system.
+**Optional HTML (only on the user's go-ahead).** PricingSaaS hosts a branded template (`https://share.pricingsaas.com/templates/pulse-market-scan-v1.html`, `{{TOKEN}}` placeholders). `upload_report` publishes the filled file to a **public** `share.pricingsaas.com` URL, and PricingSaaS says credits are consumed on report delivery. So before calling it, state the credit cost, say the link will be public, and wait for a yes (CLAUDE.md standing rules). Otherwise skip the HTML. **If the template fetch fails** (the old `raw.githubusercontent.com/pricingsaas/pricingsaas-claude-skills/...` URL has returned 404 since at least 2026-09-27), **use the inline structure below and deliver markdown only.** Never block the workflow on the template.
 
-### Report sections
+### Inline report structure (use when the template is unavailable, or by default)
 
-1. **Header** — category title + PricingSaaS branding (+ seed company logo if applicable)
-2. **Stats row** — companies found · pricing models · price range · freemium count
-3. **Executive summary** — 1–2 paragraphs: category overview, how landscape breaks down
-4. **Market layers** — one table per tier with: Company · Plan · Monthly · Annual · Model · PricingSaaS link
-5. **Pricing patterns** — insight boxes for key observations (model dominance, freemium, AI, price clusters)
-6. **Bar chart** — vertical price comparison across companies (tallest bar = 100%, others scaled proportionally)
-7. **Data sources** — company grid with all companies, linked to pricingsaas.com profiles
-8. **Footer**
-
-Write to `/tmp/{category}-pricing-landscape.html`, then upload:
-
-```
-upload_report(filename="{category}-pricing-landscape.html", file_path="/tmp/{category}-pricing-landscape.html")
-```
-
-Execute the returned curl command to complete the upload:
-
-```bash
-curl -X PUT -H "Content-Type: text/html" --data-binary @"/tmp/{category}-pricing-landscape.html" "{presigned-url}"
-```
-
-The tool response includes the final public URL.
+1. **Header block** — [templates/ARTIFACT_HEADER.md](../../../templates/ARTIFACT_HEADER.md)
+2. **Exec summary** — 3 bullets: what we found · what it signals · recommended action for monday.com
+3. **Stats line** — `{N} companies · {M} pricing models · entry paid ${min}–${max}/seat/mo · {K} with freemium · {J} with a free trial`
+4. **Market layers** — one table per layer (SMB self-serve · mid-market · enterprise):
+   `Company · Entry paid plan · Monthly · Annual · Value metric · Free/trial · Self-serve ceiling · Source (tag, URL, checked)`
+5. **Pricing patterns** — 3–5 findings, each: pattern · which companies · evidence tag · why it matters
+6. **Price comparison** — table sorted by entry paid price, annual per seat per month. Bar chart only in the optional HTML
+7. **Recent market moves** — from `get_pricing_news()` + changelogs, dated, one line each
+8. **Forward-looking signals** — hiring (enrichment Method 2), filings and earnings calls (Method 4), Wayback trajectory (Method 1)
+9. **So what for monday.com** — pricing headroom · positioning · experiment · threat signal, against [context/monday-context.md](../../../context/monday-context.md)
+10. **Coverage and sources** — each company: data from PricingSaaS / vendor page / third party, with URL and checked date; companies submitted via `add_page` listed as "pending"
 
 ## Step 9: Deliver conversational summary
 
@@ -183,7 +169,7 @@ Structure the response as:
 
 ```
 **{Category} pricing landscape**
-Full report: {upload_report URL}
+Full report: `.monetization/research/{category-slug}-landscape-{YYYY-MM}.md` {+ the share URL only if the user approved the HTML upload}
 
 ---
 
@@ -206,10 +192,10 @@ Full report: {upload_report URL}
 
 ---
 
-Full report: {upload_report URL}
+Full report: `.monetization/research/{category-slug}-landscape-{YYYY-MM}.md` {+ the share URL only if the user approved the HTML upload}
 ```
 
-Always present the report link at top and bottom. Include `https://pricingsaas.com/pulse/companies/{slug}` links for every company named in the summary.
+Include `https://pricingsaas.com/companies/{slug}` links for every company named in the summary.
 
 After delivering the summary, offer once:
 > "Want me to check what customers are saying about pricing in this space — Reddit, G2, HN sentiment across the top players?"
@@ -218,7 +204,7 @@ If yes, run [sentiment-research.md](sentiment-research.md) for the top 3–5 mos
 
 ## Step 10: Log to monday
 
-After delivering the summary, follow [monday-logging.md](monday-logging.md) to log the results. For landscape scans, create one item representing the scan (not one per company).
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain. For landscape scans, create one item representing the scan (not one per company).
 
 - Item name: `{Category} — Landscape`
 - Change Type: `Landscape Scan`

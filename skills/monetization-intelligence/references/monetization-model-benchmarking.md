@@ -83,6 +83,8 @@ WebSearch(query="PLG AI pricing per credit vs per seat")
 
 This is the highest-priority sub-workflow for monday.com given the AI Agents launch.
 
+Read [playbooks/credit-ui.md](../../../playbooks/credit-ui.md) first — it owns credit thresholds and the credit/consumption benchmarks. Add to it; don't re-derive them here.
+
 ### Step B1: Identify AI-credit-using SaaS companies
 
 ```
@@ -172,6 +174,8 @@ How clearly does each company translate credits to outcomes?
 ## Sub-workflow C: Trial and freemium model benchmarking
 
 **Question type:** "What's the industry norm for trial length?" / "Should we offer freemium?"
+
+Read [playbooks/trial-flows.md](../../../playbooks/trial-flows.md) first — it owns trial phases and trial benchmarks. Add to it; don't re-derive them here.
 
 ### Step C1: Pull freemium data across category
 
@@ -271,7 +275,7 @@ Use the research output template: [../../../templates/research-output.md](../../
 
 ## Log to monday
 
-Follow [monday-logging.md](monday-logging.md):
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 - Item name: `{Topic} — Model Benchmark`
 - Change Type: `Model Benchmark`
 - Workflow: `monetization-model-benchmarking`

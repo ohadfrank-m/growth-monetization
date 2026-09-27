@@ -72,7 +72,7 @@ After pulling PricingSaaS data, run enrichment in parallel to add depth the MCP 
 
 ### Wayback Machine (always run)
 
-Pull pricing page snapshots to compare how the page looked before vs. after a detected change period. Use the Availability API — the CDX bulk API is blocked (403) for most large SaaS companies:
+Pull pricing page snapshots to compare how the page looked before vs. after a detected change period. Follow [enrichment.md](enrichment.md) Method 1 for access rules: the Availability API works through WebFetch; snapshots and CDX need Bash `curl` (WebFetch can't reach web.archive.org):
 
 ```
 # Find the most recent available snapshot:
@@ -82,10 +82,10 @@ WebFetch(url="https://archive.org/wayback/available?url={domain}/pricing")
 WebFetch(url="https://archive.org/wayback/available?url={domain}/pricing&timestamp={YYYYMMDD}")
 ```
 
-From each response, extract the `closest.url` field, then fetch that snapshot directly:
+From each response, extract the `closest.url` field, then fetch that snapshot with Bash (it's a web.archive.org URL):
 
-```
-WebFetch(url="{closest.url}")
+```bash
+curl -s -A "Mozilla/5.0" "{closest.url}"
 ```
 
 Fetch the two closest snapshots around any detected change period and diff the text content. This surfaces copy changes, removed plan names, and price point rewrites that screenshot APIs may miss.
@@ -162,9 +162,9 @@ Present findings as a structured analysis. Use this structure:
 ### [Company name] — pricing analysis
 
 **Exec summary** *(always include at the top — 3 bullets, each one sentence)*
-- **What we found:** {The single most important pricing fact — e.g., "Linear raised the entry paid tier 25% in 2024 via a rename-then-raise playbook, now at $10/user/mo."}
+- **What we found:** {The single most important pricing fact — e.g., "{Company} raised its entry paid tier {X}% in {period}, now ${price}/user/mo [tag, source]."}
 - **What it signals:** {Strategic implication — e.g., "Strong retention at paid cohort; they're testing price ceiling before pushing further."}
-- **Recommended action:** {One specific thing monday.com should do or test — e.g., "Add Linear to the watchlist and run a pricing page teardown before next QBR."}
+- **Recommended action:** {One specific thing monday.com should do or test — e.g., "Add {Company} to the watchlist and run a pricing page teardown before next QBR."}
 
 **Overview**
 One sentence: what the company sells, what segment it targets, and its pricing model.
@@ -176,7 +176,7 @@ One sentence: what the company sells, what segment it targets, and its pricing m
 | {Plan A} | ${x}/mo | ${x}/mo | per user / flat / usage | |
 | {Plan B} | ${x}/mo | ${x}/mo | | |
 
-Include: link to `https://pricingsaas.com/pulse/companies/{slug}`
+Include: link to `https://pricingsaas.com/companies/{slug}`
 
 **Pricing model analysis**
 - Value metric: what they charge for and why it makes sense (or doesn't)
@@ -193,7 +193,7 @@ Summarize available periods from `discovery_only` scan. If full history was pull
 ##### Change 1: {Change type}
 {Text match from get_diff_highlight}
 {![Screenshot]({image_url}) if image returned}
-[View diff →](https://pricingsaas.com/pulse/companies/{slug}/diffs/{period})
+[View diff →](https://pulse.pricingsaas.com/companies/{slug}/diffs/{period})
 
 ##### Change 2: {Change type}
 ...
@@ -217,9 +217,9 @@ Omit sections where no useful data was found — do not pad with "no signal foun
 **So what for monday.com**
 Always include this section. Address each of the following — skip only if genuinely not applicable:
 
-- **Pricing headroom:** Does this competitor's pricing suggest monday.com has room to raise prices, or is it pricing pressure in the other direction? Be specific (e.g., "monday.com Business at $16/seat sits at parity with {Company} — no headroom signal here, but {Company} raised 25% in 12 months, which suggests the market will accept it").
+- **Pricing headroom:** Does this competitor's pricing suggest monday.com has room to raise prices, or is it pricing pressure in the other direction? Be specific (e.g., "monday.com {tier} at ${price}/seat ([monday-context.md](../../../context/monday-context.md)) sits {above/below/at} {Company}'s {plan} at ${price}").
 - **Positioning implication:** Does anything in their packaging or tier structure change how monday.com should frame itself in deals against this competitor? (e.g., "Their AI gating at the top tier means monday.com should lead with AI-included-by-default as a differentiator").
-- **Experiment or test to consider:** Based on the findings, is there a pricing or packaging experiment monday.com should consider? Be specific — name the hypothesis, the metric to watch, and the tier it affects. (e.g., "Test moving SSO to Basic tier — {Company} offers it at mid-tier, and it may be a blocker for mid-market self-serve conversion").
+- **Experiment or test to consider:** Based on the findings, is there a pricing or packaging experiment monday.com should consider? Be specific — name the hypothesis, the metric to watch, and the tier it affects. (e.g., "Test {change} on {tier} for {cohort} — metric: {metric}").
 - **Threat signal:** Is there anything in their pricing trajectory (recent raises, restructuring, AI add-on expansion) that creates risk for monday.com? (e.g., "If {Company} continues adding AI agents to free, monday.com's free tier comparison will face increasing pressure").
 
 **What to do next**
@@ -245,10 +245,10 @@ If yes, run [battlecard-generator.md](battlecard-generator.md). Pre-populate Ste
 
 ## Final step: log to monday
 
-After delivering the output above, follow [monday-logging.md](monday-logging.md) to log this result.
+After delivering the output, offer once to log it to the Pricing Intelligence board, and log on a yes, per [monday-logging.md](monday-logging.md). Skip inside a Growth PM chain.
 
 - Item name: `{Company} — Research`
 - Change Type: `Company Research`
 - Summary: 1–2 sentence distillation of the key pricing insight from this analysis
-- PricingSaaS link: `https://pricingsaas.com/pulse/companies/{slug}/diffs/{period}` if a specific period was pulled; `https://pricingsaas.com/pulse/companies/{slug}` if no period was used
+- PricingSaaS link: `https://pulse.pricingsaas.com/companies/{slug}/diffs/{period}` if a specific period was pulled; `https://pricingsaas.com/companies/{slug}` if no period was used
 - Workflow: `company-research`
