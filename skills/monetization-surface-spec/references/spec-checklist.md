@@ -13,7 +13,7 @@ Stable rules applied to every surface spec. Strategy data (prices, tiers, credit
 | Full-screen blocking modal in an agentic flow | Breaks momentum | Inline nudge at the warning threshold |
 | "Upgrade" as the only CTA | Names the cost, not the benefit | Benefit-led CTA ("Keep building", "Unlock AI Agents") |
 | No escape hatch | Dark pattern, regulatory risk | Always include dismiss or "Not now" |
-| Same prompt repeated after dismiss | Annoyance, unsubscribe risk | Frequency cap: max once per session, once per week |
+| Same prompt repeated after dismiss | Annoyance, unsubscribe risk | Frequency cap per the surface's playbook (e.g. [paywalls.md → Timing and frequency](../../../playbooks/paywalls.md#timing-and-frequency--owned-here)); never re-show on a timer regardless of behaviour |
 | Price with no anchor | Loss of perceived value | Anchor against a higher tier or the monthly price |
 | Guilt-trip copy ("Don't abandon your team") | Brand damage, no lift evidence | Lead with what they gain |
 | IC dead-end when they can't purchase | IC churns, admin never hears | Always include a "Notify admin" path |

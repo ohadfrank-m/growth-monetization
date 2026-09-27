@@ -85,7 +85,7 @@ Patterns: [wireframe-patterns.md](wireframe-patterns.md) → Paywall / feature g
 | Situation | Pattern | Rule |
 |---|---|---|
 | Feature has its own surface (a view type, agent setup, AI column) and can be previewed | **A** — preview + gate | Default for an intent gate on a feature the user hasn't used |
-| Feature sits inside a workspace the user is working in, or in an agent/automation context | **B** — inline gate | Non-blocking by rule in agent contexts |
+| Feature sits inside a workspace the user is working in, or the gate fires while an agent or automation is running (setting up an agent is Pattern A) | **B** — inline gate | Non-blocking by rule in agent contexts |
 | Repeat clicks past the compact threshold | **B**, compact variant | Preview collapsed, CTA kept |
 | Architecturally separate feature, no preview possible, explicit intent | **A** without the preview (hard gate) | The spec must justify it. Rare in PLG ([playbook: two gate models](../../../playbooks/paywalls.md)) |
 | Downgraded content | **B** on the content itself | Says read-only vs switched off, and names the way back |

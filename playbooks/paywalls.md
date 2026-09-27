@@ -245,7 +245,6 @@ All facts from [context/monday-context.md](../context/monday-context.md).
 
 Checked 2026-09-24 (AI-native set) and 2026-09-25 (everything else).
 
-- RevenueCat: https://www.revenuecat.com/state-of-subscription-apps-2025
 - Canva: https://www.canva.dev/docs/apps/design-guidelines/premium-apps/ · https://www.canva.com/help/premium-elements/ · https://brendacadman.com/is-canva-pro-worth-it/
 - Linear: https://linear.app/pricing · https://linear.app/docs/billing-and-plans
 - Notion: https://www.notion.com/pricing · https://www.usecarly.com/blog/notion-ai-pricing-change/

@@ -37,7 +37,7 @@ The 15 reasons people buy (source: `improve-conversion-surfaces-copy` skill):
 - Not: "This feature requires Pro" (functional, not motivating)
 
 **Hook direction (existing user at gate):**
-- Lead with capability: "Your team is using this — you're missing out"
+- Lead with capability: "{N} people on your team already use {feature}" — only with a real, current count from data (copy-guardrails G3); otherwise name the capability gained
 - Or efficiency: "This would save you {time estimate}"
 - Not: urgency or time pressure — they're not in a trial
 

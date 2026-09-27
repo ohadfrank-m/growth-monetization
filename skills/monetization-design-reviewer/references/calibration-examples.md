@@ -49,7 +49,7 @@ Read with `scoring-rubric.md`. These examples calibrate the anchors so two revie
 | Score | What it looks like | Example |
 |---|---|---|
 | 1 | A maze: repeated save screens, the real exit last, keep options visually dominant. | Amazon's "Iliad" flow (¶¶113–148; worked example below) [Verified — allegation]. FTC's false-hierarchy example: a bright orange keep button above a small pale-gray cancel link (FTC 2022, p. 23) [Verified] |
-| 3 | The exit exists but is de-emphasized, or has to be scrolled to. | A text-link "No thanks" at under 4.5:1 contrast under a filled CTA [Illustrative]. Fails E2 |
+| 3 | The exit exists but is de-emphasized, or has to be scrolled to. | A text-link "No thanks" at under 4.5:1 contrast under a filled CTA [Illustrative]. Fails EH2 |
 | 5 | Visible, honest, one action. An offer, if any, sits beside a clear continue. | Claude cancel (above) [Verified steps]. California ARL: any save offer must be shown *simultaneously* with the click-to-cancel option ([cancellation.md](../../../playbooks/cancellation.md) Legal context) [Verified via playbook] |
 
 ### Visual hierarchy
@@ -86,22 +86,22 @@ Read with `scoring-rubric.md`. These examples calibrate the anchors so two revie
 
 | Dimension | Score | Rationale (anchor · criterion) | Weight | Points (score × weight × 20) |
 |---|---|---|---|---|
-| Value clarity | 2 | The usage recap on page 1 is concrete (a strength). But what each end option does ("End on {date}" vs "End Now", refund or not) and what "will be affected" means are unclear. Fails V3 on refund terms | 0.10 | 4.0 |
-| Timing / trigger | 1 | The same save options for every user, with no reason asked. "Remind Me Later" recurs 4× after being passed over (¶134). Fails T2 ★ | 0.15 | 3.0 |
-| Copy quality | 2 | "End Now" is specific, but "Continue to Cancel" doesn't cancel, twice (C4 ★ caps at 2). Keep labels are inconsistent ("Keep My Benefits" / "Keep My Membership") | 0.15 | 6.0 |
-| Friction & flow | 1 | Six clicks on desktop and eight on mobile, against one or two to enrol. Links eject users from the flow (F1 ★, F4) | 0.15 | 3.0 |
-| Trust signals | 2 | "You still have 7 days left" reassures, and pause has a one-click resume. The refund limit is undisclosed (R1 ★ caps at 2) | 0.05 | 2.0 |
-| Escape hatch | 1 | A maze: three save pages, the real exit last of five, keep options repeated (E3 ★, E4) | 0.25 | 5.0 |
-| Visual hierarchy | 2 | The orange annual-switch button and bold saving lead page 2, and the exit is placed last (H3 ★ caps at 2). The styling of "End Now" isn't described, so this isn't scored 1 | 0.08 | 3.2 |
-| Mobile readiness | 1 | Final options need a scroll to be seen, and the flow grows to 8 pages (M4). Target sizes aren't documented and stay Pending | 0.07 | 1.4 |
+| Value clarity | 2 | The usage recap on page 1 is concrete (a strength). But what each end option does ("End on {date}" vs "End Now", refund or not) and what "will be affected" means are unclear. Fails VC3 on refund terms | 0.10 | 4.0 |
+| Timing / trigger | 1 | The same save options for every user, with no reason asked. "Remind Me Later" recurs 4× after being passed over (¶134). Fails TM2 ★ | 0.15 | 3.0 |
+| Copy quality | 2 | "End Now" is specific, but "Continue to Cancel" doesn't cancel, twice (CQ4 ★ caps at 2). Keep labels are inconsistent ("Keep My Benefits" / "Keep My Membership") | 0.15 | 6.0 |
+| Friction & flow | 1 | Six clicks on desktop and eight on mobile, against one or two to enrol. Links eject users from the flow (FF1 ★, FF4) | 0.15 | 3.0 |
+| Trust signals | 2 | "You still have 7 days left" reassures, and pause has a one-click resume. The refund limit is undisclosed (TS1 ★ caps at 2) | 0.05 | 2.0 |
+| Escape hatch | 1 | A maze: three save pages, the real exit last of five, keep options repeated (EH3 ★, EH4) | 0.25 | 5.0 |
+| Visual hierarchy | 2 | The orange annual-switch button and bold saving lead page 2, and the exit is placed last (VH3 ★ caps at 2). The styling of "End Now" isn't described, so this isn't scored 1 | 0.08 | 3.2 |
+| Mobile readiness | 1 | Final options need a scroll to be seen, and the flow grows to 8 pages (MR4). Target sizes aren't documented and stay Pending | 0.07 | 1.4 |
 | **Total** | | | **1.00** | **27.6 / 100** |
 
 **Math:** Σ(score × weight) = 0.20 + 0.15 + 0.30 + 0.15 + 0.10 + 0.25 + 0.16 + 0.07 = **1.38**; × 20 = **27.6**.
-**Verdict:** "Back to the drawing board. Core value or flow is broken." (<50 band). The dark-pattern gate would also fire: E3 fails, and so do C4 and R1.
+**Verdict:** "Back to the drawing board. Core value or flow is broken." (<50 band). The dark-pattern gate would also fire: EH3 fails, and so do CQ4 and TS1.
 
 **What the weighting did.**
 - Escape hatch alone cost 20 of the 25 points it could carry.
 - Under the Promotion column, the same eight scores give 31.6. The low Escape weight there hides most of the obstruction, which is why the column choice matters.
-- **The averaging trap:** keep Escape = 1 but raise everything else (VC 5, T 4, C 5, F 4, Tr 5, VH 5, M 5). That gives 0.50 + 0.60 + 0.75 + 0.60 + 0.25 + 0.25 + 0.40 + 0.35 = 3.70 → **74.0**, "Ship after the 🔴/🟠 fixes", for a flow that still obstructs. That is the case for the gate in *Weight observations*.
+- **The averaging trap:** keep Escape = 1 but raise everything else (VC 5, T 4, C 5, F 4, Tr 5, VH 5, M 5). That gives 0.50 + 0.60 + 0.75 + 0.60 + 0.25 + 0.25 + 0.40 + 0.35 = 3.70 → **74.0**, "Ship after the 🔴/🟠 fixes", for a flow that still obstructs. That is the case for the *Dark-pattern gate* in [scoring-rubric.md](scoring-rubric.md#dark-pattern-gate--overrides-the-band).
 
 **What a 5 on Escape hatch looks like here:** Settings → Billing → Cancel, with at most one reason-matched offer shown beside "Continue to cancel", and the end date and refund terms on the confirm screen. See the Claude and Canva entries in `cancellation.md`.
