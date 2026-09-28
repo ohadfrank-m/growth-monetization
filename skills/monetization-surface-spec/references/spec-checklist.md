@@ -27,6 +27,7 @@ Stable rules applied to every surface spec. Strategy data (prices, tiers, credit
 - Multi-screen surface: a flow map row for every screen, in order, with where the user arrives from and goes next (including abandon).
 - Every screen names a friction point and its reduction — or "none" with a reason.
 - Single-screen surface: the screen before and after, and the friction at the hand-off.
+- With a `00-journey.md`: every on-surface and hand-off J step appears in the flow map by J#; every scenario in User context; every J step with a wireframe state id listed as a state; any new step marked `J{n}+` with its reason.
 
 ---
 

@@ -121,7 +121,7 @@ Keep each company to one short block. "Why it works" and "Where it breaks" are j
 - **At-a-glance table** — one row per company, one column per step of the flow (entry · screens · offer · escape · after). This is the table a spec's flow map is built from.
 - **Patterns to steal** — 3–5, each naming which companies do it and why it fits monday.com.
 - **Patterns to avoid** — each naming the company, what breaks, and the evidence.
-- **Flow implications for the spec** — the screens monday's version needs, in order, with the friction point each competitor pattern suggests at that step. `monetization-surface-spec` reads this directly into its flow map.
+- **Flow implications for the spec** — the screens monday's version needs, in order, with the friction point each competitor pattern suggests at that step. `monetization-journey-map` reads this into the journey's steps when a journey is being mapped (and the spec then takes its flow map from the journey); otherwise `monetization-surface-spec` reads it directly into its flow map. Include the steps before and after the surface each competitor shows (confirmation emails, admin notifications, reactivation paths) — the journey needs them.
 - **Coverage** — how many companies were `[Verified]` vs `[Reported]` vs `[Teardown needed]`, and the specific screens someone with account access should capture.
 
 ## Step 6: So what for monday.com

@@ -23,6 +23,8 @@ When presenting options, show the reason, the options, and the pick — don't bu
 
 Keep this compact — three short lines per option, not three paragraphs. The point is a fast scan, not a debate.
 
+**With a journey map** (`00-journey.md`), label every element with its step (`J3 · Reason screen · Headline`) and start from that step's reason. Write the off-surface steps too — the email subject and preview line, the admin notification, the confirmation and invoice lines. The journey board shows them beside the wireframe, and a board card with no copy becomes an open item.
+
 ## Required context
 
 Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — standalone runs"): check this table, infer what's obvious, ask every real gap in one message, then run. Inside a Growth PM chain, skip it.
@@ -31,6 +33,7 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 |-------|--------------------------|-----------|
 | Surface and element(s) | What's being written — a CTA, a headline, a whole modal | The prompt, the attached screen |
 | Cohort / journey stage | Picks the reason: effort/pain for people who don't know the problem yet, status/recognition for people deciding | Surface type (trial → new, credit depletion → existing) |
+| Journey step (when `00-journey.md` exists) | Each element's step gives its state of mind and reason, and which scenarios read it. An IC and an admin at the same screen need different lines | `00-journey.md` → the step table's "State of mind · reason" column; never re-derive a reason the journey already named |
 | The action it must drive | The CTA and the outcome the headline promises | "get them to upgrade", "keep them from cancelling" |
 | Current copy (if rewriting) | Needed to write "Replaces" and to avoid re-proposing what failed | Screenshot text, pasted copy |
 | Hard constraints | Character limits, facts that must stay true (prices, trial terms — from `monday-context.md`), words legal won't allow | The prompt; facts always from the context file |

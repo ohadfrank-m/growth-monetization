@@ -34,6 +34,7 @@ e.g. "Credit Depletion Modal — Pro Tier" / "Feature Gate — AI Agents, Free U
 - **Cohort:** {new-user (urgency lever applies) | existing-user (capability lever applies)}
 - **Trigger:** {exact condition — e.g. "credit balance drops below 50", "user clicks locked feature", "trial day 7"}
 - **Competing intent:** {what the user was trying to do — preserve this or they churn}
+- **Scenarios:** {when `00-journey.md` exists: S1…Sn — name, persona, frequency — cited, not rewritten}
 
 ## Primary objective [required]
 One sentence. The single conversion outcome this surface must drive.
@@ -70,7 +71,7 @@ The journey, before the layout. Multi-screen surfaces (cancellation, upgrade →
 |---|--------|---------|--------------|--------------|-------------------------|----------------|-----------|
 | 1 | {e.g. Cancel intent} | {intercept, learn why} | {reason list, "pause instead" link} | {Billing → Cancel} | {2 · abandon: back to billing} | {feels like a wall before the real cancel} | {one-click "continue to cancel" always visible} |
 
-Every screen names a friction point and its reduction, or "none — {why}". Single-screen surfaces: one line — the screen before, the screen after, and the friction at the hand-off. Built from the surface benchmark's flow implications when one exists.
+With a `00-journey.md`, the rows are its on-surface and hand-off steps: put the J# in the `#` column (`J3`) and keep the journey's friction and reduction. Every screen names a friction point and its reduction, or "none — {why}". Single-screen surfaces: one line — the screen before, the screen after, and the friction at the hand-off. Built from the surface benchmark's flow implications when one exists.
 
 ## Copy strategy [required]
 Do not write final copy here. Specify the persuasion angle and hand off.

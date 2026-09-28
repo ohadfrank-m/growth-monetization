@@ -34,6 +34,7 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 |-------|---------|---------|
 | `monetization-growth-pm` | **The full product work.** The Monetization Growth PM scopes the job (how far, how deep), runs every skill below in order without re-prompting, loops the review until fixes land, and writes the requirements doc. For one piece of the work, call that skill directly. | `05-requirements.md`; runs everything else |
 | `monetization-intelligence` | Researching how competitors monetize — model, packaging, price — and how they run a specific surface (upgrade, cancellation, paywall, trial, top-up) | Surface benchmark, monetization teardown, research report, landscape, battlecard — each ending with suggested playbook updates |
+| `monetization-journey-map` | Mapping who hits a surface and why (scenarios, sized with live data) and every step before, on and after it (1st call, before the spec); building the journey board with the real wireframe on each step (2nd call, after the wireframe) | `00-journey.md`, then `03-journey.html` |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | First pass after a spec, first pass after a review of an existing design, or revising a line a review flagged | `02-copy.md`, then `02-copy-v2.md` if revised |
 | `monetization-design-reviewer` | Scoring a design — continues into the Growth PM's chain unless "review only" is asked. Also runs the re-review inside the fix loop | `04-review.md` — scored rubric, projected score, ranked fix list with a Fix path per row; `04-review-v2.md` on re-review |
@@ -66,6 +67,7 @@ Skills cite reference files (`references/`, `playbooks/`, templates). If one isn
 | Figma | spec, design reviewer | Ask for a screenshot instead |
 | Slack | weekly pricing digest | Deliver digest in chat |
 | Web search | All skills | Built in; required for enrichment and surface benchmarks — if unavailable, state reduced coverage |
+| Snowflake data (`data-expert-agent`, `run-sql`; read-only) | `monetization-journey-map` (scenario sizing) | Keep `{slot}` + an Open item for Data; say so in one line |
 
 Never fail silently. If a tool is missing, state what's affected and take the best degraded path.
 
@@ -83,12 +85,14 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 .monetization/
 ├── {feature-slug}/
 │   ├── input/              ← screenshots or captures of a live design
+│   ├── 00-journey.md       ← monetization-journey-map (scenarios, sizing, every step — the spec's flow map comes from here)
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, maps the flow, hands off)
 │   ├── 01-spec-v2.md       ← monetization-surface-spec (fix-loop revision of spec rows a review sent back)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — wireframe built from this)
 │   ├── 02-copy-v2.md       ← improve-conversion-surfaces-copy (fix-loop revision of lines a review flagged)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (re-invoked, built from 02-copy.md)
 │   ├── 03-wireframe-v2.html ← monetization-surface-spec (fix-loop revision — the build target once approved)
+│   ├── 03-journey.html     ← monetization-journey-map (board: each scenario's path with the real wireframe state per step; -v{N} follows the wireframe)
 │   ├── 04-review.md        ← monetization-design-reviewer (independent; every row tagged with a Fix path)
 │   ├── 04-review-v2.md     ← monetization-design-reviewer (re-review: verifies each fix, exits or loops)
 │   ├── renders/            ← every wireframe state, desktop + true 375px, for the reviewer

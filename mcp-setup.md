@@ -57,6 +57,18 @@ Used only for the weekly pricing digest, which the skill formats as a paste-read
 
 ---
 
+## Snowflake data (monday internal)
+
+**Used by:** `monetization-journey-map`, to size each scenario (how many accounts hit this, by tier, role and billing period).
+
+This is monday's internal Snowflake data MCP, the one that exposes `data-expert-agent`, `check-query-status` and `run-sql`. Connect it through monday's internal setup (ask Data/BI for access). The Snowflake role is read-only, and the skill asks for aggregates only.
+
+Without it, the journey map still runs: every frequency stays a `{slot}` with an Open item for Data, and the file says so.
+
+**Verify:** ask Claude to run `data-expert-agent` with "How many active paying accounts do we have?" — it should return a job id, then a sourced answer via `check-query-status`.
+
+---
+
 ## Web search
 
 Built into Claude.ai, Claude Desktop, and Claude Code. In Cursor, make sure web search is enabled for the agent.

@@ -58,6 +58,7 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 | Cohort (new vs existing) | Changes which hook and urgency lever are right | Surface type, copy on screen ("trial", "your plan") |
 | Goal or metric | "Fix conversion" vs "fix complaints" re-ranks the fix list | The prompt's problem statement |
 | Single screen vs full flow | Timing and friction can't be judged from one screen | Number of screens shared; ask for the rest only if timing is the question |
+| Journey map (optional) | Enables the scenario walkthrough | `00-journey.md` / `03-journey.html` in the feature folder; never ask for one |
 | Review only vs fix + requirements | Whether the Review → Fix → Synthesize chain runs after | "just score", "review only" → review only; otherwise the chain |
 
 ### Figma ingestion (preferred path)
@@ -145,11 +146,26 @@ Column rules:
 - **Issue**: name the problem in as few words as possible — this is context for the recommendation, not a second explanation of it. Every Issue ties to a rubric dimension, the stated goal or metric, or a named anti-pattern — never bare preference ("I'd prefer…").
 - **Recommendation**: the single most important cell. It must be the actual instruction, worded so specifically that two different people acting on it would produce the same result — not a direction to go think about it. "Change the CTA from 'Upgrade' to 'Unlock AI Agents'" is a recommendation; "make the CTA more benefit-driven" is not, and should be rewritten before the table goes out. **Exception:** Copy/CRO rows name the missing/buried reason and read "Revise with `improve-conversion-surfaces-copy` — reason: [X]" per Scope and handoff above; that skill owns producing the actual line, so don't draft copy in this cell.
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
-- **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The Growth PM's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
+- **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `journey` (the journey or its board is wrong — a step missing for a scenario, a wrong path, a board card that doesn't match the wireframe) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The Growth PM's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
 
 If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
 **Judge friction per touchpoint.** When the spec has a flow map, score Friction & flow screen by screen: for each touchpoint, check whether the named friction is real on the design and whether its reduction was actually applied. A reduction that's in the spec but not on screen is a row.
+
+**Scenario walkthrough — when `00-journey.md` exists.** Before writing the fix table, walk every scenario through the design, step by step along its path (J#s), using the journey board `03-journey.html#S{n}` or the wireframe states. This is a cognitive walkthrough ([NN/g](https://www.nngroup.com/articles/cognitive-walkthroughs/)). At each step, answer the four questions for that persona:
+
+1. Will they try to do the right thing (does the step match their goal and state of mind)?
+2. Will they see the control that does it?
+3. Will they recognise it as the thing that does what they want?
+4. Once they act, will they understand what happened?
+
+Write the result as a table under the rubric: `Scenario · Path · Step where it breaks (J#) · Which question failed · End state reached?`.
+
+- A scenario that can't reach its end state is a 🔴 row (Category: Structure).
+- A "no" on questions 2–4 is a row at the severity its frequency justifies. Use the journey's sizing: a failure in the most frequent scenario outranks the same failure in a rare one.
+- Fix path is `wireframe` for a missing or unclear control, `spec` for a missing state, `copy` when question 3 fails on the words, and `journey` when question 1 fails: the step doesn't match what the scenario is trying to do, so the journey (or the spec's trigger) is wrong, not the screen. A board card that misrepresents the wireframe is `journey` too.
+- Score Timing and Value clarity against each scenario's trigger and goal, not a generic user.
+- Without a journey file, skip this section with one line ("no journey map — scenario walkthrough not run"), not an error.
 
 ### One alternative worth testing
 
@@ -264,6 +280,7 @@ Before returning the review, verify all of the following. If any fail, fix befor
 17. **Interaction states checked** — every async CTA has a designed loading state (FF6) and every async path that can fail has a designed error recovery state (FF7). If neither was visible in the input, add a Pending row for each unverified async action.
 18. **Color-independent status verified** — no status indicator in the design relies on color alone; if the input was a screenshot that doesn't confirm icon/text alongside color, flag as Pending rather than passing (VH6).
 19. **Focus management checked or flagged** — modal open/close focus lifecycle was confirmed in the design, or added as a Pending row if the input didn't include a prototype or code to verify Tab behavior (MR6).
+20. **When `00-journey.md` exists, every scenario was walked** through the design, the walkthrough table is present, and every scenario that fails to reach its end state is a 🔴 row.
 
 ---
 

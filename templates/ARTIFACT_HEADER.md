@@ -43,9 +43,11 @@ All artifacts land in `.monetization/` in the working directory:
 ```
 .monetization/
 ├── {feature-slug}/
+│   ├── 00-journey.md       ← monetization-journey-map (scenarios + every step; the spec's flow map comes from here)
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — the wireframe is built from this)
 │   ├── 03-wireframe.html   ← monetization-surface-spec (built from 02-copy.md, not placeholders)
+│   ├── 03-journey.html     ← monetization-journey-map (board: the real wireframe state on each journey step)
 │   ├── 04-review.md        ← monetization-design-reviewer (scores the real thing; flags → 02-copy-v2.md)
 │   └── 05-requirements.md  ← monetization-growth-pm synthesis (final copy, design specs, build order)
 └── research/
@@ -54,7 +56,7 @@ All artifacts land in `.monetization/` in the working directory:
 
 **Folder naming:** lowercase, hyphenated, descriptive. `credit-depletion-modal`, `trial-upgrade-nudge`, `notion-pricing-2026`.
 
-**File numbering:** fixed per skill — 01 spec, 02 copy, 03 wireframe, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
+**File numbering:** fixed per skill — 00 journey, 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
 ## Next step block (standalone runs only — omitted inside a Growth PM chain)
 
