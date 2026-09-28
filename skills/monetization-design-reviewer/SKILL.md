@@ -59,7 +59,14 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 | Goal or metric | "Fix conversion" vs "fix complaints" re-ranks the fix list | The prompt's problem statement |
 | Single screen vs full flow | Timing and friction can't be judged from one screen | Number of screens shared; ask for the rest only if timing is the question |
 | Journey map (optional) | Enables the scenario walkthrough | `00-journey.md` / `03-journey.html` in the feature folder; never ask for one |
+| Live-surface performance (live surfaces only) | Ranks the fix list by what the surface actually loses — exposures, conversion, dismiss and repeat-view rates | `00-sizing.md` when it exists; otherwise query it (Data gate below). Never asked of the user, never a slot |
 | Review only vs fix + requirements | Whether the Review → Fix → Synthesize chain runs after | "just score", "review only" → review only; otherwise the chain |
+
+### Data gate — scoring a live surface
+
+When the design under review is live (an existing surface, not a wireframe the chain built), the review is behind the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — real data is required"). Before scoring, search the tools for `data-expert-agent` / `kramer`. With none, stop before writing the review, name the missing MCP and link `mcp-setup.md`. With it, read the surface's weekly exposures, conversion to the objective, and dismiss / repeat-view rates from `00-sizing.md`, or query them per [../monetization-journey-map/references/evidence-queries.md](../monetization-journey-map/references/evidence-queries.md) (aggregates only). Use them to judge Timing / trigger logic and to rank rows: a failure on a high-traffic state outranks the same failure on a rare one. Cite each figure with its source tag.
+
+A chain-built wireframe has no live data, so the gate doesn't apply to it; the chain already passed the gate upstream. A Growth PM review brief says which case it is.
 
 ### Figma ingestion (preferred path)
 
@@ -148,7 +155,7 @@ Column rules:
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
 - **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `journey` (the journey or its board is wrong — a step missing for a scenario, a wrong path, a board card that doesn't match the wireframe) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The Growth PM's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
 
-If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
+If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / the dismissed state / etc.] to assess" (a number about a live surface is queried, never left Pending — Data gate above) — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
 **Judge friction per touchpoint.** When the spec has a flow map, score Friction & flow screen by screen: for each touchpoint, check whether the named friction is real on the design and whether its reduction was actually applied. A reduction that's in the spec but not on screen is a row.
 

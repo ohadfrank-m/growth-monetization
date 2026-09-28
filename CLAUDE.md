@@ -64,6 +64,33 @@ Skills cite reference files (`references/`, `playbooks/`, templates). If one isn
 
 ---
 
+## Data gate — real data is required
+
+Counts, rates and baselines about monday's own users come from monday's internal data, never from a guess and never as a `{slot}` waiting for someone to fill it. The gate runs before a data-dependent run produces anything.
+
+**Who it applies to:** the Growth PM (any chain that includes sizing, journey, spec, review or synthesis), `monetization-opportunity-sizing`, `monetization-journey-map`, `monetization-surface-spec` (its Success metrics), `monetization-design-reviewer` when it scores a live surface, and the Growth PM's synthesis. Research (`monetization-intelligence`), copy (`improve-conversion-surfaces-copy`) and pure competitor work run without it — they make no claims about monday's numbers.
+
+**Detect the tools.** Search the available tools, don't assume names — they vary by environment:
+
+| Source | Search for | Tools it exposes |
+|--------|-----------|------------------|
+| Kramer MCP (monday's Snowflake data agent) | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | `data-expert-agent`, `check-query-status` |
+| Snowflake direct | `run-sql` | `run-sql` (read-only role) |
+
+**Pass:** `data-expert-agent` (with `check-query-status`) is available. `run-sql` alone passes only for re-running SQL you already have; a new business question needs the agent's curated metric definitions.
+
+**Fail — hard stop.** Before writing any artifact, say which MCP is missing and what it blocks, link [mcp-setup.md](mcp-setup.md), and stop:
+
+```
+**Blocked — internal data isn't connected.**
+{skill / chain} needs {what: scenario sizing, baselines, the measurement plan} from monday's data. No Kramer (`data-expert-agent`) tool is available here.
+Connect it (mcp-setup.md → Kramer MCP), then re-run. Research and copy still run without it — say "research only" or "copy only" to continue with those.
+```
+
+**A query that fails or times out is a blocker, not a slot.** Retry it once (same question, same session). If it fails again, stop and tell the user which question failed and the error. Never write `{slot}` for a monday count, rate or baseline, and never estimate one.
+
+---
+
 ## MCP connections
 
 | MCP | Used by | If unavailable |
@@ -73,9 +100,9 @@ Skills cite reference files (`references/`, `playbooks/`, templates). If one isn
 | Figma | spec, design reviewer | Ask for a screenshot instead |
 | Slack | weekly pricing digest | Deliver digest in chat |
 | Web search | All skills | Built in; required for enrichment and surface benchmarks — if unavailable, state reduced coverage |
-| Snowflake data (`data-expert-agent`, `run-sql`; read-only) | `monetization-journey-map` (scenario sizing) | Keep `{slot}` + an Open item for Data; say so in one line |
+| **Kramer / Snowflake data — required** (`data-expert-agent`, `check-query-status`, `run-sql`; read-only) | Growth PM, opportunity sizing, journey map, spec (success metrics), reviewer (live surfaces), synthesis | **Hard stop** — see Data gate. No `{slot}` fallback |
 
-Never fail silently. If a tool is missing, state what's affected and take the best degraded path.
+Never fail silently. If an optional tool is missing, state what's affected and take the best degraded path. If a required one is missing, the Data gate stops the run.
 
 ---
 

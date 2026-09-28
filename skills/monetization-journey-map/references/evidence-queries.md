@@ -4,7 +4,7 @@ A scenario without a frequency is a guess about who matters. Size every scenario
 
 ## Tools
 
-The Snowflake data MCP exposes two tools. Their full names vary by environment; find them with a tool search for `data-expert-agent`.
+The Kramer MCP (monday's Snowflake data agent) exposes these tools. Their full names vary by environment; find them with a tool search for `data-expert-agent` or `kramer` (e.g. `kramer-mcp-v1`). This file is behind the plugin's Data gate ([CLAUDE.md](../../../CLAUDE.md), "Data gate — real data is required"): no tool, no run.
 
 | Tool | Use when | How |
 |---|---|---|
@@ -22,8 +22,9 @@ Prefer `data-expert-agent`: its metric definitions are curated, so "churned acco
 - **No figures in the repo.** Query results go only in `.monetization/` artifacts, never in this plugin's files, examples or commit messages.
 - **Small segments.** If a segment has fewer than 50 accounts (a convention; Data may set another floor) in the window, report it as "<50" and don't compute a rate from it.
 - **Treat the numbers as internal.** The artifact is internal. Its header says so, and a figure never goes into external-facing copy without Data's sign-off.
-- **Never fail silently.** If the MCP isn't connected, times out, or can't answer, write `{slot}` in the cell, add an Open item ("Data — name TBD: {the question}"), and state it in one line at the top of Scenario sizing. The rest of the journey still runs.
-- **Inside a Growth PM chain**, a slow query is not a blocker. Start it at pass 1, continue mapping, and fill the cell when it returns. If it hasn't returned by the end of pass 1, slot it.
+- **No slots — a missing number is a blocker.** If the MCP isn't connected, the Data gate stops the run before anything is written. If a query fails, times out (10 min), or can't answer, retry it once in the same session. If it fails again, stop and tell the user which question failed and the error. Never write `{slot}` for a frequency or estimate one.
+- **Start from `00-sizing.md` when it exists.** `monetization-opportunity-sizing` has already pulled reach, conversion and the role split for the trigger. Split those by scenario rather than re-asking them, and pass its `sessionId` so the follow-ups share context.
+- **Inside a Growth PM chain**, a slow query doesn't pause the mapping. Start it at pass 1, continue mapping, and fill the cell when it returns. If it still hasn't returned by the end of pass 1, it's a failed query: retry once, then stop.
 
 ## Question templates
 
@@ -50,5 +51,7 @@ Data: live — data-expert-agent, 2026-06-28 → 2026-09-26, run 2026-09-27 (int
 | Scenario | Frequency | Evidence | Query | Source |
 |---|---|---|---|---|
 | S1 Admin cancels, price | {N}/month (Pro monthly) | {X}% of stated reasons | "Monthly self-serve cancellations by tier and billing period, last 3 months" | [Data — {model}, Jun–Sep 2026] |
-| S2 IC asks admin to upgrade | {slot} | — | "Share of seat-limit hits by non-admins" | Open item O2: Data — name TBD |
+| S2 IC asks admin to upgrade | {N}/week | {X}% of seat-limit hits by non-admins | "Share of seat-limit hits by non-admins, last 3 months" | [Data — {model}, Jun–Sep 2026] |
 ```
+
+The braces here stand for figures the query returns — the repo never carries real ones. An artifact never keeps them as braces.

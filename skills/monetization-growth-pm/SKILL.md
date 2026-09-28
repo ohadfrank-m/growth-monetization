@@ -120,6 +120,16 @@ A fact nobody in the conversation can answer — a legal policy, an unpublished 
 
 ---
 
+## Step 1c — Data gate
+
+Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — real data is required") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer`; if none is there, print the gate's hard-stop block and stop — no announcement, no artifact, no `{slot}` baselines. The block offers the parts that don't need data (research, copy); run those only if the user picks them.
+
+Research-only and copy-only chains skip the gate.
+
+Inside a running chain, a query that fails twice stops the chain at that step: say which question failed, keep the artifacts already written, and resume from that step once the user says the data is back.
+
+---
+
 ## Step 2 — Announce and run
 
 ```
@@ -296,7 +306,7 @@ Runs last in any chain that includes a review. Its reader is the designer and en
 
 ### Inputs
 
-Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria and its data slots become Open items. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
+Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis is behind the Data gate: the Measurement plan needs real baselines, so with no data tool it stops rather than writing a plan with slots. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
 
 ### Rules
 
@@ -308,8 +318,8 @@ Read the **latest version** of each numbered artifact — per the ledger — in 
 - **Check the reviewer's factual claims before they land.** An independent reviewer can still misread the input. For every row that asserts a fact — especially "contradicts monday-context.md", a price, a limit, or something "missing" from the design — re-derive it from the input (screenshot, Figma, artifact) and the context file. If it doesn't hold, keep the row for traceability but say so in its Open item ("R1.13 reading likely wrong: {why}") and never propose a context-file change built on it.
 - **No direction-only rows.** "Improve", "consider", "strengthen", "make more X" are not requirements. If two people acting on a row would build different things, rewrite it.
 - **Every row is testable.** Each Design change and Build-order row carries **acceptance criteria** — a pass condition two people would judge the same way: "At a true 375px viewport, the CTA is visible without scrolling", not "works on mobile". A subjective property becomes an objective proxy (task completion, a visible element, a measured value); if none exists, it's a research question — say so in Open items.
-- **Every scenario is testable.** With a journey map, each scenario gets one Build-order acceptance criterion on its path: "S2 (IC, seat limit) reaches 'admin notified' in ≤{N} steps at a true 375px, with no step where the walkthrough failed". Every `{slot}` in the journey's sizing becomes an Open item for Data — name TBD, and journey open items keep `JO{n}` as their Source.
-- **Success metrics are decision-grade.** Write the Measurement plan block from [references/experiment-design.md](references/experiment-design.md): one revenue-proximate primary, guardrails that block ship, MDE and runtime computed from data-owner slots, and a pre-registered ship table. Never a bare "+X%" target. Every slot still open becomes an Open item.
+- **Every scenario is testable.** With a journey map, each scenario gets one Build-order acceptance criterion on its path: "S2 (IC, seat limit) reaches 'admin notified' in ≤{N} steps at a true 375px, with no step where the walkthrough failed". Scenario frequencies come from the journey's sizing, never a `{slot}` (the Data gate stops a chain that can't fill them), and journey open items keep `JO{n}` as their Source.
+- **Success metrics are decision-grade.** Write the Measurement plan block from [references/experiment-design.md](references/experiment-design.md): one revenue-proximate primary, guardrails that block ship, baseline, MDE and runtime computed from `00-sizing.md`'s real numbers, and a pre-registered ship table. Never a bare "+X%" target, and never a baseline left as a slot.
 - **No vague words.** Scan Design changes, Open items and Build order (never the verbatim copy strings) for: *appropriate, suitable, reasonable, user-friendly, intuitive, efficient, fast, simple, easy, seamless, flexible, optimized, as needed, where applicable, if necessary, etc., and/or, may, might, could*. Quantify each hit or cut it. If the number isn't decided, don't invent one — write "pending: {what}" and add an Open item.
 - **Real owners.** Owner is a named person when the user or `monday-context.md` names one; otherwise the owning role plus "name TBD" (e.g. "Billing — name TBD"), and one Open item lists the owners to assign. Never "the team", "product", or a blank.
 - **Playbook updates travel.** If the chain produced a research doc with Suggested playbook updates, add one Open item: owner "Growth Monetization PM — name TBD" (the playbook owner), what's needed "apply the suggested updates to `playbooks/{surface}.md`", Source: the research file. Knowledge that stays in one report is lost to the next spec.
@@ -386,8 +396,8 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 9. Every owner is a named person or "{role} — name TBD"; none says "the team".
 10. If a research doc with Suggested playbook updates exists, its Open item is present.
 11. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
-12. Measurement plan present, with one primary metric per account and a filled ship table; every unfilled slot has an Open item, and instrumentation rows are in Build order.
-13. With a journey map: every scenario has an acceptance criterion, and every scenario-sizing slot is an Open item.
+12. Measurement plan present, with one primary metric per account, a baseline, MDE and runtime from real data (no `{slot}` baselines), and a filled ship table; instrumentation rows are in Build order.
+13. With a journey map: every scenario has an acceptance criterion and a frequency from data.
 14. No `Assumptions`, `Flagged assumptions` or "confirm or correct" section, here or in any input artifact. Every input is in the header as `confirmed with user` or `inferred` (with its source), or is an Open item with an owner. A failure here is a hard fail: ask the user, then rewrite.
 
 After delivering, one line only — existing-design chains: offer to build a wireframe of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input. Fix-loop chains: no offer; the build target is already the fixed wireframe.

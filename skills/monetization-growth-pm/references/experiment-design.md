@@ -1,6 +1,6 @@
 # Experiment design — making success metrics decision-grade
 
-Read this in the synthesis phase, before writing the Measurement plan in `05-requirements.md`. It converts the spec's **Success metrics** table ([templates/surface-spec.md](../../../templates/surface-spec.md)) into a test someone can run and a decision nobody has to argue about afterwards. Every monday number (baseline, traffic, prices, credit amounts) is a `{slot}` filled by the data owner or cited from [monday-context.md](../../../context/monday-context.md). Never estimate one here.
+Read this in the synthesis phase, before writing the Measurement plan in `05-requirements.md`. It converts the spec's **Success metrics** table ([templates/surface-spec.md](../../../templates/surface-spec.md)) into a test someone can run and a decision nobody has to argue about afterwards. Every monday number comes from real data, never an estimate and never a `{slot}` left for a data owner: baselines, traffic and the conversion window from `00-sizing.md` (`monetization-opportunity-sizing`, which runs these queries through Kramer), prices and credit amounts from [monday-context.md](../../../context/monday-context.md). A number the sizing file lacks is queried before the plan is written (the plugin's Data gate in [CLAUDE.md](../../../CLAUDE.md)).
 
 Base rate to keep in mind: at Microsoft, only about one-third of well-designed experiments improved the metric they targeted [Verified — Kohavi, Crook & Longbotham 2009]. The default outcome is flat, so the plan decides up front what happens on flat.
 
@@ -67,14 +67,14 @@ refund/credit-refund requests · downgrades within `{60}` days · billing and cr
 `n per arm = (z₁₋α/₂ + z₁₋β)² · [p₁(1−p₁) + p₂(1−p₂)] / δ²`, where (1.96 + 0.84)² ≈ 7.85, p₁ is the baseline, p₂ = p₁ + δ, and δ is the absolute MDE.
 Rule of thumb: `n ≈ 16 · p(1−p) / δ²` [Verified — Evan Miller; his calculator does the exact version].
 
-**Worked example — slots, then a generic illustration (not monday data):**
+**Worked example — where each input comes from, then a generic illustration (not monday data):**
 
 | Slot | Value |
 |---|---|
-| Baseline `p₁` (primary, control, last `{8}` full weeks) | `{p₁}` — Data — name TBD |
+| Baseline `p₁` (primary, control, last `{8}` full weeks) | `00-sizing.md` → current conversion (a Kramer query shown there) |
 | Relative MDE `r` (smallest lift worth shipping, from cost or ARR impact) | `{r}` → δ = p₁·r |
 | n per arm | `{n}` from the formula |
-| Eligible accounts per week × allocation share | `{E}` × `{a}` |
+| Eligible accounts per week × allocation share | `00-sizing.md` → weekly reach `{E}` × `{a}` |
 | Runtime | ⌈ n·arms / (E·a) ⌉ weeks, rounded up to whole weeks, min 2, **plus** the `{N}`-day conversion window before readout |
 
 Illustration: p₁ = 5%, r = 10% → δ = 0.5 pp → ≈ 31,200 accounts per arm (rule of thumb: 30,400). Halving the MDE quadruples the sample. Kohavi et al. put it as 10× the sensitivity needing 100× the users [Verified — KDD 2013]. The spec's "Target" must be ≥ the MDE the traffic supports. A target below it is a hope, not a test.
@@ -112,7 +112,7 @@ Illustration: p₁ = 5%, r = 10% → δ = 0.5 pp → ≈ 31,200 accounts per arm
 
 ## 9. Into `05-requirements.md` — the Measurement plan block
 
-Synthesis fills this from `01-spec.md` → Success metrics, the latest review, and this file. Every `{slot}` still open becomes an Open item (owner: Data/Analytics — name TBD, or Legal for price tests), and the Build order gets the instrumentation rows.
+Synthesis fills this from `01-spec.md` → Success metrics, `00-sizing.md` (baseline, weekly reach, conversion window), the latest review, and this file. Every baseline, traffic and window figure is filled from data before the doc is delivered. What can stay open is a decision nobody in the chain can make — the ship threshold's sign-off, Legal on a price test — each an Open item with an owner. The Build order gets the instrumentation rows.
 
 ```markdown
 ## Measurement plan
@@ -122,7 +122,7 @@ Synthesis fills this from `01-spec.md` → Success metrics, the latest review, a
 
 | Role | Metric | Definition (event, window, unit) | Baseline | MDE / tolerance | Source |
 |------|--------|----------------------------------|----------|-----------------|--------|
-| Primary | {§3 row} | {event} within {N} days of first exposure, per account | {p₁ — pending: Data} | ≥ {r} relative | 01-spec Success metrics |
+| Primary | {§3 row} | {event} within {N} days of first exposure, per account | {p₁ — from 00-sizing.md} | ≥ {r} relative | 01-spec Success metrics |
 | Secondary | {…} | {…} | {…} | — (diagnostic) | |
 | Guardrail | {…} | {…} | {…} | breach if worse by > {T} at {α} | |
 

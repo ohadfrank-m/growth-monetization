@@ -117,6 +117,8 @@ Apply monday.com context from [monday-context.md](../../context/monday-context.m
 
 **Copy strategy section:** Name the primary reason from the 15 reasons people buy, name the copy direction, and explicitly hand off to `improve-conversion-surfaces-copy`. Never write final copy in the spec.
 
+**Success metrics — real baselines only.** Every baseline in the Success metrics table comes from `00-sizing.md` (`monetization-opportunity-sizing`) or from a Kramer query shown in the spec, with its source tag. This section is behind the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — real data is required"): check for a `data-expert-agent` / `kramer` tool before writing the spec. With none, stop before writing anything and name the missing MCP. Never write a `{slot}` baseline. The target is at least the MDE the traffic supports — a smaller target can't be read.
+
 **Edge cases:** Address every edge case in [spec-checklist.md](references/spec-checklist.md) — credit debt, admin-gated purchase, mobile, repeat exposure, enterprise, loading/empty/error states. Mark non-applicable ones as N/A with one-line rationale — no silent omissions.
 
 ### Step 5: Deliver the spec, then hand off for copy — before the wireframe

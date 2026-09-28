@@ -85,11 +85,13 @@ Do not write final copy here. Specify the persuasion angle and hand off.
 
 ## Success metrics [required]
 
-| Metric | Definition | Target |
-|--------|-----------|--------|
-| Primary | {e.g. Credit top-up conversion rate} | {e.g. +X% vs current baseline} |
-| Secondary | {e.g. Task resume rate after dismiss} | |
-| Guardrail | {e.g. Support tickets re: credit confusion} | {no increase} |
+| Metric | Definition | Baseline | Target |
+|--------|-----------|----------|--------|
+| Primary | {e.g. Credit top-up conversion rate} | {from `00-sizing.md` or a Kramer query shown here — never a slot} | {≥ the MDE the traffic supports, per `00-sizing.md`} |
+| Secondary | {e.g. Task resume rate after dismiss} | {from data} | |
+| Guardrail | {e.g. Support tickets re: credit confusion} | {from data} | {no increase} |
+
+Baselines are behind the plugin's Data gate (`CLAUDE.md`): with no Kramer tool, the spec stops before this section rather than writing a slot.
 
 ## Edge cases [required]
 Address each that applies:
