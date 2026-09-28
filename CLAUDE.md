@@ -15,10 +15,13 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 ## Source of truth
 
-[context/monday-context.md](context/monday-context.md) holds current plans, prices, AI credit packages, feature gating, trial terms, cohorts, and the surface inventory.
+monday's internal **BigBrain AI Brains** are the source of truth for plans, prices, AI credit packages, feature gating and trial terms. [context/monday-context.md](context/monday-context.md) is the **cache and pointer**: the last verified copy of those facts, plus cohorts and the surface inventory, with a `verified-against` date in its frontmatter.
 
-- Read it before any spec, review, or monday.com-related research
-- Never quote a monday.com price, limit, or credit amount from memory — cite the context file
+- Read the context file before any sizing, spec, review, or monday.com-related research
+- **Verify at run time.** Before an artifact states a monday price, limit, credit amount, gate or trial term, ask BigBrain for it (search the tools for `AI Brain`, `ai-brain` or `bigbrain` — e.g. `AI Brain - Payments` for plans, prices, credits and billing). Cite the answer as `[Brain — {name}, {YYYY-MM-DD}]`. In a Growth PM chain this runs once, up front (Step 1c), and every skill cites the result
+- **A mismatch is reported, never silently used.** When BigBrain and the context file disagree, use the BigBrain answer with its tag, list both values in the artifact (the sizing file's Context drift section, or an Open item for the context file's owner), and tell the user in one line. Never quietly pick one
+- BigBrain not connected: runs behind the Data gate stop (below). Copy and research cite the context file with its `verified-against` date
+- Never quote a monday.com price, limit, or credit amount from memory
 - If research reveals the context file is out of date, say so and suggest the specific update to the file's owner
 
 [playbooks/](playbooks/) holds the CRO knowledge (benchmarks, best-in-class examples, anti-patterns) for each surface type — the *why*, as opposed to `monday-context.md`'s facts.
@@ -77,15 +80,17 @@ Counts, rates and baselines about monday's own users come from monday's internal
 |--------|-----------|------------------|
 | Kramer MCP (monday's Snowflake data agent) | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | `data-expert-agent`, `check-query-status` |
 | Snowflake direct | `run-sql` | `run-sql` (read-only role) |
+| BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | Question-answering over monday's internal payments, pricing and product knowledge |
+| Researchio plugin *(optional)* | the skills `kramer-pull`, `data-breakdown` | The hypothesis-and-breakdown pipeline for the "why" behind a baseline — see `monetization-opportunity-sizing` |
 
-**Pass:** `data-expert-agent` (with `check-query-status`) is available. `run-sql` alone passes only for re-running SQL you already have; a new business question needs the agent's curated metric definitions.
+**Pass:** `data-expert-agent` (with `check-query-status`) is available, **and** a BigBrain brain when the run states monday facts (sizing, spec, review, synthesis — every gated run but the journey). `run-sql` alone passes only for re-running SQL you already have; a new business question needs the agent's curated metric definitions. Researchio is never required.
 
 **Fail — hard stop.** Before writing any artifact, say which MCP is missing and what it blocks, link [mcp-setup.md](mcp-setup.md), and stop:
 
 ```
 **Blocked — internal data isn't connected.**
-{skill / chain} needs {what: scenario sizing, baselines, the measurement plan} from monday's data. No Kramer (`data-expert-agent`) tool is available here.
-Connect it (mcp-setup.md → Kramer MCP), then re-run. Research and copy still run without it — say "research only" or "copy only" to continue with those.
+{skill / chain} needs {what: scenario sizing, baselines, the measurement plan} from monday's data. No {Kramer (`data-expert-agent`) | BigBrain (`AI Brain - …`)} tool is available here.
+Connect it (mcp-setup.md → {Kramer MCP | BigBrain AI Brains}), then re-run. Research and copy still run without it — say "research only" or "copy only" to continue with those.
 ```
 
 **A query that fails or times out is a blocker, not a slot.** Retry it once (same question, same session). If it fails again, stop and tell the user which question failed and the error. Never write `{slot}` for a monday count, rate or baseline, and never estimate one.
@@ -102,6 +107,8 @@ Connect it (mcp-setup.md → Kramer MCP), then re-run. Research and copy still r
 | Slack | weekly pricing digest | Deliver digest in chat |
 | Web search | All skills | Built in; required for enrichment and surface benchmarks — if unavailable, state reduced coverage |
 | **Kramer / Snowflake data — required** (`data-expert-agent`, `check-query-status`, `run-sql`; read-only) | Growth PM, opportunity sizing, journey map, spec (success metrics), reviewer (live surfaces), synthesis | **Hard stop** — see Data gate. No `{slot}` fallback |
+| **BigBrain AI Brains — required** (`AI Brain - Payments` and related) | Growth PM (fact check, Step 1c), opportunity sizing (prices), spec, reviewer, synthesis | **Hard stop** for runs that state monday facts. Copy and research cite `monday-context.md` with its `verified-against` date |
+| Researchio plugin (optional — `kramer-pull`, `data-breakdown`) | `monetization-opportunity-sizing` (the "why" behind a baseline) | The sizing file's Segments table is the breakdown; it says so in one line |
 
 Never fail silently. If an optional tool is missing, state what's affected and take the best degraded path. If a required one is missing, the Data gate stops the run.
 
@@ -161,7 +168,7 @@ Omit it inside a Growth PM chain — the Growth PM runs the next step itself, an
 
 - Header block present
 - Specific enough that two people acting on it produce the same result
-- monday.com facts cited from the context file, not memory
+- monday.com facts cited from a BigBrain answer (or, for copy and research, the context file with its `verified-against` date), never memory; every mismatch between the two is listed, not silently resolved
 - No empty sections or "N/A" padding (except the spec edge-case list, where N/A needs a reason)
 - **Hard fail:** no `Assumptions`, `Flagged assumptions`, "Confirm or correct" or similar section, heading or table anywhere in the artifact. Every input is confirmed with the user, inferred from a named source, or an Open item with an owner. If one slipped in, stop, ask the user, and rewrite
 - Next step block present on standalone runs, absent inside a chain

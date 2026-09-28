@@ -1,16 +1,32 @@
 ---
 file: monday-context.md
-purpose: Living source of truth for monday.com monetization strategy — plans, pricing, AI credits, feature gating, user cohorts, design system, and squad context. Read by every skill in this plugin.
+purpose: Cache and pointer for monday.com monetization facts — plans, pricing, AI credits, feature gating, trial terms — verified at run time against the BigBrain AI Brains. Also the owned home of cohorts, the surface inventory, design-system and squad context. Read by every skill in this plugin.
 owner: Growth Monetization PM (currently: Ohad Frankfurt)
-last-updated: 2026-09-26
+last-updated: 2026-09-28
 data-sources: monday.com/pricing, support.monday.com, monday.com/blog/ai-agents/monday-ai-credits
+verified-against: none yet — public sources only; first BigBrain check pending
 update-triggers: See "When to update this file" section below
-future: Designed to eventually connect to internal AI Brain sources (monetization, AI credits). Until then: manual updates by owner.
+source-of-truth: BigBrain AI Brains (e.g. AI Brain - Payments) for plans, prices, credits, gating and trial terms. This file caches their last verified answers.
 ---
 
 # monday.com — Monetization Context
 
-This file is the single source of truth for monday.com product and pricing context used by all skills in this plugin. When anything changes — a price, a tier, a credit structure, a new surface — update this file first.
+This file is the **cache and pointer** for monday.com monetization facts. The source of truth for plans, prices, AI credit packages, feature gating and trial terms is monday's internal BigBrain AI Brains; skills verify the facts they cite against them at run time. Cohorts, the surface inventory, the Vibe constraints and squad context are owned here — no brain holds them.
+
+---
+
+## BigBrain — how this file is used
+
+| Section | Source of truth | At run time |
+|---|---|---|
+| Tier structure, AI credits, Feature gating, Trial | BigBrain — `AI Brain - Payments` for plans, prices, credits and billing; related `AI Brain - …` MCPs for product and gating, when connected | Ask the brain for each fact the artifact cites; cite `[Brain — {name}, {YYYY-MM-DD}]` |
+| User cohorts, Monetization surfaces inventory, Design system, Squad context | This file | Cite this file |
+
+- **Find the tools** by searching for `AI Brain`, `ai-brain` or `bigbrain`; names vary by environment.
+- **A mismatch is reported, never silently used.** When a brain's answer differs from this file, the artifact uses the brain's answer with its tag, lists both values (the sizing file's Context drift section, or an Open item for this file's owner), and the user is told in one line.
+- **Updating from a run.** A reported mismatch is an update request: the owner checks it, edits the section, bumps `last-updated` and `verified-against`, and adds a changelog row.
+- **`verified-against`** records the brain and the date of the last full check of the BigBrain-owned sections. Until it names one, every figure here comes from public sources and is a cache nobody has checked internally.
+- Brains not connected: sizing, spec, review and synthesis stop (the Data gate in [CLAUDE.md](../CLAUDE.md)); copy and research cite this file with its `verified-against` date.
 
 ---
 
@@ -28,7 +44,7 @@ Update immediately when any of the following change:
 
 **How to update:** Edit this file directly in the repo. Add a changelog entry at the bottom. Bump `last-updated` in the frontmatter.
 
-**How to verify:** Run `monetization-intelligence` against monday.com itself — the skill can research monday.com's own public pricing page and flag gaps between this file and what's live.
+**How to verify:** Ask the BigBrain brains for each fact in the BigBrain-owned sections (see "BigBrain — how this file is used"), then bump `verified-against`. `monetization-intelligence` run against monday.com's public pricing page is a second check for what customers see.
 
 ---
 
@@ -267,6 +283,7 @@ All monday.com UI uses the Vibe design system. Apply these constraints in every 
 
 | Date | What changed | Updated by |
 |------|-------------|-----------|
+| 2026-09-28 | File becomes a cache and pointer: BigBrain AI Brains are the source of truth for plans, prices, credits, gating and trial terms; added `verified-against` (none yet) and the run-time verification rules | Claude (growth-monetization plugin) |
 | 2026-09-26 | Credit rates from the AI Feature Catalog; dropped "1 credit ≈ 1 AI action"; added cadence/rollover, top-ups, pooling and admin limits, grace period, trial extension and NT trial status; flagged Sidekick Lite row | Claude (growth-monetization plugin) |
 | 2026-09-24 | Initial version created from public pricing research | Claude (growth-monetization plugin) |
 

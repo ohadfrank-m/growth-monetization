@@ -1,7 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.5.0
+version: 0.6.0
 ---
 
 # Monetization Design Reviewer
@@ -219,7 +219,7 @@ End with a one-line verdict for the Growth PM, applying the exit rule for the de
 
 ## monday.com Context
 
-When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, then apply this lens:
+When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, and verify any figure a row depends on against BigBrain (search for `AI Brain` / `bigbrain`; a Growth PM brief passes the chain's answers) — a row that says the design "contradicts monday-context.md" is checked against the brain first. A mismatch goes in the row's Evidence and is never silently used ([CLAUDE.md](../../CLAUDE.md), Source of truth). Then apply this lens:
 
 - **AI credits** are the primary consumption unit for the AI Agents launch (May 2026). Credit and metering UI must make value-per-credit legible — not just the price. Credit-to-task translation is required, never a bare number — using the context file's official line (1,000 credits ≈ 50 resume screenings), never "1 credit = 1 AI action".
 - **Tier structure:** Free → Basic → Standard → Pro → Enterprise. Most upgrade pressure is Free→Pro and Standard→Pro.

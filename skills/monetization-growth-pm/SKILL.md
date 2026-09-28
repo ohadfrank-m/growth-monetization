@@ -131,6 +131,8 @@ Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — real da
 
 Research-only and copy-only chains skip the gate.
 
+**Verify the monday facts, once.** With the gate passed, list the facts the chain will cite — the list price and seat rules of the tiers in scope, the credit packages and allotments, the gate for the feature, the trial terms — and ask BigBrain for each (search for `AI Brain` / `bigbrain`; `AI Brain - Payments` owns plans, prices, credits and billing). Compare each answer with [monday-context.md](../../context/monday-context.md). Every skill in the chain cites the BigBrain answer. A mismatch is never silently resolved: the announcement carries one line — `Context drift: {fact} — BigBrain {value}, monday-context.md {value}; using BigBrain` — `00-sizing.md` lists it under Context drift, and synthesis adds an Open item for the context file's owner to update the file.
+
 Inside a running chain, a query that fails twice stops the chain at that step: say which question failed, keep the artifacts already written, and resume from that step once the user says the data is back.
 
 ---
@@ -322,7 +324,7 @@ Read the **latest version** of each numbered artifact — per the ledger — in 
 - **Traceability.** Every row of every review version appears at least once — in Final copy, Design changes, Open items, or Resolved before handoff — with a `Source` reference: `R{review version}.{row}` — `R1.3` = row 3 of `04-review.md`, `R2.1` = row 1 of `04-review-v2.md`. Use this notation everywhere in the doc. A row that needs both a string and a placement (e.g. "add a Free link") appears in both tables with the same Source; a row blocked on a fact also gets an Open item. Nothing gets dropped silently.
 - **Copy is verbatim.** Every Final copy string is the ★ recommended option from the copy artifact, word for word. No paraphrasing, no new lines written here.
 - **Specs are exact but not invented.** Name Vibe components and tokens only if they were confirmed from Figma variables or the Vibe MCP. Otherwise, specify relative to what's already on screen ("same text style as the plan feature rows, directly above the Pro CTA") and add "token TBD — confirm in Figma" rather than guessing a token name.
-- **No invented numbers.** Credit-to-task conversions, prices, and limits come from `monday-context.md`. If the figure isn't there, the copy keeps a marked slot (`≈ {N} {task}`) and an Open item names who supplies N.
+- **No invented numbers.** Credit-to-task conversions, prices, and limits come from the chain's BigBrain answers (Step 1c), or `monday-context.md` where BigBrain agreed with it. If the figure isn't there, the copy keeps a marked slot (`≈ {N} {task}`) and an Open item names who supplies N.
 - **No unverified claims.** Any factual promise in a Final copy string — a cancellation or refund policy, data retention after expiry, a guarantee — that isn't stated in `monday-context.md` gets an Open item naming who confirms it (Billing, Product) and is listed as a ship blocker. Copy that reads well but promises something untrue is worse than the line it replaced.
 - **Check the reviewer's factual claims before they land.** An independent reviewer can still misread the input. For every row that asserts a fact — especially "contradicts monday-context.md", a price, a limit, or something "missing" from the design — re-derive it from the input (screenshot, Figma, artifact) and the context file. If it doesn't hold, keep the row for traceability but say so in its Open item ("R1.13 reading likely wrong: {why}") and never propose a context-file change built on it.
 - **No direction-only rows.** "Improve", "consider", "strengthen", "make more X" are not requirements. If two people acting on a row would build different things, rewrite it.
@@ -398,7 +400,7 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 1. Every row of every review version appears at least once, with its Source reference.
 2. Every Final copy string matches the ★ recommended option verbatim.
 3. No Vibe token or component name appears that wasn't confirmed — unconfirmed ones say "TBD".
-4. No price, limit, or credit figure appears that isn't in `monday-context.md`.
+4. No price, limit, or credit figure appears that isn't in a BigBrain answer from Step 1c (or `monday-context.md` where BigBrain agreed). Every Context drift line has an Open item for the context file's owner.
 5. Every factual promise in the copy (policy, retention, guarantee) not in `monday-context.md` has an Open item and is listed as a ship blocker.
 6. Every reviewer row asserting a fact or contradiction was re-derived from the input; any that didn't hold says so in its Open item.
 7. No row is direction-only.
