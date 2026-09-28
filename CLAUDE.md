@@ -41,16 +41,22 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 ---
 
-## Intake — standalone runs
+## Intake — ask, never assume
 
-When a skill is called directly (not inside a Growth PM chain), it makes sure it has what a top-tier output needs before producing anything:
+Every run makes sure it has what a top-tier output needs before producing anything. A gap is either answered by the user or inferred from something in front of you, never filled in and written down as an assumption.
 
-1. **Check** the skill's **Required context** table against the prompt, any attached file or link, and what's already in `.monetization/{feature-slug}/`.
-2. **Infer** what's obvious and state each inference in one line ("Cohort: existing users — inferred from 'credit depletion'").
-3. **Ask every real gap in one message** — `AskUserQuestion`, at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred.
+1. **Check** the **Required context** table of every skill that will run against the prompt, any attached file or link, and what's already in `.monetization/{feature-slug}/`.
+2. **Infer** what's obvious and state each inference in one line, with its source ("Cohort: existing users — from 'credit depletion'"). An inference needs a source you can point to; "most likely" isn't one.
+3. **Ask every real gap in one message** — `AskUserQuestion`, at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred. Follow up only when an answer opens a new gap.
 4. **Run.** If nothing is missing, ask nothing.
 
-Inside a Growth PM chain, skip intake entirely — the Growth PM's scoping already covered it, and a chain stops only for a real blocker (chain mode rules).
+**Who runs it:**
+
+- **Standalone:** the skill runs intake against its own Required context table.
+- **Growth PM chain:** the Growth PM runs intake once, up front, for the whole chain — every field every announced skill needs, in one round (see "Step 1b — Required-context intake" in [skills/monetization-growth-pm/SKILL.md](skills/monetization-growth-pm/SKILL.md)). Skills inside the chain don't re-ask what it covered.
+- **Mid-chain:** a skill that hits a gap intake didn't cover, and that would change its output, stops and asks — one `AskUserQuestion`, then the chain resumes. It never picks an answer and writes it down as an assumption.
+
+**Where the answers go.** A confirmed input goes into the artifact's header as `confirmed with user: {field: value; …}` and an inference as `inferred: {field — from {source}}` ([templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md)). A fact nobody in the conversation can answer yet — a legal policy, an unpublished price, an engineering constraint — is an Open item with an owner. That is the only thing that stays open.
 
 ## Missing references
 
@@ -128,6 +134,7 @@ Omit it inside a Growth PM chain — the Growth PM runs the next step itself, an
 - Specific enough that two people acting on it produce the same result
 - monday.com facts cited from the context file, not memory
 - No empty sections or "N/A" padding (except the spec edge-case list, where N/A needs a reason)
+- **Hard fail:** no `Assumptions`, `Flagged assumptions`, "Confirm or correct" or similar section, heading or table anywhere in the artifact. Every input is confirmed with the user, inferred from a named source, or an Open item with an owner. If one slipped in, stop, ask the user, and rewrite
 - Next step block present on standalone runs, absent inside a chain
 
 ---
@@ -137,6 +144,7 @@ Omit it inside a Growth PM chain — the Growth PM runs the next step itself, an
 - The artifact is the deliverable — never substitute a chat summary
 - State PricingSaaS credit costs and wait for confirmation before any paid call
 - Always state the user cohort (new vs. existing) for any surface
+- **Ask, never assume.** No artifact carries an `Assumptions` section or a "confirm or correct" list. A gap that changes the output is asked before the artifact is written (see Intake); a fact nobody can answer yet is an Open item with an owner
 - Copy is written only by `improve-conversion-surfaces-copy`; other skills name the reason and direction, then hand off — and copy runs *before* the wireframe is built, never after, so nothing ships or gets reviewed with placeholder text standing in for real language
 - Cite sources with URLs; never present web findings as MCP data
 - Respect the playbooks' evidence tags when citing a competitor claim: `[Verified]` can be stated as fact, `[Reported]` needs the caveat inline, `[Teardown needed]` is never presented as fact, and figures in sections marked as pre-dating the evidence-tag standard are directional — never quoted as a target. See [playbooks/README.md](playbooks/README.md)

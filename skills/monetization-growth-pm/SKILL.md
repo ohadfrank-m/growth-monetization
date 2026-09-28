@@ -8,7 +8,7 @@ version: 0.4.0
 
 You're the PM on the job. Work out what the user wants to walk away with and how deep the review should go, then run every skill that produces it — without pausing between steps — and finish with `05-requirements.md`, the only artifact you write yourself.
 
-This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — standalone runs" in the plugin's CLAUDE.md). If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
+This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — ask, never assume" in the plugin's CLAUDE.md). In a chain, you run that intake once, up front, for every skill in it. If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
 
 ---
 
@@ -94,10 +94,37 @@ Name every added prerequisite and default in the announcement, so the user sees 
 
 ---
 
+## Step 1b — Required-context intake
+
+Scoping decides *which* skills run. Intake makes sure each of them has what it needs, before any of them starts. This is the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume") run once for the whole chain, so no skill mid-chain has to guess and no artifact carries an `Assumptions` section.
+
+Collect the fields every skill in the chain needs. Ask only for fields the chain uses: a copy-only chain doesn't need the trigger's exact threshold.
+
+| Field | Needed by | Infer from |
+|-------|-----------|------------|
+| Surface — type and the specific feature or moment | Every skill | The prompt; the surfaces inventory in [monday-context.md](../../context/monday-context.md) |
+| Cohort — new or existing | Sizing, journey, spec, copy, review | Surface type (trial → new, credit depletion → existing) |
+| Tier(s) and billing period | Sizing, journey, spec | The prompt; the inventory row for a live surface |
+| Role — IC, admin, or both | Journey, spec, copy | A surface that blocks an IC is always both (the IC / admin pair) |
+| Trigger — the exact condition that shows the surface | Sizing (it defines reach), spec | The prompt; the inventory row for a live surface. Never a threshold you'd have to pick |
+| Objective metric — the one conversion outcome | Sizing, spec, measurement plan | The prompt; the surface's primary in [references/experiment-design.md](references/experiment-design.md) §3 |
+| Constraints — legal, design system, engineering, dates, the longest test the team will run, the smallest ARR that justifies the build | Spec, copy, sizing's go / no-go | The prompt only — constraints are never inferred |
+| Current design (existing surface) | Review, journey (live mode) | `input/`, a Figma link, or a public URL you capture yourself (Scoping question rules) |
+
+1. **Infer** what's obvious, one line per field with its source.
+2. **Ask every real gap in one `AskUserQuestion` round** — at most 4 questions, recommended answer first. When the scoping question is needed too, put both in the same call if they fit in 4 questions; otherwise scoping first, then intake as the next message, since the scoping answer decides which fields matter.
+3. **Follow up only when an answer opens a new gap** ("both roles" on a surface you'd mapped for admins only → which IC path).
+4. **Carry the answers.** The announcement prints them as one Context line. Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
+
+A fact nobody in the conversation can answer — a legal policy, an unpublished price, an engineering limit — isn't an intake question. It becomes an Open item with an owner, and it's the only thing that stays open.
+
+---
+
 ## Step 2 — Announce and run
 
 ```
 **Deliverables:** {list}{ — added: {item} ({prerequisite for X / default with wireframe})}
+**Context:** {field: value (confirmed | from {source})} · … — from Step 1b
 **Sequence:** {skill} → {skill} → …
 **Artifacts:** {file list}
 {**Depth:** Standard | Quick | Thorough — only on chains that review a wireframe they built; add ' — say "quick" or "thorough" to change' when Q3 wasn't asked}
@@ -125,7 +152,8 @@ A chain is any sequence the Growth PM announced before the first skill started. 
 - **No optional offers mid-chain.** Skip "want me to mock this up?" and similar questions. Offer them once, after the final artifact.
 - **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
 - **External writes wait for the end.** Logging to monday.com or posting anywhere is offered once after the final artifact, never done mid-chain.
-- **Only stop for a real blocker:** a missing input the skill can't work without (one question, per that skill's intake rules), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
+- **Only stop for a real blocker:** a gap Step 1b didn't cover that would change the skill's output (one `AskUserQuestion`, per the plugin's intake protocol — never a guess written down as an assumption), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
+- **No assumption sections.** No artifact in the chain carries an `Assumptions`, `Flagged assumptions` or "confirm or correct" section. Answers live in the header; unanswerable facts are Open items with an owner.
 
 ---
 
@@ -360,6 +388,7 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 11. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
 12. Measurement plan present, with one primary metric per account and a filled ship table; every unfilled slot has an Open item, and instrumentation rows are in Build order.
 13. With a journey map: every scenario has an acceptance criterion, and every scenario-sizing slot is an Open item.
+14. No `Assumptions`, `Flagged assumptions` or "confirm or correct" section, here or in any input artifact. Every input is in the header as `confirmed with user` or `inferred` (with its source), or is an Open item with an owner. A failure here is a hard fail: ask the user, then rewrite.
 
 After delivering, one line only — existing-design chains: offer to build a wireframe of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input. Fix-loop chains: no offer; the build target is already the fixed wireframe.
 

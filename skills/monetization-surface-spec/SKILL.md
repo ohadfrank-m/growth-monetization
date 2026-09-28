@@ -77,7 +77,7 @@ Required fields:
 - **Primary objective** — the single conversion outcome
 - **Existing design, if any** — a live version changes the spec from greenfield to redesign (read it first)
 
-For missing fields: infer from context where obvious (a "credit depletion modal" is surface type 5, existing-user cohort). Ask every genuinely ambiguous one together, in one message — the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — standalone runs"). Inside a Growth PM chain, skip it.
+For missing fields: infer from context where obvious (a "credit depletion modal" is surface type 5, existing-user cohort). Ask every genuinely ambiguous one together, in one message — the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"). Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never fill a gap with a guess and flag it.
 
 Full intake protocol: [brief-intake.md](references/brief-intake.md)
 

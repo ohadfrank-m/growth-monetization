@@ -12,6 +12,8 @@ cohort: {new-user | existing-user | both | n/a}
 author: {name}
 date: {YYYY-MM-DD}
 status: {draft | review | approved}
+confirmed with user: {field: value; …}                      # inputs the user answered at intake
+inferred: {field — from {source}; …}                        # inputs inferred from a named source
 # optional — add when they apply:
 reviewer: {independent (subagent) | inline (self-graded)}   # review + requirements artifacts
 fix-loop pass: {1 | 2 | 3}                                  # revisions written by the fix loop
@@ -30,6 +32,8 @@ revises: {file} for {review rows}                           # any -v2/-v3 file
 | `author` | Yes | Person who ran the skill |
 | `date` | Yes | ISO date — auto-filled when possible |
 | `status` | Yes | Start as `draft`, move to `review` before sharing |
+| `confirmed with user` | Yes, when intake asked anything | The answers from intake (the Growth PM's Step 1b, or the skill's own). This replaces any `Assumptions` section — an artifact never has one |
+| `inferred` | Yes, when anything was inferred | Each inferred field with the source it came from. A field with no source to point to wasn't inferred; it's a gap to ask |
 | `reviewer` | Review and requirements artifacts | `inline (self-graded)` whenever no independent subagent ran the review |
 | `fix-loop pass` | Fix-loop revisions | Which pass wrote this version |
 | `revises` | Any `-vN` file | Which file and which review rows it revises |
