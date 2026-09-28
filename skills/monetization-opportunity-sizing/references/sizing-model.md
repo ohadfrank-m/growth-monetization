@@ -86,6 +86,7 @@ From [experiment-design.md](../../monetization-growth-pm/references/experiment-d
 | **Go — ship + holdout** | Base-case ARR ≥ the bar, test doesn't read | The chain continues; the plan is ship to a share with a holdout (experiment-design §1) |
 | **Re-scope** | Base < bar ≤ high | Name the re-scope: widen the trigger, pool surfaces with the same trigger, or a bolder change (bigger MDE) |
 | **No-go** | High-case ARR < the bar | Say so plainly. The chain stops unless the user overrides |
+| **Not sized — no data** | The user continued without Kramer (Data gate) | The chain continues. Every input and result is `[Not measured]`. Never a Go or No-go on unmeasured inputs |
 
 No bar from the user: the verdict line reports ARR at stake and testability only, and an Open item asks Product — name TBD for the bar.
 

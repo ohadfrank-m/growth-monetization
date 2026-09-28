@@ -43,7 +43,7 @@ Write the scenarios per [references/scenario-cards.md](references/scenario-cards
 
 ### Step 2 — Evidence
 
-Size every scenario with real data per [references/evidence-queries.md](references/evidence-queries.md) — aggregate counts from the Kramer data tools (read-only). Show every question asked and its source. This step is behind the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — real data is required"): with no `data-expert-agent` tool the skill stops before writing anything, and a query that fails twice stops it too. Never a `{slot}` and never an estimate.
+Size every scenario with real data per [references/evidence-queries.md](references/evidence-queries.md) — aggregate counts from the Kramer data tools (read-only). Show every question asked and its source. This step runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it"): with no `data-expert-agent` tool, push the user to connect it and ask once (Connect now / Continue without data — in a Growth PM chain, its Step 1c answer holds). Continuing without data, every frequency is marked `[Not measured]`, and a query that fails twice is marked the same way. Never an estimate.
 
 ### Step 3 — The journey
 
@@ -61,7 +61,7 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 # Journey: {surface name}
 
 **Surface:** {type} · **Cohorts:** {…} · **Tiers:** {…} · **Mode:** {new | live journey mapped from {source}}
-**Data:** live — {tool}, {date range}, run {YYYY-MM-DD} · internal data, don't share outside monday
+**Data:** {live — {tool}, {date range}, run {YYYY-MM-DD} | not measured — Kramer not connected} · internal data, don't share outside monday
 
 ## Scenarios
 {one problem card + day in the life per scenario — S1, S2, …}
@@ -120,7 +120,7 @@ When the surface is live and a design or public URL is available, pass 1 maps **
 ## Rules
 
 - **Problem first, screens second.** Scenarios name the persona's problem in their words. Nothing in the Scenarios section names a UI element.
-- **No invented numbers, no slots.** Frequencies and counts come from a query shown in the file. With no data tool, or a query that fails twice, the skill stops (Data gate) rather than writing `{slot}`. monday prices, limits and credit amounts come only from `monday-context.md`.
+- **No invented numbers.** Frequencies and counts come from a query shown in the file, or are marked `[Not measured]` when the user continued without data or a query failed twice (Data gate). Never an estimate, never an unmarked `{slot}`. monday prices, limits and credit amounts come only from `monday-context.md`.
 - **No vague words.** The banned list in the Growth PM's synthesis rules applies here ([monetization-growth-pm → Synthesis phase → Rules](../monetization-growth-pm/SKILL.md#rules)).
 - **Every scenario ends somewhere.** No scenario may stop mid-table without an end state or an Open item.
 - **The journey owns the steps; the spec owns the screens.** Don't write layouts, trigger thresholds or copy here — name the step, the state of mind and the reason, and hand off.

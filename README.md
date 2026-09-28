@@ -36,7 +36,7 @@ When your prompt is clear ("wireframe a credit depletion surface for Pro"), it a
 
 Then it makes sure every skill in the run has what it needs — surface, cohort, tier, role, trigger, objective metric, constraints, the current design — inferring what's obvious and asking the rest in **one** message, before anything is written. Mid-run, a skill that hits a gap stops and asks. No artifact ever carries an "Assumptions" section: what you answered goes in its header, and only facts nobody can answer yet (a legal policy, an unpublished price) stay open, each with an owner.
 
-Before announcing a run that sizes, designs or reviews, it checks that monday's internal data is connected — Kramer for counts and baselines, BigBrain for plans, prices and credits. If either is missing, it stops, names the MCP, and points to [mcp-setup.md](mcp-setup.md). Research and copy still run without them.
+Before announcing a run that sizes, designs or reviews, it checks that monday's internal data is connected — Kramer for counts and baselines, BigBrain for plans, prices and credits. If either is missing, it names the MCP, says what it unlocks (the opportunity size, baselines, verified monday facts), points to [mcp-setup.md](mcp-setup.md), and asks once: **Connect now** (recommended) or **Continue without data**. Continue, and the whole run goes ahead — every number it couldn't measure is marked `[Not measured]` in place, never estimated, and each file opens with one line saying the data tools weren't connected. Research and copy don't need the data at all.
 
 If the surface is live and public (e.g. monday.com/pricing), it captures the page itself instead of asking for a screenshot. On a new surface where research wasn't chosen, the announcement adds one line — `Say "add research" to benchmark competitors first` — so you can still add it without a question up front. A research-only ask ends at the research doc.
 
@@ -61,7 +61,7 @@ In the order they run:
 | Skill | Responsible for | Produces | Never does |
 |-------|----------------|----------|------------|
 | `monetization-growth-pm` | The PM on the job: scopes how far and how deep, asks every missing input up front, checks the data is connected and the monday facts are current, runs every skill below in order, runs the fix loop, keeps the artifact ledger, and writes the final requirements | `05-requirements.md` | Write copy or score designs itself |
-| `monetization-opportunity-sizing` | Whether it's worth building: reach × current conversion × addressable lift × ARPA → ARR at stake, low / base / high, every input a Kramer query or BigBrain price shown in the file; the baselines everything after it uses; testability and a go / no-go line | `00-sizing.md` | Guess a number — a missing one stops the run |
+| `monetization-opportunity-sizing` | Whether it's worth building: reach × current conversion × addressable lift × ARPA → ARR at stake, low / base / high, every input a Kramer query or BigBrain price shown in the file; the baselines everything after it uses; testability and a go / no-go line | `00-sizing.md` | Guess a number — an unmeasured one is marked `[Not measured]` |
 | `monetization-intelligence` | How competitors monetize and how they run each surface: surface benchmarks (e.g. five competitors' cancellation flows, screen by screen), full monetization teardowns, model benchmarks, landscapes, battlecards, change monitoring | `research/{topic}-{YYYY-MM}.md` | Spec or design anything |
 | `monetization-journey-map` | Who hits the surface and why — scenarios per persona (IC and admin always a pair), sized with live data — and every step before, on and after it, with each step's state of mind; then a journey board showing the real wireframe on every step | `00-journey.md`, `03-journey.html` | Design screens or write copy — it names the steps and hands off |
 | `monetization-surface-spec` | What to build: trigger, cohort, the screen-by-screen flow with its friction points, layout, edge cases — then the low-fi HTML wireframe of every state, and revisions of both when a review sends fixes back | `01-spec.md`, `03-wireframe.html` | Write final copy — it names the reason and hands off |
@@ -113,14 +113,14 @@ Add as a custom skill or copy skill content into your project context. Skills wo
 
 ## MCP connections
 
-### Required — monday's internal data
+### Strongly recommended — monday's internal data
 
-Sizing, the journey map, spec success metrics, reviews of live surfaces and the requirements doc run on monday's own numbers. They check for these before writing anything and stop — naming the missing MCP — when one isn't connected. There's no degraded path with guessed numbers or `{slot}` placeholders.
+Sizing, the journey map, spec success metrics, reviews of live surfaces and the requirements doc run on monday's own numbers. When one of these isn't connected, the run names it, says what it unlocks, links the setup, and asks once per run: connect now, or continue without data. Continuing, every unmeasured number is marked `[Not measured]` — never guessed — and nothing else is added (no analyst request, no list of pulls).
 
 | MCP | What it's for | Without it | How to connect |
 |-----|---------------|-----------|----------------|
-| **Kramer** (monday's Snowflake data agent — `data-expert-agent`, `check-query-status`; `run-sql` for re-runs) | Counts, rates and baselines: how many accounts hit a trigger, how many convert today, conversion lag, past experiment lifts. Read-only, aggregates only, every question and source table shown in the artifact | Sizing, journey, spec, live-surface review and synthesis stop | monday internal — see [mcp-setup.md](mcp-setup.md#kramer-mcp-monday-internal) |
-| **BigBrain AI Brains** (`AI Brain - Payments` and related) | Current plans, prices, AI credit packages, gating and trial terms, checked at run time. `context/monday-context.md` caches the last verified answers | Sizing, spec, review and synthesis stop; copy and research cite the context file with its `verified-against` date | monday internal — see [mcp-setup.md](mcp-setup.md#bigbrain-ai-brains-monday-internal) |
+| **Kramer** (monday's Snowflake data agent — `data-expert-agent`, `check-query-status`; `run-sql` for re-runs) | Counts, rates and baselines: how many accounts hit a trigger, how many convert today, conversion lag, past experiment lifts. Read-only, aggregates only, every question and source table shown in the artifact | Asked once to connect. Continuing, sizing reads **Not sized — no data**, and every count, rate and baseline is marked `[Not measured]` | monday internal — see [mcp-setup.md](mcp-setup.md#kramer-mcp-monday-internal) |
+| **BigBrain AI Brains** (`AI Brain - Payments` and related) | Current plans, prices, AI credit packages, gating and trial terms, checked at run time. `context/monday-context.md` caches the last verified answers | Asked once to connect. Continuing, facts come from the context file marked `[Unverified]` with its `verified-against` date | monday internal — see [mcp-setup.md](mcp-setup.md#bigbrain-ai-brains-monday-internal) |
 
 **Optional:** the **Researchio** plugin. When it's installed, sizing hands the "why" behind a baseline (a segment converting at half the rate of the rest) to its `kramer-pull` → `data-breakdown` pipeline instead of improvising one.
 
@@ -160,7 +160,7 @@ Puts a number on the opportunity before anyone designs anything: how many accoun
 
 **Asks for, if your prompt doesn't say:** the surface and its exact trigger, cohort and tiers, the objective metric, the longest test the team will run, and the smallest ARR that would justify the build.
 
-**Needs:** Kramer and BigBrain (it stops without them). Optional: Researchio for the why behind a baseline.
+**Needs:** Kramer and BigBrain — without them it asks once to connect, and if you continue, the file is a model with every number marked `[Not measured]`. Optional: Researchio for the why behind a baseline.
 
 **What you get:** `00-sizing.md` — reach × current conversion × addressable lift × ARPA → **ARR at stake per year**, in low / base / high cases. Lift comes from monday's own history (past experiments on the same surface type, the gap to the best-converting comparable segment), never a competitor's claim. Every input is a Kramer query or a BigBrain price shown in the file, segmented by tier, billing period and role. Then testability — sample size and runtime for the base-case lift — and one **go / no-go** line: Go — test · Go — ship + holdout · Re-scope · No-go. Its baselines feed the journey's scenario frequencies and the measurement plan in `05-requirements.md`. The file is internal and never leaves `.monetization/`.
 
@@ -199,7 +199,7 @@ Maps the story around a surface before anyone designs it: who hits it, why, and 
 
 **What you get:**
 
-- `00-journey.md` — scenario cards (problem, persona, trigger, frequency, current result, evidence, impact — adapted from Pragmatic Institute use scenarios), sized with read-only Kramer queries to monday's data, split from `00-sizing.md` (every question and source shown; it stops rather than guess when data isn't available), and a step table across five stages (before → trigger → on-surface → hand-off → after) with each step's channel, state of mind, branches, friction, event and wireframe state id. The spec takes its flow map from it, copy writes to each step, and the reviewer walks every scenario through the design
+- `00-journey.md` — scenario cards (problem, persona, trigger, frequency, current result, evidence, impact — adapted from Pragmatic Institute use scenarios), sized with read-only Kramer queries to monday's data, split from `00-sizing.md` (every question and source shown; it marks a frequency `[Not measured]` rather than guess when data isn't available), and a step table across five stages (before → trigger → on-surface → hand-off → after) with each step's channel, state of mind, branches, friction, event and wireframe state id. The spec takes its flow map from it, copy writes to each step, and the reviewer walks every scenario through the design
 - `03-journey.html` — the journey board: one lane per scenario, one column per step, the real wireframe state embedded on every in-app step and the real copy on every email or notification card, viewable per scenario by URL hash
 
 ---
@@ -300,7 +300,7 @@ Every file carries the same header block (plugin, skill, feature, cohort, date, 
 
 **Ask, never assume.** Before anything is written — by the Growth PM for the whole run, or by a skill called directly — every gap that would change the output is asked in one message, and nothing is asked that your prompt already covers. No artifact has an "Assumptions" section.
 
-**Real data, or it stops.** Counts, rates and baselines come from Kramer queries shown in the file; prices and credits from BigBrain. Without them, sizing, design and review stop and say what to connect — never a `{slot}` waiting for someone to fill it.
+**Real data, or clearly marked.** Counts, rates and baselines come from Kramer queries shown in the file; prices and credits from BigBrain. Without them, the run pushes you once to connect, and if you continue, every unmeasured number says `[Not measured]` where it sits — never an estimate.
 
 **Reviewed until right, by someone who didn't write it.** For a new surface, a fresh reviewer scores the work, fixes go back to the skill that owns them, and it re-checks at the depth you chose. Dev gets a wireframe that's already corrected, not a list of corrections.
 
@@ -310,7 +310,7 @@ Every file carries the same header block (plugin, skill, feature, cohort, date, 
 
 **Scenarios before screens.** On a new surface the journey comes first: who hits it, how often (from real data), and every step before, on and after it. The spec, the copy and the review all read that one file, so an IC and an admin at the same screen get different lines and the reviewer checks both get through.
 
-**Nothing degrades silently.** A missing optional MCP, a missing reference file, or no independent reviewer — the skill says what's affected and takes the best fallback. A missing data MCP isn't degraded around; it stops the run.
+**Nothing degrades silently.** A missing optional MCP, a missing reference file, or no independent reviewer — the skill says what's affected and takes the best fallback. A missing data MCP gets one push to connect; continuing, nothing unmeasured is passed off as measured.
 
 ---
 

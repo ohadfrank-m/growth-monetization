@@ -1,6 +1,6 @@
 ---
 name: monetization-opportunity-sizing
-description: This skill should be used when the user wants to "size this opportunity", "how much ARR is at stake", "is this worth building", "how many accounts hit this", "what's the baseline conversion", "sample size for this test", "go / no-go on this surface", or before any monetization surface is designed and nobody has put a number on it yet. Produces 00-sizing.md — reach × current conversion × addressable lift × ARPA → ARR at stake, in low / base / high cases, every input from a Kramer query or a BigBrain answer shown in the file, plus testability and a go / no-go line. Runs first in every Growth PM chain that designs or reviews a surface.
+description: This skill should be used when the user wants to "size this opportunity", "how much ARR is at stake", "is this worth building", "how many accounts hit this", "what's the baseline conversion", "sample size for this test", "go / no-go on this surface", or before any monetization surface is designed and nobody has put a number on it yet. Produces 00-sizing.md — reach × current conversion × addressable lift × ARPA → ARR at stake, in low / base / high cases, every input from a Kramer query or a BigBrain answer shown in the file (or marked not measured when you continue without them), plus testability and a go / no-go line. Runs first in every Growth PM chain that designs or reviews a surface.
 version: 0.1.0
 ---
 
@@ -30,14 +30,18 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 
 ## Data gate
 
-This skill is all data. It runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — real data is required") before writing anything, for both sources it needs:
+This skill is all data, so connecting both sources matters most here. It runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before writing anything, for both sources it needs:
 
 | Source | Search the tools for | Used for | Missing |
 |---|---|---|---|
-| Kramer MCP | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | Reach, conversion, conversion lag, the ceiling segment, past experiment lifts, converter plan mix and seats | Hard stop |
-| BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | List prices per seat and per credit package for the plan the conversion lands on | Hard stop |
+| Kramer MCP | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | Reach, conversion, conversion lag, the ceiling segment, past experiment lifts, converter plan mix and seats | Every input and the whole model are `[Not measured]`; verdict `Not sized — no data` |
+| BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | List prices per seat and per credit package for the plan the conversion lands on | Prices from `monday-context.md`, marked `[Unverified — …]` |
 
-With either missing, print the gate's stop block naming the missing MCP, link [mcp-setup.md](../../mcp-setup.md), and stop. A query that fails or times out is retried once in the same session; a second failure stops the run with the question and the error. Never a `{slot}`, never an estimate.
+With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with `AskUserQuestion`: **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
+
+**Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (CLAUDE.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
+
+A query that fails or times out is retried once in the same session; a second failure marks that input `[Not measured — query failed]`, is told to the user, and the run continues. Never an unmarked `{slot}`, never an estimate.
 
 ---
 
@@ -67,9 +71,9 @@ With the baseline and weekly reach, compute the sample per arm and the runtime f
 
 ### Step 6 — Verdict
 
-One line, from the table in [references/sizing-model.md](references/sizing-model.md#go--no-go): **Go — test**, **Go — ship + holdout**, **Re-scope**, or **No-go**, with the base-case ARR against the bar and the runtime against the longest test.
+One line, from the table in [references/sizing-model.md](references/sizing-model.md#go--no-go): **Go — test**, **Go — ship + holdout**, **Re-scope**, **No-go**, or **Not sized — no data**, with the base-case ARR against the bar and the runtime against the longest test.
 
-**In a Growth PM chain:** on a Go, continue without pausing. On Re-scope or No-go, stop and ask once — `AskUserQuestion`: continue as scoped / re-scope ({the specific re-scope the table names}) / stop — recommended answer first. It changes everything downstream, so it's a real blocker, not an optional offer.
+**In a Growth PM chain:** on a Go or Not sized — no data, continue without pausing (the user already chose to continue without data at the gate). On Re-scope or No-go, stop and ask once — `AskUserQuestion`: continue as scoped / re-scope ({the specific re-scope the table names}) / stop — recommended answer first. It changes everything downstream, so it's a real blocker, not an optional offer.
 
 ---
 
@@ -89,10 +93,10 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 # Sizing: {surface name}
 
 **Surface:** {type} · **Trigger:** {exact condition} · **Cohort:** {…} · **Tiers:** {…} · **Objective:** {metric}
-**Data:** live — {tool}, {date range}, run {YYYY-MM-DD} · session {sessionId} · internal data, don't share outside monday
-**Prices:** {brain name}, asked {YYYY-MM-DD}
+**Data:** {live — {tool}, {date range}, run {YYYY-MM-DD} · session {sessionId} | not measured — Kramer not connected} · internal data, don't share outside monday
+**Prices:** {brain name}, asked {YYYY-MM-DD} | unverified — monday-context.md, verified-against {date}
 
-**Verdict:** {Go — test | Go — ship + holdout | Re-scope | No-go} — base case {ARR}/yr vs bar {ARR}/yr · runtime {W} weeks vs {max} weeks
+**Verdict:** {Go — test | Go — ship + holdout | Re-scope | No-go | Not sized — no data} — base case {ARR}/yr vs bar {ARR}/yr · runtime {W} weeks vs {max} weeks
 
 ## Inputs
 | Input | Value | What it counts | Query | Source |
@@ -139,8 +143,8 @@ Inside a Growth PM chain, omit it (chain mode rules in [monetization-growth-pm](
 
 ## Rules
 
-- **Every number shows its source.** A Kramer question with its model, range and run date, or a BigBrain answer with the brain's name and date. A number with neither doesn't go in.
-- **No slots, no estimates.** A missing input is a failed query: retry once, then stop (Data gate).
+- **Every number shows its source or its mark.** A Kramer question with its model, range and run date, a BigBrain answer with the brain's name and date, or a `[Not measured]` / `[Unverified — …]` mark. A number with none of these doesn't go in.
+- **No estimates.** A missing input is marked `[Not measured]` in its cell, and nothing computed from it is filled in (Data gate).
 - **Aggregates only.** Counts, shares and rates by segment. Never user-level rows, account names, emails or IDs.
 - **Small segments.** Fewer than 50 accounts in the window → report "<50" and don't compute a rate from it.
 - **No figures in the repo.** Results live only in `.monetization/`, never in this plugin's files, examples or commit messages.
