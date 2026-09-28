@@ -1,7 +1,7 @@
 ---
 name: monetization-growth-pm
-description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), then runs research → journey map → spec → copy → wireframe → journey board → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /monetization-intelligence, /monetization-journey-map, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
-version: 0.4.0
+description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), asks every missing input up front, sizes the opportunity on monday's real data, then runs research → journey map → spec → copy → wireframe → journey board → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /monetization-opportunity-sizing, /monetization-intelligence, /monetization-journey-map, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
+version: 0.5.0
 ---
 
 # Monetization Growth PM
@@ -20,6 +20,7 @@ Route by what the user wants to **walk away with**, not by which words they used
 
 | Deliverable | Skill | Artifact |
 |-------------|-------|----------|
+| Sizing | `monetization-opportunity-sizing` | `00-sizing.md` — ARR at stake, baselines, go / no-go |
 | Research doc | `monetization-intelligence` | `.monetization/research/{topic-slug}-{YYYY-MM}.md` |
 | Journey map | `monetization-journey-map` | `00-journey.md`, then `03-journey.html` (the board, after the wireframe) |
 | Spec | `monetization-surface-spec` | `01-spec.md` |
@@ -46,6 +47,7 @@ Decide this first — it sets the order, the pre-marks, what Review needs, and w
 | "wireframe", "mock it up", "show me how it'd look" | Spec + Copy + Wireframe, **plus Review + Requirements by default** — the review catches problems before build. Announce them as defaults; "wireframe only" stops at `03-wireframe.html` |
 | "research", "benchmark", "how does X price", "how do competitors handle {surface}", "monetization strategy of X" — no build ask | Research doc |
 | "write copy for", "rewrite this CTA", "the copy feels flat" | Copy |
+| "size this", "is this worth building", "how much ARR is at stake", "how many accounts hit this" — no build ask | Sizing |
 | "spec" / "brief" / "build" with no mention of a wireframe, or a vague "help with our {surface}" | **Ambiguous — ask the scoping question** |
 
 **Combining signals.** Union the sets of every row that matches — "research how Notion sells credits, then wireframe ours" is Research + the wireframe set. A research ask doesn't settle the wireframe question: "research, then spec ours" still asks, with Q2 recommended Yes. "Just" / "only" caps the set to what's named, plus prerequisites. The fix loop is part of Review, not a separate deliverable — it runs whenever Review runs on a wireframe the chain built.
@@ -77,6 +79,7 @@ The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`.
 
 | Deliverable | Needs | If missing |
 |-------------|-------|------------|
+| Journey, Spec, Review of a live design, Requirements | Sizing | Add it — it's the data step every one of them reads its baselines from (Data gate) |
 | Wireframe | Spec + Copy | Add both |
 | Review | Something to review | Surface exists and is public → capture it (see Scoping question). Behind login → ask for a screenshot or Figma link (a real blocker, per chain mode rules). Surface doesn't exist yet → add Spec + Copy + Wireframe |
 | Requirements | A Review | Add Review (and its prerequisites) |
@@ -85,12 +88,14 @@ The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`.
 Name every added prerequisite and default in the announcement, so the user sees why the chain is longer than what they asked for.
 
 **Order is fixed — drop the steps not in the set, never reorder:**
-- **New surface:** research → journey → spec → copy → wireframe → journey board → review → fix loop (see below) → synthesis. The journey (pass 1) runs in every new-surface chain unless the depth is **Quick**; chains that don't review have no depth and include it. Say it in the announcement with `say "skip journey" to drop it`. The board (pass 2) runs whenever both the journey and a wireframe exist
-- **Existing design:** (journey, on request) → review → copy → synthesis. Add a nudge line above "Starting now": `Say "map the journey" to map today's live journey first.` If the user says it, `monetization-journey-map` maps the live journey from `input/` before the review, so the reviewer can walk each scenario. Copy always rides with Review + Requirements on an existing design — there's no Copy box for it, and synthesis needs the strings. Skip the copy step only if the review flagged no Copy/CRO rows and added no new on-screen elements
+- **New surface:** sizing → research → journey → spec → copy → wireframe → journey board → review → fix loop (see below) → synthesis. Sizing runs in every chain that designs or reviews, at every depth — Quick included. The journey (pass 1) runs in every new-surface chain unless the depth is **Quick**; chains that don't review have no depth and include it. Say it in the announcement with `say "skip journey" to drop it`. The board (pass 2) runs whenever both the journey and a wireframe exist
+- **Existing design:** sizing → (journey, on request) → review → copy → synthesis. Add a nudge line above "Starting now": `Say "map the journey" to map today's live journey first.` If the user says it, `monetization-journey-map` maps the live journey from `input/` before the review, so the reviewer can walk each scenario. Copy always rides with Review + Requirements on an existing design — there's no Copy box for it, and synthesis needs the strings. Skip the copy step only if the review flagged no Copy/CRO rows and added no new on-screen elements
 
 **Spec + copy without a wireframe** ends at `02-copy.md` — nothing to review, so no review and no synthesis. Offer the wireframe once, after the copy.
 
 **Wireframe without Review** ends at `03-wireframe.html`. Offer Review + Requirements once, after the wireframe.
+
+**Sizing verdict gates the rest.** `00-sizing.md` ends with a go / no-go line. On **Go — test** or **Go — ship + holdout**, continue without pausing. On **Re-scope** or **No-go**, stop and ask once (continue as scoped / the re-scope the file names / stop) — it's a real blocker, since everything after it would be built on a case the numbers don't support.
 
 ---
 
@@ -160,7 +165,7 @@ A chain is any sequence the Growth PM announced before the first skill started. 
 - **The Growth PM owns sequencing.** Each skill delivers its artifact, then control returns here for the next step. Skills don't decide what runs next.
 - **No next-step blocks.** Skills omit their `→ Next step` block — it's a prompt for a human to re-type, and in a chain nobody needs to.
 - **No optional offers mid-chain.** Skip "want me to mock this up?" and similar questions. Offer them once, after the final artifact.
-- **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
+- **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: 00-sizing · research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
 - **External writes wait for the end.** Logging to monday.com or posting anywhere is offered once after the final artifact, never done mid-chain.
 - **Only stop for a real blocker:** a gap Step 1b didn't cover that would change the skill's output (one `AskUserQuestion`, per the plugin's intake protocol — never a guess written down as an assumption), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
 - **No assumption sections.** No artifact in the chain carries an `Assumptions`, `Flagged assumptions` or "confirm or correct" section. Answers live in the header; unanswerable facts are Open items with an owner.
@@ -174,15 +179,17 @@ The common deliverable sets, pre-assembled. Anything else is built from Step 1's
 ### Review → Fix → Synthesize ← default when a design is shared
 > "Here's our trial-expiry pricing modal — it's not converting" / screenshot / Figma link
 
-1. `monetization-design-reviewer` → scored rubric + ranked fix list (`04-review.md`)
-2. `improve-conversion-surfaces-copy` → 2–3 options with one ★ recommended for **every** Copy/CRO row in `04-review.md`. File: `02-copy.md` if none exists (review-first pass), otherwise `02-copy-v2.md`
-3. **Synthesis** → `05-requirements.md`
+1. `monetization-opportunity-sizing` → `00-sizing.md`: the live surface's reach, conversion and ARR at stake, which the reviewer uses to rank rows
+2. `monetization-design-reviewer` → scored rubric + ranked fix list (`04-review.md`)
+3. `improve-conversion-surfaces-copy` → 2–3 options with one ★ recommended for **every** Copy/CRO row in `04-review.md`. File: `02-copy.md` if none exists (review-first pass), otherwise `02-copy-v2.md`
+4. **Synthesis** → `05-requirements.md`
 
 Announce with the Step 2 template (no Depth line — there's no fix loop on a live design; keep the self-graded notice if it applies). Filled in for this preset:
 ```
 **Deliverables:** review, copy rewrites, requirements
-**Sequence:** design review → copy rewrites → requirements synthesis
-**Artifacts:** 04-review.md, 02-copy.md, 05-requirements.md
+**Context:** surface: trial-expiry pricing modal (from the screenshot) · cohort: new (from "trial") · …
+**Sequence:** opportunity sizing → design review → copy rewrites → requirements synthesis
+**Artifacts:** 00-sizing.md, 04-review.md, 02-copy.md, 05-requirements.md
 **No re-prompting between steps.**
 
 Starting now →
@@ -191,21 +198,23 @@ Starting now →
 ### Spec → Copy → Wireframe → Review → Synthesize
 > "Wireframe a paywall for AI Agents on Free tier" / scoping answer includes Wireframe + Review
 
-1. `monetization-journey-map` → `00-journey.md`: scenarios, sized with live data where available, and every step with its wireframe state id (skipped at Quick)
-2. `monetization-surface-spec` → `01-spec.md` (names the reason and direction, no final copy; its flow map comes from the journey)
-3. `improve-conversion-surfaces-copy` → `02-copy.md` from the spec's reason and each step's state of mind, including off-surface steps
-4. `monetization-surface-spec` (re-invoked) → `03-wireframe.html` built with the real copy, one state per J step that has a wireframe state id
-5. `monetization-journey-map` (re-invoked) → `03-journey.html`, the board embedding each wireframe state
-6. `monetization-design-reviewer` (independent) → `04-review.md`, with a scenario walkthrough; every row tagged fixable or blocked
-7. **Fix loop** → fixable rows go back to the skill that owns them, then an independent re-review (`04-review-v2.md`). How many passes depends on the depth (Quick 0 · Standard ≤2 · Thorough ≤3, aiming for 85) — see Fix loop below
-8. **Synthesis** → `05-requirements.md`, describing the approved wireframe version
+1. `monetization-opportunity-sizing` → `00-sizing.md`: ARR at stake, the baselines, and the go / no-go line (runs at every depth)
+2. `monetization-journey-map` → `00-journey.md`: scenarios, sized from `00-sizing.md` and live data, and every step with its wireframe state id (skipped at Quick)
+3. `monetization-surface-spec` → `01-spec.md` (names the reason and direction, no final copy; its flow map comes from the journey)
+4. `improve-conversion-surfaces-copy` → `02-copy.md` from the spec's reason and each step's state of mind, including off-surface steps
+5. `monetization-surface-spec` (re-invoked) → `03-wireframe.html` built with the real copy, one state per J step that has a wireframe state id
+6. `monetization-journey-map` (re-invoked) → `03-journey.html`, the board embedding each wireframe state
+7. `monetization-design-reviewer` (independent) → `04-review.md`, with a scenario walkthrough; every row tagged fixable or blocked
+8. **Fix loop** → fixable rows go back to the skill that owns them, then an independent re-review (`04-review-v2.md`). How many passes depends on the depth (Quick 0 · Standard ≤2 · Thorough ≤3, aiming for 85) — see Fix loop below
+9. **Synthesis** → `05-requirements.md`, describing the approved wireframe version
 
 ### Spec → Copy ← spec requested, no wireframe
 > Scoping answer: Spec + copy only
 
-1. `monetization-journey-map` → `00-journey.md`
-2. `monetization-surface-spec` → `01-spec.md`
-3. `improve-conversion-surfaces-copy` → `02-copy.md`
+1. `monetization-opportunity-sizing` → `00-sizing.md`
+2. `monetization-journey-map` → `00-journey.md`
+3. `monetization-surface-spec` → `01-spec.md`
+4. `improve-conversion-surfaces-copy` → `02-copy.md`
 
 Ends here — no review, no synthesis. After the copy, one line: offer `03-wireframe.html`.
 
@@ -306,7 +315,7 @@ Runs last in any chain that includes a review. Its reader is the designer and en
 
 ### Inputs
 
-Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis is behind the Data gate: the Measurement plan needs real baselines, so with no data tool it stops rather than writing a plan with slots. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
+Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. Read `00-sizing.md` — its baselines, weekly reach and conversion window fill the Measurement plan, and its verdict goes in the header. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis is behind the Data gate: the Measurement plan needs real baselines, so with no data tool it stops rather than writing a plan with slots. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
 
 ### Rules
 
@@ -333,6 +342,7 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 # Requirements: {surface name}
 
 **Surface:** {type} · **Cohort:** {new / existing} · **Current score:** {X}/100{ (self-graded)} · **Projected score:** {Y}/100 if 🔴 + 🟠 ship · **Depth:** {Quick | Standard | Thorough}, {N} fix passes
+**Opportunity:** {verdict} · base case {ARR at stake}/yr — from 00-sizing.md (internal)
 **Ledger:** {final ledger line}
 {**Build target:** latest 03-wireframe version — omit when no wireframe was built} · **Built from:** {every artifact version read}
 
