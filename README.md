@@ -2,10 +2,10 @@
 
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-000?style=flat-square)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-compatible-000?style=flat-square)](https://cursor.com)
-[![Skills](https://img.shields.io/badge/skills-6-333?style=flat-square)](#the-skills)
+[![Skills](https://img.shields.io/badge/skills-7-333?style=flat-square)](#the-skills)
 [![monday.com](https://img.shields.io/badge/built_for-monday.com-ff3366?style=flat-square)](https://monday.com)
 
-A monetization copilot for growth product squads. Hand the **Monetization Growth PM** a surface and it does the full product work — competitor research, a journey map of who hits the surface and every step around it, spec, conversion copy, wireframe, an independent CRO review that loops until the fixes land, and one requirements doc design and engineering can build from. Or call any single skill on its own when you only need one piece.
+A monetization copilot for growth product squads. Hand the **Monetization Growth PM** a surface and it does the full product work — asks for every missing input up front, sizes the opportunity on monday's own data (Kramer and the BigBrain AI Brains), then competitor research, a journey map of who hits the surface and every step around it, spec, conversion copy, wireframe, an independent CRO review that loops until the fixes land, and one requirements doc design and engineering can build from. Or call any single skill on its own when you only need one piece.
 
 Built for: pricing pages · paywalls · promotions · upgrade flows · credit/consumption UI · trial flows · cancellation and downgrade flows
 
@@ -13,14 +13,14 @@ Built for: pricing pages · paywalls · promotions · upgrade flows · credit/co
 
 ## How it works
 
-![How the plugin works: the Monetization Growth PM runs research, journey map, spec, copy, wireframe with the journey board, review and requirements left to right, with a fix loop from review back to spec, copy and wireframe; every skill can also be called on its own](docs/flow.svg)
+![How the plugin works: the Monetization Growth PM checks Kramer and BigBrain are connected, sizes the opportunity, then runs research, journey map, spec, copy, wireframe with the journey board, review and requirements left to right, with a fix loop from review back to spec, copy and wireframe; every skill can also be called on its own](docs/flow.svg)
 
 ### Two ways to use it
 
 | You want | Do this | What happens |
 |----------|---------|--------------|
 | **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go (asking one short message only if your prompt doesn't say), runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
-| **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing — all in one message — then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
+| **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-opportunity-sizing`, `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing — all in one message — then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
 
 You never have to use the Growth PM, and you never have to use every skill. Every skill reads what's already in the feature folder and picks up from there.
 
@@ -33,6 +33,10 @@ When your prompt is clear ("wireframe a credit depletion surface for Pro"), it a
 | **How far should this go?** | New surface: spec + copy · up to a wireframe · all the way to a requirements doc. Existing surface: review + fixed copy + requirements · review only · start fresh · redesign all the way |
 | **Start with a benchmark of how competitors run this surface?** | Yes / No — recommended for a new surface; the journey and the spec's flow map are then built from real competitor flows |
 | **How thorough should the review be?** *(only when the chain reviews a wireframe it built)* | Standard *(recommended)* · Quick · Thorough — see below |
+
+Then it makes sure every skill in the run has what it needs — surface, cohort, tier, role, trigger, objective metric, constraints, the current design — inferring what's obvious and asking the rest in **one** message, before anything is written. Mid-run, a skill that hits a gap stops and asks. No artifact ever carries an "Assumptions" section: what you answered goes in its header, and only facts nobody can answer yet (a legal policy, an unpublished price) stay open, each with an owner.
+
+Before announcing a run that sizes, designs or reviews, it checks that monday's internal data is connected — Kramer for counts and baselines, BigBrain for plans, prices and credits. If either is missing, it stops, names the MCP, and points to [mcp-setup.md](mcp-setup.md). Research and copy still run without them.
 
 If the surface is live and public (e.g. monday.com/pricing), it captures the page itself instead of asking for a screenshot. On a new surface where research wasn't chosen, the announcement adds one line — `Say "add research" to benchmark competitors first` — so you can still add it without a question up front. A research-only ask ends at the research doc.
 
@@ -56,7 +60,8 @@ In the order they run:
 
 | Skill | Responsible for | Produces | Never does |
 |-------|----------------|----------|------------|
-| `monetization-growth-pm` | The PM on the job: scopes how far and how deep, runs every skill below in order, runs the fix loop, keeps the artifact ledger, and writes the final requirements | `05-requirements.md` | Write copy or score designs itself |
+| `monetization-growth-pm` | The PM on the job: scopes how far and how deep, asks every missing input up front, checks the data is connected and the monday facts are current, runs every skill below in order, runs the fix loop, keeps the artifact ledger, and writes the final requirements | `05-requirements.md` | Write copy or score designs itself |
+| `monetization-opportunity-sizing` | Whether it's worth building: reach × current conversion × addressable lift × ARPA → ARR at stake, low / base / high, every input a Kramer query or BigBrain price shown in the file; the baselines everything after it uses; testability and a go / no-go line | `00-sizing.md` | Guess a number — a missing one stops the run |
 | `monetization-intelligence` | How competitors monetize and how they run each surface: surface benchmarks (e.g. five competitors' cancellation flows, screen by screen), full monetization teardowns, model benchmarks, landscapes, battlecards, change monitoring | `research/{topic}-{YYYY-MM}.md` | Spec or design anything |
 | `monetization-journey-map` | Who hits the surface and why — scenarios per persona (IC and admin always a pair), sized with live data — and every step before, on and after it, with each step's state of mind; then a journey board showing the real wireframe on every step | `00-journey.md`, `03-journey.html` | Design screens or write copy — it names the steps and hands off |
 | `monetization-surface-spec` | What to build: trigger, cohort, the screen-by-screen flow with its friction points, layout, edge cases — then the low-fi HTML wireframe of every state, and revisions of both when a review sends fixes back | `01-spec.md`, `03-wireframe.html` | Write final copy — it names the reason and hands off |
@@ -106,9 +111,22 @@ Add as a custom skill or copy skill content into your project context. Skills wo
 
 ---
 
-## MCP connections (optional)
+## MCP connections
 
-Only web search is needed, and it's built in. None of the MCPs are required — every skill still produces a real artifact without them, using web search and screenshots instead. Connect an MCP when you want the higher-fidelity path it unlocks; skip it and the skill tells you what's reduced, not just that something failed.
+### Required — monday's internal data
+
+Sizing, the journey map, spec success metrics, reviews of live surfaces and the requirements doc run on monday's own numbers. They check for these before writing anything and stop — naming the missing MCP — when one isn't connected. There's no degraded path with guessed numbers or `{slot}` placeholders.
+
+| MCP | What it's for | Without it | How to connect |
+|-----|---------------|-----------|----------------|
+| **Kramer** (monday's Snowflake data agent — `data-expert-agent`, `check-query-status`; `run-sql` for re-runs) | Counts, rates and baselines: how many accounts hit a trigger, how many convert today, conversion lag, past experiment lifts. Read-only, aggregates only, every question and source table shown in the artifact | Sizing, journey, spec, live-surface review and synthesis stop | monday internal — see [mcp-setup.md](mcp-setup.md#kramer-mcp-monday-internal) |
+| **BigBrain AI Brains** (`AI Brain - Payments` and related) | Current plans, prices, AI credit packages, gating and trial terms, checked at run time. `context/monday-context.md` caches the last verified answers | Sizing, spec, review and synthesis stop; copy and research cite the context file with its `verified-against` date | monday internal — see [mcp-setup.md](mcp-setup.md#bigbrain-ai-brains-monday-internal) |
+
+**Optional:** the **Researchio** plugin. When it's installed, sizing hands the "why" behind a baseline (a segment converting at half the rate of the rest) to its `kramer-pull` → `data-breakdown` pipeline instead of improvising one.
+
+Research (`/monetization-intelligence`) and copy (`/improve-conversion-surfaces-copy`) make no claims about monday's numbers, so they run without these.
+
+### Optional — higher-fidelity research and design input
 
 | MCP | What it unlocks | Without it | How to connect |
 |-----|-----------------|-----------|----------------|
@@ -116,10 +134,9 @@ Only web search is needed, and it's built in. None of the MCPs are required — 
 | **PricingSaaS** | Structured, current competitor pricing data — live plans, historical change diffs, watchlists, pricing-news feed. This is what makes `monetization-intelligence` fast and precise instead of a slow manual Google-and-guess exercise, and it's the only source with real historical diffs (before/after a pricing change, dated). | Falls back to enrichment-only research — Wayback Machine, changelogs, sentiment, job postings. Still usable, but slower and with no structured change history. | Add `https://mcp.pricingsaas.com` — see [mcp-setup.md](mcp-setup.md) |
 | **Figma** | Pull a design directly from a Figma link or frame — layer structure, exact copy text (not read off pixels), and variable bindings, so `monetization-design-reviewer` can catch hardcoded colors/spacing that have drifted from Vibe design tokens and the wireframe can name real tokens instead of "token TBD". | Paste a screenshot instead — full visual review still works, you just lose token-binding checks and have to transcribe copy by eye instead of reading it exactly. | Add `https://mcp.figma.com/mcp` |
 | **Slack** | The weekly pricing digest (`monetization-intelligence`) comes formatted as a paste-ready Slack message for the channel your team watches. | Digest is delivered in chat — same content, formatted for pasting. | See your Slack app's MCP setup |
-| **Snowflake data** (monday internal) | `monetization-journey-map` sizes every scenario with real counts — how many accounts hit this surface, by tier, role and billing period — through the read-only `data-expert-agent` / `run-sql` tools, showing every question and source table. Aggregates only, never user-level rows. | Frequencies stay as `{slot}` with an Open item for Data, and the journey says so in one line. | monday's internal data MCP — see [mcp-setup.md](mcp-setup.md) |
 | **Web search** | Enrichment sources for `monetization-intelligence` — Wayback Machine snapshots, product changelogs, earnings-call commentary, sentiment from Reddit/G2/HN. This is what grounds research in evidence beyond whatever PricingSaaS alone returns. | Research is limited to PricingSaaS/monday.com MCP data alone — meaningfully reduced coverage on anything PricingSaaS doesn't track. | Native to Claude — no setup needed |
 
-Skills degrade gracefully when an MCP is unavailable and tell you what's affected — they never fail silently.
+Skills degrade gracefully when an optional MCP is unavailable and tell you what's affected — they never fail silently.
 
 ---
 
@@ -129,11 +146,23 @@ Listed in the order the Growth PM runs them. Each one also works on its own.
 
 ### `/monetization-growth-pm` — the Monetization Growth PM
 
-The full product work in one command. It scopes the job (how far, how deep), runs research → journey map → spec → copy → wireframe → journey board → independent review → fix loop, and synthesizes everything into one doc a designer and engineer can start from without opening anything else. After every step it prints a one-line **ledger** of the current version of each artifact, so it's always clear which spec, copy, and wireframe are the latest — even in a chat session with no real files.
+The full product work in one command. It scopes the job (how far, how deep), asks every missing input in one message, checks Kramer and BigBrain are connected, sizes the opportunity, then runs research → journey map → spec → copy → wireframe → journey board → independent review → fix loop, and synthesizes everything into one doc a designer and engineer can start from without opening anything else. After every step it prints a one-line **ledger** of the current version of each artifact, so it's always clear which spec, copy, and wireframe are the latest — even in a chat session with no real files.
 
 **What you get:** `05-requirements.md` — the **build target** (the approved wireframe version), the depth used and passes run, final copy strings (verbatim ★ picks, each next to the line it replaces), what the loop already fixed, remaining design changes, open items (including any suggested playbook updates from the research, so they land in `playbooks/`), a **measurement plan** (one revenue-proximate primary metric, guardrails that block ship, sample size and runtime from real baselines, a pre-registered ship table — grounded in its `references/experiment-design.md`), and a sorted build order in which every journey scenario gets its own acceptance criterion. Every design change and build step carries **acceptance criteria** a tester can check, every owner is a named person or a role marked "name TBD", and vague words ("intuitive", "fast", "as needed") are quantified or cut. Every row traces back to the review row it came from, and the Growth PM re-checks the reviewer's factual claims before they go in.
 
-Claude's `/` menu lists skills namespaced by plugin: type `/growth-monetization` to see all six, and pick `/growth-monetization:monetization-growth-pm` for the full flow. (This README uses the short names.)
+Claude's `/` menu lists skills namespaced by plugin: type `/growth-monetization` to see all seven, and pick `/growth-monetization:monetization-growth-pm` for the full flow. (This README uses the short names.)
+
+---
+
+### `/monetization-opportunity-sizing` — Is it worth building?
+
+Puts a number on the opportunity before anyone designs anything: how many accounts hit the moment, how many convert today, how much of the gap a better surface could close, and what each conversion is worth. **Runs first** in every Growth PM run that designs or reviews a surface.
+
+**Asks for, if your prompt doesn't say:** the surface and its exact trigger, cohort and tiers, the objective metric, the longest test the team will run, and the smallest ARR that would justify the build.
+
+**Needs:** Kramer and BigBrain (it stops without them). Optional: Researchio for the why behind a baseline.
+
+**What you get:** `00-sizing.md` — reach × current conversion × addressable lift × ARPA → **ARR at stake per year**, in low / base / high cases. Lift comes from monday's own history (past experiments on the same surface type, the gap to the best-converting comparable segment), never a competitor's claim. Every input is a Kramer query or a BigBrain price shown in the file, segmented by tier, billing period and role. Then testability — sample size and runtime for the base-case lift — and one **go / no-go** line: Go — test · Go — ship + holdout · Re-scope · No-go. Its baselines feed the journey's scenario frequencies and the measurement plan in `05-requirements.md`. The file is internal and never leaves `.monetization/`.
 
 ---
 
@@ -170,7 +199,7 @@ Maps the story around a surface before anyone designs it: who hits it, why, and 
 
 **What you get:**
 
-- `00-journey.md` — scenario cards (problem, persona, trigger, frequency, current result, evidence, impact — adapted from Pragmatic Institute use scenarios), sized with read-only queries to monday's Snowflake data (every question and source shown; slots and Open items when data isn't available), and a step table across five stages (before → trigger → on-surface → hand-off → after) with each step's channel, state of mind, branches, friction, event and wireframe state id. The spec takes its flow map from it, copy writes to each step, and the reviewer walks every scenario through the design
+- `00-journey.md` — scenario cards (problem, persona, trigger, frequency, current result, evidence, impact — adapted from Pragmatic Institute use scenarios), sized with read-only Kramer queries to monday's data, split from `00-sizing.md` (every question and source shown; it stops rather than guess when data isn't available), and a step table across five stages (before → trigger → on-surface → hand-off → after) with each step's channel, state of mind, branches, friction, event and wireframe state id. The spec takes its flow map from it, copy writes to each step, and the reviewer walks every scenario through the design
 - `03-journey.html` — the journey board: one lane per scenario, one column per step, the real wireframe state embedded on every in-app step and the real copy on every email or notification card, viewable per scenario by URL hash
 
 ---
@@ -234,6 +263,7 @@ Every artifact lands in `.monetization/` in your working directory, numbered by 
 ```
 .monetization/
 ├── credit-depletion-ic-pro/        ← new surface, full flow
+│   ├── 00-sizing.md                ← ARR at stake, baselines, go / no-go (internal data)
 │   ├── 00-journey.md               ← scenarios + every step; the spec's flow map comes from here
 │   ├── 01-spec.md                  ← spec (names the reason, hands off)
 │   ├── 02-copy.md                  ← copy — the wireframe is built from this
@@ -248,6 +278,7 @@ Every artifact lands in `.monetization/` in your working directory, numbered by 
 │   └── 05-requirements.md          ← what design + eng build from
 ├── pricing-page/                   ← existing design (no fix loop — it's your live design)
 │   ├── input/                      ← screenshots, or captures of the public page
+│   ├── 00-sizing.md                ← the live surface's reach, conversion and ARR at stake
 │   ├── 04-review.md
 │   ├── 02-copy.md
 │   ├── 05-requirements.md
@@ -267,17 +298,19 @@ Every file carries the same header block (plugin, skill, feature, cohort, date, 
 
 **Full flow or one skill.** The Growth PM runs everything back to back with no re-prompting and ends in one requirements doc. Call a skill on its own and it does just that job, ending with a `→ Next step` prompt.
 
-**Ask before guessing.** A skill called directly checks it has what a top-tier output needs and asks for every gap in one message — and asks nothing if your prompt already covers it.
+**Ask, never assume.** Before anything is written — by the Growth PM for the whole run, or by a skill called directly — every gap that would change the output is asked in one message, and nothing is asked that your prompt already covers. No artifact has an "Assumptions" section.
+
+**Real data, or it stops.** Counts, rates and baselines come from Kramer queries shown in the file; prices and credits from BigBrain. Without them, sizing, design and review stop and say what to connect — never a `{slot}` waiting for someone to fill it.
 
 **Reviewed until right, by someone who didn't write it.** For a new surface, a fresh reviewer scores the work, fixes go back to the skill that owns them, and it re-checks at the depth you chose. Dev gets a wireframe that's already corrected, not a list of corrections.
 
-**One source of truth for monday.com facts.** Plans, prices, AI credit packages, gating, and trial terms live in [`context/monday-context.md`](context/monday-context.md). Skills cite it instead of guessing, and flag it when research shows it's out of date.
+**One source of truth for monday.com facts.** Plans, prices, AI credit packages, gating, and trial terms come from the BigBrain AI Brains, checked at run time. [`context/monday-context.md`](context/monday-context.md) caches the last verified answers with a `verified-against` date, and any mismatch is reported, never silently used.
 
 **Copy is always handed off — and runs before the wireframe.** Only `/improve-conversion-surfaces-copy` writes final copy. The spec names the reason from the 15 reasons people buy; the copy skill writes the lines; the wireframe and the review both use those real lines.
 
 **Scenarios before screens.** On a new surface the journey comes first: who hits it, how often (from real data), and every step before, on and after it. The spec, the copy and the review all read that one file, so an IC and an admin at the same screen get different lines and the reviewer checks both get through.
 
-**Nothing degrades silently.** A missing MCP, a missing reference file, or no independent reviewer — the skill says what's affected and takes the best fallback.
+**Nothing degrades silently.** A missing optional MCP, a missing reference file, or no independent reviewer — the skill says what's affected and takes the best fallback. A missing data MCP isn't degraded around; it stops the run.
 
 ---
 
@@ -288,18 +321,19 @@ growth-monetization/
 ├── .claude-plugin/
 │   ├── plugin.json
 │   └── marketplace.json
-├── CLAUDE.md                          ← plugin-wide rules: intake, chain mode, artifacts
+├── CLAUDE.md                          ← plugin-wide rules: intake, data gate, chain mode, artifacts
 ├── HANDOFF.md                         ← design decisions and history for the next maintainer
 ├── docs/
 │   └── flow.svg                       ← the "How it works" diagram
 ├── context/
-│   └── monday-context.md              ← monday.com source of truth (owned, versioned)
+│   └── monday-context.md              ← monday.com facts cache + pointer to BigBrain (owned, versioned)
 ├── playbooks/                         ← CRO knowledge, one file per surface type + cases.md — cited by spec + reviewer, never duplicated
 ├── scripts/
 │   └── lint-playbooks.py              ← checks playbook structure, benchmark rows, evidence tags, links and source dates
 ├── templates/                         ← artifact header + research and spec templates
 ├── skills/
-│   ├── monetization-growth-pm/        ← the Growth PM: scoping, chain, fix loop, synthesis (+ experiment-design reference)
+│   ├── monetization-growth-pm/        ← the Growth PM: scoping, intake, data gate, chain, fix loop, synthesis (+ experiment-design reference)
+│   ├── monetization-opportunity-sizing/ ← ARR at stake, baselines, go / no-go (+ sizing-model reference)
 │   ├── monetization-intelligence/
 │   ├── monetization-journey-map/      ← scenarios, journey steps, scenario sizing, journey board
 │   ├── monetization-surface-spec/
@@ -310,7 +344,7 @@ growth-monetization/
 
 ## Contributing
 
-- **Updating monday.com facts:** edit `context/monday-context.md`, bump `last-updated`, add a changelog row
+- **Updating monday.com facts:** verify against BigBrain, edit `context/monday-context.md`, bump `last-updated` and `verified-against`, add a changelog row. Never commit a query result or an internal figure beyond what the context file already caches
 - **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never copy it into a skill's own `references/`. Tag every claim `[Verified]` / `[Reported]` / `[Teardown needed]` and date your sources, then run `python3 scripts/lint-playbooks.py` before committing. See [playbooks/README.md](playbooks/README.md).
 - **Adding a playbook**: it isn't finished until it carries the mandatory AI-native reference set — Clay, Figma, ClickUp, and Claude teardowns in the standard shape, an at-a-glance comparison, a copy bank, and dated sources. See [playbooks/README.md](playbooks/README.md).
 - **Changing a skill:** keep `SKILL.md` lean and self-sufficient (its minimum must work even without `references/`); put mechanics specific to that skill in its `references/`; put anything a second skill needs in `playbooks/`. Keep its **Required context** table current.

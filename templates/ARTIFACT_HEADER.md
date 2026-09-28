@@ -8,6 +8,8 @@ plugin: growth-monetization
 skill: {skill-name}
 feature / topic: {feature name or research subject}
 surface type: {pricing-page | paywall | promotion | upgrade-trigger | credit-ui | trial | cancellation | research | landscape}
+data: {live — {tool}, {date range}, run {YYYY-MM-DD} | n/a — no monday numbers}   # internal-data artifacts: sizing, journey, spec, review, requirements
+verified against: {brain name}, {YYYY-MM-DD}                 # monday facts cited from BigBrain
 cohort: {new-user | existing-user | both | n/a}
 author: {name}
 date: {YYYY-MM-DD}
@@ -29,6 +31,8 @@ revises: {file} for {review rows}                           # any -v2/-v3 file
 | `feature / topic` | Yes | e.g. "Credit depletion modal — Pro tier" or "Notion pricing research" |
 | `surface type` | Yes for design artifacts | From the 7 surface types in monetization-surface-spec |
 | `cohort` | Yes for design artifacts | Which user type this surface addresses |
+| `data` | Yes for sizing, journey, spec, review, requirements | The data tool, range and run date behind every monday number. Never `slotted` — without data the run stops (CLAUDE.md, Data gate). Artifacts with data are internal |
+| `verified against` | Yes when the artifact cites a monday price, limit, credit amount, gate or trial term | The BigBrain brain and date. Copy and research without BigBrain write `monday-context.md, verified-against {date}` |
 | `author` | Yes | Person who ran the skill |
 | `date` | Yes | ISO date — auto-filled when possible |
 | `status` | Yes | Start as `draft`, move to `review` before sharing |
@@ -47,6 +51,7 @@ All artifacts land in `.monetization/` in the working directory:
 ```
 .monetization/
 ├── {feature-slug}/
+│   ├── 00-sizing.md        ← monetization-opportunity-sizing (ARR at stake, baselines, go / no-go — internal)
 │   ├── 00-journey.md       ← monetization-journey-map (scenarios + every step; the spec's flow map comes from here)
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, hands off)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — the wireframe is built from this)
@@ -60,7 +65,7 @@ All artifacts land in `.monetization/` in the working directory:
 
 **Folder naming:** lowercase, hyphenated, descriptive. `credit-depletion-modal`, `trial-upgrade-nudge`, `notion-pricing-2026`.
 
-**File numbering:** fixed per skill — 00 journey, 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
+**File numbering:** fixed per skill — 00 sizing and journey (sizing first), 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
 ## Next step block (standalone runs only — omitted inside a Growth PM chain)
 

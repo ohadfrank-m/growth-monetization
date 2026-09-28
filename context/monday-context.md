@@ -25,6 +25,7 @@ This file is the **cache and pointer** for monday.com monetization facts. The so
 - **Find the tools** by searching for `AI Brain`, `ai-brain` or `bigbrain`; names vary by environment.
 - **A mismatch is reported, never silently used.** When a brain's answer differs from this file, the artifact uses the brain's answer with its tag, lists both values (the sizing file's Context drift section, or an Open item for this file's owner), and the user is told in one line.
 - **Updating from a run.** A reported mismatch is an update request: the owner checks it, edits the section, bumps `last-updated` and `verified-against`, and adds a changelog row.
+- **Cache only what may live in the repo.** A brain answer that isn't public (an unpublished trial grant, an internal-only package) is not copied here. Its row says "internal — ask BigBrain" and names the brain, so the file points to it instead of leaking it.
 - **`verified-against`** records the brain and the date of the last full check of the BigBrain-owned sections. Until it names one, every figure here comes from public sources and is a cache nobody has checked internally.
 - Brains not connected: sizing, spec, review and synthesis stop (the Data gate in [CLAUDE.md](../CLAUDE.md)); copy and research cite this file with its `verified-against` date.
 

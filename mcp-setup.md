@@ -1,9 +1,12 @@
 # MCP setup
 
-The plugin works best with these MCP servers connected. Every skill degrades gracefully if one is missing and tells you what's affected.
+Two MCPs are **required**: Kramer and BigBrain, monday's internal data. Sizing, the journey map, spec success metrics, reviews of live surfaces and the requirements doc check for them before writing anything, and stop — naming the missing one and linking this page — when either isn't connected. Research and copy run without them. Every other MCP is optional: a skill degrades gracefully without it and tells you what's affected.
 
 | MCP | Required? | Used by |
 |-----|----------|---------|
+| Kramer (monday internal) | **Required** | Growth PM, `monetization-opportunity-sizing`, `monetization-journey-map`, `monetization-surface-spec` (success metrics), `monetization-design-reviewer` (live surfaces), synthesis |
+| BigBrain AI Brains (monday internal) | **Required** | Growth PM (fact check), `monetization-opportunity-sizing` (prices), spec, reviewer, synthesis |
+| Researchio plugin | Optional | `monetization-opportunity-sizing` — the why behind a baseline |
 | monday.com | Recommended | `monetization-intelligence` — logging research to the Pricing Intelligence board (it asks first) |
 | PricingSaaS | Recommended | `monetization-intelligence` |
 | Figma | Optional | `monetization-surface-spec`, `monetization-design-reviewer` |
@@ -57,15 +60,33 @@ Used only for the weekly pricing digest, which the skill formats as a paste-read
 
 ---
 
-## Snowflake data (monday internal)
+## Kramer MCP (monday internal)
 
-**Used by:** `monetization-journey-map`, to size each scenario (how many accounts hit this, by tier, role and billing period).
+**Required.** monday's Snowflake data agent. It exposes `data-expert-agent` (ask a business question in plain language; it picks the tables and curated metric definitions, runs the SQL and returns a sourced answer) and `check-query-status` (poll the returned job id). Some setups also expose `run-sql` for re-running SQL you already have. Tool names vary by environment — the skills find them by searching for `data-expert-agent` or `kramer` (e.g. `kramer-mcp-v1`).
 
-This is monday's internal Snowflake data MCP, the one that exposes `data-expert-agent`, `check-query-status` and `run-sql`. Connect it through monday's internal setup (ask Data/BI for access). The Snowflake role is read-only, and the skill asks for aggregates only.
+- **Connect:** through monday's internal MCP setup — ask Data/BI for access. The Snowflake role is read-only.
+- **What the plugin asks it:** aggregates only (counts, shares, rates by segment), never user-level rows. Every question, source table, date range and run date is written into the artifact.
+- **Without it:** gated skills stop before writing anything. A query that fails or times out is retried once, then the run stops and names the question — it never writes a `{slot}` or an estimate.
 
-Without it, the journey map still runs: every frequency stays a `{slot}` with an Open item for Data, and the file says so.
+**Verify:** ask Claude to run `data-expert-agent` with "How many active paying accounts do we have?" — it should return a job id, then a sourced answer via `check-query-status`. The answer stays in your session; don't paste it into the repo.
 
-**Verify:** ask Claude to run `data-expert-agent` with "How many active paying accounts do we have?" — it should return a job id, then a sourced answer via `check-query-status`.
+---
+
+## BigBrain AI Brains (monday internal)
+
+**Required** for any run that states a monday price, limit, credit amount, gate or trial term. monday's internal question-answering brains: `AI Brain - Payments` owns plans, prices, AI credits and billing; related `AI Brain - …` MCPs cover other product and monetization knowledge. The skills find them by searching for `AI Brain`, `ai-brain` or `bigbrain`.
+
+- **Connect:** through monday's internal MCP setup (the AI Brain MCPs listed in your org's MCP catalog).
+- **What the plugin asks it:** each fact an artifact cites, at run time. [context/monday-context.md](context/monday-context.md) is the cache: when a brain's answer differs from it, the artifact uses the brain's answer, lists both, and tells you — never silently.
+- **Without it:** sizing, spec, review and synthesis stop. Copy and research cite the context file with its `verified-against` date.
+
+**Verify:** ask Claude to ask `AI Brain - Payments` "What is the current annual list price per seat of the Pro plan?" — it should return a sourced answer. Compare it with the Tier structure table in the context file.
+
+---
+
+## Researchio plugin (optional)
+
+A separate plugin whose research pipeline runs on Kramer. When its skills `kramer-pull` and `data-breakdown` are available, `monetization-opportunity-sizing` hands it the *why* behind a baseline (a segment converting at half the rate of the rest) instead of improvising a breakdown. Researchio writes its session to a monday board, so the plugin asks before starting it (or offers it at the end of a Growth PM run). Without it, the sizing file's Segments table is the breakdown.
 
 ---
 

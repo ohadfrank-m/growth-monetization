@@ -1,7 +1,7 @@
 {
   "name": "growth-monetization",
-  "version": "0.4.0",
-  "description": "Monetization copilot for growth squads. The Monetization Growth PM takes a surface end to end (research, journey map, spec, copy, wireframe, independent review with a fix loop, requirements), and every skill also works on its own.",
+  "version": "0.5.0",
+  "description": "Monetization copilot for growth squads. The Monetization Growth PM takes a surface end to end (up-front intake, opportunity sizing on monday's internal data, research, journey map, spec, copy, wireframe, independent review with a fix loop, requirements), and every skill also works on its own.",
   "author": {
     "name": "monday.com Growth Monetization"
   },

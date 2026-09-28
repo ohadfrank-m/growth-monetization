@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1394 600" width="1394" height="600" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1588 600" width="1588" height="600" role="img" aria-labelledby="t d">
   <title id="t">How the growth-monetization plugin works</title>
-  <desc id="d">The Monetization Growth PM runs seven steps left to right: research, journey map, spec, copy, wireframe with the journey board, review, requirements. A fix loop sends review findings back to spec, copy and wireframe. Every skill can also be used on its own.</desc>
+  <desc id="d">The Monetization Growth PM asks every missing input once and checks monday's internal data (Kramer and BigBrain) is connected, stopping if not. Then it runs eight steps left to right: opportunity sizing, research, journey map, spec, copy, wireframe with the journey board, review, requirements. A fix loop sends review findings back to spec, copy and wireframe. Every skill can also be used on its own.</desc>
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#6b6b73"/>
@@ -28,16 +28,30 @@
   </defs>
 
   <!-- canvas -->
-  <rect x="0" y="0" width="1394" height="600" rx="16" fill="#ffffff"/>
-  <rect x="0.5" y="0.5" width="1393" height="599" rx="16" fill="none" stroke="#e4e4e7"/>
+  <rect x="0" y="0" width="1588" height="600" rx="16" fill="#ffffff"/>
+  <rect x="0.5" y="0.5" width="1587" height="599" rx="16" fill="none" stroke="#e4e4e7"/>
   <text x="28" y="40" class="h1">How it works</text>
   <text x="172" y="40" class="note">One skill runs the whole job. Or use any single skill on its own.</text>
 
   <!-- Growth PM band -->
-  <rect x="28" y="58" width="1338" height="62" rx="12" fill="#5b5bd6"/>
+  <rect x="28" y="58" width="1532" height="62" rx="12" fill="#5b5bd6"/>
   <text x="48" y="85" class="band">/monetization-growth-pm — the Monetization Growth PM</text>
-  <text x="48" y="106" class="bandsub">Asks how far &amp; how deep (only if your prompt doesn't say) · runs every step below with no re-prompting · writes the requirements doc</text>
+  <text x="48" y="106" class="bandsub">Asks how far &amp; how deep, then every missing input in one message · stops if Kramer or BigBrain isn't connected · runs every step below with no re-prompting · writes the requirements doc</text>
 
+  <!-- 0 Size — outside the shifted group -->
+  <rect x="28" y="150" width="178" height="176" rx="12" fill="#fafafa" stroke="#5b5bd6" stroke-width="1.5"/>
+  <circle cx="50" cy="174" r="11" fill="#5b5bd6"/><text x="50" y="178" class="n" text-anchor="middle">0</text>
+  <text x="68" y="179" class="step">Size</text>
+  <text x="44" y="204" class="skill">/monetization-</text>
+  <text x="44" y="219" class="skill">opportunity-sizing</text>
+  <text x="44" y="242" class="role">Reach × conversion ×</text>
+  <text x="44" y="260" class="role">lift × ARPA → ARR at</text>
+  <text x="44" y="278" class="role">stake, go / no-go</text>
+  <text x="44" y="300" class="file">00-sizing.md</text>
+  <text x="44" y="316" class="tag">KRAMER + BIGBRAIN</text>
+  <path d="M206,238 L220,238" stroke="#6b6b73" stroke-width="2" marker-end="url(#arr)"/>
+
+  <g transform="translate(194,0)">
   <!-- stage cards: x = 28 + i*194, w = 178 -->
   <g>
     <!-- 1 Research -->
@@ -129,7 +143,7 @@
 
   <!-- existing design entry -->
   <path d="M1087,134 L1087,148" stroke="#6b6b73" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
-  <text x="1097" y="143" class="note">existing design? starts here, no loop</text>
+  <text x="1097" y="143" class="note">existing design? sized, then starts here, no loop</text>
 
   <!-- fix loop: from review back under spec..wireframe -->
   <path d="M1087,326 L1087,372 L699,372 L699,332" fill="none" stroke="#5b5bd6" stroke-width="2.5" marker-end="url(#arrA)"/>
@@ -148,20 +162,23 @@
   <text x="850" y="433" class="pill" text-anchor="middle">Standard · up to 2 passes (default)</text>
   <rect x="980" y="416" width="230" height="26" rx="13" fill="#f4f4f5" stroke="#d4d4d8"/>
   <text x="1095" y="433" class="pill" text-anchor="middle">Thorough · until 85/100, max 3</text>
+  </g>
 
   <!-- standalone strip -->
-  <rect x="28" y="476" width="1338" height="96" rx="12" fill="#f4f4f5"/>
+  <rect x="28" y="476" width="1532" height="96" rx="12" fill="#f4f4f5"/>
   <text x="48" y="504" class="strip">Just need one piece? Call a skill directly</text>
   <text x="358" y="504" class="note">It asks for anything your prompt is missing, then does only that job.</text>
 
-  <rect x="48" y="520" width="236" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="166" y="542" class="skill" text-anchor="middle">/monetization-intelligence</text>
-  <rect x="294" y="520" width="250" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="419" y="542" class="skill" text-anchor="middle">/monetization-journey-map</text>
-  <rect x="554" y="520" width="250" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="679" y="542" class="skill" text-anchor="middle">/monetization-surface-spec</text>
-  <rect x="814" y="520" width="290" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="959" y="542" class="skill" text-anchor="middle">/improve-conversion-surfaces-copy</text>
-  <rect x="1114" y="520" width="232" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="1230" y="542" class="skill" text-anchor="middle">/monetization-design-reviewer</text>
+  <rect x="48" y="520" width="230" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="163" y="542" class="skill" text-anchor="middle">/monetization-opportunity-sizing</text>
+  <rect x="298" y="520" width="200" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="398" y="542" class="skill" text-anchor="middle">/monetization-intelligence</text>
+  <rect x="518" y="520" width="200" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="618" y="542" class="skill" text-anchor="middle">/monetization-journey-map</text>
+  <rect x="738" y="520" width="200" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="838" y="542" class="skill" text-anchor="middle">/monetization-surface-spec</text>
+  <rect x="958" y="520" width="240" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="1078" y="542" class="skill" text-anchor="middle">/improve-conversion-surfaces-copy</text>
+  <rect x="1218" y="520" width="220" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
+  <text x="1328" y="542" class="skill" text-anchor="middle">/monetization-design-reviewer</text>
 </svg>
