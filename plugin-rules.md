@@ -38,7 +38,7 @@ monday's internal **BigBrain AI Brains** are the source of truth for plans, pric
 | Skill | Use when | Produces |
 |-------|---------|---------|
 | `monetization-growth-pm` | **The full product work.** The Monetization Growth PM scopes the job (how far, how deep), runs every skill below in order without re-prompting, loops the review until fixes land, and writes the requirements doc. For one piece of the work, call that skill directly. | `05-requirements.md`; runs everything else |
-| `monetization-opportunity-sizing` | Putting a number on the opportunity before anything is designed — reach × current conversion × addressable lift × ARPA, low / base / high, on Kramer data and BigBrain prices. Runs first in every chain that designs or reviews a surface | `00-sizing.md` — ARR at stake, baselines for the journey and measurement plan, go / no-go |
+| `monetization-opportunity-sizing` | Putting a number on the opportunity before anything is designed — reach × current conversion × addressable lift × ARPA, low / base / high, on Kramer data and BigBrain prices. Runs first in every chain that designs or reviews a surface, and again when a later step changes what it measured | `00-sizing.md` — ARR at stake, baselines for the journey and measurement plan, go / no-go. In a chain without Kramer, a short Population and prices block instead of the file |
 | `monetization-intelligence` | Researching how competitors monetize — model, packaging, price — and how they run a specific surface (upgrade, cancellation, paywall, trial, top-up) | Surface benchmark, monetization teardown, research report, landscape, battlecard — each ending with suggested playbook updates |
 | `monetization-journey-map` | Mapping who hits a surface and why (scenarios, sized with live data) and every step before, on and after it (1st call, before the spec); building the journey board with the real wireframe on each step (2nd call, after the wireframe) | `00-journey.md`, then `03-journey.html` |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
@@ -158,7 +158,8 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 .monetization/
 ├── {feature-slug}/
 │   ├── input/              ← screenshots or captures of a live design
-│   ├── 00-sizing.md        ← monetization-opportunity-sizing (ARR at stake, baselines, go / no-go — internal data)
+│   ├── 00-sizing.md        ← monetization-opportunity-sizing (ARR at stake, baselines, go / no-go — internal data; not written in a chain without Kramer — see the skill)
+│   ├── 00-sizing-v2.md     ← monetization-opportunity-sizing (re-sized when a later step changed the trigger, cohort or objective)
 │   ├── 00-journey.md       ← monetization-journey-map (scenarios, sizing, every step — the spec's flow map comes from here)
 │   ├── 00-journey-v2.md    ← monetization-journey-map (fix-loop revision when a review row's Fix path is journey)
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, maps the flow, hands off)

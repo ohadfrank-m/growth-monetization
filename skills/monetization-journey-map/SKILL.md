@@ -1,7 +1,7 @@
 ---
 name: monetization-journey-map
 description: This skill should be used when the user wants to "map the user journey", "map the flow", "journey map for a cancellation / upgrade / trial / top-up flow", "what are the use cases", "use scenarios", "who hits this and why", "a day in the life", "map every step of the upgrade flow", "show the design on each step", or when a monetization surface is being built and the scenarios and end-to-end steps haven't been defined yet. Produces 00-journey.md (scenarios + every step before, on and after the surface) and, once a wireframe exists, 03-journey.html (a journey board with the real wireframe state on each step).
-version: 0.2.1
+version: 0.2.2
 ---
 
 # Monetization Journey Map
@@ -37,7 +37,7 @@ Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-r
 
 ## Pass 1 — Map (`00-journey.md`)
 
-Read first: `00-sizing.md` when it exists (reach, conversion and the role split are already queried there — split them by scenario rather than re-asking), [monday-context.md](../../context/monday-context.md), the surface's playbook in [playbooks/](../../playbooks/), and any research artifact the chain produced (a surface benchmark's "Flow implications for the spec" is the strongest input for the steps).
+Read first: the latest `00-sizing` version when it exists (reach, conversion and the role split are already queried there — split them by scenario rather than re-asking) — or, in a chain that continued without Kramer, write the sizing skill's Population and prices block at the top of this file ([monetization-opportunity-sizing](../monetization-opportunity-sizing/SKILL.md#without-kramer-inside-a-growth-pm-chain--no-file)) — [monday-context.md](../../context/monday-context.md), the surface's playbook in [playbooks/](../../playbooks/), and any research artifact the chain produced (a surface benchmark's "Flow implications for the spec" is the strongest input for the steps).
 
 ### Step 1 — Scenarios
 

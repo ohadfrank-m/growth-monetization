@@ -157,11 +157,11 @@ In Claude Code the `/` menu namespaces skills by plugin (`/growth-monetization:m
 
 ### `/monetization-opportunity-sizing` — Is it worth building?
 
-Puts a number on the opportunity before anyone designs anything: how many accounts hit the moment, how many convert today, how much of the gap a better surface could close, and what each conversion is worth. **Runs first** in every Growth PM run that designs or reviews a surface.
+Puts a number on the opportunity before anyone designs anything: how many accounts hit the moment, how many convert today, how much of the gap a better surface could close, and what each conversion is worth. **Runs first** in every Growth PM run that designs or reviews a surface, and again (`00-sizing-v2.md`) if research or a fix changes the trigger, cohort or objective it measured.
 
 **Asks for, if your prompt doesn't say:** the surface and its exact trigger, cohort and tiers, the objective metric, the longest test the team will run, and the smallest ARR that would justify the build.
 
-**Needs:** Kramer and BigBrain — without them it asks once to connect, and if you continue, the file is a model with every number marked `[Not measured]`. Optional: Researchio for the why behind a baseline.
+**Needs:** Kramer and BigBrain — without them it asks once to connect. If you continue, a direct call still writes the file, with every number marked `[Not measured]`; inside a Growth PM run it skips the file and puts a short population-and-prices block at the top of the journey (or spec), so the run doesn't carry an empty step. Optional: Researchio for the why behind a baseline.
 
 **What you get:** `00-sizing.md` — reach × current conversion × addressable lift × ARPA → **ARR at stake per year**, in low / base / high cases. Lift comes from monday's own history (past experiments on the same surface type, the gap to the best-converting comparable segment), never a competitor's claim. Every input is a Kramer query or a BigBrain price shown in the file, segmented by tier, billing period and role. Then testability — sample size and runtime for the base-case lift — and one **go / no-go** line: Go — test · Go — ship + holdout · Re-scope · No-go. Its baselines feed the journey's scenario frequencies and the measurement plan in `05-requirements.md`. The file is internal and never leaves `.monetization/`.
 
