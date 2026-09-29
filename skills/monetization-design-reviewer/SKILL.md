@@ -299,11 +299,11 @@ Then continue — a review is never the last step unless the user asked for one:
 
 - **Growth PM review** (the brief opens with `Mode: Growth PM review`): write the file named in the brief, end with the verdict line, and stop. If you're running inline rather than as a fresh subagent (no subagent tool), set `reviewer: inline (self-graded)` in the header, score from a fresh read of the artifact files before re-reading any reasoning behind them, and write every score as "{score} (self-graded)" — never claim the "Ship it" band on a self-graded score. The Growth PM decides what runs next — never hand off, add a next-step block, or offer a prototype in this mode.
 - **Inside a new-surface chain:** the Growth PM's fix loop runs next — it routes each fixable row by its Fix path. No next-step block, no prototype offer.
-- **Default (including when this skill was invoked directly, not via the Growth PM):** print that preset's announcement from [monetization-growth-pm](../monetization-growth-pm/SKILL.md), then continue into its Review → Fix → Synthesize chain under its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run.
+- **Default (including when this skill was invoked directly, not via the Growth PM):** hand the run to the Growth PM's Review → Fix → Synthesize preset in [monetization-growth-pm](../monetization-growth-pm/SKILL.md) *before scoring*, not after: run its intake (Step 1b) and Data gate (Step 1c) once for the whole chain — both Kramer and BigBrain, in the same question rounds — print the preset's announcement, then run it from step 1 (sizing), with this review as step 2, under its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run. The review step follows the preset's Independent review rules like any other.
 - **Review only** (the user said "just score it", "review only", or equivalent): end with the prototype offer above and this block:
 
 ```
 ---
-→ Next step: improve-conversion-surfaces-copy — rewrite the Copy / CRO rows flagged above
-→ Prompt: "Rewrite the flagged copy in .monetization/{feature-slug}/04-review.md, then synthesize into 05-requirements.md"
+→ Next step: monetization-growth-pm — rewrite the Copy / CRO rows flagged above and synthesize the fixes into 05-requirements.md
+→ Prompt: "Take .monetization/{feature-slug}/04-review.md through copy rewrites and requirements"
 ```
