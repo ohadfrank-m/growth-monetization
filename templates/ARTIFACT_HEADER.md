@@ -65,7 +65,7 @@ All artifacts land in `.monetization/` in the working directory:
 
 **Folder naming:** lowercase, hyphenated, descriptive. `credit-depletion-modal`, `trial-upgrade-nudge`, `notion-pricing-2026`.
 
-**File numbering:** fixed per skill — 00 sizing and journey (sizing first), 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
+**File numbering:** fixed per artifact type, and the number is the phase, not the run order — 00 sizing and journey (sizing first, although `00-journey` sorts first), 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. The full tree, with `input/`, `renders/` and every `-v{N}` file, is in `CLAUDE.md` → Output folder. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
 ## Next step block (standalone runs only — omitted inside a Growth PM chain)
 

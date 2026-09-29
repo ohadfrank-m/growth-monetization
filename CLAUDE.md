@@ -180,7 +180,9 @@ Copy runs before the wireframe, not after the review — the wireframe and the r
 
 In a new-surface chain, review findings are fixed before synthesis, not after: the Growth PM's fix loop sends each fixable row back to the skill that owns it, an independent re-review verifies the fixes, and it exits per the depth the user chose — Quick (one review, no loop), Standard (every fixable 🔴/🟠 resolved, max 2 passes), or Thorough (score ≥85 and every fixable row resolved, max 3 passes). Rows blocked on a human fact or decision go to synthesis as Open items. `-v3` and later files appear only on later passes.
 
-If the folder exists, detect what's there and continue from the next number. When iterating, append a version suffix (`02-copy-v2.md`) rather than overwriting.
+**The number is the phase, not a unique ID or the run order.** 00 is pre-design (sizing, then journey), 03 is the built design (wireframe, then its journey board), and a `03-wireframe.html` built from `05-requirements.md` keeps 03. Two files can share a number, and `00-journey.md` sorts before `00-sizing.md` although sizing runs first — so never infer order from a directory listing. The chain order in the Growth PM (and its ledger) is the order.
+
+If the folder exists, detect which artifacts are there by name and continue from the next step in that chain order. When iterating, append a version suffix (`02-copy-v2.md`, `00-journey-v2.md`) rather than overwriting.
 
 ### Next step block — standalone runs only
 
