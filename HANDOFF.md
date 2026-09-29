@@ -18,8 +18,8 @@ Four intended clusters were discussed: **Pricing Intelligence**, **Monetization 
 
 Two reference repos shaped the structure: `product-manager` (Pragmatic Framework as 18 Claude skills) and `designer-skills` (8 skills for the design process). Both are private/semi-private, but their public documentation (Medium article for product-manager, full README for designer-skills) revealed four patterns worth stealing:
 
-1. **A router skill** (`/pm-copilot`, `/design-flow`) that reads intent, orchestrates, and produces no artifact itself. This became our `monetization` skill.
-2. **Artifacts compound into a dossier** — every skill writes into a per-feature folder with a consistent naming scheme, so a session produces an ordered deliverable set, not scattered files. This became `.monetization/{feature-slug}/01-spec.md`, `02-wireframe.html`, etc.
+1. **A router skill** (`/pm-copilot`, `/design-flow`) that reads intent, orchestrates, and produces no artifact itself. This became our `monetization` skill (now `monetization-growth-pm`, see the renames below).
+2. **Artifacts compound into a dossier** — every skill writes into a per-feature folder with a consistent naming scheme, so a session produces an ordered deliverable set, not scattered files. This became `.monetization/{feature-slug}/01-spec.md`, `02-wireframe.html`, etc. *(Numbering since changed — current scheme in `CLAUDE.md` → Output folder.)*
 3. **Standardised output structure per artifact type** — every skill's output looks the same shape regardless of which skill produced it. This became `templates/ARTIFACT_HEADER.md`, `research-output.md`, `surface-spec.md`.
 4. **Skills are sequenced but independently invokable** — the router suggests a flow, but nothing forces you through it. Every artifact ends with a `→ Next step` block instead of hard dependencies.
 
@@ -65,7 +65,7 @@ A full QA pass was run before pushing (broken links, orphaned skill references, 
 
 - **Two skills were referenced constantly but not actually in the repo** (`monetization-design-reviewer`, `improve-conversion-surfaces-copy`) — they existed elsewhere in this environment's skill library and were copied in. If you fork or rebuild this plugin elsewhere, make sure both are present under `skills/`, not just referenced.
 - **`monday-context.md` was originally nested inside `monetization-surface-spec/references/`** — moved to a top-level `context/` folder so `pricing-intelligence` and `monetization-design-reviewer` could reference it too, without a skill-to-skill reach-around.
-- **Output file numbering was inconsistent** across skills (some used `01-brief.md`/`03-spec.md`, others `01-spec.md`/`02-wireframe.html`). Fixed to one global convention, now documented in `CLAUDE.md`: `01-spec`, `02-wireframe`, `03-review`, `04-copy`.
+- **Output file numbering was inconsistent** across skills (some used `01-brief.md`/`03-spec.md`, others `01-spec.md`/`02-wireframe.html`). Fixed to one global convention at the time: `01-spec`, `02-wireframe`, `03-review`, `04-copy`. *Superseded:* copy moved before the wireframe and sizing/journey were added — the current scheme (00 sizing and journey · 01 spec · 02 copy · 03 wireframe and board · 04 review · 05 requirements) is in `CLAUDE.md` → Output folder.
 - **`plugin.json` didn't match Claude Code's actual manifest schema**, and there was no `marketplace.json` — the install command in the README (`/plugin marketplace add ...`) would have failed. Both were rebuilt to spec.
 - **`mcp-setup.md` originally described *this specific environment's* MCP connection status** ("already connected in Claude.ai") — useless and confusing to an outside user. Rewritten to be setup instructions for a stranger, with per-environment commands.
 
@@ -76,7 +76,7 @@ Run through the same checks (broken relative links, JSON validity, no environmen
 ## What's genuinely unfinished (Wave 1 gaps)
 
 - **`monetization-surface-spec` has 7 surface types** but only `credit-ui.md` got the full deep-dive treatment (patterns, anti-patterns, trigger logic, copy hooks) because AI credits were flagged as the squad's top priority. The other six (`pricing-pages.md`, `paywalls.md`, `promotions.md`, `upgrade-triggers.md`, `cancellation.md`, `trial-flows.md`) exist and are usable, but are lighter — mostly mandatory-sections checklists pointing at the shared `wireframe-patterns.md` and `copy-hooks.md`. Deepen these as real specs get written against them and patterns emerge.
-- **No CI / validation script.** Nothing automatically checks broken links or schema drift when someone edits a skill. Worth adding if the repo gets multiple contributors.
+- **No CI.** `scripts/lint-playbooks.py` now checks playbook structure, evidence tags, links and source dates, but nothing runs it automatically, and nothing checks skill-level links, manifests or cross-file consistency. Worth a CI job if the repo gets multiple contributors.
 - **`context/monday-context.md`'s squad-focus and surfaces-inventory sections** are the least verified parts of that file — flagged for the owner to confirm, unconfirmed as of this handoff.
 
 ---
@@ -88,7 +88,7 @@ Two more skills were planned and intentionally deferred:
 - **`monetization-data`** — *partly pulled forward 2026-09-28 as `monetization-opportunity-sizing`; see the end of this file.* Kremer-backed conversion analytics: trial→paid funnels, credit consumption by segment, paywall performance, cohort upgrade analysis. This is where `context/monday-context.md`'s eventual connection to internal AI Brain sources would likely also live, since both are "pull live internal data" problems.
 - **`monetization-pm`** — PRD writer, A/B experiment designer, pricing-model workshop, launch readiness checklist.
 
-Both are named in the README's "Coming in Wave 2" section so the plugin doesn't feel unfinished to an outside user, but neither has any scaffolding yet. Start the same way Wave 1 started: read the existing adjacent skills in this environment (`data:analyze`, `data:write-query`, `product-management:write-spec` were all available and relevant when this was scoped) before writing anything from scratch.
+Neither has a README section any more (the "Coming in Wave 2" section was removed); `monetization-pm`'s experiment-design part now lives in `skills/monetization-growth-pm/references/experiment-design.md`, the rest has no scaffolding yet. Start the same way Wave 1 started: read the existing adjacent skills in this environment (`data:analyze`, `data:write-query`, `product-management:write-spec` were all available and relevant when this was scoped) before writing anything from scratch.
 
 ---
 

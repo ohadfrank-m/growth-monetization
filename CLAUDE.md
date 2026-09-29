@@ -158,6 +158,7 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 │   ├── input/              ← screenshots or captures of a live design
 │   ├── 00-sizing.md        ← monetization-opportunity-sizing (ARR at stake, baselines, go / no-go — internal data)
 │   ├── 00-journey.md       ← monetization-journey-map (scenarios, sizing, every step — the spec's flow map comes from here)
+│   ├── 00-journey-v2.md    ← monetization-journey-map (fix-loop revision when a review row's Fix path is journey)
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, maps the flow, hands off)
 │   ├── 01-spec-v2.md       ← monetization-surface-spec (fix-loop revision of spec rows a review sent back)
 │   ├── 02-copy.md          ← improve-conversion-surfaces-copy (real copy — wireframe built from this)
