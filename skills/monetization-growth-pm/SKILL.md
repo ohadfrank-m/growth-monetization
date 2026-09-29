@@ -154,7 +154,7 @@ Every question before the run fits in at most two rounds, each one question-tool
 
 - The gate question goes in round 1 whenever scoping could lead to sizing, journey, spec, review or synthesis — every new-surface and existing-surface option does.
 - On **Continue without data**, drop the intake fields that only feed a computed number — the longest test and the smallest ARR that justifies the build — since sizing reads `Not sized — no data` regardless. Record them in the sizing header as `not asked — not sized`.
-- Constraints are asked, never inferred — but as one question whose recommended option is "None beyond the above", so a user with none answers in one click. The answer goes in `confirmed with user`.
+- Constraints are asked, never inferred — as one question that names the types before the options, so a real one isn't clicked past: "Any constraints — legal or compliance, a launch date, design-system limits, engineering limits, a price or policy that can't change?" Options: **None of these (recommended)** · **Yes — I'll list them** (free text). The answer goes in `confirmed with user`; "None of these" is recorded as `constraints: none (confirmed)`.
 - After round 2, announce and start. A gap found later is a mid-chain blocker (Chain mode rules), not a third pre-run round.
 
 ---
