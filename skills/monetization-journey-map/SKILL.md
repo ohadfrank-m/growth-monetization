@@ -1,10 +1,12 @@
 ---
 name: monetization-journey-map
 description: This skill should be used when the user wants to "map the user journey", "map the flow", "journey map for a cancellation / upgrade / trial / top-up flow", "what are the use cases", "use scenarios", "who hits this and why", "a day in the life", "map every step of the upgrade flow", "show the design on each step", or when a monetization surface is being built and the scenarios and end-to-end steps haven't been defined yet. Produces 00-journey.md (scenarios + every step before, on and after the surface) and, once a wireframe exists, 03-journey.html (a journey board with the real wireframe state on each step).
-version: 0.2.0
+version: 0.2.1
 ---
 
 # Monetization Journey Map
+
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
 
 A monetization surface is one moment in a longer story. The user arrived from somewhere, wants something, and has a life after the screen — a resumed task, an invoice, a renewal, a win-back email. This skill maps that story **before** the spec: who hits the surface and why (scenarios), and every step they take (the journey). Every later skill reads it — the spec takes its flow map from it, the copy skill writes to each step's state of mind, the reviewer walks each scenario through the design.
 
@@ -21,7 +23,7 @@ The board is built after the wireframe on purpose: it embeds the real wireframe 
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |---|---|---|
@@ -43,7 +45,7 @@ Write the scenarios per [references/scenario-cards.md](references/scenario-cards
 
 ### Step 2 — Evidence
 
-Size every scenario with real data per [references/evidence-queries.md](references/evidence-queries.md) — aggregate counts from the Kramer data tools (read-only). Show every question asked and its source. This step runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it"): with no `data-expert-agent` tool, push the user to connect it and ask once (Connect now / Continue without data — in a Growth PM chain, its Step 1c answer holds). Continuing without data, every frequency is marked `[Not measured]`, and a query that fails twice is marked the same way. Never an estimate.
+Size every scenario with real data per [references/evidence-queries.md](references/evidence-queries.md) — aggregate counts from the Kramer data tools (read-only). Show every question asked and its source. This step runs the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it"): with no `data-expert-agent` tool, push the user to connect it and ask once (Connect now / Continue without data — in a Growth PM chain, its Step 1c answer holds). Continuing without data, every frequency is marked `[Not measured]`, and a query that fails twice is marked the same way. Never an estimate.
 
 ### Step 3 — The journey
 
@@ -59,6 +61,8 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 
 ```markdown
 # Journey: {surface name}
+
+{> Data tools weren't connected ({Kramer | BigBrain | Kramer, BigBrain}) — figures marked [Not measured] weren't measured. — only when the run continued without data}
 
 **Surface:** {type} · **Cohorts:** {…} · **Tiers:** {…} · **Mode:** {new | live journey mapped from {source}}
 **Data:** {live — {tool}, {date range}, run {YYYY-MM-DD} | not measured — Kramer not connected} · internal data, don't share outside monday
@@ -120,7 +124,7 @@ When the surface is live and a design or public URL is available, pass 1 maps **
 ## Rules
 
 - **Problem first, screens second.** Scenarios name the persona's problem in their words. Nothing in the Scenarios section names a UI element.
-- **No invented numbers.** Frequencies and counts come from a query shown in the file, or are marked `[Not measured]` when the user continued without data or a query failed twice (Data gate). Never an estimate, never an unmarked `{slot}`. monday prices, limits and credit amounts come only from `monday-context.md`.
+- **No invented numbers.** Frequencies and counts come from a query shown in the file, or are marked `[Not measured]` when the user continued without data or a query failed twice (Data gate). Never an estimate, never an unmarked `{slot}`. monday prices, limits and credit amounts come from BigBrain (in a Growth PM chain, its Step 1c answers), or from `monday-context.md` marked `[Unverified — …]` without it — never from memory.
 - **No vague words.** The banned list in the Growth PM's synthesis rules applies here ([monetization-growth-pm → Synthesis phase → Rules](../monetization-growth-pm/SKILL.md#rules)).
 - **Every scenario ends somewhere.** No scenario may stop mid-table without an end state or an Open item.
 - **The journey owns the steps; the spec owns the screens.** Don't write layouts, trigger thresholds or copy here — name the step, the state of mind and the reason, and hand off.

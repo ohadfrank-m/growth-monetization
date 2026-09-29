@@ -1,10 +1,12 @@
 ---
 name: improve-conversion-surfaces-copy
 description: Ground persuasive writing in a real reason people buy, not a feature description. Use when writing or editing copy meant to make someone buy, subscribe, sign up, or act — landing pages, ads, offers, positioning, pricing pages, upgrade prompts, email CTAs. Also use when auditing a draft that reads as feature-speak, when someone asks "why would anyone buy this?", "make this benefit-led", "what's the hook?", "this copy feels flat", or "sharpen this pitch."
-version: 0.4.0
+version: 0.4.1
 ---
 
 # Improve Conversion Surfaces Copy
+
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
 
 People buy to move toward a feeling or an outcome, never to own a feature. Copy that names what a product *is* or *does* leaves the reader to supply the reason themselves, and most won't. Name the reason first; let the feature prove it.
 
@@ -27,7 +29,7 @@ Keep this compact — three short lines per option, not three paragraphs. The po
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |-------|--------------------------|-----------|
@@ -36,7 +38,7 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 | Journey step (when `00-journey.md` exists) | Each element's step gives its state of mind and reason, and which scenarios read it. An IC and an admin at the same screen need different lines | `00-journey.md` → the step table's "State of mind · reason" column; never re-derive a reason the journey already named |
 | The action it must drive | The CTA and the outcome the headline promises | "get them to upgrade", "keep them from cancelling" |
 | Current copy (if rewriting) | Needed to write "Replaces" and to avoid re-proposing what failed | Screenshot text, pasted copy |
-| Hard constraints | Character limits, facts that must stay true (prices, trial terms — from `monday-context.md`), words legal won't allow | The prompt; facts always from the context file |
+| Hard constraints | Character limits, facts that must stay true (prices, trial terms — from the chain's BigBrain answers inside a Growth PM chain, otherwise `monday-context.md` with its `verified-against` date), words legal won't allow | The prompt; facts from BigBrain answers or the context file, never memory |
 
 ## The move
 

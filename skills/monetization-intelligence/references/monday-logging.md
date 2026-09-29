@@ -348,7 +348,7 @@ For landscape scans: one doc for the full scan with one section per company that
 
 ## Error handling
 
-- If `search` returns no board and `create_board` fails: say so in one line ("Couldn't create the Pricing Intelligence board — not logged") and continue. Never fail silently (CLAUDE.md, MCP connections).
+- If `search` returns no board and `create_board` fails: say so in one line ("Couldn't create the Pricing Intelligence board — not logged") and continue. Never fail silently (plugin-rules.md, MCP connections).
 - If `create_item` fails for one company: continue with the others, note at the end: "Note: monday logging failed for {Company}."
 - If `create_doc` fails: note it briefly but do not retry
 - Never block the main pricing output waiting for logging to complete — deliver the pricing results first, log after

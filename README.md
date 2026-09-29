@@ -1,7 +1,7 @@
 # Growth Monetization Plugin
 
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-000?style=flat-square)](https://claude.ai/code)
-[![Cursor](https://img.shields.io/badge/Cursor-compatible-000?style=flat-square)](https://cursor.com)
+[![Cursor](https://img.shields.io/badge/Cursor-plugin-000?style=flat-square)](https://cursor.com/docs/plugins)
 [![Skills](https://img.shields.io/badge/skills-7-333?style=flat-square)](#the-skills)
 [![monday.com](https://img.shields.io/badge/built_for-monday.com-ff3366?style=flat-square)](https://monday.com)
 
@@ -19,14 +19,14 @@ Built for: pricing pages · paywalls · promotions · upgrade flows · credit/co
 
 | You want | Do this | What happens |
 |----------|---------|--------------|
-| **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go (asking one short message only if your prompt doesn't say), runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
-| **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-opportunity-sizing`, `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing — all in one message — then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
+| **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go, asks for anything missing in at most two short rounds before it starts, runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
+| **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-opportunity-sizing`, `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing in one message (with the data question, when a data MCP is missing), then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
 
 You never have to use the Growth PM, and you never have to use every skill. Every skill reads what's already in the feature folder and picks up from there.
 
 ### How the Growth PM scopes a run
 
-When your prompt is clear ("wireframe a credit depletion surface for Pro"), it announces the plan and starts. When it isn't, it asks one message with up to three pick-one questions:
+When your prompt is clear about the deliverable ("wireframe a credit depletion surface for Pro"), it skips the scoping question. When it isn't, it asks one message with up to three pick-one questions:
 
 | Question | Options |
 |----------|---------|
@@ -34,7 +34,7 @@ When your prompt is clear ("wireframe a credit depletion surface for Pro"), it a
 | **Start with a benchmark of how competitors run this surface?** | Yes / No — recommended for a new surface; the journey and the spec's flow map are then built from real competitor flows |
 | **How thorough should the review be?** *(only when the chain reviews a wireframe it built)* | Standard *(recommended)* · Quick · Thorough — see below |
 
-Then it makes sure every skill in the run has what it needs — surface, cohort, tier, role, trigger, objective metric, constraints, the current design — inferring what's obvious and asking the rest in **one** message, before anything is written. Mid-run, a skill that hits a gap stops and asks. No artifact ever carries an "Assumptions" section: what you answered goes in its header, and only facts nobody can answer yet (a legal policy, an unpublished price) stay open, each with an owner.
+Then it makes sure every skill in the run has what it needs — surface, cohort, tier, role, trigger, objective metric, constraints, the current design. It infers what's obvious (and says from where) and asks the rest before anything is written: in the same message as the scoping question when it fits, otherwise in one follow-up — never more than two rounds. Mid-run, a skill that hits a gap stops and asks. No artifact ever carries an "Assumptions" section: what you answered goes in its header, and only facts nobody can answer yet (a legal policy, an unpublished price) stay open, each with an owner.
 
 Before announcing a run that sizes, designs or reviews, it checks that monday's internal data is connected — Kramer for counts and baselines, BigBrain for plans, prices and credits. If either is missing, it names the MCP, says what it unlocks (the opportunity size, baselines, verified monday facts), points to [mcp-setup.md](mcp-setup.md), and asks once: **Connect now** (recommended) or **Continue without data**. Continue, and the whole run goes ahead — every number it couldn't measure is marked `[Not measured]` in place, never estimated, and each file opens with one line saying the data tools weren't connected. Research and copy don't need the data at all.
 
@@ -74,40 +74,41 @@ Copy runs *before* the wireframe, not after the review — so the wireframe you 
 
 ## Installation
 
-### Claude Code (recommended)
+Claude Code and Cursor install the same repo as a plugin: skills load from `skills/`, and every skill reads [`plugin-rules.md`](plugin-rules.md) — the plugin-wide rules for intake, the Data gate and artifacts — at the start of its run. Neither host loads a root rules file on its own, so there's nothing to copy into your project's rules.
+
+### Claude Code
 
 ```bash
 /plugin marketplace add ohadfrank-m/growth-monetization
 /plugin install growth-monetization@growth-monetization
 ```
 
-Skills load automatically. Run `/monetization-growth-pm` for the full flow, or call any skill by name.
+Skills load automatically. Run `/growth-monetization:monetization-growth-pm` for the full flow (type `/growth-monetization` to see all seven), or just describe the job and the matching skill triggers.
 
-To try locally before installing:
-
-```bash
-claude --plugin-dir /path/to/growth-monetization
-```
-
-To update when new skills ship:
-
-```bash
-/plugin update growth-monetization@growth-monetization
-```
+Try it locally before installing: `claude --plugin-dir /path/to/growth-monetization`. Update: `/plugin update growth-monetization@growth-monetization`.
 
 ### Cursor
 
-Clone the repo, then add to your project's `.cursor/rules/`:
+The repo carries a Cursor Plugin manifest (`.cursor-plugin/`), so it installs like any Cursor plugin. Pick one:
 
-```bash
-git clone https://github.com/ohadfrank-m/growth-monetization
-```
+- **Team marketplace** (Teams and Enterprise — the way to roll it out to a squad). An admin opens Dashboard → Plugins & MCPs → Team Marketplaces → **Add Marketplace** → **Import from Repo**, pastes `https://github.com/ohadfrank-m/growth-monetization`, adds the plugin, and sets access and an installation mode (Default On or Default Off). Turn on **Auto Refresh** so pushes to `main` reach everyone. Each person then finds it under **Customize** in the sidebar.
+- **Local** (one person, or trying a branch):
 
-Copy `CLAUDE.md` content into `.cursor/rules/monetization.mdc`. Add required MCP servers to `~/.cursor/mcp.json` — see [mcp-setup.md](mcp-setup.md).
+  ```bash
+  git clone https://github.com/ohadfrank-m/growth-monetization ~/.cursor/plugins/local/growth-monetization
+  ```
 
-### Claude Desktop / Claude.ai
+  Then run **Developer: Reload Window**. Clone into that folder directly: Cursor skips a symlink that points outside it. On Enterprise, local plugins are off unless an admin enables **Allow Local Plugin Imports** — use the team marketplace instead. Update with `git -C ~/.cursor/plugins/local/growth-monetization pull` and a reload.
 
-Add as a custom skill or copy skill content into your project context. Skills work without the plugin format — paste the SKILL.md content of any individual skill as a system prompt or project instruction.
+Check it under **Customize → Skills** (all seven should be listed), then run `/monetization-growth-pm` in the agent chat. MCP servers for Cursor: [mcp-setup.md](mcp-setup.md#cursor-config-snippet).
+
+### Check the install (either host)
+
+Call `/monetization-opportunity-sizing` with a one-line brief. With Kramer and BigBrain not connected, it should ask its missing inputs and **Connect now / Continue without data** in one round, and write nothing before you answer. If it writes a file straight away or adds an "Assumptions" section, the skill isn't reading `plugin-rules.md` — reinstall or update.
+
+### Claude.ai / Claude Desktop
+
+Not a full install. A skill uploaded on its own loses what sits outside its folder — `plugin-rules.md`, `context/`, `playbooks/`, `templates/`. If you use one there, add `plugin-rules.md` and `context/monday-context.md` to the project knowledge next to it; the skill names any other file it can't find and says what that affects.
 
 ---
 
@@ -134,7 +135,7 @@ Research (`/monetization-intelligence`) and copy (`/improve-conversion-surfaces-
 | **PricingSaaS** | Structured, current competitor pricing data — live plans, historical change diffs, watchlists, pricing-news feed. This is what makes `monetization-intelligence` fast and precise instead of a slow manual Google-and-guess exercise, and it's the only source with real historical diffs (before/after a pricing change, dated). | Falls back to enrichment-only research — Wayback Machine, changelogs, sentiment, job postings. Still usable, but slower and with no structured change history. | Add `https://mcp.pricingsaas.com` — see [mcp-setup.md](mcp-setup.md) |
 | **Figma** | Pull a design directly from a Figma link or frame — layer structure, exact copy text (not read off pixels), and variable bindings, so `monetization-design-reviewer` can catch hardcoded colors/spacing that have drifted from Vibe design tokens and the wireframe can name real tokens instead of "token TBD". | Paste a screenshot instead — full visual review still works, you just lose token-binding checks and have to transcribe copy by eye instead of reading it exactly. | Add `https://mcp.figma.com/mcp` |
 | **Slack** | The weekly pricing digest (`monetization-intelligence`) comes formatted as a paste-ready Slack message for the channel your team watches. | Digest is delivered in chat — same content, formatted for pasting. | See your Slack app's MCP setup |
-| **Web search** | Enrichment sources for `monetization-intelligence` — Wayback Machine snapshots, product changelogs, earnings-call commentary, sentiment from Reddit/G2/HN. This is what grounds research in evidence beyond whatever PricingSaaS alone returns. | Research is limited to PricingSaaS/monday.com MCP data alone — meaningfully reduced coverage on anything PricingSaaS doesn't track. | Native to Claude — no setup needed |
+| **Web search** | Enrichment sources for `monetization-intelligence` — Wayback Machine snapshots, product changelogs, earnings-call commentary, sentiment from Reddit/G2/HN. This is what grounds research in evidence beyond whatever PricingSaaS alone returns. | Research is limited to PricingSaaS/monday.com MCP data alone — meaningfully reduced coverage on anything PricingSaaS doesn't track. | Built into Claude Code; in Cursor, keep the agent's web search enabled |
 
 Skills degrade gracefully when an optional MCP is unavailable and tell you what's affected — they never fail silently.
 
@@ -146,11 +147,11 @@ Listed in the order the Growth PM runs them. Each one also works on its own.
 
 ### `/monetization-growth-pm` — the Monetization Growth PM
 
-The full product work in one command. It scopes the job (how far, how deep), asks every missing input in one message, checks Kramer and BigBrain are connected, sizes the opportunity, then runs research → journey map → spec → copy → wireframe → journey board → independent review → fix loop, and synthesizes everything into one doc a designer and engineer can start from without opening anything else. After every step it prints a one-line **ledger** of the current version of each artifact, so it's always clear which spec, copy, and wireframe are the latest — even in a chat session with no real files.
+The full product work in one command. It scopes the job (how far, how deep), asks every missing input up front, checks Kramer and BigBrain are connected, sizes the opportunity, then runs research → journey map → spec → copy → wireframe → journey board → independent review → fix loop, and synthesizes everything into one doc a designer and engineer can start from without opening anything else. After every step it prints a one-line **ledger** of the current version of each artifact, so it's always clear which spec, copy, and wireframe are the latest — even in a chat session with no real files.
 
-**What you get:** `05-requirements.md` — the **build target** (the approved wireframe version), the depth used and passes run, final copy strings (verbatim ★ picks, each next to the line it replaces), what the loop already fixed, remaining design changes, open items (including any suggested playbook updates from the research, so they land in `playbooks/`), a **measurement plan** (one revenue-proximate primary metric, guardrails that block ship, sample size and runtime from real baselines, a pre-registered ship table — grounded in its `references/experiment-design.md`), and a sorted build order in which every journey scenario gets its own acceptance criterion. Every design change and build step carries **acceptance criteria** a tester can check, every owner is a named person or a role marked "name TBD", and vague words ("intuitive", "fast", "as needed") are quantified or cut. Every row traces back to the review row it came from, and the Growth PM re-checks the reviewer's factual claims before they go in.
+**What you get:** `05-requirements.md` — the **build target** (the approved wireframe version), the depth used and passes run, final copy strings (verbatim ★ picks, each next to the line it replaces), what the loop already fixed, remaining design changes, open items (including any suggested playbook updates from the research, so they land in `playbooks/`), a **measurement plan** (one revenue-proximate primary metric, guardrails that block ship, sample size and runtime from real baselines — or marked `[Not measured]` when the run continued without data — a pre-registered ship table — grounded in its `references/experiment-design.md`), and a sorted build order in which every journey scenario gets its own acceptance criterion. Every design change and build step carries **acceptance criteria** a tester can check, every owner is a named person or a role marked "name TBD", and vague words ("intuitive", "fast", "as needed") are quantified or cut. Every row traces back to the review row it came from, and the Growth PM re-checks the reviewer's factual claims before they go in.
 
-Claude's `/` menu lists skills namespaced by plugin: type `/growth-monetization` to see all seven, and pick `/growth-monetization:monetization-growth-pm` for the full flow. (This README uses the short names.)
+In Claude Code the `/` menu namespaces skills by plugin (`/growth-monetization:monetization-growth-pm`); in Cursor they're listed under Customize → Skills and called by name (`/monetization-growth-pm`). This README uses the short names.
 
 ---
 
@@ -250,7 +251,7 @@ Scores any monetization design, screenshot, Figma frame, live URL, or wireframe 
 
 **Asks for, if your prompt doesn't say:** the design itself, surface type, cohort, the goal or metric, single screen vs full flow, and whether you want the review only or the full fix-and-requirements chain.
 
-**What you get:** `04-review.md` — weighted score out of 100, projected score if the Critical and Major fixes ship, a ship / don't-ship verdict, **what's working — keep** (so fixes don't break it), one ranked fix list where every row carries a **Fix path** (`copy`, `wireframe`, `spec`, `journey`, `design team`, or `blocked — {owner}`), **one alternative worth testing** (a different pattern for the same goal, with the A/B to run), and one benchmark example. When the spec has a flow map, friction is judged touchpoint by touchpoint. With a journey map, every scenario is walked through the design step by step (a cognitive walkthrough), and a scenario that can't reach its end state is a critical finding. Inside the Growth PM it runs as a fresh subagent so it isn't grading work it wrote; on re-review (`04-review-v2.md`) it verifies each fix and ends with `Exit loop` or `Another pass`. Called directly, it continues into copy rewrites and `05-requirements.md` unless you say "review only" — in which case it offers a low-fi prototype of the fixes instead.
+**What you get:** `04-review.md` — weighted score out of 100, projected score if the Critical and Major fixes ship, a ship / don't-ship verdict, **what's working — keep** (so fixes don't break it), one ranked fix list where every row carries a **Fix path** (`copy`, `wireframe`, `spec`, `journey`, `design team`, or `blocked — {owner}`), **one alternative worth testing** (a different pattern for the same goal, with the A/B to run), and one benchmark example. When the spec has a flow map, friction is judged touchpoint by touchpoint. With a journey map, every scenario is walked through the design step by step (a cognitive walkthrough), and a scenario that can't reach its end state is a critical finding. Inside the Growth PM it runs as a fresh subagent so it isn't grading work it wrote; on re-review (`04-review-v2.md`) it verifies each fix and ends with `Exit loop` or `Another pass`. Called directly, it runs the same chain the Growth PM would — intake and the data check once, sizing, then the review, copy rewrites and `05-requirements.md` — unless you say "review only", in which case it scores, offers a low-fi prototype of the fixes, and stops.
 
 Scores aren't intuition: every 5 has checkable criteria behind it (WCAG 2.2 AA target sizes and reflow, NN/g heuristics, Baymard findings, the FTC dark-patterns taxonomy, DSA Art. 25), each dimension maps to the playbooks' anti-pattern rows, and `references/calibration-examples.md` shows what a 1, 3 and 5 look like on real, cited surfaces — including a fully worked score of the FTC-documented Amazon cancel flow. A **dark-pattern gate** caps the verdict at "Not yet" whenever the escape hatch scores ≤2 or a starred criterion fails, so weighting can never average an obstructive flow into "ship after fixes". Every surface type, trial flows and downgrades included, has its own weight column.
 
@@ -288,7 +289,7 @@ Every artifact lands in `.monetization/` in your working directory, numbered by 
     └── notion-monetization-2026-09.md      ← monetization teardown
 ```
 
-Every file carries the same header block (plugin, skill, feature, cohort, date, status). Returning to a feature later, a skill detects what's there and picks up from the next step. Iterations get a version suffix instead of overwriting.
+Every file carries the same header block: plugin, skill, feature, cohort, date and status, plus what you confirmed at intake, what was inferred and from where, and where its monday numbers came from (or that they weren't measured). Returning to a feature later, a skill detects what's there and picks up from the next step. Iterations get a version suffix instead of overwriting.
 
 ---
 
@@ -298,7 +299,7 @@ Every file carries the same header block (plugin, skill, feature, cohort, date, 
 
 **Full flow or one skill.** The Growth PM runs everything back to back with no re-prompting and ends in one requirements doc. Call a skill on its own and it does just that job, ending with a `→ Next step` prompt.
 
-**Ask, never assume.** Before anything is written — by the Growth PM for the whole run, or by a skill called directly — every gap that would change the output is asked in one message, and nothing is asked that your prompt already covers. No artifact has an "Assumptions" section.
+**Ask, never assume.** Before anything is written — by the Growth PM for the whole run, or by a skill called directly — every gap that would change the output is asked up front, in as few messages as possible (at most two in a full run), and nothing is asked that your prompt already covers. No artifact has an "Assumptions" section.
 
 **Real data, or clearly marked.** Counts, rates and baselines come from Kramer queries shown in the file; prices and credits from BigBrain. Without them, the run pushes you once to connect, and if you continue, every unmeasured number says `[Not measured]` where it sits — never an estimate.
 
@@ -318,10 +319,10 @@ Every file carries the same header block (plugin, skill, feature, cohort, date, 
 
 ```
 growth-monetization/
-├── .claude-plugin/
-│   ├── plugin.json
-│   └── marketplace.json
-├── CLAUDE.md                          ← plugin-wide rules: intake, data gate, chain mode, artifacts
+├── .claude-plugin/                    ← Claude Code manifest + marketplace
+├── .cursor-plugin/                    ← Cursor Plugin manifest + marketplace (same name and version)
+├── .github/workflows/checks.yml       ← CI: runs both scripts below on every push and PR
+├── plugin-rules.md                    ← plugin-wide rules every skill reads first: intake, data gate, tool names, chain mode, artifacts
 ├── HANDOFF.md                         ← design decisions and history for the next maintainer
 ├── docs/
 │   └── flow.svg                       ← the "How it works" diagram
@@ -329,7 +330,8 @@ growth-monetization/
 │   └── monday-context.md              ← monday.com facts cache + pointer to BigBrain (owned, versioned)
 ├── playbooks/                         ← CRO knowledge, one file per surface type + cases.md — cited by spec + reviewer, never duplicated
 ├── scripts/
-│   └── lint-playbooks.py              ← checks playbook structure, benchmark rows, evidence tags, links and source dates
+│   ├── check-plugin.py                ← manifests in sync, skill frontmatter, skill lists, links and anchors
+│   └── lint-playbooks.py              ← playbook structure, benchmark rows, evidence tags, links and source dates
 ├── templates/                         ← artifact header + research and spec templates
 ├── skills/
 │   ├── monetization-growth-pm/        ← the Growth PM: scoping, intake, data gate, chain, fix loop, synthesis (+ experiment-design reference)
@@ -348,7 +350,9 @@ growth-monetization/
 - **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never copy it into a skill's own `references/`. Tag every claim `[Verified]` / `[Reported]` / `[Teardown needed]` and date your sources, then run `python3 scripts/lint-playbooks.py` before committing. See [playbooks/README.md](playbooks/README.md).
 - **Adding a playbook**: it isn't finished until it carries the mandatory AI-native reference set — Clay, Figma, ClickUp, and Claude teardowns in the standard shape, an at-a-glance comparison, a copy bank, and dated sources. See [playbooks/README.md](playbooks/README.md).
 - **Changing a skill:** keep `SKILL.md` lean and self-sufficient (its minimum must work even without `references/`); put mechanics specific to that skill in its `references/`; put anything a second skill needs in `playbooks/`. Keep its **Required context** table current.
-- **Adding a skill:** add a folder under `skills/`, give it a Required context table, add it to the skills table and output-folder tree in `CLAUDE.md`, to the Growth PM's deliverables table in `skills/monetization-growth-pm/SKILL.md`, to `templates/ARTIFACT_HEADER.md`, to `docs/flow.svg`, and to this README
+- **Adding a skill:** add a folder under `skills/`, open its `SKILL.md` with the "Read first" line pointing to `plugin-rules.md` (copy it from any skill), give it a Required context table, add it to the skills table and output-folder tree in `plugin-rules.md`, to the Growth PM's deliverables table in `skills/monetization-growth-pm/SKILL.md`, to `templates/ARTIFACT_HEADER.md`, to `docs/flow.svg`, and to this README (including the skills badge)
+- **Before committing:** run `python3 scripts/check-plugin.py` and `python3 scripts/lint-playbooks.py` — CI runs both
+- **Releasing:** bump the version in all four manifests (`.claude-plugin/` and `.cursor-plugin/`, plugin and marketplace) and in each changed skill's frontmatter; `check-plugin.py` fails when the manifests disagree
 
 ---
 

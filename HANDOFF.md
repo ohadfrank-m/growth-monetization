@@ -18,8 +18,8 @@ Four intended clusters were discussed: **Pricing Intelligence**, **Monetization 
 
 Two reference repos shaped the structure: `product-manager` (Pragmatic Framework as 18 Claude skills) and `designer-skills` (8 skills for the design process). Both are private/semi-private, but their public documentation (Medium article for product-manager, full README for designer-skills) revealed four patterns worth stealing:
 
-1. **A router skill** (`/pm-copilot`, `/design-flow`) that reads intent, orchestrates, and produces no artifact itself. This became our `monetization` skill.
-2. **Artifacts compound into a dossier** — every skill writes into a per-feature folder with a consistent naming scheme, so a session produces an ordered deliverable set, not scattered files. This became `.monetization/{feature-slug}/01-spec.md`, `02-wireframe.html`, etc.
+1. **A router skill** (`/pm-copilot`, `/design-flow`) that reads intent, orchestrates, and produces no artifact itself. This became our `monetization` skill (now `monetization-growth-pm`, see the renames below).
+2. **Artifacts compound into a dossier** — every skill writes into a per-feature folder with a consistent naming scheme, so a session produces an ordered deliverable set, not scattered files. This became `.monetization/{feature-slug}/01-spec.md`, `02-wireframe.html`, etc. *(Numbering since changed — current scheme in `CLAUDE.md` → Output folder.)*
 3. **Standardised output structure per artifact type** — every skill's output looks the same shape regardless of which skill produced it. This became `templates/ARTIFACT_HEADER.md`, `research-output.md`, `surface-spec.md`.
 4. **Skills are sequenced but independently invokable** — the router suggests a flow, but nothing forces you through it. Every artifact ends with a `→ Next step` block instead of hard dependencies.
 
@@ -65,7 +65,7 @@ A full QA pass was run before pushing (broken links, orphaned skill references, 
 
 - **Two skills were referenced constantly but not actually in the repo** (`monetization-design-reviewer`, `improve-conversion-surfaces-copy`) — they existed elsewhere in this environment's skill library and were copied in. If you fork or rebuild this plugin elsewhere, make sure both are present under `skills/`, not just referenced.
 - **`monday-context.md` was originally nested inside `monetization-surface-spec/references/`** — moved to a top-level `context/` folder so `pricing-intelligence` and `monetization-design-reviewer` could reference it too, without a skill-to-skill reach-around.
-- **Output file numbering was inconsistent** across skills (some used `01-brief.md`/`03-spec.md`, others `01-spec.md`/`02-wireframe.html`). Fixed to one global convention, now documented in `CLAUDE.md`: `01-spec`, `02-wireframe`, `03-review`, `04-copy`.
+- **Output file numbering was inconsistent** across skills (some used `01-brief.md`/`03-spec.md`, others `01-spec.md`/`02-wireframe.html`). Fixed to one global convention at the time: `01-spec`, `02-wireframe`, `03-review`, `04-copy`. *Superseded:* copy moved before the wireframe and sizing/journey were added — the current scheme (00 sizing and journey · 01 spec · 02 copy · 03 wireframe and board · 04 review · 05 requirements) is in `CLAUDE.md` → Output folder.
 - **`plugin.json` didn't match Claude Code's actual manifest schema**, and there was no `marketplace.json` — the install command in the README (`/plugin marketplace add ...`) would have failed. Both were rebuilt to spec.
 - **`mcp-setup.md` originally described *this specific environment's* MCP connection status** ("already connected in Claude.ai") — useless and confusing to an outside user. Rewritten to be setup instructions for a stranger, with per-environment commands.
 
@@ -75,8 +75,8 @@ Run through the same checks (broken relative links, JSON validity, no environmen
 
 ## What's genuinely unfinished (Wave 1 gaps)
 
-- **`monetization-surface-spec` has 7 surface types** but only `credit-ui.md` got the full deep-dive treatment (patterns, anti-patterns, trigger logic, copy hooks) because AI credits were flagged as the squad's top priority. The other six (`pricing-pages.md`, `paywalls.md`, `promotions.md`, `upgrade-triggers.md`, `cancellation.md`, `trial-flows.md`) exist and are usable, but are lighter — mostly mandatory-sections checklists pointing at the shared `wireframe-patterns.md` and `copy-hooks.md`. Deepen these as real specs get written against them and patterns emerge.
-- **No CI / validation script.** Nothing automatically checks broken links or schema drift when someone edits a skill. Worth adding if the repo gets multiple contributors.
+- **`monetization-surface-spec` has 7 surface types** but only `credit-ui.md` got the full deep-dive treatment (patterns, anti-patterns, trigger logic, copy hooks) because AI credits were flagged as the squad's top priority. The other six (`pricing-pages.md`, `paywalls.md`, `promotions.md`, `upgrade-triggers.md`, `cancellation.md`, `trial-flows.md`) exist and are usable, but are lighter — mostly mandatory-sections checklists pointing at the shared `wireframe-patterns.md` and `copy-hooks.md`. Deepen these as real specs get written against them and patterns emerge. *Since then every surface type got its own playbook in `playbooks/` (with the AI-native reference set) and a fuller spec reference; re-check this gap before acting on it.*
+- **No CI.** `scripts/lint-playbooks.py` now checks playbook structure, evidence tags, links and source dates, but nothing runs it automatically, and nothing checks skill-level links, manifests or cross-file consistency. Worth a CI job if the repo gets multiple contributors.
 - **`context/monday-context.md`'s squad-focus and surfaces-inventory sections** are the least verified parts of that file — flagged for the owner to confirm, unconfirmed as of this handoff.
 
 ---
@@ -88,13 +88,13 @@ Two more skills were planned and intentionally deferred:
 - **`monetization-data`** — *partly pulled forward 2026-09-28 as `monetization-opportunity-sizing`; see the end of this file.* Kremer-backed conversion analytics: trial→paid funnels, credit consumption by segment, paywall performance, cohort upgrade analysis. This is where `context/monday-context.md`'s eventual connection to internal AI Brain sources would likely also live, since both are "pull live internal data" problems.
 - **`monetization-pm`** — PRD writer, A/B experiment designer, pricing-model workshop, launch readiness checklist.
 
-Both are named in the README's "Coming in Wave 2" section so the plugin doesn't feel unfinished to an outside user, but neither has any scaffolding yet. Start the same way Wave 1 started: read the existing adjacent skills in this environment (`data:analyze`, `data:write-query`, `product-management:write-spec` were all available and relevant when this was scoped) before writing anything from scratch.
+Neither has a README section any more (the "Coming in Wave 2" section was removed); `monetization-pm`'s experiment-design part now lives in `skills/monetization-growth-pm/references/experiment-design.md`, the rest has no scaffolding yet. Start the same way Wave 1 started: read the existing adjacent skills in this environment (`data:analyze`, `data:write-query`, `product-management:write-spec` were all available and relevant when this was scoped) before writing anything from scratch.
 
 ---
 
 ## If you're Claude, reading this in a fresh Claude Code session
 
-Read `CLAUDE.md` first — it's auto-loaded and has the operational rules. Read this file second, once, for judgment context. Don't re-summarize this file into `CLAUDE.md` or any skill — it would bloat the always-loaded context for information that's only useful when *extending* the plugin, not when *running* it. Delete this file once its contents are no longer relevant (e.g., after Wave 2 ships and the deferred-adapters decision is moot), or move it to a `docs/decisions/` folder if the pattern of writing these repeats.
+Read `plugin-rules.md` first — it has the operational rules (it was `CLAUDE.md` until 2026-09-29; see below). Read this file second, once, for judgment context. Don't re-summarize this file into `plugin-rules.md` or any skill — it would bloat the always-loaded context for information that's only useful when *extending* the plugin, not when *running* it. Delete this file once its contents are no longer relevant (e.g., after Wave 2 ships and the deferred-adapters decision is moot), or move it to a `docs/decisions/` folder if the pattern of writing these repeats.
 
 ## Rename added 2026-09-25: router → Monetization Growth PM
 
@@ -120,3 +120,9 @@ Two failures from real runs drove this, and both had the same root: the plugin l
 **BigBrain, and why the context file changed role now.** The "connect to AI Brains later" plan in the context-file section above was the owner's call; sizing made it urgent, because ARPA needs current prices and a public-page cache nobody had verified internally isn't good enough to put an ARR number on. BigBrain is now the source of truth for plans, prices, credits, gating and trial terms, checked at run time (once per chain, Growth PM Step 1c). `monday-context.md` is a cache and pointer with a `verified-against` field — still "none yet" at this commit, because this change was written in an environment with no internal MCPs connected. A mismatch between a brain and the file is always reported, never silently used; non-public brain answers are never copied into the repo, only pointed to.
 
 **Not yet done:** no end-to-end run on real data. Kramer and BigBrain weren't connected where this was written, so the gate, the sizing queries and the BigBrain fact check were linted but not exercised. The first run in an environment with both connected should check that the tool searches find them, that the query set in `skills/monetization-opportunity-sizing/references/sizing-model.md` returns what the model expects, and then set `verified-against` in the context file.
+
+## Renamed 2026-09-29: CLAUDE.md → plugin-rules.md, and a Cursor manifest
+
+The plugin-wide rules lived in a root `CLAUDE.md`, and every skill cited it as if it were always in context. It wasn't: Claude Code's plugin reference says a `CLAUDE.md` at a plugin root "isn't loaded as context" (`claude plugin validate` warns about one), and Cursor loads a plugin's skills, not its root files. The only place it auto-loaded was a maintainer's Claude Code session opened on this repo. So an installed plugin ran its skills without the intake, Data gate and quality-gate rules unless the model happened to follow a link.
+
+What changed: the file is `plugin-rules.md` (host-neutral, no validate warning), every `SKILL.md` opens with a "Read first" line pointing to it, and the Growth PM passes it to the review subagent. `.cursor-plugin/plugin.json` and `.cursor-plugin/marketplace.json` sit next to the Claude manifests so Cursor installs it as a Cursor Plugin (team marketplace import, or a clone into `~/.cursor/plugins/local/`). `scripts/check-plugin.py` keeps the four manifests' versions and the skill list in sync, and CI runs it with the playbook linter. Earlier sections of this file say `CLAUDE.md` — same file, old name.

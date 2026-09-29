@@ -1,10 +1,12 @@
 ---
 name: monetization-opportunity-sizing
 description: This skill should be used when the user wants to "size this opportunity", "how much ARR is at stake", "is this worth building", "how many accounts hit this", "what's the baseline conversion", "sample size for this test", "go / no-go on this surface", or before any monetization surface is designed and nobody has put a number on it yet. Produces 00-sizing.md — reach × current conversion × addressable lift × ARPA → ARR at stake, in low / base / high cases, every input from a Kramer query or a BigBrain answer shown in the file (or marked not measured when you continue without them), plus testability and a go / no-go line. Runs first in every Growth PM chain that designs or reviews a surface.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Monetization Opportunity Sizing
+
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
 
 Before anyone designs a surface, put a number on it: how many accounts hit the moment, how many convert today, how much of the gap a better surface could close, and what each conversion is worth. The answer decides whether the build is worth it, and its baselines are the ones the journey, the spec's success metrics and the measurement plan all use. No other skill re-queries them.
 
@@ -16,7 +18,7 @@ Writes `.monetization/{feature-slug}/00-sizing.md`. It runs before `00-journey.m
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |---|---|---|
@@ -26,20 +28,24 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 | Longest test the team will run | Decides whether a test can read the base-case lift | The prompt only. Ask; recommended answer: 6 weeks |
 | Smallest ARR that justifies the build | The go / no-go bar | The prompt only — never inferred. If the user has none, the verdict covers testability only and the bar becomes an Open item for Product |
 
+**Order of questions, standalone.** Ask the Data gate question (below) together with the first three gaps in one round. If the user continues without Kramer, the last two fields can't change the output — the verdict is `Not sized — no data` either way — so don't ask them; the header records `longest test, ARR bar: not asked — not sized`. Otherwise ask them in one follow-up.
+
+**A trigger with several steps** (notices at 70%, 85% and 90%, then a block): reach R is the first step — every account that enters the flow. Size each later step as a share of R in the Segments table (`reached 85%`, `reached 90%`, `hit the block`), since each is a separate state the spec and journey design for. Never pick one step as "the" trigger without saying so in the population definition.
+
 ---
 
 ## Data gate
 
-This skill is all data, so connecting both sources matters most here. It runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before writing anything, for both sources it needs:
+This skill is all data, so connecting both sources matters most here. It runs the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it") before writing anything, for both sources it needs:
 
 | Source | Search the tools for | Used for | Missing |
 |---|---|---|---|
 | Kramer MCP | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | Reach, conversion, conversion lag, the ceiling segment, past experiment lifts, converter plan mix and seats | Every input and the whole model are `[Not measured]`; verdict `Not sized — no data` |
 | BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | List prices per seat and per credit package for the plan the conversion lands on | Prices from `monday-context.md`, marked `[Unverified — …]` |
 
-With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with `AskUserQuestion`: **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
+With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with the question tool ([plugin-rules.md](../../plugin-rules.md) → Tool names): **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
 
-**Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (CLAUDE.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
+**Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (plugin-rules.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
 
 A query that fails or times out is retried once in the same session; a second failure marks that input `[Not measured — query failed]`, is told to the user, and the run continues. Never an unmarked `{slot}`, never an estimate.
 
@@ -59,7 +65,7 @@ Start the queries together and poll each `jobId` every ≥5 s — they're indepe
 
 ### Step 3 — Prices from BigBrain
 
-Ask the Payments brain for the current list price of each plan or credit package in the converter mix, per seat and billing period. Compare each answer with [monday-context.md](../../context/monday-context.md). A mismatch is reported, never silently used: use the BigBrain answer with its source tag, list the difference under **Context drift** in the file, and tell the user in one line (the plugin's source-of-truth rules in [CLAUDE.md](../../CLAUDE.md)).
+Ask the Payments brain for the current list price of each plan or credit package in the converter mix, per seat and billing period. Without Kramer there's no mix: list the price of each plan or package the objective can land on for the tiers in scope, so the file still shows what one conversion is worth per seat. Compare each answer with [monday-context.md](../../context/monday-context.md). A mismatch is reported, never silently used: use the BigBrain answer with its source tag, list the difference under **Context drift** in the file, and tell the user in one line (the plugin's source-of-truth rules in [plugin-rules.md](../../plugin-rules.md)).
 
 ### Step 4 — Model the cases
 
@@ -73,7 +79,7 @@ With the baseline and weekly reach, compute the sample per arm and the runtime f
 
 One line, from the table in [references/sizing-model.md](references/sizing-model.md#go--no-go): **Go — test**, **Go — ship + holdout**, **Re-scope**, **No-go**, or **Not sized — no data**, with the base-case ARR against the bar and the runtime against the longest test.
 
-**In a Growth PM chain:** on a Go or Not sized — no data, continue without pausing (the user already chose to continue without data at the gate). On Re-scope or No-go, stop and ask once — `AskUserQuestion`: continue as scoped / re-scope ({the specific re-scope the table names}) / stop — recommended answer first. It changes everything downstream, so it's a real blocker, not an optional offer.
+**In a Growth PM chain:** on a Go or Not sized — no data, continue without pausing (the user already chose to continue without data at the gate). On Re-scope or No-go, stop and ask once with the question tool: continue as scoped / re-scope ({the specific re-scope the table names}) / stop — recommended answer first. It changes everything downstream, so it's a real blocker, not an optional offer.
 
 ---
 
@@ -91,6 +97,8 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 
 ```markdown
 # Sizing: {surface name}
+
+{> Data tools weren't connected ({Kramer | BigBrain | Kramer, BigBrain}) — figures marked [Not measured] weren't measured. — only when the run continued without data}
 
 **Surface:** {type} · **Trigger:** {exact condition} · **Cohort:** {…} · **Tiers:** {…} · **Objective:** {metric}
 **Data:** {live — {tool}, {date range}, run {YYYY-MM-DD} · session {sessionId} | not measured — Kramer not connected} · internal data, don't share outside monday

@@ -5,6 +5,8 @@
   "author": {
     "name": "monday.com Growth Monetization"
   },
+  "homepage": "https://github.com/ohadfrank-m/growth-monetization",
   "repository": "https://github.com/ohadfrank-m/growth-monetization",
-  "keywords": ["monetization", "pricing", "paywall", "upgrade", "conversion", "CRO", "SaaS", "PLG", "growth"]
+  "keywords": ["monetization", "pricing", "paywall", "upgrade", "conversion", "CRO", "SaaS", "PLG", "growth"],
+  "skills": "./skills/"
 }

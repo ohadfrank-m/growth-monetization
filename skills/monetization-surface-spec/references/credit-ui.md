@@ -38,7 +38,11 @@ All sections in the surface spec template apply. Additionally, always address:
 
 ## Trigger logic spec
 
-For every credit UI surface, specify the full trigger logic:
+For every credit UI surface, specify the full trigger logic.
+
+**Thresholds the user gave are the trigger.** A brief like "notices at 70%, 85% and 90%, then block" is a confirmed input, not a suggestion: one state per threshold (`notice-70`, `notice-85`, `notice-90`, `blocked`), each in the flow map, the journey and the wireframe, in place of the generic warning / critical pair below. The playbook's thresholds apply only when the user gave none; where the user's differ from the playbook, say so in one line in the spec's References, with the playbook's evidence tag — don't overrule the user.
+
+**Enforcement vs the grace period.** monday's context file says some AI capabilities keep running for a short grace period after 100% (length not published). An enforcement spec states whether the block lands at 100% or after the grace period; if nobody in the conversation knows the grace rule, that's an Open item for Billing, and the wireframe shows both with a prototype switch.
 
 ```
 Trigger conditions:
@@ -53,7 +57,7 @@ Frequency cap:
 
 Dismiss behaviour:
 - Warning banner: dismissible; re-appears next session if balance still in warning range
-- Depletion modal: not dismissible until action taken (top-up or notify admin)
+- Depletion / block state: blocks the paid AI action only, never the product. Always closable, with the actions top-up (admin) or notify admin (IC) plus a visible way back to work — free AI features keep running (context file). A modal that can't be closed until the user pays fails the escape-hatch gate in the reviewer's rubric
 ```
 
 ## Copy hook

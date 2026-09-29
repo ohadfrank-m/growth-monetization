@@ -3,6 +3,10 @@
   "owner": {
     "name": "monday.com Growth Monetization"
   },
+  "metadata": {
+    "description": "monday.com Growth Monetization plugins",
+    "version": "0.6.0"
+  },
   "plugins": [
     {
       "name": "growth-monetization",

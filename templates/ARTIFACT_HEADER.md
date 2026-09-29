@@ -27,11 +27,11 @@ revises: {file} for {review rows}                           # any -v2/-v3 file
 
 | Field | Required | Notes |
 |-------|----------|-------|
-| `skill` | Yes | Exact skill name as in plugin.json |
+| `skill` | Yes | Exact skill name, as in the skill's `SKILL.md` frontmatter `name` |
 | `feature / topic` | Yes | e.g. "Credit depletion modal — Pro tier" or "Notion pricing research" |
 | `surface type` | Yes for design artifacts | From the 7 surface types in monetization-surface-spec |
 | `cohort` | Yes for design artifacts | Which user type this surface addresses |
-| `data` | Yes for sizing, journey, spec, review, requirements | The data tool, range and run date behind every monday number — or `not measured` when the user chose to continue without data. Then the body opens with the one-line notice from CLAUDE.md's Data gate, and every unmeasured figure carries a `[Not measured]` mark — nothing else: no analyst request or query list. Artifacts with data are internal |
+| `data` | Yes for sizing, journey, spec, review, requirements | The data tool, range and run date behind every monday number — or `not measured` when the user chose to continue without data. Then the body opens with the one-line notice from plugin-rules.md's Data gate, and every unmeasured figure carries a `[Not measured]` mark — nothing else: no analyst request or query list. Artifacts with data are internal |
 | `verified against` | Yes when the artifact cites a monday price, limit, credit amount, gate or trial term | The BigBrain brain and date. Without BigBrain (copy, research, or a run that continued without it) write `monday-context.md, verified-against {date} — unverified` |
 | `author` | Yes | Person who ran the skill |
 | `date` | Yes | ISO date — auto-filled when possible |
@@ -65,7 +65,7 @@ All artifacts land in `.monetization/` in the working directory:
 
 **Folder naming:** lowercase, hyphenated, descriptive. `credit-depletion-modal`, `trial-upgrade-nudge`, `notion-pricing-2026`.
 
-**File numbering:** fixed per skill — 00 sizing and journey (sizing first), 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
+**File numbering:** fixed per artifact type, and the number is the phase, not the run order — 00 sizing and journey (sizing first, although `00-journey` sorts first), 01 spec, 02 copy, 03 wireframe and journey board, 04 review, 05 requirements. The full tree, with `input/`, `renders/` and every `-v{N}` file, is in `plugin-rules.md` → Output folder. Copy runs before the wireframe, not after the review, so the wireframe and the review both reflect real language. Iterations get a version suffix (`02-copy-v2.md`).
 
 ## Next step block (standalone runs only — omitted inside a Growth PM chain)
 

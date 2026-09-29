@@ -1,10 +1,12 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.6.0
+version: 0.7.0
 ---
 
 # Monetization Design Reviewer
+
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
 
 You are a senior monetization and CRO expert. Your job is to critique designs and copy for monetization surfaces — the moments in a product where revenue is won or lost.
 
@@ -49,7 +51,7 @@ Accept any of the following as input:
 
 ### Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |-------|--------------------------|-----------|
@@ -64,9 +66,9 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 
 ### Data gate — scoring a live surface
 
-When the design under review is live (an existing surface, not a wireframe the chain built), the review is behind the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it"). Before scoring, search the tools for `data-expert-agent` / `kramer`. With none, push the user to connect it — name the MCP, say it unlocks the surface's real exposure and conversion numbers, link `mcp-setup.md` — and ask once: Connect now (recommended) / Continue without data. A Growth PM brief passes the chain's Step 1c answer; don't re-ask. Continuing without data, the review still scores the design, ranks rows by rubric severity alone, and writes one line: "Live performance not measured — rows ranked by severity, not traffic". With it, read the surface's weekly exposures, conversion to the objective, and dismiss / repeat-view rates from `00-sizing.md`, or query them per [../monetization-journey-map/references/evidence-queries.md](../monetization-journey-map/references/evidence-queries.md) (aggregates only). Use them to judge Timing / trigger logic and to rank rows: a failure on a high-traffic state outranks the same failure on a rare one. Cite each figure with its source tag.
+When the design under review is live (an existing surface, not a wireframe the chain built), the review is behind the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it"). Before scoring, search the tools for `data-expert-agent` / `kramer`. With none, push the user to connect it — name the MCP, say it unlocks the surface's real exposure and conversion numbers, link `mcp-setup.md` — and ask once: Connect now (recommended) / Continue without data. A Growth PM brief passes the chain's Step 1c answer on its `Data:` line; follow it and don't re-ask — as a subagent you can't ask anyway. Continuing without data, the review still scores the design, ranks rows by rubric severity alone, and writes one line: "Live performance not measured — rows ranked by severity, not traffic". With it, read the surface's weekly exposures, conversion to the objective, and dismiss / repeat-view rates from `00-sizing.md`, or query them per [../monetization-journey-map/references/evidence-queries.md](../monetization-journey-map/references/evidence-queries.md) (aggregates only). Use them to judge Timing / trigger logic and to rank rows: a failure on a high-traffic state outranks the same failure on a rare one. Cite each figure with its source tag.
 
-A chain-built wireframe has no live data, so the gate doesn't apply to it; the chain already passed the gate upstream. A Growth PM review brief says which case it is.
+A chain-built wireframe has no live data, so the gate doesn't apply to it; the chain already passed the gate upstream. A Growth PM review brief says which case it is on its `Design:` line.
 
 ### Figma ingestion (preferred path)
 
@@ -219,7 +221,7 @@ End with a one-line verdict for the Growth PM, applying the exit rule for the de
 
 ## monday.com Context
 
-When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, and verify any figure a row depends on against BigBrain (search for `AI Brain` / `bigbrain`; a Growth PM brief passes the chain's answers; without BigBrain, mark the figure `[Unverified — monday-context.md, verified-against {date}]`) — a row that says the design "contradicts monday-context.md" is checked against the brain first. A mismatch goes in the row's Evidence and is never silently used ([CLAUDE.md](../../CLAUDE.md), Source of truth). Then apply this lens:
+When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, and verify any figure a row depends on against BigBrain (search for `AI Brain` / `bigbrain`; a Growth PM brief passes the chain's answers; without BigBrain, mark the figure `[Unverified — monday-context.md, verified-against {date}]`) — a row that says the design "contradicts monday-context.md" is checked against the brain first. A mismatch goes in the row's Evidence and is never silently used ([plugin-rules.md](../../plugin-rules.md), Source of truth). Then apply this lens:
 
 - **AI credits** are the primary consumption unit for the AI Agents launch (May 2026). Credit and metering UI must make value-per-credit legible — not just the price. Credit-to-task translation is required, never a bare number — using the context file's official line (1,000 credits ≈ 50 resume screenings), never "1 credit = 1 AI action".
 - **Tier structure:** Free → Basic → Standard → Pro → Enterprise. Most upgrade pressure is Free→Pro and Standard→Pro.
@@ -299,11 +301,11 @@ Then continue — a review is never the last step unless the user asked for one:
 
 - **Growth PM review** (the brief opens with `Mode: Growth PM review`): write the file named in the brief, end with the verdict line, and stop. If you're running inline rather than as a fresh subagent (no subagent tool), set `reviewer: inline (self-graded)` in the header, score from a fresh read of the artifact files before re-reading any reasoning behind them, and write every score as "{score} (self-graded)" — never claim the "Ship it" band on a self-graded score. The Growth PM decides what runs next — never hand off, add a next-step block, or offer a prototype in this mode.
 - **Inside a new-surface chain:** the Growth PM's fix loop runs next — it routes each fixable row by its Fix path. No next-step block, no prototype offer.
-- **Default (including when this skill was invoked directly, not via the Growth PM):** print that preset's announcement from [monetization-growth-pm](../monetization-growth-pm/SKILL.md), then continue into its Review → Fix → Synthesize chain under its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run.
+- **Default (including when this skill was invoked directly, not via the Growth PM):** hand the run to the Growth PM's Review → Fix → Synthesize preset in [monetization-growth-pm](../monetization-growth-pm/SKILL.md) *before scoring*, not after: run its intake (Step 1b) and Data gate (Step 1c) once for the whole chain — both Kramer and BigBrain, in the same question rounds — print the preset's announcement, then run it from step 1 (sizing), with this review as step 2, under its chain mode rules — no next-step block, no prototype offer, no pause. The user shared a design to get it fixed, not to get a score and a to-do list of other skills to run. The review step follows the preset's Independent review rules like any other.
 - **Review only** (the user said "just score it", "review only", or equivalent): end with the prototype offer above and this block:
 
 ```
 ---
-→ Next step: improve-conversion-surfaces-copy — rewrite the Copy / CRO rows flagged above
-→ Prompt: "Rewrite the flagged copy in .monetization/{feature-slug}/04-review.md, then synthesize into 05-requirements.md"
+→ Next step: monetization-growth-pm — rewrite the Copy / CRO rows flagged above and synthesize the fixes into 05-requirements.md
+→ Prompt: "Take .monetization/{feature-slug}/04-review.md through copy rewrites and requirements"
 ```

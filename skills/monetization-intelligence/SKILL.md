@@ -1,10 +1,12 @@
 ---
 name: monetization-intelligence
 description: Competitive monetization intelligence — how other companies make money and how they run every monetization surface, not just what they charge. Covers the whole system (value metric, packaging and tiers, price points, discounting, free/trial model, expansion paths, where the product asks for money) and benchmarks how competitors run a specific surface — upgrade flow, cancellation flow, paywall, trial, credit top-up, pricing page. Use when the user wants to "research how X prices", "how do competitors handle cancellation", "benchmark upgrade flows", "how does X's paywall work", "how do others run trial expiry", "monetization strategy of X", "how does X make money", "X's packaging", "competitive pricing landscape", "how do AI companies sell credits", "benchmark our pricing model", "monitor pricing changes", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "pricing intelligence". Works best with the PricingSaaS MCP and falls back to web-only enrichment without it. Standalone runs offer to log to the Pricing Intelligence board on monday.com.
-version: 0.3.0
+version: 0.3.1
 ---
 
 # Monetization Intelligence
+
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
 
 How competitors make money — and how they run the surfaces where they ask for it. Price is one input; the job is the whole monetization system: the value metric, packaging and tiers, price points and discounting, the free/trial model, expansion paths, and every surface — pricing page, paywall, upgrade flow, trial, credit top-up, cancellation. A spec for a cancellation flow should be able to start from "here's how five competitors run theirs", not from a blank page.
 
@@ -37,7 +39,7 @@ Enrichment methods (Wayback Machine, changelog mining, earnings calls, job posti
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |-------|--------------------------|-----------|
@@ -121,7 +123,7 @@ After every company research or monetization teardown, offer a pricing battlecar
 
 ## In a Growth PM chain
 
-When `monetization-growth-pm` runs this skill as the first step of a chain, the Growth PM's [chain mode rules](../monetization-growth-pm/SKILL.md) apply. For this skill that means:
+When `monetization-growth-pm` runs this skill inside a chain (after sizing, before the journey), the Growth PM's [chain mode rules](../monetization-growth-pm/SKILL.md) apply. For this skill that means:
 
 - Save the artifact to `.monetization/research/{topic-slug}-{YYYY-MM}.md` — the next skill reads it from there
 - Omit the `→ Next step` block and skip the battlecard offer

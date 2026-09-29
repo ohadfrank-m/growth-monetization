@@ -1,14 +1,16 @@
 ---
 name: monetization-growth-pm
 description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), asks every missing input up front, sizes the opportunity on monday's real data (pushing you to connect Kramer and BigBrain if they're missing), then runs research → journey map → spec → copy → wireframe → journey board → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /monetization-opportunity-sizing, /monetization-intelligence, /monetization-journey-map, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
-version: 0.5.0
+version: 0.6.0
 ---
 
 # Monetization Growth PM
 
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
+
 You're the PM on the job. Work out what the user wants to walk away with and how deep the review should go, then run every skill that produces it — without pausing between steps — and finish with `05-requirements.md`, the only artifact you write yourself.
 
-This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — ask, never assume" in the plugin's CLAUDE.md). In a chain, you run that intake once, up front, for every skill in it. If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
+This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — ask, never assume" in the plugin's plugin-rules.md). In a chain, you run that intake once, up front, for every skill in it. If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
 
 ---
 
@@ -52,11 +54,11 @@ Decide this first — it sets the order, the pre-marks, what Review needs, and w
 
 **Combining signals.** Union the sets of every row that matches — "research how Notion sells credits, then wireframe ours" is Research + the wireframe set. A research ask doesn't settle the wireframe question: "research, then spec ours" still asks, with Q2 recommended Yes. "Just" / "only" caps the set to what's named, plus prerequisites. The fix loop is part of Review, not a separate deliverable — it runs whenever Review runs on a wireframe the chain built.
 
-When the set is clear, don't ask — go to Step 2.
+When the set is clear, don't ask the scoping question — go to Step 1b. A clear deliverable set skips scoping only; intake (Step 1b) and the Data gate (Step 1c) still run before the announcement.
 
 ### Scoping question — only when ambiguous
 
-Up to three pick-one questions in **one** message — it counts as one ask. Deliverables are cumulative (a wireframe needs spec + copy, requirements need a review), so "how far" is one choice, not a set of checkboxes. Use `AskUserQuestion` with all questions in a single call if available; otherwise send them as numbered lists with "reply e.g. 2 / yes / standard".
+Up to three pick-one questions in **one** message — it counts as one ask. Deliverables are cumulative (a wireframe needs spec + copy, requirements need a review), so "how far" is one choice, not a set of checkboxes. Use the question tool with all questions in a single call if available (`AskUserQuestion` in Claude Code, `AskQuestion` in Cursor — [plugin-rules.md](../../plugin-rules.md) → Tool names); otherwise send them as numbered lists with "reply e.g. 2 / yes / standard".
 
 **Q1 — "How far should this go?"** (pick one; mark the recommended option by signal)
 
@@ -73,7 +75,7 @@ Up to three pick-one questions in **one** message — it counts as one ask. Deli
 
 If the surface is existing (or can't tell) and no design was shared: if it's publicly reachable (e.g. monday.com/pricing), don't ask — capture it yourself at 1440px and 375px into `.monetization/{feature-slug}/input/` (see Capturing screens below). If it's behind login, add one line to the same message: "Paste a screenshot or Figma link of the current version." If the user picked a review option and none arrives, that's a real blocker — ask once more; only treat the surface as new if they say it doesn't exist yet.
 
-The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`. The two existing-surface redesign options run the **new-surface** order — the current live design becomes an input to the spec (captured per the rule below), not the thing being reviewed. Never more than this one message. Don't explain the skills before asking.
+The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`. The two existing-surface redesign options run the **new-surface** order — the current live design becomes an input to the spec (captured per the rule below), not the thing being reviewed. The scoping question is never more than this one message, and never split into several. Don't explain the skills before asking. It isn't the only message before the run, though: intake (Step 1b) and the Data gate (Step 1c) may still need one — see "Question rounds" below.
 
 ### Prerequisites — add them, don't ask
 
@@ -95,13 +97,15 @@ Name every added prerequisite and default in the announcement, so the user sees 
 
 **Wireframe without Review** ends at `03-wireframe.html`. Offer Review + Requirements once, after the wireframe.
 
+**Review only** (existing surface) runs sizing → review and ends at `04-review.md` — no copy, no synthesis. Offer copy rewrites + `05-requirements.md` once, after the review.
+
 **Sizing verdict gates the rest.** `00-sizing.md` ends with a go / no-go line. On **Go — test** or **Go — ship + holdout**, continue without pausing. On **Re-scope** or **No-go**, stop and ask once (continue as scoped / the re-scope the file names / stop) — it's a real blocker, since everything after it would be built on a case the numbers don't support. On **Not sized — no data** (the user chose to continue without Kramer), continue without asking again: they already made that call at the Data gate, and the verdict says the case is unmeasured.
 
 ---
 
 ## Step 1b — Required-context intake
 
-Scoping decides *which* skills run. Intake makes sure each of them has what it needs, before any of them starts. This is the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume") run once for the whole chain, so no skill mid-chain has to guess and no artifact carries an `Assumptions` section.
+Scoping decides *which* skills run. Intake makes sure each of them has what it needs, before any of them starts. This is the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume") run once for the whole chain, so no skill mid-chain has to guess and no artifact carries an `Assumptions` section.
 
 Collect the fields every skill in the chain needs. Ask only for fields the chain uses: a copy-only chain doesn't need the trigger's exact threshold.
 
@@ -117,9 +121,9 @@ Collect the fields every skill in the chain needs. Ask only for fields the chain
 | Current design (existing surface) | Review, journey (live mode) | `input/`, a Figma link, or a public URL you capture yourself (Scoping question rules) |
 
 1. **Infer** what's obvious, one line per field with its source.
-2. **Ask every real gap in one `AskUserQuestion` round** — at most 4 questions, recommended answer first. When the scoping question is needed too, put both in the same call if they fit in 4 questions; otherwise scoping first, then intake as the next message, since the scoping answer decides which fields matter.
+2. **Ask every real gap in one question-tool round** — at most 4 questions, recommended answer first. How this round combines with the scoping question and the Data gate: "Question rounds" at the end of Step 1c.
 3. **Follow up only when an answer opens a new gap** ("both roles" on a surface you'd mapped for admins only → which IC path).
-4. **Carry the answers.** The announcement prints them as one Context line. Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
+4. **Carry the answers.** The announcement prints them as one Context line — each field `confirmed` or `from {source}`, never "assumed". Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
 
 A fact nobody in the conversation can answer — a legal policy, an unpublished price, an engineering limit — isn't an intake question. It becomes an Open item with an owner, and it's the only thing that stays open.
 
@@ -127,7 +131,7 @@ A fact nobody in the conversation can answer — a legal policy, an unpublished 
 
 ## Step 1c — Data gate
 
-Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with `AskUserQuestion`: **Connect now (recommended)** · **Continue without data**. When the scoping or intake questions are also pending and they fit in 4 questions, ask them in the same call.
+Run the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with the question tool: **Connect now (recommended)** · **Continue without data**. It shares a round with the scoping or intake questions — see "Question rounds" below.
 
 - **Connect now:** wait, search the tools again, and continue with data.
 - **Continue without data:** announce and run the whole chain. The announcement carries `**Data:** not measured — continuing without {Kramer | BigBrain}; every unmeasured number is marked`. Every skill in the chain inherits the choice and marks what it couldn't measure (the gate's marking table) — none of them asks again.
@@ -137,6 +141,21 @@ This is the chain's only data question. Research-only and copy-only chains skip 
 **Verify the monday facts, once.** With BigBrain connected, list the facts the chain will cite — the list price and seat rules of the tiers in scope, the credit packages and allotments, the gate for the feature, the trial terms — and ask BigBrain for each (search for `AI Brain` / `bigbrain`; `AI Brain - Payments` owns plans, prices, credits and billing). Compare each answer with [monday-context.md](../../context/monday-context.md). Every skill in the chain cites the BigBrain answer. A mismatch is never silently resolved: the announcement carries one line — `Context drift: {fact} — BigBrain {value}, monday-context.md {value}; using BigBrain` — `00-sizing.md` lists it under Context drift, and synthesis adds an Open item for the context file's owner to update the file. Continuing without BigBrain, every skill cites the context file with `[Unverified — monday-context.md, verified-against {date}]`.
 
 Inside a running chain, a query that fails twice doesn't stop the chain: tell the user which question failed, mark that cell `[Not measured — query failed]`, and continue.
+
+### Question rounds — scoping, intake and the gate, in order
+
+Every question before the run fits in at most two rounds, each one question-tool call of at most 4 questions:
+
+| Situation | Round 1 | Round 2 |
+|-----------|---------|---------|
+| Scoping needed | Scoping (Q1–Q3) + the Data gate question, when an MCP is missing | Intake — the scoping answer decides which fields matter |
+| Scoping not needed | The Data gate question + the top 3 intake gaps | The remaining intake gaps, only if there are any |
+| Nothing missing | — (announce and start) | — |
+
+- The gate question goes in round 1 whenever scoping could lead to sizing, journey, spec, review or synthesis — every new-surface and existing-surface option does.
+- On **Continue without data**, drop the intake fields that only feed a computed number — the longest test and the smallest ARR that justifies the build — since sizing reads `Not sized — no data` regardless. Record them in the sizing header as `not asked — not sized`.
+- Constraints are asked, never inferred — as one question that names the types before the options, so a real one isn't clicked past: "Any constraints — legal or compliance, a launch date, design-system limits, engineering limits, a price or policy that can't change?" Options: **None of these (recommended)** · **Yes — I'll list them** (free text). The answer goes in `confirmed with user`; "None of these" is recorded as `constraints: none (confirmed)`.
+- After round 2, announce and start. A gap found later is a mid-chain blocker (Chain mode rules), not a third pre-run round.
 
 ---
 
@@ -172,7 +191,7 @@ A chain is any sequence the Growth PM announced before the first skill started. 
 - **No optional offers mid-chain.** Skip "want me to mock this up?" and similar questions. Offer them once, after the final artifact.
 - **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: 00-sizing · research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
 - **External writes wait for the end.** Logging to monday.com or posting anywhere is offered once after the final artifact, never done mid-chain.
-- **Only stop for a real blocker:** a gap Step 1b didn't cover that would change the skill's output (one `AskUserQuestion`, per the plugin's intake protocol — never a guess written down as an assumption), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
+- **Only stop for a real blocker:** a gap Step 1b didn't cover that would change the skill's output (one question-tool call, per the plugin's intake protocol — never a guess written down as an assumption), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
 - **No assumption sections.** No artifact in the chain carries an `Assumptions`, `Flagged assumptions` or "confirm or correct" section. Answers live in the header; unanswerable facts are Open items with an owner.
 
 ---
@@ -250,13 +269,19 @@ The point: the requirements doc should hand dev a wireframe that's already right
 
 ### Independent review — every pass, every chain
 
-Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the `Agent` tool. Give it only file paths: the artifacts under review, [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
+Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the subagent tool (`Agent` in Claude Code, `Task` in Cursor — [plugin-rules.md](../../plugin-rules.md) → Tool names). Give it only file paths: the artifacts under review (the wireframe renders, or `input/` for a live design), `00-sizing.md`, `00-journey.md` and the journey board renders when they exist, [plugin-rules.md](../../plugin-rules.md), [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
 
-The subagent can't see the chain, so the brief must start with a mode line, or the reviewer will pick its standalone branch and run the rest of the chain itself:
+The subagent can't see the chain, so the brief must start with these lines, or the reviewer will pick its standalone branch, re-run the Data gate, or try to ask the user — which a subagent can't do:
 
 ```
 Mode: Growth PM review — {first review | re-review, pass N}{ · depth Quick | Standard | Thorough — fix-loop chains only}. Write {file name} and return the verdict line. Then stop: no handoff, no next-step block, no prototype offer.
+Design: {chain-built wireframe {version} | live surface — {input/ files or URL}}
+Data: {live — Kramer, BigBrain | not measured — continuing without {Kramer | BigBrain}; mark, don't ask}
+Context: {the announcement's Context line — confirmed and inferred fields}
+Monday facts: {the Step 1c BigBrain answers with their tags, or "unverified — use monday-context.md, verified-against {date}"}
 ```
+
+A gap the reviewer can't resolve from the files becomes a Pending row, not a question.
 
 **No subagent tool available** (e.g. a chat session) — independence is the whole point of the review, so this is never silent:
 
@@ -320,7 +345,7 @@ Runs last in any chain that includes a review. Its reader is the designer and en
 
 ### Inputs
 
-Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. Read `00-sizing.md` — its baselines, weekly reach and conversion window fill the Measurement plan, and its verdict goes in the header. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis follows the chain's Data gate choice: without data, the Measurement plan keeps its structure and marks the baseline, MDE, sample size and runtime `[Not measured]` rather than computing them from anything invented. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
+Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Take any price, limit, or credit figure from the chain's BigBrain answers (Step 1c), or from [context/monday-context.md](../../context/monday-context.md) marked `[Unverified — …]` when the chain continued without BigBrain. Read `00-sizing.md` — its baselines, weekly reach and conversion window fill the Measurement plan, and its verdict goes in the header. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis follows the chain's Data gate choice: without data, the Measurement plan keeps its structure and marks the baseline, MDE, sample size and runtime `[Not measured]` rather than computing them from anything invented. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
 
 ### Rules
 
@@ -373,7 +398,7 @@ Fix-loop chains only — rows already fixed in the build target, so dev knows th
 
 ## Open items
 
-Anything the review couldn't assess or that needs an input before build — pending mobile screenshot, unconfirmed close button, a missing data source.
+Anything the review couldn't assess or that needs a human input before build — pending mobile screenshot, unconfirmed close button, an unpublished policy. Never an unmeasured number: those carry `[Not measured]` in place (Data gate) and are not Open items.
 
 | # | Owner | What's needed | Blocks | Source |
 |---|-------|---------------|--------|--------|
@@ -431,6 +456,8 @@ After delivering, one line only — existing-design chains: offer to build a wir
 Starting now →
 ```
 
-**Chain:** use the Step 2 announcement block.
+A single-skill route runs that skill exactly as if the user had called it directly: its own intake against its Required context table, its own Data gate when it has one, and its `→ Next step` block at the end. Route first, then let the skill ask — don't skip its intake because the routing block said "Starting now".
 
-Either way, begin the first skill immediately.
+**Chain:** use the Step 2 announcement block, after Steps 1b and 1c.
+
+Either way, begin the first skill immediately once its questions are answered.
