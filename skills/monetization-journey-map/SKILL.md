@@ -6,6 +6,8 @@ version: 0.2.0
 
 # Monetization Journey Map
 
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
+
 A monetization surface is one moment in a longer story. The user arrived from somewhere, wants something, and has a life after the screen — a resumed task, an invoice, a renewal, a win-back email. This skill maps that story **before** the spec: who hits the surface and why (scenarios), and every step they take (the journey). Every later skill reads it — the spec takes its flow map from it, the copy skill writes to each step's state of mind, the reviewer walks each scenario through the design.
 
 It runs twice, like `monetization-surface-spec`:
@@ -21,7 +23,7 @@ The board is built after the wireframe on purpose: it embeds the real wireframe 
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |---|---|---|
@@ -43,7 +45,7 @@ Write the scenarios per [references/scenario-cards.md](references/scenario-cards
 
 ### Step 2 — Evidence
 
-Size every scenario with real data per [references/evidence-queries.md](references/evidence-queries.md) — aggregate counts from the Kramer data tools (read-only). Show every question asked and its source. This step runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it"): with no `data-expert-agent` tool, push the user to connect it and ask once (Connect now / Continue without data — in a Growth PM chain, its Step 1c answer holds). Continuing without data, every frequency is marked `[Not measured]`, and a query that fails twice is marked the same way. Never an estimate.
+Size every scenario with real data per [references/evidence-queries.md](references/evidence-queries.md) — aggregate counts from the Kramer data tools (read-only). Show every question asked and its source. This step runs the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it"): with no `data-expert-agent` tool, push the user to connect it and ask once (Connect now / Continue without data — in a Growth PM chain, its Step 1c answer holds). Continuing without data, every frequency is marked `[Not measured]`, and a query that fails twice is marked the same way. Never an estimate.
 
 ### Step 3 — The journey
 

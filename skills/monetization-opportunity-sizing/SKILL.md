@@ -6,6 +6,8 @@ version: 0.1.0
 
 # Monetization Opportunity Sizing
 
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
+
 Before anyone designs a surface, put a number on it: how many accounts hit the moment, how many convert today, how much of the gap a better surface could close, and what each conversion is worth. The answer decides whether the build is worth it, and its baselines are the ones the journey, the spec's success metrics and the measurement plan all use. No other skill re-queries them.
 
 **The model:** reach × current conversion × addressable lift × ARPA → **ARR at stake per year**, for a low, base and high case. Mechanics, definitions and the query set: [references/sizing-model.md](references/sizing-model.md).
@@ -16,7 +18,7 @@ Writes `.monetization/{feature-slug}/00-sizing.md`. It runs before `00-journey.m
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |---|---|---|
@@ -34,16 +36,16 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 
 ## Data gate
 
-This skill is all data, so connecting both sources matters most here. It runs the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before writing anything, for both sources it needs:
+This skill is all data, so connecting both sources matters most here. It runs the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it") before writing anything, for both sources it needs:
 
 | Source | Search the tools for | Used for | Missing |
 |---|---|---|---|
 | Kramer MCP | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | Reach, conversion, conversion lag, the ceiling segment, past experiment lifts, converter plan mix and seats | Every input and the whole model are `[Not measured]`; verdict `Not sized — no data` |
 | BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | List prices per seat and per credit package for the plan the conversion lands on | Prices from `monday-context.md`, marked `[Unverified — …]` |
 
-With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with the question tool ([CLAUDE.md](../../CLAUDE.md) → Tool names): **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
+With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with the question tool ([plugin-rules.md](../../plugin-rules.md) → Tool names): **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
 
-**Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (CLAUDE.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
+**Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (plugin-rules.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
 
 A query that fails or times out is retried once in the same session; a second failure marks that input `[Not measured — query failed]`, is told to the user, and the run continues. Never an unmarked `{slot}`, never an estimate.
 
@@ -63,7 +65,7 @@ Start the queries together and poll each `jobId` every ≥5 s — they're indepe
 
 ### Step 3 — Prices from BigBrain
 
-Ask the Payments brain for the current list price of each plan or credit package in the converter mix, per seat and billing period. Without Kramer there's no mix: list the price of each plan or package the objective can land on for the tiers in scope, so the file still shows what one conversion is worth per seat. Compare each answer with [monday-context.md](../../context/monday-context.md). A mismatch is reported, never silently used: use the BigBrain answer with its source tag, list the difference under **Context drift** in the file, and tell the user in one line (the plugin's source-of-truth rules in [CLAUDE.md](../../CLAUDE.md)).
+Ask the Payments brain for the current list price of each plan or credit package in the converter mix, per seat and billing period. Without Kramer there's no mix: list the price of each plan or package the objective can land on for the tiers in scope, so the file still shows what one conversion is worth per seat. Compare each answer with [monday-context.md](../../context/monday-context.md). A mismatch is reported, never silently used: use the BigBrain answer with its source tag, list the difference under **Context drift** in the file, and tell the user in one line (the plugin's source-of-truth rules in [plugin-rules.md](../../plugin-rules.md)).
 
 ### Step 4 — Model the cases
 

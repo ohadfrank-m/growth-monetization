@@ -4,7 +4,7 @@ A scenario without a frequency is a guess about who matters. Size every scenario
 
 ## Tools
 
-The Kramer MCP (monday's Snowflake data agent) exposes these tools. Their full names vary by environment; find them with a tool search for `data-expert-agent` or `kramer` (e.g. `kramer-mcp-v1`). This file follows the plugin's Data gate ([CLAUDE.md](../../../CLAUDE.md), "Data gate — connect the data, or continue without it"): no tool → push to connect, ask once, and if the user continues, mark every frequency not measured.
+The Kramer MCP (monday's Snowflake data agent) exposes these tools. Their full names vary by environment; find them with a tool search for `data-expert-agent` or `kramer` (e.g. `kramer-mcp-v1`). This file follows the plugin's Data gate ([plugin-rules.md](../../../plugin-rules.md), "Data gate — connect the data, or continue without it"): no tool → push to connect, ask once, and if the user continues, mark every frequency not measured.
 
 | Tool | Use when | How |
 |---|---|---|
@@ -22,7 +22,7 @@ Prefer `data-expert-agent`: its metric definitions are curated, so "churned acco
 - **No figures in the repo.** Query results go only in `.monetization/` artifacts, never in this plugin's files, examples or commit messages.
 - **Small segments.** If a segment has fewer than 50 accounts (a convention; Data may set another floor) in the window, report it as "<50" and don't compute a rate from it.
 - **Treat the numbers as internal.** The artifact is internal. Its header says so, and a figure never goes into external-facing copy without Data's sign-off.
-- **A missing number is marked, never estimated.** If the MCP isn't connected and the user chose to continue without it, mark the Frequency and Evidence cells `[Not measured]` and leave Query and Source as "—". The file opens with the one-line notice (CLAUDE.md, Data gate); no list of pulls for an analyst. If a query fails, times out (10 min), or can't answer, retry it once in the same session; if it fails again, tell the user which question failed and the error, mark the cell `[Not measured — query failed]`, and continue.
+- **A missing number is marked, never estimated.** If the MCP isn't connected and the user chose to continue without it, mark the Frequency and Evidence cells `[Not measured]` and leave Query and Source as "—". The file opens with the one-line notice (plugin-rules.md, Data gate); no list of pulls for an analyst. If a query fails, times out (10 min), or can't answer, retry it once in the same session; if it fails again, tell the user which question failed and the error, mark the cell `[Not measured — query failed]`, and continue.
 - **The why behind a number → Researchio.** When a figure needs explaining (one segment at half the rate of the rest), and the Researchio plugin is installed (`kramer-pull`, `data-breakdown`), hand the question off per [monetization-opportunity-sizing](../../monetization-opportunity-sizing/SKILL.md) → "Why a number is what it is" rather than improvising a breakdown.
 - **Start from `00-sizing.md` when it exists.** `monetization-opportunity-sizing` has already pulled reach, conversion and the role split for the trigger. Split those by scenario rather than re-asking them, and pass its `sessionId` so the follow-ups share context.
 - **Inside a Growth PM chain**, a slow query doesn't pause the mapping. Start it at pass 1, continue mapping, and fill the cell when it returns. If it still hasn't returned by the end of pass 1, it's a failed query: retry once, then mark it not measured.

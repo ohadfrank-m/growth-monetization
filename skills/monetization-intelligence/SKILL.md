@@ -6,6 +6,8 @@ version: 0.3.0
 
 # Monetization Intelligence
 
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
+
 How competitors make money — and how they run the surfaces where they ask for it. Price is one input; the job is the whole monetization system: the value metric, packaging and tiers, price points and discounting, the free/trial model, expansion paths, and every surface — pricing page, paywall, upgrade flow, trial, credit top-up, cancellation. A spec for a cancellation flow should be able to start from "here's how five competitors run theirs", not from a blank page.
 
 Powered by the PricingSaaS MCP for plans and change history, public product documentation and captures for surfaces, and enrichment sources (Wayback, changelogs, community) for everything else.
@@ -37,7 +39,7 @@ Enrichment methods (Wayback Machine, changelog mining, earnings calls, job posti
 
 ## Required context
 
-Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
+Every run follows the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |-------|--------------------------|-----------|

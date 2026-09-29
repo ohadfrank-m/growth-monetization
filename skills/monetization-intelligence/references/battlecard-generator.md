@@ -12,7 +12,7 @@ Produce a sales- and product-ready pricing battlecard comparing your company aga
 
 ## Step 1: Load monday.com's pricing
 
-Read [context/monday-context.md](../../../context/monday-context.md): tiers, seat minimums and bundles, annual vs monthly, AI credits by tier, feature gating, trial. That's the "Your company" side. Never ask the user for it, and never quote a monday price from memory. If the context file looks stale against the live pricing page, say which line and suggest the update to the file's owner (CLAUDE.md, Source of truth).
+Read [context/monday-context.md](../../../context/monday-context.md): tiers, seat minimums and bundles, annual vs monthly, AI credits by tier, feature gating, trial. That's the "Your company" side. Never ask the user for it, and never quote a monday price from memory. If the context file looks stale against the live pricing page, say which line and suggest the update to the file's owner (plugin-rules.md, Source of truth).
 
 ---
 

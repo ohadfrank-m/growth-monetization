@@ -57,7 +57,7 @@ Frequency cap:
 
 Dismiss behaviour:
 - Warning banner: dismissible; re-appears next session if balance still in warning range
-- Depletion modal: not dismissible until action taken (top-up or notify admin)
+- Depletion / block state: blocks the paid AI action only, never the product. Always closable, with the actions top-up (admin) or notify admin (IC) plus a visible way back to work — free AI features keep running (context file). A modal that can't be closed until the user pays fails the escape-hatch gate in the reviewer's rubric
 ```
 
 ## Copy hook

@@ -6,9 +6,11 @@ version: 0.5.0
 
 # Monetization Growth PM
 
+**Read first:** [plugin-rules.md](../../plugin-rules.md) — the plugin-wide rules (intake, Data gate, tool names, artifact standards). Hosts don't load it automatically: read it before doing anything else in this run, unless it's already in this conversation.
+
 You're the PM on the job. Work out what the user wants to walk away with and how deep the review should go, then run every skill that produces it — without pausing between steps — and finish with `05-requirements.md`, the only artifact you write yourself.
 
-This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — ask, never assume" in the plugin's CLAUDE.md). In a chain, you run that intake once, up front, for every skill in it. If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
+This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — ask, never assume" in the plugin's plugin-rules.md). In a chain, you run that intake once, up front, for every skill in it. If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
 
 ---
 
@@ -56,7 +58,7 @@ When the set is clear, don't ask the scoping question — go to Step 1b. A clear
 
 ### Scoping question — only when ambiguous
 
-Up to three pick-one questions in **one** message — it counts as one ask. Deliverables are cumulative (a wireframe needs spec + copy, requirements need a review), so "how far" is one choice, not a set of checkboxes. Use the question tool with all questions in a single call if available (`AskUserQuestion` in Claude Code, `AskQuestion` in Cursor — [CLAUDE.md](../../CLAUDE.md) → Tool names); otherwise send them as numbered lists with "reply e.g. 2 / yes / standard".
+Up to three pick-one questions in **one** message — it counts as one ask. Deliverables are cumulative (a wireframe needs spec + copy, requirements need a review), so "how far" is one choice, not a set of checkboxes. Use the question tool with all questions in a single call if available (`AskUserQuestion` in Claude Code, `AskQuestion` in Cursor — [plugin-rules.md](../../plugin-rules.md) → Tool names); otherwise send them as numbered lists with "reply e.g. 2 / yes / standard".
 
 **Q1 — "How far should this go?"** (pick one; mark the recommended option by signal)
 
@@ -103,7 +105,7 @@ Name every added prerequisite and default in the announcement, so the user sees 
 
 ## Step 1b — Required-context intake
 
-Scoping decides *which* skills run. Intake makes sure each of them has what it needs, before any of them starts. This is the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume") run once for the whole chain, so no skill mid-chain has to guess and no artifact carries an `Assumptions` section.
+Scoping decides *which* skills run. Intake makes sure each of them has what it needs, before any of them starts. This is the plugin's intake protocol ([plugin-rules.md](../../plugin-rules.md), "Intake — ask, never assume") run once for the whole chain, so no skill mid-chain has to guess and no artifact carries an `Assumptions` section.
 
 Collect the fields every skill in the chain needs. Ask only for fields the chain uses: a copy-only chain doesn't need the trigger's exact threshold.
 
@@ -129,7 +131,7 @@ A fact nobody in the conversation can answer — a legal policy, an unpublished 
 
 ## Step 1c — Data gate
 
-Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with the question tool: **Connect now (recommended)** · **Continue without data**. It shares a round with the scoping or intake questions — see "Question rounds" below.
+Run the plugin's Data gate ([plugin-rules.md](../../plugin-rules.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with the question tool: **Connect now (recommended)** · **Continue without data**. It shares a round with the scoping or intake questions — see "Question rounds" below.
 
 - **Connect now:** wait, search the tools again, and continue with data.
 - **Continue without data:** announce and run the whole chain. The announcement carries `**Data:** not measured — continuing without {Kramer | BigBrain}; every unmeasured number is marked`. Every skill in the chain inherits the choice and marks what it couldn't measure (the gate's marking table) — none of them asks again.
@@ -267,7 +269,7 @@ The point: the requirements doc should hand dev a wireframe that's already right
 
 ### Independent review — every pass, every chain
 
-Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the subagent tool (`Agent` in Claude Code, `Task` in Cursor — [CLAUDE.md](../../CLAUDE.md) → Tool names). Give it only file paths: the artifacts under review (the wireframe renders, or `input/` for a live design), `00-sizing.md`, `00-journey.md` and the journey board renders when they exist, [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
+Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the subagent tool (`Agent` in Claude Code, `Task` in Cursor — [plugin-rules.md](../../plugin-rules.md) → Tool names). Give it only file paths: the artifacts under review (the wireframe renders, or `input/` for a live design), `00-sizing.md`, `00-journey.md` and the journey board renders when they exist, [plugin-rules.md](../../plugin-rules.md), [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
 
 The subagent can't see the chain, so the brief must start with these lines, or the reviewer will pick its standalone branch, re-run the Data gate, or try to ask the user — which a subagent can't do:
 

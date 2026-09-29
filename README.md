@@ -103,7 +103,7 @@ Clone the repo, then add to your project's `.cursor/rules/`:
 git clone https://github.com/ohadfrank-m/growth-monetization
 ```
 
-Copy `CLAUDE.md` content into `.cursor/rules/monetization.mdc`. Add required MCP servers to `~/.cursor/mcp.json` — see [mcp-setup.md](mcp-setup.md).
+Copy `plugin-rules.md` content into `.cursor/rules/monetization.mdc`. Add required MCP servers to `~/.cursor/mcp.json` — see [mcp-setup.md](mcp-setup.md).
 
 ### Claude Desktop / Claude.ai
 
@@ -321,7 +321,7 @@ growth-monetization/
 ├── .claude-plugin/
 │   ├── plugin.json
 │   └── marketplace.json
-├── CLAUDE.md                          ← plugin-wide rules: intake, data gate, chain mode, artifacts
+├── plugin-rules.md                          ← plugin-wide rules: intake, data gate, chain mode, artifacts
 ├── HANDOFF.md                         ← design decisions and history for the next maintainer
 ├── docs/
 │   └── flow.svg                       ← the "How it works" diagram
@@ -348,7 +348,7 @@ growth-monetization/
 - **Updating CRO best-practice knowledge** (a benchmark, a best-in-class example, an anti-pattern): edit the matching file in `playbooks/`. It's cited by both `monetization-surface-spec` and `monetization-design-reviewer` — never copy it into a skill's own `references/`. Tag every claim `[Verified]` / `[Reported]` / `[Teardown needed]` and date your sources, then run `python3 scripts/lint-playbooks.py` before committing. See [playbooks/README.md](playbooks/README.md).
 - **Adding a playbook**: it isn't finished until it carries the mandatory AI-native reference set — Clay, Figma, ClickUp, and Claude teardowns in the standard shape, an at-a-glance comparison, a copy bank, and dated sources. See [playbooks/README.md](playbooks/README.md).
 - **Changing a skill:** keep `SKILL.md` lean and self-sufficient (its minimum must work even without `references/`); put mechanics specific to that skill in its `references/`; put anything a second skill needs in `playbooks/`. Keep its **Required context** table current.
-- **Adding a skill:** add a folder under `skills/`, give it a Required context table, add it to the skills table and output-folder tree in `CLAUDE.md`, to the Growth PM's deliverables table in `skills/monetization-growth-pm/SKILL.md`, to `templates/ARTIFACT_HEADER.md`, to `docs/flow.svg`, and to this README
+- **Adding a skill:** add a folder under `skills/`, give it a Required context table, add it to the skills table and output-folder tree in `plugin-rules.md`, to the Growth PM's deliverables table in `skills/monetization-growth-pm/SKILL.md`, to `templates/ARTIFACT_HEADER.md`, to `docs/flow.svg`, and to this README
 
 ---
 
