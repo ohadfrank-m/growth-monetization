@@ -52,7 +52,7 @@ Decide this first — it sets the order, the pre-marks, what Review needs, and w
 
 **Combining signals.** Union the sets of every row that matches — "research how Notion sells credits, then wireframe ours" is Research + the wireframe set. A research ask doesn't settle the wireframe question: "research, then spec ours" still asks, with Q2 recommended Yes. "Just" / "only" caps the set to what's named, plus prerequisites. The fix loop is part of Review, not a separate deliverable — it runs whenever Review runs on a wireframe the chain built.
 
-When the set is clear, don't ask — go to Step 2.
+When the set is clear, don't ask the scoping question — go to Step 1b. A clear deliverable set skips scoping only; intake (Step 1b) and the Data gate (Step 1c) still run before the announcement.
 
 ### Scoping question — only when ambiguous
 
@@ -73,7 +73,7 @@ Up to three pick-one questions in **one** message — it counts as one ask. Deli
 
 If the surface is existing (or can't tell) and no design was shared: if it's publicly reachable (e.g. monday.com/pricing), don't ask — capture it yourself at 1440px and 375px into `.monetization/{feature-slug}/input/` (see Capturing screens below). If it's behind login, add one line to the same message: "Paste a screenshot or Figma link of the current version." If the user picked a review option and none arrives, that's a real blocker — ask once more; only treat the surface as new if they say it doesn't exist yet.
 
-The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`. The two existing-surface redesign options run the **new-surface** order — the current live design becomes an input to the spec (captured per the rule below), not the thing being reviewed. Never more than this one message. Don't explain the skills before asking.
+The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`. The two existing-surface redesign options run the **new-surface** order — the current live design becomes an input to the spec (captured per the rule below), not the thing being reviewed. The scoping question is never more than this one message, and never split into several. Don't explain the skills before asking. It isn't the only message before the run, though: intake (Step 1b) and the Data gate (Step 1c) may still need one — see "Question rounds" below.
 
 ### Prerequisites — add them, don't ask
 
@@ -94,6 +94,8 @@ Name every added prerequisite and default in the announcement, so the user sees 
 **Spec + copy without a wireframe** ends at `02-copy.md` — nothing to review, so no review and no synthesis. Offer the wireframe once, after the copy.
 
 **Wireframe without Review** ends at `03-wireframe.html`. Offer Review + Requirements once, after the wireframe.
+
+**Review only** (existing surface) runs sizing → review and ends at `04-review.md` — no copy, no synthesis. Offer copy rewrites + `05-requirements.md` once, after the review.
 
 **Sizing verdict gates the rest.** `00-sizing.md` ends with a go / no-go line. On **Go — test** or **Go — ship + holdout**, continue without pausing. On **Re-scope** or **No-go**, stop and ask once (continue as scoped / the re-scope the file names / stop) — it's a real blocker, since everything after it would be built on a case the numbers don't support. On **Not sized — no data** (the user chose to continue without Kramer), continue without asking again: they already made that call at the Data gate, and the verdict says the case is unmeasured.
 
@@ -117,7 +119,7 @@ Collect the fields every skill in the chain needs. Ask only for fields the chain
 | Current design (existing surface) | Review, journey (live mode) | `input/`, a Figma link, or a public URL you capture yourself (Scoping question rules) |
 
 1. **Infer** what's obvious, one line per field with its source.
-2. **Ask every real gap in one question-tool round** — at most 4 questions, recommended answer first. When the scoping question is needed too, put both in the same call if they fit in 4 questions; otherwise scoping first, then intake as the next message, since the scoping answer decides which fields matter.
+2. **Ask every real gap in one question-tool round** — at most 4 questions, recommended answer first. How this round combines with the scoping question and the Data gate: "Question rounds" at the end of Step 1c.
 3. **Follow up only when an answer opens a new gap** ("both roles" on a surface you'd mapped for admins only → which IC path).
 4. **Carry the answers.** The announcement prints them as one Context line. Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
 
@@ -127,7 +129,7 @@ A fact nobody in the conversation can answer — a legal policy, an unpublished 
 
 ## Step 1c — Data gate
 
-Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with the question tool: **Connect now (recommended)** · **Continue without data**. When the scoping or intake questions are also pending and they fit in 4 questions, ask them in the same call.
+Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with the question tool: **Connect now (recommended)** · **Continue without data**. It shares a round with the scoping or intake questions — see "Question rounds" below.
 
 - **Connect now:** wait, search the tools again, and continue with data.
 - **Continue without data:** announce and run the whole chain. The announcement carries `**Data:** not measured — continuing without {Kramer | BigBrain}; every unmeasured number is marked`. Every skill in the chain inherits the choice and marks what it couldn't measure (the gate's marking table) — none of them asks again.
@@ -137,6 +139,21 @@ This is the chain's only data question. Research-only and copy-only chains skip 
 **Verify the monday facts, once.** With BigBrain connected, list the facts the chain will cite — the list price and seat rules of the tiers in scope, the credit packages and allotments, the gate for the feature, the trial terms — and ask BigBrain for each (search for `AI Brain` / `bigbrain`; `AI Brain - Payments` owns plans, prices, credits and billing). Compare each answer with [monday-context.md](../../context/monday-context.md). Every skill in the chain cites the BigBrain answer. A mismatch is never silently resolved: the announcement carries one line — `Context drift: {fact} — BigBrain {value}, monday-context.md {value}; using BigBrain` — `00-sizing.md` lists it under Context drift, and synthesis adds an Open item for the context file's owner to update the file. Continuing without BigBrain, every skill cites the context file with `[Unverified — monday-context.md, verified-against {date}]`.
 
 Inside a running chain, a query that fails twice doesn't stop the chain: tell the user which question failed, mark that cell `[Not measured — query failed]`, and continue.
+
+### Question rounds — scoping, intake and the gate, in order
+
+Every question before the run fits in at most two rounds, each one question-tool call of at most 4 questions:
+
+| Situation | Round 1 | Round 2 |
+|-----------|---------|---------|
+| Scoping needed | Scoping (Q1–Q3) + the Data gate question, when an MCP is missing | Intake — the scoping answer decides which fields matter |
+| Scoping not needed | The Data gate question + the top 3 intake gaps | The remaining intake gaps, only if there are any |
+| Nothing missing | — (announce and start) | — |
+
+- The gate question goes in round 1 whenever scoping could lead to sizing, journey, spec, review or synthesis — every new-surface and existing-surface option does.
+- On **Continue without data**, drop the intake fields that only feed a computed number — the longest test and the smallest ARR that justifies the build — since sizing reads `Not sized — no data` regardless. Record them in the sizing header as `not asked — not sized`.
+- Constraints are asked, never inferred — but as one question whose recommended option is "None beyond the above", so a user with none answers in one click. The answer goes in `confirmed with user`.
+- After round 2, announce and start. A gap found later is a mid-chain blocker (Chain mode rules), not a third pre-run round.
 
 ---
 
@@ -431,6 +448,8 @@ After delivering, one line only — existing-design chains: offer to build a wir
 Starting now →
 ```
 
-**Chain:** use the Step 2 announcement block.
+A single-skill route runs that skill exactly as if the user had called it directly: its own intake against its Required context table, its own Data gate when it has one, and its `→ Next step` block at the end. Route first, then let the skill ask — don't skip its intake because the routing block said "Starting now".
 
-Either way, begin the first skill immediately.
+**Chain:** use the Step 2 announcement block, after Steps 1b and 1c.
+
+Either way, begin the first skill immediately once its questions are answered.

@@ -19,14 +19,14 @@ Built for: pricing pages · paywalls · promotions · upgrade flows · credit/co
 
 | You want | Do this | What happens |
 |----------|---------|--------------|
-| **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go (asking one short message only if your prompt doesn't say), runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
+| **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go, asks for anything missing in at most two short rounds before it starts, runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
 | **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-opportunity-sizing`, `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing — all in one message — then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
 
 You never have to use the Growth PM, and you never have to use every skill. Every skill reads what's already in the feature folder and picks up from there.
 
 ### How the Growth PM scopes a run
 
-When your prompt is clear ("wireframe a credit depletion surface for Pro"), it announces the plan and starts. When it isn't, it asks one message with up to three pick-one questions:
+When your prompt is clear about the deliverable ("wireframe a credit depletion surface for Pro"), it skips the scoping question. When it isn't, it asks one message with up to three pick-one questions:
 
 | Question | Options |
 |----------|---------|
@@ -34,7 +34,7 @@ When your prompt is clear ("wireframe a credit depletion surface for Pro"), it a
 | **Start with a benchmark of how competitors run this surface?** | Yes / No — recommended for a new surface; the journey and the spec's flow map are then built from real competitor flows |
 | **How thorough should the review be?** *(only when the chain reviews a wireframe it built)* | Standard *(recommended)* · Quick · Thorough — see below |
 
-Then it makes sure every skill in the run has what it needs — surface, cohort, tier, role, trigger, objective metric, constraints, the current design — inferring what's obvious and asking the rest in **one** message, before anything is written. Mid-run, a skill that hits a gap stops and asks. No artifact ever carries an "Assumptions" section: what you answered goes in its header, and only facts nobody can answer yet (a legal policy, an unpublished price) stay open, each with an owner.
+Then it makes sure every skill in the run has what it needs — surface, cohort, tier, role, trigger, objective metric, constraints, the current design — inferring what's obvious and asking the rest before anything is written — together with the scoping question when it fits, otherwise as one follow-up message. Either way, never more than two rounds. Mid-run, a skill that hits a gap stops and asks. No artifact ever carries an "Assumptions" section: what you answered goes in its header, and only facts nobody can answer yet (a legal policy, an unpublished price) stay open, each with an owner.
 
 Before announcing a run that sizes, designs or reviews, it checks that monday's internal data is connected — Kramer for counts and baselines, BigBrain for plans, prices and credits. If either is missing, it names the MCP, says what it unlocks (the opportunity size, baselines, verified monday facts), points to [mcp-setup.md](mcp-setup.md), and asks once: **Connect now** (recommended) or **Continue without data**. Continue, and the whole run goes ahead — every number it couldn't measure is marked `[Not measured]` in place, never estimated, and each file opens with one line saying the data tools weren't connected. Research and copy don't need the data at all.
 
