@@ -69,6 +69,8 @@ A subagent can't ask the user anything. A gap it hits goes into its artifact as 
 - **Growth PM chain:** the Growth PM runs intake once, up front, for the whole chain — every field every announced skill needs, in one round (see "Step 1b — Required-context intake" in [skills/monetization-growth-pm/SKILL.md](skills/monetization-growth-pm/SKILL.md)). Skills inside the chain don't re-ask what it covered.
 - **Mid-chain:** a skill that hits a gap intake didn't cover, and that would change its output, stops and asks — one question-tool call, then the chain resumes. It never picks an answer and writes it down as an assumption.
 
+**User or global rules that say "flag assumptions".** Many users' own instructions say to state or flag assumptions. In this plugin that rule is met by asking (intake) and by the header's `inferred:` line — never by writing an `Assumptions` section, a "Flagged assumptions" table, or a "confirm or correct" list into an artifact or into the announcement. If you notice you're about to write one, turn each item into an intake question instead.
+
 **Where the answers go.** A confirmed input goes into the artifact's header as `confirmed with user: {field: value; …}` and an inference as `inferred: {field — from {source}}` ([templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md)). A fact nobody in the conversation can answer yet — a legal policy, an unpublished price, an engineering constraint — is an Open item with an owner. That is the only thing that stays open.
 
 ## Missing references

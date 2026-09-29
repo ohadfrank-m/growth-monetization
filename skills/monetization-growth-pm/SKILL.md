@@ -121,7 +121,7 @@ Collect the fields every skill in the chain needs. Ask only for fields the chain
 1. **Infer** what's obvious, one line per field with its source.
 2. **Ask every real gap in one question-tool round** — at most 4 questions, recommended answer first. How this round combines with the scoping question and the Data gate: "Question rounds" at the end of Step 1c.
 3. **Follow up only when an answer opens a new gap** ("both roles" on a surface you'd mapped for admins only → which IC path).
-4. **Carry the answers.** The announcement prints them as one Context line. Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
+4. **Carry the answers.** The announcement prints them as one Context line — each field `confirmed` or `from {source}`, never "assumed". Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
 
 A fact nobody in the conversation can answer — a legal policy, an unpublished price, an engineering limit — isn't an intake question. It becomes an Open item with an owner, and it's the only thing that stays open.
 
