@@ -267,13 +267,19 @@ The point: the requirements doc should hand dev a wireframe that's already right
 
 ### Independent review — every pass, every chain
 
-Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the subagent tool (`Agent` in Claude Code, `Task` in Cursor — [CLAUDE.md](../../CLAUDE.md) → Tool names). Give it only file paths: the artifacts under review, [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
+Run each review pass — first review, every re-review, and the review in the existing-design chain — in a fresh subagent via the subagent tool (`Agent` in Claude Code, `Task` in Cursor — [CLAUDE.md](../../CLAUDE.md) → Tool names). Give it only file paths: the artifacts under review (the wireframe renders, or `input/` for a live design), `00-sizing.md`, `00-journey.md` and the journey board renders when they exist, [monetization-design-reviewer/SKILL.md](../monetization-design-reviewer/SKILL.md), its scoring rubric, the surface's playbook, `monday-context.md`, and the chain's research doc if there is one (a surface benchmark is a valid benchmark source). Not the conversation, not the reasoning that produced the artifacts. The skill that built the design shouldn't be the one that approves it.
 
-The subagent can't see the chain, so the brief must start with a mode line, or the reviewer will pick its standalone branch and run the rest of the chain itself:
+The subagent can't see the chain, so the brief must start with these lines, or the reviewer will pick its standalone branch, re-run the Data gate, or try to ask the user — which a subagent can't do:
 
 ```
 Mode: Growth PM review — {first review | re-review, pass N}{ · depth Quick | Standard | Thorough — fix-loop chains only}. Write {file name} and return the verdict line. Then stop: no handoff, no next-step block, no prototype offer.
+Design: {chain-built wireframe {version} | live surface — {input/ files or URL}}
+Data: {live — Kramer, BigBrain | not measured — continuing without {Kramer | BigBrain}; mark, don't ask}
+Context: {the announcement's Context line — confirmed and inferred fields}
+Monday facts: {the Step 1c BigBrain answers with their tags, or "unverified — use monday-context.md, verified-against {date}"}
 ```
+
+A gap the reviewer can't resolve from the files becomes a Pending row, not a question.
 
 **No subagent tool available** (e.g. a chat session) — independence is the whole point of the review, so this is never silent:
 
