@@ -1,7 +1,7 @@
 ---
 name: monetization-journey-map
 description: This skill should be used when the user wants to "map the user journey", "map the flow", "journey map for a cancellation / upgrade / trial / top-up flow", "what are the use cases", "use scenarios", "who hits this and why", "a day in the life", "map every step of the upgrade flow", "show the design on each step", or when a monetization surface is being built and the scenarios and end-to-end steps haven't been defined yet. Produces 00-journey.md (scenarios + every step before, on and after the surface) and, once a wireframe exists, 03-journey.html (a journey board with the real wireframe state on each step).
-version: 0.2.0
+version: 0.2.1
 ---
 
 # Monetization Journey Map

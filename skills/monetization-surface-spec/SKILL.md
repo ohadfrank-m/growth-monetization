@@ -1,7 +1,7 @@
 ---
 name: monetization-surface-spec
 description: This skill should be used when the user wants to "spec out a paywall", "wireframe a credit depletion modal", "design brief for an upgrade flow", "create a spec for a pricing page", "build a trial expiry screen", "spec a cancellation flow", "what should a credit meter look like", "create an upgrade trigger for [feature]", "write a design brief for a monetization surface", "I need a spec for [any of — paywall, feature gate, upgrade prompt, credit top-up, trial flow, cancellation screen, pricing page]". Produces a structured spec artifact and low-fi HTML wireframe. Connects to Figma MCP when a design already exists.
-version: 0.6.0
+version: 0.6.1
 ---
 
 # Monetization Surface Spec

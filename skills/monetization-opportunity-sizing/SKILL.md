@@ -1,7 +1,7 @@
 ---
 name: monetization-opportunity-sizing
 description: This skill should be used when the user wants to "size this opportunity", "how much ARR is at stake", "is this worth building", "how many accounts hit this", "what's the baseline conversion", "sample size for this test", "go / no-go on this surface", or before any monetization surface is designed and nobody has put a number on it yet. Produces 00-sizing.md — reach × current conversion × addressable lift × ARPA → ARR at stake, in low / base / high cases, every input from a Kramer query or a BigBrain answer shown in the file (or marked not measured when you continue without them), plus testability and a go / no-go line. Runs first in every Growth PM chain that designs or reviews a surface.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Monetization Opportunity Sizing

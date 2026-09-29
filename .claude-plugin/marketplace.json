@@ -8,7 +8,7 @@
       "name": "growth-monetization",
       "source": "./",
       "description": "Monetization copilot for growth squads: a Growth PM that runs the full flow on monday's internal data, plus opportunity sizing, monetization intelligence, surface specs, CRO design review, and conversion copy you can use on their own.",
-      "version": "0.5.0"
+      "version": "0.6.0"
     }
   ]
 }

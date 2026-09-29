@@ -1,7 +1,7 @@
 ---
 name: monetization-intelligence
 description: Competitive monetization intelligence — how other companies make money and how they run every monetization surface, not just what they charge. Covers the whole system (value metric, packaging and tiers, price points, discounting, free/trial model, expansion paths, where the product asks for money) and benchmarks how competitors run a specific surface — upgrade flow, cancellation flow, paywall, trial, credit top-up, pricing page. Use when the user wants to "research how X prices", "how do competitors handle cancellation", "benchmark upgrade flows", "how does X's paywall work", "how do others run trial expiry", "monetization strategy of X", "how does X make money", "X's packaging", "competitive pricing landscape", "how do AI companies sell credits", "benchmark our pricing model", "monitor pricing changes", "tear down X's pricing page", "pricing battlecard for X", "what do customers think about X's pricing", "weekly pricing digest", "has X changed their free trial", "what do people actually pay for X", or "pricing intelligence". Works best with the PricingSaaS MCP and falls back to web-only enrichment without it. Standalone runs offer to log to the Pricing Intelligence board on monday.com.
-version: 0.3.0
+version: 0.3.1
 ---
 
 # Monetization Intelligence
