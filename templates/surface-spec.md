@@ -18,12 +18,17 @@ skill: monetization-surface-spec
 feature / topic: {surface name} — {tier or context}
 surface type: {pricing-page | paywall | promotion | upgrade-trigger | credit-ui | trial | cancellation}
 cohort: {new-user | existing-user | both}
+data: {live — {tool}, {date range}, run {YYYY-MM-DD} | not measured — {Kramer | BigBrain | Kramer, BigBrain} not connected}
+verified against: {brain name}, {YYYY-MM-DD} | monday-context.md, verified-against {date} — unverified
 author: {name}
 date: {YYYY-MM-DD}
 status: draft
+confirmed with user: {field: value; …}
+inferred: {field — from {source}; …}
 ---
 
 # {Surface name}
+{> Data tools weren't connected (…) — figures marked [Not measured] weren't measured. — only when continuing without data}
 e.g. "Credit Depletion Modal — Pro Tier" / "Feature Gate — AI Agents, Free Users"
 
 ## Brief [required]
@@ -125,11 +130,13 @@ Include benchmark examples only when they directly informed a structural decisio
 → Prompt: "Write copy for .monetization/{feature-slug}/01-spec.md"
 ```
 
+The next-step block is for standalone runs only — omit it inside a Growth PM chain. The header follows [ARTIFACT_HEADER.md](ARTIFACT_HEADER.md); there is no `Assumptions` section — inputs are in `confirmed with user` / `inferred`, and facts nobody can answer yet are Open items with an owner.
+
 ---
 
 ## Formatting rules
 
-- The brief drives everything — if it's vague, ask one question before proceeding
+- The brief drives everything — if it's vague, ask every gap in one intake message before proceeding ([brief-intake.md](../skills/monetization-surface-spec/references/brief-intake.md))
 - Surface structure table is non-negotiable — no prose descriptions of layout
 - Copy strategy names the reason and hands off — never writes final copy
 - Edge cases are addressed even when the answer is "not applicable, because..." — no silent omissions

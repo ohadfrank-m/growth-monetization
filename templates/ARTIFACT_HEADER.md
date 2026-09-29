@@ -27,7 +27,7 @@ revises: {file} for {review rows}                           # any -v2/-v3 file
 
 | Field | Required | Notes |
 |-------|----------|-------|
-| `skill` | Yes | Exact skill name as in plugin.json |
+| `skill` | Yes | Exact skill name, as in the skill's `SKILL.md` frontmatter `name` |
 | `feature / topic` | Yes | e.g. "Credit depletion modal — Pro tier" or "Notion pricing research" |
 | `surface type` | Yes for design artifacts | From the 7 surface types in monetization-surface-spec |
 | `cohort` | Yes for design artifacts | Which user type this surface addresses |

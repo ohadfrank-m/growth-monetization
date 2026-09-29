@@ -17,9 +17,12 @@ plugin: growth-monetization
 skill: monetization-intelligence
 feature / topic: {Company or topic} — {workflow type}
 surface type: research
+verified against: monday-context.md, verified-against {date} — or the chain's brain and date inside a Growth PM chain
 author: {name}
 date: {YYYY-MM-DD}
 status: draft
+confirmed with user: {field: value; …}
+inferred: {field — from {source}; …}
 ---
 
 # {Company} — {Workflow title}
@@ -101,6 +104,8 @@ Exact additions for `playbooks/{surface}.md` — each tagged `[Verified]` / `[Re
 → Next step: {skill-name} — {one sentence}
 → Prompt: "{copy-pasteable prompt}"
 ```
+
+The next-step block and "What to do next" offers are for standalone runs only — omit both inside a Growth PM chain.
 
 ---
 
