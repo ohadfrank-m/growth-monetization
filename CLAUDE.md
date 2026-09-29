@@ -107,7 +107,7 @@ Counts, rates and baselines about monday's own users come from monday's internal
 Options: **Connect now (recommended)** · **Continue without data**. List only the MCPs that are missing.
 
 - **Connect now:** wait for the user to say it's connected, search the tools again, and continue with data. Still missing → say so and ask the same question once more.
-- **Continue without data:** run the rest of the flow. Every artifact records the choice in its header (`data: not measured — {Kramer | BigBrain} not connected`) and opens its body with one line: `> Data tools weren't connected ({Kramer | BigBrain}) — figures marked [Not measured] weren't measured.`
+- **Continue without data:** run the rest of the flow. Every artifact records the choice in its header (`data: not measured — {Kramer | BigBrain | Kramer, BigBrain} not connected`) and opens its body, right under the title, with one line: `> Data tools weren't connected ({Kramer | BigBrain | Kramer, BigBrain}) — figures marked [Not measured] weren't measured.`
 
 **Ask once per run.** In a Growth PM chain the Growth PM asks, up front (Step 1c), and the answer holds for every skill in the chain — no skill re-asks. A skill called directly asks once for its own run.
 

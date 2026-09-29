@@ -60,6 +60,8 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 ```markdown
 # Journey: {surface name}
 
+{> Data tools weren't connected ({Kramer | BigBrain | Kramer, BigBrain}) — figures marked [Not measured] weren't measured. — only when the run continued without data}
+
 **Surface:** {type} · **Cohorts:** {…} · **Tiers:** {…} · **Mode:** {new | live journey mapped from {source}}
 **Data:** {live — {tool}, {date range}, run {YYYY-MM-DD} | not measured — Kramer not connected} · internal data, don't share outside monday
 

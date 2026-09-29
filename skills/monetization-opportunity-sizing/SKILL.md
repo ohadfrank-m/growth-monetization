@@ -26,6 +26,10 @@ Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "I
 | Longest test the team will run | Decides whether a test can read the base-case lift | The prompt only. Ask; recommended answer: 6 weeks |
 | Smallest ARR that justifies the build | The go / no-go bar | The prompt only — never inferred. If the user has none, the verdict covers testability only and the bar becomes an Open item for Product |
 
+**Order of questions, standalone.** Ask the Data gate question (below) together with the first three gaps in one round. If the user continues without Kramer, the last two fields can't change the output — the verdict is `Not sized — no data` either way — so don't ask them; the header records `longest test, ARR bar: not asked — not sized`. Otherwise ask them in one follow-up.
+
+**A trigger with several steps** (notices at 70%, 85% and 90%, then a block): reach R is the first step — every account that enters the flow. Size each later step as a share of R in the Segments table (`reached 85%`, `reached 90%`, `hit the block`), since each is a separate state the spec and journey design for. Never pick one step as "the" trigger without saying so in the population definition.
+
 ---
 
 ## Data gate
@@ -59,7 +63,7 @@ Start the queries together and poll each `jobId` every ≥5 s — they're indepe
 
 ### Step 3 — Prices from BigBrain
 
-Ask the Payments brain for the current list price of each plan or credit package in the converter mix, per seat and billing period. Compare each answer with [monday-context.md](../../context/monday-context.md). A mismatch is reported, never silently used: use the BigBrain answer with its source tag, list the difference under **Context drift** in the file, and tell the user in one line (the plugin's source-of-truth rules in [CLAUDE.md](../../CLAUDE.md)).
+Ask the Payments brain for the current list price of each plan or credit package in the converter mix, per seat and billing period. Without Kramer there's no mix: list the price of each plan or package the objective can land on for the tiers in scope, so the file still shows what one conversion is worth per seat. Compare each answer with [monday-context.md](../../context/monday-context.md). A mismatch is reported, never silently used: use the BigBrain answer with its source tag, list the difference under **Context drift** in the file, and tell the user in one line (the plugin's source-of-truth rules in [CLAUDE.md](../../CLAUDE.md)).
 
 ### Step 4 — Model the cases
 
@@ -91,6 +95,8 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 
 ```markdown
 # Sizing: {surface name}
+
+{> Data tools weren't connected ({Kramer | BigBrain | Kramer, BigBrain}) — figures marked [Not measured] weren't measured. — only when the run continued without data}
 
 **Surface:** {type} · **Trigger:** {exact condition} · **Cohort:** {…} · **Tiers:** {…} · **Objective:** {metric}
 **Data:** {live — {tool}, {date range}, run {YYYY-MM-DD} · session {sessionId} | not measured — Kramer not connected} · internal data, don't share outside monday
