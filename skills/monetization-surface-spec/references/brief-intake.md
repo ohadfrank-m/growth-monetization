@@ -24,7 +24,9 @@ These can usually be inferred from surface type + tier:
 
 ## Ask every real gap in one message
 
-After inferring what you can, put every remaining gap in **one** message — `AskUserQuestion`, at most 4 questions, recommended answer first (the plugin's intake protocol in [CLAUDE.md](../../../CLAUDE.md)). One round trip, not one per field. If a field wouldn't change the spec, don't ask it.
+After inferring what you can, put every remaining gap in **one** message — `AskUserQuestion`, at most 4 questions, recommended answer first (the plugin's intake protocol in [CLAUDE.md](../../../CLAUDE.md), "Intake — ask, never assume"). One round trip, not one per field. If a field wouldn't change the spec, don't ask it.
+
+An inference needs a source you can point to (the surface type, the prompt's words, the context file). A field you'd have to guess is a gap: ask it. The spec never carries an `Assumptions` section or a "confirm or correct" list.
 
 ---
 
@@ -46,7 +48,9 @@ Proceeding to spec. [Or, if gaps remain: the one intake message with every open 
 
 This prevents a full spec being written from misunderstood input.
 
-**In a Growth PM chain:** print the brief block and proceed in the same turn — don't wait for a confirmation. The user already scoped the run; stopping here is exactly the mid-chain pause the Growth PM's chain mode rules forbid. Only stop if a required field is genuinely missing and can't be inferred (a real blocker, one question).
+**In a Growth PM chain:** the Growth PM's up-front intake already answered these fields. Print the brief block from its answers and proceed in the same turn — don't wait for a confirmation. Only stop if a required field is still missing and can't be inferred from a named source: that's a real blocker, one question, and the chain resumes once it's answered.
+
+In the spec's header, fields the user answered go in `confirmed with user:` and fields inferred go in `inferred:` with their source ([ARTIFACT_HEADER.md](../../../templates/ARTIFACT_HEADER.md)).
 
 ---
 
@@ -57,16 +61,14 @@ When input is a Figma link, screenshot, or existing partial spec:
 1. Pull design context (Figma MCP or screenshot analysis)
 2. Identify surface type from visual
 3. Extract existing spec fields from what's visible — note gaps
-4. Confirm the brief block, marking gaps explicitly:
+4. Print the brief block with what the design shows, each field with its source:
 
 ```markdown
 **Brief extracted from design:**
 - Surface: {type — identified from visual}
-- Trigger: ⚠️ Not visible in design — please confirm
-- Cohort: {inferred from copy/context}
-- Tier: {inferred from visual or ask}
-- Objective: {inferred from primary CTA}
-- Gaps: {list anything that couldn't be extracted}
+- Cohort: {value — from {copy on screen / context}}
+- Tier: {value — from {visual}}
+- Objective: {value — from primary CTA}
 ```
 
-Then write the spec, filling gaps with the best inference and flagging each.
+5. Ask every field the design couldn't show (the trigger is the usual one — it's rarely visible) in one `AskUserQuestion` message, recommended answer first. Write the spec only once they're answered. Never write the spec with a gap filled by a guess and flagged for later.

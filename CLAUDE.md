@@ -15,10 +15,13 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 ## Source of truth
 
-[context/monday-context.md](context/monday-context.md) holds current plans, prices, AI credit packages, feature gating, trial terms, cohorts, and the surface inventory.
+monday's internal **BigBrain AI Brains** are the source of truth for plans, prices, AI credit packages, feature gating and trial terms. [context/monday-context.md](context/monday-context.md) is the **cache and pointer**: the last verified copy of those facts, plus cohorts and the surface inventory, with a `verified-against` date in its frontmatter.
 
-- Read it before any spec, review, or monday.com-related research
-- Never quote a monday.com price, limit, or credit amount from memory — cite the context file
+- Read the context file before any sizing, spec, review, or monday.com-related research
+- **Verify at run time.** Before an artifact states a monday price, limit, credit amount, gate or trial term, ask BigBrain for it (search the tools for `AI Brain`, `ai-brain` or `bigbrain` — e.g. `AI Brain - Payments` for plans, prices, credits and billing). Cite the answer as `[Brain — {name}, {YYYY-MM-DD}]`. In a Growth PM chain this runs once, up front (Step 1c), and every skill cites the result
+- **A mismatch is reported, never silently used.** When BigBrain and the context file disagree, use the BigBrain answer with its tag, list both values in the artifact (the sizing file's Context drift section, or an Open item for the context file's owner), and tell the user in one line. Never quietly pick one
+- BigBrain not connected: the Data gate (below) asks once whether to connect it or continue. Continuing, facts are cited from the context file and marked `[Unverified — monday-context.md, verified-against {date}]`; copy and research always cite the context file with its `verified-against` date
+- Never quote a monday.com price, limit, or credit amount from memory
 - If research reveals the context file is out of date, say so and suggest the specific update to the file's owner
 
 [playbooks/](playbooks/) holds the CRO knowledge (benchmarks, best-in-class examples, anti-patterns) for each surface type — the *why*, as opposed to `monday-context.md`'s facts.
@@ -33,6 +36,7 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 | Skill | Use when | Produces |
 |-------|---------|---------|
 | `monetization-growth-pm` | **The full product work.** The Monetization Growth PM scopes the job (how far, how deep), runs every skill below in order without re-prompting, loops the review until fixes land, and writes the requirements doc. For one piece of the work, call that skill directly. | `05-requirements.md`; runs everything else |
+| `monetization-opportunity-sizing` | Putting a number on the opportunity before anything is designed — reach × current conversion × addressable lift × ARPA, low / base / high, on Kramer data and BigBrain prices. Runs first in every chain that designs or reviews a surface | `00-sizing.md` — ARR at stake, baselines for the journey and measurement plan, go / no-go |
 | `monetization-intelligence` | Researching how competitors monetize — model, packaging, price — and how they run a specific surface (upgrade, cancellation, paywall, trial, top-up) | Surface benchmark, monetization teardown, research report, landscape, battlecard — each ending with suggested playbook updates |
 | `monetization-journey-map` | Mapping who hits a surface and why (scenarios, sized with live data) and every step before, on and after it (1st call, before the spec); building the journey board with the real wireframe on each step (2nd call, after the wireframe) | `00-journey.md`, then `03-journey.html` |
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
@@ -41,20 +45,72 @@ A monetization copilot for growth squads. Every task touches revenue: pricing su
 
 ---
 
-## Intake — standalone runs
+## Intake — ask, never assume
 
-When a skill is called directly (not inside a Growth PM chain), it makes sure it has what a top-tier output needs before producing anything:
+Every run makes sure it has what a top-tier output needs before producing anything. A gap is either answered by the user or inferred from something in front of you, never filled in and written down as an assumption.
 
-1. **Check** the skill's **Required context** table against the prompt, any attached file or link, and what's already in `.monetization/{feature-slug}/`.
-2. **Infer** what's obvious and state each inference in one line ("Cohort: existing users — inferred from 'credit depletion'").
-3. **Ask every real gap in one message** — `AskUserQuestion`, at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred.
+1. **Check** the **Required context** table of every skill that will run against the prompt, any attached file or link, and what's already in `.monetization/{feature-slug}/`.
+2. **Infer** what's obvious and state each inference in one line, with its source ("Cohort: existing users — from 'credit depletion'"). An inference needs a source you can point to; "most likely" isn't one.
+3. **Ask every real gap in one message** — `AskUserQuestion`, at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred. Follow up only when an answer opens a new gap.
 4. **Run.** If nothing is missing, ask nothing.
 
-Inside a Growth PM chain, skip intake entirely — the Growth PM's scoping already covered it, and a chain stops only for a real blocker (chain mode rules).
+**Who runs it:**
+
+- **Standalone:** the skill runs intake against its own Required context table.
+- **Growth PM chain:** the Growth PM runs intake once, up front, for the whole chain — every field every announced skill needs, in one round (see "Step 1b — Required-context intake" in [skills/monetization-growth-pm/SKILL.md](skills/monetization-growth-pm/SKILL.md)). Skills inside the chain don't re-ask what it covered.
+- **Mid-chain:** a skill that hits a gap intake didn't cover, and that would change its output, stops and asks — one `AskUserQuestion`, then the chain resumes. It never picks an answer and writes it down as an assumption.
+
+**Where the answers go.** A confirmed input goes into the artifact's header as `confirmed with user: {field: value; …}` and an inference as `inferred: {field — from {source}}` ([templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md)). A fact nobody in the conversation can answer yet — a legal policy, an unpublished price, an engineering constraint — is an Open item with an owner. That is the only thing that stays open.
 
 ## Missing references
 
 Skills cite reference files (`references/`, `playbooks/`, templates). If one isn't available in the environment — a chat upload without the folder, a moved file — say which file is missing and what's affected, then continue on the minimum stated in the skill itself. Never improvise the missing content silently.
+
+---
+
+## Data gate — connect the data, or continue without it
+
+Counts, rates and baselines about monday's own users come from monday's internal data. When that data isn't connected, the run doesn't block: it pushes the user to connect it, asks once, and if they continue, every number it couldn't measure is marked as not measured. Never a guess, never an estimate, never an unmarked `{slot}`.
+
+**Who it applies to:** the Growth PM (any chain that includes sizing, journey, spec, review or synthesis), `monetization-opportunity-sizing`, `monetization-journey-map`, `monetization-surface-spec` (its Success metrics), `monetization-design-reviewer` when it scores a live surface, and the Growth PM's synthesis. Research (`monetization-intelligence`), copy (`improve-conversion-surfaces-copy`) and pure competitor work skip it — they make no claims about monday's numbers.
+
+**Detect the tools.** Search the available tools, don't assume names — they vary by environment:
+
+| Source | Search for | Tools it exposes | What it unlocks |
+|--------|-----------|------------------|-----------------|
+| Kramer MCP (monday's Snowflake data agent) | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | `data-expert-agent`, `check-query-status` | Opportunity size (ARR at stake), baselines, scenario frequencies, sample size and runtime |
+| Snowflake direct | `run-sql` | `run-sql` (read-only role) | Re-running SQL you already have — not new questions |
+| BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | Question-answering over monday's internal payments, pricing and product knowledge | Verified monday facts: plans, prices, credits, gating, trial terms |
+| Researchio plugin *(optional)* | the skills `kramer-pull`, `data-breakdown` | The hypothesis-and-breakdown pipeline for the "why" behind a baseline — see `monetization-opportunity-sizing` | — |
+
+**Connected:** `data-expert-agent` (with `check-query-status`) for numbers, and a BigBrain brain for monday facts. `run-sql` alone doesn't count for a new business question; it needs the agent's curated metric definitions. Researchio is never needed.
+
+**Missing — push to connect, then ask once.** Before writing any artifact, name each missing MCP, say what it unlocks, link the setup, and ask with `AskUserQuestion`:
+
+```
+**Internal data isn't connected — the numbers in this run would be unmeasured.**
+- Kramer (`data-expert-agent`) — unlocks the opportunity size, baselines and scenario frequencies. Setup: mcp-setup.md → Kramer MCP
+- BigBrain (`AI Brain - Payments`) — unlocks verified plans, prices and credits. Setup: mcp-setup.md → BigBrain AI Brains
+```
+
+Options: **Connect now (recommended)** · **Continue without data**. List only the MCPs that are missing.
+
+- **Connect now:** wait for the user to say it's connected, search the tools again, and continue with data. Still missing → say so and ask the same question once more.
+- **Continue without data:** run the rest of the flow. Every artifact records the choice in its header (`data: not measured — {Kramer | BigBrain} not connected`) and opens its body with one line: `> Data tools weren't connected ({Kramer | BigBrain}) — figures marked [Not measured] weren't measured.`
+
+**Ask once per run.** In a Growth PM chain the Growth PM asks, up front (Step 1c), and the answer holds for every skill in the chain — no skill re-asks. A skill called directly asks once for its own run.
+
+**Marking what wasn't measured.** Without data, nothing is invented — every figure that would have come from a query is marked where it would sit:
+
+| Missing | Mark | Where |
+|---------|------|-------|
+| A Kramer number (count, rate, baseline, frequency, ARR at stake) | `[Not measured]` | The cell itself, in place of the number |
+| A BigBrain fact (price, credit amount, gate, trial term) | `[Unverified — monday-context.md, verified-against {date}]` next to the cached value | Next to the fact |
+| A result computed from unmeasured inputs (ARR at stake, sample size, runtime, verdict) | `[Not measured]` | The cell; never compute it from a placeholder |
+
+That's the whole trace: the inline marks plus the one line at the top. No "Analyst data request" section, no list of pulls or queries for someone else to run, no Open item for missing data — an unmeasured number is not an Open item.
+
+**A query that fails or times out** is retried once (same question, same session). If it fails again, tell the user which question failed and the error, mark that cell `[Not measured — query failed]`, and continue. Never estimate it.
 
 ---
 
@@ -67,9 +123,11 @@ Skills cite reference files (`references/`, `playbooks/`, templates). If one isn
 | Figma | spec, design reviewer | Ask for a screenshot instead |
 | Slack | weekly pricing digest | Deliver digest in chat |
 | Web search | All skills | Built in; required for enrichment and surface benchmarks — if unavailable, state reduced coverage |
-| Snowflake data (`data-expert-agent`, `run-sql`; read-only) | `monetization-journey-map` (scenario sizing) | Keep `{slot}` + an Open item for Data; say so in one line |
+| **Kramer / Snowflake data — recommended** (`data-expert-agent`, `check-query-status`, `run-sql`; read-only) | Growth PM, opportunity sizing, journey map, spec (success metrics), reviewer (live surfaces), synthesis | Data gate: push to connect, ask once; continuing, every number is marked `[Not measured]` |
+| **BigBrain AI Brains — recommended** (`AI Brain - Payments` and related) | Growth PM (fact check, Step 1c), opportunity sizing (prices), spec, reviewer, synthesis | Data gate: push to connect, ask once; continuing, facts come from `monday-context.md` marked `[Unverified — …]` |
+| Researchio plugin (optional — `kramer-pull`, `data-breakdown`) | `monetization-opportunity-sizing` (the "why" behind a baseline) | The sizing file's Segments table is the breakdown; it says so in one line |
 
-Never fail silently. If a tool is missing, state what's affected and take the best degraded path.
+Never fail silently. If a tool is missing, state what's affected and take the best degraded path. For Kramer and BigBrain, that path is the Data gate: push to connect, ask once, then mark every unmeasured number.
 
 ---
 
@@ -85,6 +143,7 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 .monetization/
 ├── {feature-slug}/
 │   ├── input/              ← screenshots or captures of a live design
+│   ├── 00-sizing.md        ← monetization-opportunity-sizing (ARR at stake, baselines, go / no-go — internal data)
 │   ├── 00-journey.md       ← monetization-journey-map (scenarios, sizing, every step — the spec's flow map comes from here)
 │   ├── 01-spec.md          ← monetization-surface-spec (names the reason, maps the flow, hands off)
 │   ├── 01-spec-v2.md       ← monetization-surface-spec (fix-loop revision of spec rows a review sent back)
@@ -126,8 +185,10 @@ Omit it inside a Growth PM chain — the Growth PM runs the next step itself, an
 
 - Header block present
 - Specific enough that two people acting on it produce the same result
-- monday.com facts cited from the context file, not memory
+- monday.com facts cited from a BigBrain answer (or, for copy and research, the context file with its `verified-against` date), never memory; every mismatch between the two is listed, not silently resolved
 - No empty sections or "N/A" padding (except the spec edge-case list, where N/A needs a reason)
+- Every monday number is measured (with its source tag) or marked `[Not measured]` / `[Unverified — …]` per the Data gate — never an estimate, never an unmarked `{slot}`
+- **Hard fail:** no `Assumptions`, `Flagged assumptions`, "Confirm or correct" or similar section, heading or table anywhere in the artifact. Every input is confirmed with the user, inferred from a named source, or an Open item with an owner. If one slipped in, stop, ask the user, and rewrite
 - Next step block present on standalone runs, absent inside a chain
 
 ---
@@ -137,6 +198,7 @@ Omit it inside a Growth PM chain — the Growth PM runs the next step itself, an
 - The artifact is the deliverable — never substitute a chat summary
 - State PricingSaaS credit costs and wait for confirmation before any paid call
 - Always state the user cohort (new vs. existing) for any surface
+- **Ask, never assume.** No artifact carries an `Assumptions` section or a "confirm or correct" list. A gap that changes the output is asked before the artifact is written (see Intake); a fact nobody can answer yet is an Open item with an owner
 - Copy is written only by `improve-conversion-surfaces-copy`; other skills name the reason and direction, then hand off — and copy runs *before* the wireframe is built, never after, so nothing ships or gets reviewed with placeholder text standing in for real language
 - Cite sources with URLs; never present web findings as MCP data
 - Respect the playbooks' evidence tags when citing a competitor claim: `[Verified]` can be stated as fact, `[Reported]` needs the caveat inline, `[Teardown needed]` is never presented as fact, and figures in sections marked as pre-dating the evidence-tag standard are directional — never quoted as a target. See [playbooks/README.md](playbooks/README.md)

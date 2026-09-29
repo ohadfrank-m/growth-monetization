@@ -1,7 +1,7 @@
 ---
 name: monetization-design-reviewer
 description: Expert CRO critique of monetization UI designs and copy. Invoke whenever someone shares a design, screenshot, Figma link/frame, or prototype URL for any monetization surface — pricing pages, paywalls, feature gates, upgrade triggers, promotions, cancellation/downgrade flows, credit/consumption UI, credit meters, metering dashboards, top-up flows, or usage dashboards. Also triggers on requests like "review this paywall", "critique this cancel flow", "review this credit meter", "is this top-up flow good", "check this metering UI", "is this pricing page good", or any variant of monetization design feedback. Produces a scored rubric plus a categorized, prioritized improvement list, and offers an optional low-fidelity prototype (HTML or SVG) to visualize the fixes. Pull live inspiration from pricingsaas.com and pricingpages.com when relevant.
-version: 0.5.0
+version: 0.6.0
 ---
 
 # Monetization Design Reviewer
@@ -49,7 +49,7 @@ Accept any of the following as input:
 
 ### Required context
 
-Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — standalone runs"): check this table, infer what's obvious, ask every real gap in one message, then run. Inside a Growth PM chain, skip it.
+Every run follows the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume"): check this table, infer what's obvious from a named source, ask every real gap in one message, then run. Inside a Growth PM chain, the Growth PM asked these up front; stop and ask only for a gap it didn't cover. Never write a gap down as an assumption.
 
 | Field | Why it changes the output | Infer from |
 |-------|--------------------------|-----------|
@@ -59,7 +59,14 @@ Standalone runs follow the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md
 | Goal or metric | "Fix conversion" vs "fix complaints" re-ranks the fix list | The prompt's problem statement |
 | Single screen vs full flow | Timing and friction can't be judged from one screen | Number of screens shared; ask for the rest only if timing is the question |
 | Journey map (optional) | Enables the scenario walkthrough | `00-journey.md` / `03-journey.html` in the feature folder; never ask for one |
+| Live-surface performance (live surfaces only) | Ranks the fix list by what the surface actually loses — exposures, conversion, dismiss and repeat-view rates | `00-sizing.md` when it exists; otherwise query it (Data gate below). Never asked of the user, never estimated — `[Not measured]` without data |
 | Review only vs fix + requirements | Whether the Review → Fix → Synthesize chain runs after | "just score", "review only" → review only; otherwise the chain |
+
+### Data gate — scoring a live surface
+
+When the design under review is live (an existing surface, not a wireframe the chain built), the review is behind the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it"). Before scoring, search the tools for `data-expert-agent` / `kramer`. With none, push the user to connect it — name the MCP, say it unlocks the surface's real exposure and conversion numbers, link `mcp-setup.md` — and ask once: Connect now (recommended) / Continue without data. A Growth PM brief passes the chain's Step 1c answer; don't re-ask. Continuing without data, the review still scores the design, ranks rows by rubric severity alone, and writes one line: "Live performance not measured — rows ranked by severity, not traffic". With it, read the surface's weekly exposures, conversion to the objective, and dismiss / repeat-view rates from `00-sizing.md`, or query them per [../monetization-journey-map/references/evidence-queries.md](../monetization-journey-map/references/evidence-queries.md) (aggregates only). Use them to judge Timing / trigger logic and to rank rows: a failure on a high-traffic state outranks the same failure on a rare one. Cite each figure with its source tag.
+
+A chain-built wireframe has no live data, so the gate doesn't apply to it; the chain already passed the gate upstream. A Growth PM review brief says which case it is.
 
 ### Figma ingestion (preferred path)
 
@@ -148,7 +155,7 @@ Column rules:
 - **Effort**: S (copy/config, <1 wk) · M (design) · L (design + eng).
 - **Fix path**: who can fix it *now*, inside the plugin. `copy` (a line to rewrite) · `wireframe` (layout, component, state or mobile change to a wireframe the chain built) · `spec` (the spec itself is wrong — trigger, cohort, target tier, a missing state) · `journey` (the journey or its board is wrong — a step missing for a scenario, a wrong path, a board card that doesn't match the wireframe) · `blocked — {owner}: {what}` (needs a fact or decision that isn't in `monday-context.md` or the artifacts). Combine when a row is both: `wireframe + blocked — Pricing: target tier` means build it now with a marked `{slot}`, and the fact still gets chased. On a live design the team owns (existing-design chain), use `copy`, `blocked`, or `design team` — the chain can't edit their design, so layout, structure and UI rows read `design team` and go to synthesis as Design changes. The Growth PM's fix loop routes on this column: get it wrong and the fix goes to the wrong skill.
 
-If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / repeat-view data / etc.] to assess" — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
+If mobile readiness, dismiss-repeat behavior, or anything else couldn't actually be assessed from the input, add one row for it anyway — Severity blank, Recommendation reading "Pending — needs [mobile screenshot / the dismissed state / etc.] to assess" (a number about a live surface is queried, never left Pending — Data gate above) — rather than leaving it out silently. A missing check should be visible, not quietly dropped.
 
 **Judge friction per touchpoint.** When the spec has a flow map, score Friction & flow screen by screen: for each touchpoint, check whether the named friction is real on the design and whether its reduction was actually applied. A reduction that's in the spec but not on screen is a row.
 
@@ -212,7 +219,7 @@ End with a one-line verdict for the Growth PM, applying the exit rule for the de
 
 ## monday.com Context
 
-When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, then apply this lens:
+When reviewing monday.com designs, read [context/monday-context.md](../../context/monday-context.md) for current tiers, prices, and credit packages, and verify any figure a row depends on against BigBrain (search for `AI Brain` / `bigbrain`; a Growth PM brief passes the chain's answers; without BigBrain, mark the figure `[Unverified — monday-context.md, verified-against {date}]`) — a row that says the design "contradicts monday-context.md" is checked against the brain first. A mismatch goes in the row's Evidence and is never silently used ([CLAUDE.md](../../CLAUDE.md), Source of truth). Then apply this lens:
 
 - **AI credits** are the primary consumption unit for the AI Agents launch (May 2026). Credit and metering UI must make value-per-credit legible — not just the price. Credit-to-task translation is required, never a bare number — using the context file's official line (1,000 credits ≈ 50 resume screenings), never "1 credit = 1 AI action".
 - **Tier structure:** Free → Basic → Standard → Pro → Enterprise. Most upgrade pressure is Free→Pro and Standard→Pro.

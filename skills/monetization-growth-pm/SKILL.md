@@ -1,14 +1,14 @@
 ---
 name: monetization-growth-pm
-description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), then runs research → journey map → spec → copy → wireframe → journey board → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /monetization-intelligence, /monetization-journey-map, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
-version: 0.4.0
+description: The Monetization Growth PM. Hand it a monetization job and it does the full product work — scopes it (how far, how deep), asks every missing input up front, sizes the opportunity on monday's real data (pushing you to connect Kramer and BigBrain if they're missing), then runs research → journey map → spec → copy → wireframe → journey board → independent review → fixes, and delivers one implementation-ready requirements doc. Use when someone wants a monetization surface taken end to end ("I need a paywall for…", "fix our trial-expiry modal", a shared screenshot or Figma link of a monetization surface, "monetization copilot", "help me with our pricing page"). For one piece of the work, the user calls that skill directly instead — /monetization-opportunity-sizing, /monetization-intelligence, /monetization-journey-map, /monetization-surface-spec, /improve-conversion-surfaces-copy, /monetization-design-reviewer.
+version: 0.5.0
 ---
 
 # Monetization Growth PM
 
 You're the PM on the job. Work out what the user wants to walk away with and how deep the review should go, then run every skill that produces it — without pausing between steps — and finish with `05-requirements.md`, the only artifact you write yourself.
 
-This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — standalone runs" in the plugin's CLAUDE.md). If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
+This skill is the full flow. A user who wants one piece of it (just research, just copy, just a score) calls that skill directly; each skill runs its own intake when called alone (see "Intake — ask, never assume" in the plugin's CLAUDE.md). In a chain, you run that intake once, up front, for every skill in it. If a narrow ask lands here anyway, scope it like any other and run the short chain — never bounce the user to another skill.
 
 ---
 
@@ -20,6 +20,7 @@ Route by what the user wants to **walk away with**, not by which words they used
 
 | Deliverable | Skill | Artifact |
 |-------------|-------|----------|
+| Sizing | `monetization-opportunity-sizing` | `00-sizing.md` — ARR at stake, baselines, go / no-go |
 | Research doc | `monetization-intelligence` | `.monetization/research/{topic-slug}-{YYYY-MM}.md` |
 | Journey map | `monetization-journey-map` | `00-journey.md`, then `03-journey.html` (the board, after the wireframe) |
 | Spec | `monetization-surface-spec` | `01-spec.md` |
@@ -46,6 +47,7 @@ Decide this first — it sets the order, the pre-marks, what Review needs, and w
 | "wireframe", "mock it up", "show me how it'd look" | Spec + Copy + Wireframe, **plus Review + Requirements by default** — the review catches problems before build. Announce them as defaults; "wireframe only" stops at `03-wireframe.html` |
 | "research", "benchmark", "how does X price", "how do competitors handle {surface}", "monetization strategy of X" — no build ask | Research doc |
 | "write copy for", "rewrite this CTA", "the copy feels flat" | Copy |
+| "size this", "is this worth building", "how much ARR is at stake", "how many accounts hit this" — no build ask | Sizing |
 | "spec" / "brief" / "build" with no mention of a wireframe, or a vague "help with our {surface}" | **Ambiguous — ask the scoping question** |
 
 **Combining signals.** Union the sets of every row that matches — "research how Notion sells credits, then wireframe ours" is Research + the wireframe set. A research ask doesn't settle the wireframe question: "research, then spec ours" still asks, with Q2 recommended Yes. "Just" / "only" caps the set to what's named, plus prerequisites. The fix loop is part of Review, not a separate deliverable — it runs whenever Review runs on a wireframe the chain built.
@@ -77,6 +79,7 @@ The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`.
 
 | Deliverable | Needs | If missing |
 |-------------|-------|------------|
+| Journey, Spec, Review of a live design, Requirements | Sizing | Add it — it's the data step every one of them reads its baselines from. Without data it still runs, with every number marked not measured (Data gate) |
 | Wireframe | Spec + Copy | Add both |
 | Review | Something to review | Surface exists and is public → capture it (see Scoping question). Behind login → ask for a screenshot or Figma link (a real blocker, per chain mode rules). Surface doesn't exist yet → add Spec + Copy + Wireframe |
 | Requirements | A Review | Add Review (and its prerequisites) |
@@ -85,12 +88,55 @@ The answer is taken literally: "Up to a wireframe" stops at `03-wireframe.html`.
 Name every added prerequisite and default in the announcement, so the user sees why the chain is longer than what they asked for.
 
 **Order is fixed — drop the steps not in the set, never reorder:**
-- **New surface:** research → journey → spec → copy → wireframe → journey board → review → fix loop (see below) → synthesis. The journey (pass 1) runs in every new-surface chain unless the depth is **Quick**; chains that don't review have no depth and include it. Say it in the announcement with `say "skip journey" to drop it`. The board (pass 2) runs whenever both the journey and a wireframe exist
-- **Existing design:** (journey, on request) → review → copy → synthesis. Add a nudge line above "Starting now": `Say "map the journey" to map today's live journey first.` If the user says it, `monetization-journey-map` maps the live journey from `input/` before the review, so the reviewer can walk each scenario. Copy always rides with Review + Requirements on an existing design — there's no Copy box for it, and synthesis needs the strings. Skip the copy step only if the review flagged no Copy/CRO rows and added no new on-screen elements
+- **New surface:** sizing → research → journey → spec → copy → wireframe → journey board → review → fix loop (see below) → synthesis. Sizing runs in every chain that designs or reviews, at every depth — Quick included. The journey (pass 1) runs in every new-surface chain unless the depth is **Quick**; chains that don't review have no depth and include it. Say it in the announcement with `say "skip journey" to drop it`. The board (pass 2) runs whenever both the journey and a wireframe exist
+- **Existing design:** sizing → (journey, on request) → review → copy → synthesis. Add a nudge line above "Starting now": `Say "map the journey" to map today's live journey first.` If the user says it, `monetization-journey-map` maps the live journey from `input/` before the review, so the reviewer can walk each scenario. Copy always rides with Review + Requirements on an existing design — there's no Copy box for it, and synthesis needs the strings. Skip the copy step only if the review flagged no Copy/CRO rows and added no new on-screen elements
 
 **Spec + copy without a wireframe** ends at `02-copy.md` — nothing to review, so no review and no synthesis. Offer the wireframe once, after the copy.
 
 **Wireframe without Review** ends at `03-wireframe.html`. Offer Review + Requirements once, after the wireframe.
+
+**Sizing verdict gates the rest.** `00-sizing.md` ends with a go / no-go line. On **Go — test** or **Go — ship + holdout**, continue without pausing. On **Re-scope** or **No-go**, stop and ask once (continue as scoped / the re-scope the file names / stop) — it's a real blocker, since everything after it would be built on a case the numbers don't support. On **Not sized — no data** (the user chose to continue without Kramer), continue without asking again: they already made that call at the Data gate, and the verdict says the case is unmeasured.
+
+---
+
+## Step 1b — Required-context intake
+
+Scoping decides *which* skills run. Intake makes sure each of them has what it needs, before any of them starts. This is the plugin's intake protocol ([CLAUDE.md](../../CLAUDE.md), "Intake — ask, never assume") run once for the whole chain, so no skill mid-chain has to guess and no artifact carries an `Assumptions` section.
+
+Collect the fields every skill in the chain needs. Ask only for fields the chain uses: a copy-only chain doesn't need the trigger's exact threshold.
+
+| Field | Needed by | Infer from |
+|-------|-----------|------------|
+| Surface — type and the specific feature or moment | Every skill | The prompt; the surfaces inventory in [monday-context.md](../../context/monday-context.md) |
+| Cohort — new or existing | Sizing, journey, spec, copy, review | Surface type (trial → new, credit depletion → existing) |
+| Tier(s) and billing period | Sizing, journey, spec | The prompt; the inventory row for a live surface |
+| Role — IC, admin, or both | Journey, spec, copy | A surface that blocks an IC is always both (the IC / admin pair) |
+| Trigger — the exact condition that shows the surface | Sizing (it defines reach), spec | The prompt; the inventory row for a live surface. Never a threshold you'd have to pick |
+| Objective metric — the one conversion outcome | Sizing, spec, measurement plan | The prompt; the surface's primary in [references/experiment-design.md](references/experiment-design.md) §3 |
+| Constraints — legal, design system, engineering, dates, the longest test the team will run, the smallest ARR that justifies the build | Spec, copy, sizing's go / no-go | The prompt only — constraints are never inferred |
+| Current design (existing surface) | Review, journey (live mode) | `input/`, a Figma link, or a public URL you capture yourself (Scoping question rules) |
+
+1. **Infer** what's obvious, one line per field with its source.
+2. **Ask every real gap in one `AskUserQuestion` round** — at most 4 questions, recommended answer first. When the scoping question is needed too, put both in the same call if they fit in 4 questions; otherwise scoping first, then intake as the next message, since the scoping answer decides which fields matter.
+3. **Follow up only when an answer opens a new gap** ("both roles" on a surface you'd mapped for admins only → which IC path).
+4. **Carry the answers.** The announcement prints them as one Context line. Every artifact in the chain puts them in its header: `confirmed with user:` for answers, `inferred:` for inferences with their source ([templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md)).
+
+A fact nobody in the conversation can answer — a legal policy, an unpublished price, an engineering limit — isn't an intake question. It becomes an Open item with an owner, and it's the only thing that stays open.
+
+---
+
+## Step 1c — Data gate
+
+Run the plugin's Data gate ([CLAUDE.md](../../CLAUDE.md), "Data gate — connect the data, or continue without it") before announcing any chain that includes sizing, journey, spec, review or synthesis. Search the tools for `data-expert-agent` / `kramer` and for `AI Brain` / `bigbrain`. If either is missing, print the gate's connect block — each missing MCP, what it unlocks (opportunity size and baselines; verified monday facts), the setup link — and ask with `AskUserQuestion`: **Connect now (recommended)** · **Continue without data**. When the scoping or intake questions are also pending and they fit in 4 questions, ask them in the same call.
+
+- **Connect now:** wait, search the tools again, and continue with data.
+- **Continue without data:** announce and run the whole chain. The announcement carries `**Data:** not measured — continuing without {Kramer | BigBrain}; every unmeasured number is marked`. Every skill in the chain inherits the choice and marks what it couldn't measure (the gate's marking table) — none of them asks again.
+
+This is the chain's only data question. Research-only and copy-only chains skip the gate.
+
+**Verify the monday facts, once.** With BigBrain connected, list the facts the chain will cite — the list price and seat rules of the tiers in scope, the credit packages and allotments, the gate for the feature, the trial terms — and ask BigBrain for each (search for `AI Brain` / `bigbrain`; `AI Brain - Payments` owns plans, prices, credits and billing). Compare each answer with [monday-context.md](../../context/monday-context.md). Every skill in the chain cites the BigBrain answer. A mismatch is never silently resolved: the announcement carries one line — `Context drift: {fact} — BigBrain {value}, monday-context.md {value}; using BigBrain` — `00-sizing.md` lists it under Context drift, and synthesis adds an Open item for the context file's owner to update the file. Continuing without BigBrain, every skill cites the context file with `[Unverified — monday-context.md, verified-against {date}]`.
+
+Inside a running chain, a query that fails twice doesn't stop the chain: tell the user which question failed, mark that cell `[Not measured — query failed]`, and continue.
 
 ---
 
@@ -98,6 +144,7 @@ Name every added prerequisite and default in the announcement, so the user sees 
 
 ```
 **Deliverables:** {list}{ — added: {item} ({prerequisite for X / default with wireframe})}
+**Context:** {field: value (confirmed | from {source})} · … — from Step 1b
 **Sequence:** {skill} → {skill} → …
 **Artifacts:** {file list}
 {**Depth:** Standard | Quick | Thorough — only on chains that review a wireframe they built; add ' — say "quick" or "thorough" to change' when Q3 wasn't asked}
@@ -123,9 +170,10 @@ A chain is any sequence the Growth PM announced before the first skill started. 
 - **The Growth PM owns sequencing.** Each skill delivers its artifact, then control returns here for the next step. Skills don't decide what runs next.
 - **No next-step blocks.** Skills omit their `→ Next step` block — it's a prompt for a human to re-type, and in a chain nobody needs to.
 - **No optional offers mid-chain.** Skip "want me to mock this up?" and similar questions. Offer them once, after the final artifact.
-- **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
+- **Keep an artifact ledger.** After every step, print one line with the current version of each artifact: `Ledger: 00-sizing · research · 01-spec v2 · 02-copy v3 · 03-wireframe v3 · 04-review v2`. The ledger is the source of truth for "latest" — without a real filesystem (a chat session), it's the only one. Synthesis reads its inputs from the ledger and copies it into the `05-requirements.md` header.
 - **External writes wait for the end.** Logging to monday.com or posting anywhere is offered once after the final artifact, never done mid-chain.
-- **Only stop for a real blocker:** a missing input the skill can't work without (one question, per that skill's intake rules), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
+- **Only stop for a real blocker:** a gap Step 1b didn't cover that would change the skill's output (one `AskUserQuestion`, per the plugin's intake protocol — never a guess written down as an assumption), or a paid PricingSaaS call, which always needs confirmation per the plugin's standing rules. Resume the chain once answered.
+- **No assumption sections.** No artifact in the chain carries an `Assumptions`, `Flagged assumptions` or "confirm or correct" section. Answers live in the header; unanswerable facts are Open items with an owner.
 
 ---
 
@@ -136,15 +184,17 @@ The common deliverable sets, pre-assembled. Anything else is built from Step 1's
 ### Review → Fix → Synthesize ← default when a design is shared
 > "Here's our trial-expiry pricing modal — it's not converting" / screenshot / Figma link
 
-1. `monetization-design-reviewer` → scored rubric + ranked fix list (`04-review.md`)
-2. `improve-conversion-surfaces-copy` → 2–3 options with one ★ recommended for **every** Copy/CRO row in `04-review.md`. File: `02-copy.md` if none exists (review-first pass), otherwise `02-copy-v2.md`
-3. **Synthesis** → `05-requirements.md`
+1. `monetization-opportunity-sizing` → `00-sizing.md`: the live surface's reach, conversion and ARR at stake, which the reviewer uses to rank rows
+2. `monetization-design-reviewer` → scored rubric + ranked fix list (`04-review.md`)
+3. `improve-conversion-surfaces-copy` → 2–3 options with one ★ recommended for **every** Copy/CRO row in `04-review.md`. File: `02-copy.md` if none exists (review-first pass), otherwise `02-copy-v2.md`
+4. **Synthesis** → `05-requirements.md`
 
 Announce with the Step 2 template (no Depth line — there's no fix loop on a live design; keep the self-graded notice if it applies). Filled in for this preset:
 ```
 **Deliverables:** review, copy rewrites, requirements
-**Sequence:** design review → copy rewrites → requirements synthesis
-**Artifacts:** 04-review.md, 02-copy.md, 05-requirements.md
+**Context:** surface: trial-expiry pricing modal (from the screenshot) · cohort: new (from "trial") · …
+**Sequence:** opportunity sizing → design review → copy rewrites → requirements synthesis
+**Artifacts:** 00-sizing.md, 04-review.md, 02-copy.md, 05-requirements.md
 **No re-prompting between steps.**
 
 Starting now →
@@ -153,21 +203,23 @@ Starting now →
 ### Spec → Copy → Wireframe → Review → Synthesize
 > "Wireframe a paywall for AI Agents on Free tier" / scoping answer includes Wireframe + Review
 
-1. `monetization-journey-map` → `00-journey.md`: scenarios, sized with live data where available, and every step with its wireframe state id (skipped at Quick)
-2. `monetization-surface-spec` → `01-spec.md` (names the reason and direction, no final copy; its flow map comes from the journey)
-3. `improve-conversion-surfaces-copy` → `02-copy.md` from the spec's reason and each step's state of mind, including off-surface steps
-4. `monetization-surface-spec` (re-invoked) → `03-wireframe.html` built with the real copy, one state per J step that has a wireframe state id
-5. `monetization-journey-map` (re-invoked) → `03-journey.html`, the board embedding each wireframe state
-6. `monetization-design-reviewer` (independent) → `04-review.md`, with a scenario walkthrough; every row tagged fixable or blocked
-7. **Fix loop** → fixable rows go back to the skill that owns them, then an independent re-review (`04-review-v2.md`). How many passes depends on the depth (Quick 0 · Standard ≤2 · Thorough ≤3, aiming for 85) — see Fix loop below
-8. **Synthesis** → `05-requirements.md`, describing the approved wireframe version
+1. `monetization-opportunity-sizing` → `00-sizing.md`: ARR at stake, the baselines, and the go / no-go line (runs at every depth)
+2. `monetization-journey-map` → `00-journey.md`: scenarios, sized from `00-sizing.md` and live data, and every step with its wireframe state id (skipped at Quick)
+3. `monetization-surface-spec` → `01-spec.md` (names the reason and direction, no final copy; its flow map comes from the journey)
+4. `improve-conversion-surfaces-copy` → `02-copy.md` from the spec's reason and each step's state of mind, including off-surface steps
+5. `monetization-surface-spec` (re-invoked) → `03-wireframe.html` built with the real copy, one state per J step that has a wireframe state id
+6. `monetization-journey-map` (re-invoked) → `03-journey.html`, the board embedding each wireframe state
+7. `monetization-design-reviewer` (independent) → `04-review.md`, with a scenario walkthrough; every row tagged fixable or blocked
+8. **Fix loop** → fixable rows go back to the skill that owns them, then an independent re-review (`04-review-v2.md`). How many passes depends on the depth (Quick 0 · Standard ≤2 · Thorough ≤3, aiming for 85) — see Fix loop below
+9. **Synthesis** → `05-requirements.md`, describing the approved wireframe version
 
 ### Spec → Copy ← spec requested, no wireframe
 > Scoping answer: Spec + copy only
 
-1. `monetization-journey-map` → `00-journey.md`
-2. `monetization-surface-spec` → `01-spec.md`
-3. `improve-conversion-surfaces-copy` → `02-copy.md`
+1. `monetization-opportunity-sizing` → `00-sizing.md`
+2. `monetization-journey-map` → `00-journey.md`
+3. `monetization-surface-spec` → `01-spec.md`
+4. `improve-conversion-surfaces-copy` → `02-copy.md`
 
 Ends here — no review, no synthesis. After the copy, one line: offer `03-wireframe.html`.
 
@@ -268,20 +320,20 @@ Runs last in any chain that includes a review. Its reader is the designer and en
 
 ### Inputs
 
-Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria and its data slots become Open items. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
+Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. Read `00-sizing.md` — its baselines, weekly reach and conversion window fill the Measurement plan, and its verdict goes in the header. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis follows the chain's Data gate choice: without data, the Measurement plan keeps its structure and marks the baseline, MDE, sample size and runtime `[Not measured]` rather than computing them from anything invented. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
 
 ### Rules
 
 - **Traceability.** Every row of every review version appears at least once — in Final copy, Design changes, Open items, or Resolved before handoff — with a `Source` reference: `R{review version}.{row}` — `R1.3` = row 3 of `04-review.md`, `R2.1` = row 1 of `04-review-v2.md`. Use this notation everywhere in the doc. A row that needs both a string and a placement (e.g. "add a Free link") appears in both tables with the same Source; a row blocked on a fact also gets an Open item. Nothing gets dropped silently.
 - **Copy is verbatim.** Every Final copy string is the ★ recommended option from the copy artifact, word for word. No paraphrasing, no new lines written here.
 - **Specs are exact but not invented.** Name Vibe components and tokens only if they were confirmed from Figma variables or the Vibe MCP. Otherwise, specify relative to what's already on screen ("same text style as the plan feature rows, directly above the Pro CTA") and add "token TBD — confirm in Figma" rather than guessing a token name.
-- **No invented numbers.** Credit-to-task conversions, prices, and limits come from `monday-context.md`. If the figure isn't there, the copy keeps a marked slot (`≈ {N} {task}`) and an Open item names who supplies N.
+- **No invented numbers.** Credit-to-task conversions, prices, and limits come from the chain's BigBrain answers (Step 1c), or `monday-context.md` where BigBrain agreed with it. If the figure isn't there, the copy keeps a marked slot (`≈ {N} {task}`) and an Open item names who supplies N.
 - **No unverified claims.** Any factual promise in a Final copy string — a cancellation or refund policy, data retention after expiry, a guarantee — that isn't stated in `monday-context.md` gets an Open item naming who confirms it (Billing, Product) and is listed as a ship blocker. Copy that reads well but promises something untrue is worse than the line it replaced.
 - **Check the reviewer's factual claims before they land.** An independent reviewer can still misread the input. For every row that asserts a fact — especially "contradicts monday-context.md", a price, a limit, or something "missing" from the design — re-derive it from the input (screenshot, Figma, artifact) and the context file. If it doesn't hold, keep the row for traceability but say so in its Open item ("R1.13 reading likely wrong: {why}") and never propose a context-file change built on it.
 - **No direction-only rows.** "Improve", "consider", "strengthen", "make more X" are not requirements. If two people acting on a row would build different things, rewrite it.
 - **Every row is testable.** Each Design change and Build-order row carries **acceptance criteria** — a pass condition two people would judge the same way: "At a true 375px viewport, the CTA is visible without scrolling", not "works on mobile". A subjective property becomes an objective proxy (task completion, a visible element, a measured value); if none exists, it's a research question — say so in Open items.
-- **Every scenario is testable.** With a journey map, each scenario gets one Build-order acceptance criterion on its path: "S2 (IC, seat limit) reaches 'admin notified' in ≤{N} steps at a true 375px, with no step where the walkthrough failed". Every `{slot}` in the journey's sizing becomes an Open item for Data — name TBD, and journey open items keep `JO{n}` as their Source.
-- **Success metrics are decision-grade.** Write the Measurement plan block from [references/experiment-design.md](references/experiment-design.md): one revenue-proximate primary, guardrails that block ship, MDE and runtime computed from data-owner slots, and a pre-registered ship table. Never a bare "+X%" target. Every slot still open becomes an Open item.
+- **Every scenario is testable.** With a journey map, each scenario gets one Build-order acceptance criterion on its path: "S2 (IC, seat limit) reaches 'admin notified' in ≤{N} steps at a true 375px, with no step where the walkthrough failed". Scenario frequencies come from the journey's sizing, or are marked `[Not measured]` when the chain continued without data — never an estimate — and journey open items keep `JO{n}` as their Source.
+- **Success metrics are decision-grade.** Write the Measurement plan block from [references/experiment-design.md](references/experiment-design.md): one revenue-proximate primary, guardrails that block ship, baseline, MDE and runtime computed from `00-sizing.md`'s real numbers (or marked `[Not measured]` without data), and a pre-registered ship table. Never a bare "+X%" target, and never an estimated baseline.
 - **No vague words.** Scan Design changes, Open items and Build order (never the verbatim copy strings) for: *appropriate, suitable, reasonable, user-friendly, intuitive, efficient, fast, simple, easy, seamless, flexible, optimized, as needed, where applicable, if necessary, etc., and/or, may, might, could*. Quantify each hit or cut it. If the number isn't decided, don't invent one — write "pending: {what}" and add an Open item.
 - **Real owners.** Owner is a named person when the user or `monday-context.md` names one; otherwise the owning role plus "name TBD" (e.g. "Billing — name TBD"), and one Open item lists the owners to assign. Never "the team", "product", or a blank.
 - **Playbook updates travel.** If the chain produced a research doc with Suggested playbook updates, add one Open item: owner "Growth Monetization PM — name TBD" (the playbook owner), what's needed "apply the suggested updates to `playbooks/{surface}.md`", Source: the research file. Knowledge that stays in one report is lost to the next spec.
@@ -295,6 +347,7 @@ Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/A
 # Requirements: {surface name}
 
 **Surface:** {type} · **Cohort:** {new / existing} · **Current score:** {X}/100{ (self-graded)} · **Projected score:** {Y}/100 if 🔴 + 🟠 ship · **Depth:** {Quick | Standard | Thorough}, {N} fix passes
+**Opportunity:** {verdict} · base case {ARR at stake}/yr — from 00-sizing.md (internal) — or `Not sized — no data` with the unmeasured marks
 **Ledger:** {final ledger line}
 {**Build target:** latest 03-wireframe version — omit when no wireframe was built} · **Built from:** {every artifact version read}
 
@@ -350,7 +403,7 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 1. Every row of every review version appears at least once, with its Source reference.
 2. Every Final copy string matches the ★ recommended option verbatim.
 3. No Vibe token or component name appears that wasn't confirmed — unconfirmed ones say "TBD".
-4. No price, limit, or credit figure appears that isn't in `monday-context.md`.
+4. No price, limit, or credit figure appears that isn't in a BigBrain answer from Step 1c, `monday-context.md` where BigBrain agreed, or — without BigBrain — `monday-context.md` marked `[Unverified — …]`. Every Context drift line has an Open item for the context file's owner.
 5. Every factual promise in the copy (policy, retention, guarantee) not in `monday-context.md` has an Open item and is listed as a ship blocker.
 6. Every reviewer row asserting a fact or contradiction was re-derived from the input; any that didn't hold says so in its Open item.
 7. No row is direction-only.
@@ -358,8 +411,10 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 9. Every owner is a named person or "{role} — name TBD"; none says "the team".
 10. If a research doc with Suggested playbook updates exists, its Open item is present.
 11. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
-12. Measurement plan present, with one primary metric per account and a filled ship table; every unfilled slot has an Open item, and instrumentation rows are in Build order.
-13. With a journey map: every scenario has an acceptance criterion, and every scenario-sizing slot is an Open item.
+12. Measurement plan present, with one primary metric per account, a baseline, MDE and runtime from real data or marked `[Not measured]` (never estimated), and a filled ship table; instrumentation rows are in Build order.
+13. With a journey map: every scenario has an acceptance criterion and a frequency from data or marked `[Not measured]`.
+14. No `Assumptions`, `Flagged assumptions` or "confirm or correct" section, here or in any input artifact. Every input is in the header as `confirmed with user` or `inferred` (with its source), or is an Open item with an owner. A failure here is a hard fail: ask the user, then rewrite.
+15. Without data (the user chose to continue): the header says `data: not measured`, the body opens with the one-line notice, and every unmeasured figure carries its mark. No "Analyst data request" section, query list or data Open item — here or in any input artifact.
 
 After delivering, one line only — existing-design chains: offer to build a wireframe of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input. Fix-loop chains: no offer; the build target is already the fixed wireframe.
 

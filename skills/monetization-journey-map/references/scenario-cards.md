@@ -9,10 +9,10 @@ Adapted from the Pragmatic Institute's *use scenario*: a short story that puts a
 | **Name** | *What* problem | A problem, not a feature: "Team outgrew its seats mid-project", not "Seat expansion modal" |
 | **Persona** | *Who* has it | One of the monetization personas below, with tier and role |
 | **Trigger** | *Why* it happens now | The observable event: "invites a 6th member on a 5-seat bundle", "credit balance hits 0 during an agent run" |
-| **Frequency** | *When* / how often | From a query ([evidence-queries.md](evidence-queries.md)) or `{slot}` + Open item. Never a guess |
+| **Frequency** | *When* / how often | From a query ([evidence-queries.md](evidence-queries.md)), split from `00-sizing.md` when it exists. Without data, `[Not measured]`. Never a guess |
 | **Current result** | What happens today | The real, frustrating outcome, e.g. "invite fails; admin finds out from a Slack message 2 days later". For a new surface, what they do instead of the surface |
 | **Evidence** | Is it real? | Counts, tickets, cancel-reason share, research, each with its source |
-| **Impact** | How bad | ARR at risk, or conversion lost, in slots from data. Otherwise a 1–5 severity with one line of justification |
+| **Impact** | How bad | ARR at risk or conversion lost, from the scenario's share of `00-sizing.md`'s ARR at stake. Without a sizing file, a 1–5 severity with one line of justification |
 
 **Reframing sentence.** Every card opens with one line: **{persona}** struggles with **{problem}** when **{context}** because **{why it matters}**. It turns a feature request ("add a pause button") back into the problem ("a seasonal team pays for 3 idle months because leaving is the only option").
 

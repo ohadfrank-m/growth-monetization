@@ -85,11 +85,13 @@ Do not write final copy here. Specify the persuasion angle and hand off.
 
 ## Success metrics [required]
 
-| Metric | Definition | Target |
-|--------|-----------|--------|
-| Primary | {e.g. Credit top-up conversion rate} | {e.g. +X% vs current baseline} |
-| Secondary | {e.g. Task resume rate after dismiss} | |
-| Guardrail | {e.g. Support tickets re: credit confusion} | {no increase} |
+| Metric | Definition | Baseline | Target |
+|--------|-----------|----------|--------|
+| Primary | {e.g. Credit top-up conversion rate} | {from `00-sizing.md` or a Kramer query shown here — or `[Not measured]`} | {≥ the MDE the traffic supports, per `00-sizing.md`} |
+| Secondary | {e.g. Task resume rate after dismiss} | {from data, or `[Not measured]`} | |
+| Guardrail | {e.g. Support tickets re: credit confusion} | {from data, or `[Not measured]`} | {no increase} |
+
+Baselines follow the plugin's Data gate (`CLAUDE.md`): with no Kramer tool and the user continuing without it, each baseline is marked `[Not measured]` — never estimated.
 
 ## Edge cases [required]
 Address each that applies:
