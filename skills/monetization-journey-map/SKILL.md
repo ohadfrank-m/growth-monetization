@@ -120,7 +120,7 @@ When the surface is live and a design or public URL is available, pass 1 maps **
 ## Rules
 
 - **Problem first, screens second.** Scenarios name the persona's problem in their words. Nothing in the Scenarios section names a UI element.
-- **No invented numbers.** Frequencies and counts come from a query shown in the file, or are marked `[Not measured]` when the user continued without data or a query failed twice (Data gate). Never an estimate, never an unmarked `{slot}`. monday prices, limits and credit amounts come only from `monday-context.md`.
+- **No invented numbers.** Frequencies and counts come from a query shown in the file, or are marked `[Not measured]` when the user continued without data or a query failed twice (Data gate). Never an estimate, never an unmarked `{slot}`. monday prices, limits and credit amounts come from BigBrain (in a Growth PM chain, its Step 1c answers), or from `monday-context.md` marked `[Unverified — …]` without it — never from memory.
 - **No vague words.** The banned list in the Growth PM's synthesis rules applies here ([monetization-growth-pm → Synthesis phase → Rules](../monetization-growth-pm/SKILL.md#rules)).
 - **Every scenario ends somewhere.** No scenario may stop mid-table without an end state or an Open item.
 - **The journey owns the steps; the spec owns the screens.** Don't write layouts, trigger thresholds or copy here — name the step, the state of mind and the reason, and hand off.

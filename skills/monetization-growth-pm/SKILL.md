@@ -343,7 +343,7 @@ Runs last in any chain that includes a review. Its reader is the designer and en
 
 ### Inputs
 
-Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Read [context/monday-context.md](../../context/monday-context.md) for any price, limit, or credit figure. Read `00-sizing.md` — its baselines, weekly reach and conversion window fill the Measurement plan, and its verdict goes in the header. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis follows the chain's Data gate choice: without data, the Measurement plan keeps its structure and marks the baseline, MDE, sample size and runtime `[Not measured]` rather than computing them from anything invented. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
+Read the **latest version** of each numbered artifact — per the ledger — in `.monetization/{feature-slug}/` — a `-v2`/`-v3` supersedes earlier versions for the lines it revises; unrevised lines still come from the earlier version. After a fix loop, the latest wireframe is the **build target** and the latest review holds the final scores. Take any price, limit, or credit figure from the chain's BigBrain answers (Step 1c), or from [context/monday-context.md](../../context/monday-context.md) marked `[Unverified — …]` when the chain continued without BigBrain. Read `00-sizing.md` — its baselines, weekly reach and conversion window fill the Measurement plan, and its verdict goes in the header. When `00-journey.md` exists, read it too — its scenarios become acceptance criteria. Synthesis follows the chain's Data gate choice: without data, the Measurement plan keeps its structure and marks the baseline, MDE, sample size and runtime `[Not measured]` rather than computing them from anything invented. If `05-requirements.md` already exists, write `05-requirements-v2.md`.
 
 ### Rules
 
@@ -396,7 +396,7 @@ Fix-loop chains only — rows already fixed in the build target, so dev knows th
 
 ## Open items
 
-Anything the review couldn't assess or that needs an input before build — pending mobile screenshot, unconfirmed close button, a missing data source.
+Anything the review couldn't assess or that needs a human input before build — pending mobile screenshot, unconfirmed close button, an unpublished policy. Never an unmeasured number: those carry `[Not measured]` in place (Data gate) and are not Open items.
 
 | # | Owner | What's needed | Blocks | Source |
 |---|-------|---------------|--------|--------|

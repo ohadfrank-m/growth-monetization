@@ -119,6 +119,8 @@ Options: **Connect now (recommended)** · **Continue without data**. List only t
 | A BigBrain fact (price, credit amount, gate, trial term) | `[Unverified — monday-context.md, verified-against {date}]` next to the cached value | Next to the fact |
 | A result computed from unmeasured inputs (ARR at stake, sample size, runtime, verdict) | `[Not measured]` | The cell; never compute it from a placeholder |
 
+**What a `{slot}` is for.** Only two things: a runtime value the product fills per user (`{credits_left}`, `{admin_name}`), and a monday fact a named owner still has to supply — an unpublished price or policy — which is also an Open item with that owner. A monday metric (count, rate, baseline, frequency, ARR) is never a `{slot}`: it's measured or `[Not measured]`.
+
 That's the whole trace: the inline marks plus the one line at the top. No "Analyst data request" section, no list of pulls or queries for someone else to run, no Open item for missing data — an unmeasured number is not an Open item.
 
 **A query that fails or times out** is retried once (same question, same session). If it fails again, tell the user which question failed and the error, mark that cell `[Not measured — query failed]`, and continue. Never estimate it.
