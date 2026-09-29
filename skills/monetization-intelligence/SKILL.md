@@ -121,7 +121,7 @@ After every company research or monetization teardown, offer a pricing battlecar
 
 ## In a Growth PM chain
 
-When `monetization-growth-pm` runs this skill as the first step of a chain, the Growth PM's [chain mode rules](../monetization-growth-pm/SKILL.md) apply. For this skill that means:
+When `monetization-growth-pm` runs this skill inside a chain (after sizing, before the journey), the Growth PM's [chain mode rules](../monetization-growth-pm/SKILL.md) apply. For this skill that means:
 
 - Save the artifact to `.monetization/research/{topic-slug}-{YYYY-MM}.md` — the next skill reads it from there
 - Omit the `→ Next step` block and skip the battlecard offer

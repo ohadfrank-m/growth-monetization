@@ -78,7 +78,7 @@ Used only for the weekly pricing digest, which the skill formats as a paste-read
 
 - **Connect:** through monday's internal MCP setup (the AI Brain MCPs listed in your org's MCP catalog).
 - **What the plugin asks it:** each fact an artifact cites, at run time. [context/monday-context.md](context/monday-context.md) is the cache: when a brain's answer differs from it, the artifact uses the brain's answer, lists both, and tells you — never silently.
-- **Without it:** the run asks once — connect now, or continue without data. Continuing, facts are cited from the context file marked `[Unverified — monday-context.md, verified-against {date}]`. Copy and research always cite the context file with its `verified-against` date.
+- **Without it:** the run asks once — connect now, or continue without data. Continuing, facts are cited from the context file marked `[Unverified — monday-context.md, verified-against {date}]`. Copy and research called on their own cite the context file with its `verified-against` date; inside a Growth PM run they use the run's BigBrain answers.
 
 **Verify:** ask Claude to ask `AI Brain - Payments` "What is the current annual list price per seat of the Pro plan?" — it should return a sourced answer. Compare it with the Tier structure table in the context file.
 

@@ -20,7 +20,7 @@ monday's internal **BigBrain AI Brains** are the source of truth for plans, pric
 - Read the context file before any sizing, spec, review, or monday.com-related research
 - **Verify at run time.** Before an artifact states a monday price, limit, credit amount, gate or trial term, ask BigBrain for it (search the tools for `AI Brain`, `ai-brain` or `bigbrain` — e.g. `AI Brain - Payments` for plans, prices, credits and billing). Cite the answer as `[Brain — {name}, {YYYY-MM-DD}]`. In a Growth PM chain this runs once, up front (Step 1c), and every skill cites the result
 - **A mismatch is reported, never silently used.** When BigBrain and the context file disagree, use the BigBrain answer with its tag, list both values in the artifact (the sizing file's Context drift section, or an Open item for the context file's owner), and tell the user in one line. Never quietly pick one
-- BigBrain not connected: the Data gate (below) asks once whether to connect it or continue. Continuing, facts are cited from the context file and marked `[Unverified — monday-context.md, verified-against {date}]`; copy and research always cite the context file with its `verified-against` date
+- BigBrain not connected: the Data gate (below) asks once whether to connect it or continue. Continuing, facts are cited from the context file and marked `[Unverified — monday-context.md, verified-against {date}]`; copy and research called on their own cite the context file with its `verified-against` date; inside a Growth PM chain they cite the chain's Step 1c answers like every other skill
 - Never quote a monday.com price, limit, or credit amount from memory
 - If research reveals the context file is out of date, say so and suggest the specific update to the file's owner
 
@@ -198,7 +198,7 @@ Omit it inside a Growth PM chain — the Growth PM runs the next step itself, an
 
 - Header block present
 - Specific enough that two people acting on it produce the same result
-- monday.com facts cited from a BigBrain answer (or, for copy and research, the context file with its `verified-against` date), never memory; every mismatch between the two is listed, not silently resolved
+- monday.com facts cited from a BigBrain answer (or, for copy and research called on their own, the context file with its `verified-against` date), never memory; every mismatch between the two is listed, not silently resolved
 - No empty sections or "N/A" padding (except the spec edge-case list, where N/A needs a reason)
 - Every monday number is measured (with its source tag) or marked `[Not measured]` / `[Unverified — …]` per the Data gate — never an estimate, never an unmarked `{slot}`
 - **Hard fail:** no `Assumptions`, `Flagged assumptions`, "Confirm or correct" or similar section, heading or table anywhere in the artifact. Every input is confirmed with the user, inferred from a named source, or an Open item with an owner. If one slipped in, stop, ask the user, and rewrite

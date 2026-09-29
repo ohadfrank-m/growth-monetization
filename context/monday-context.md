@@ -27,7 +27,7 @@ This file is the **cache and pointer** for monday.com monetization facts. The so
 - **Updating from a run.** A reported mismatch is an update request: the owner checks it, edits the section, bumps `last-updated` and `verified-against`, and adds a changelog row.
 - **Cache only what may live in the repo.** A brain answer that isn't public (an unpublished trial grant, an internal-only package) is not copied here. Its row says "internal — ask BigBrain" and names the brain, so the file points to it instead of leaking it.
 - **`verified-against`** records the brain and the date of the last full check of the BigBrain-owned sections. Until it names one, every figure here comes from public sources and is a cache nobody has checked internally.
-- Brains not connected: the Data gate in [CLAUDE.md](../CLAUDE.md) pushes the user to connect them and asks once. Continuing without them, skills cite this file marked `[Unverified — monday-context.md, verified-against {date}]`; copy and research always cite it with its `verified-against` date.
+- Brains not connected: the Data gate in [CLAUDE.md](../CLAUDE.md) pushes the user to connect them and asks once. Continuing without them, skills cite this file marked `[Unverified — monday-context.md, verified-against {date}]`; copy and research called on their own cite it with its `verified-against` date; inside a Growth PM chain they use the chain's BigBrain answers.
 
 ---
 
