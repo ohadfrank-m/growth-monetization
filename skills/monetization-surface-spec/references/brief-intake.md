@@ -24,7 +24,7 @@ These can usually be inferred from surface type + tier:
 
 ## Ask every real gap in one message
 
-After inferring what you can, put every remaining gap in **one** message — `AskUserQuestion`, at most 4 questions, recommended answer first (the plugin's intake protocol in [CLAUDE.md](../../../CLAUDE.md), "Intake — ask, never assume"). One round trip, not one per field. If a field wouldn't change the spec, don't ask it.
+After inferring what you can, put every remaining gap in **one** message — the question tool (`AskUserQuestion` in Claude Code, `AskQuestion` in Cursor; CLAUDE.md → Tool names), at most 4 questions, recommended answer first (the plugin's intake protocol in [CLAUDE.md](../../../CLAUDE.md), "Intake — ask, never assume"). One round trip, not one per field. If a field wouldn't change the spec, don't ask it.
 
 An inference needs a source you can point to (the surface type, the prompt's words, the context file). A field you'd have to guess is a gap: ask it. The spec never carries an `Assumptions` section or a "confirm or correct" list.
 
@@ -71,4 +71,4 @@ When input is a Figma link, screenshot, or existing partial spec:
 - Objective: {value — from primary CTA}
 ```
 
-5. Ask every field the design couldn't show (the trigger is the usual one — it's rarely visible) in one `AskUserQuestion` message, recommended answer first. Write the spec only once they're answered. Never write the spec with a gap filled by a guess and flagged for later.
+5. Ask every field the design couldn't show (the trigger is the usual one — it's rarely visible) in one question-tool message, recommended answer first. Write the spec only once they're answered. Never write the spec with a gap filled by a guess and flagged for later.

@@ -51,14 +51,23 @@ Every run makes sure it has what a top-tier output needs before producing anythi
 
 1. **Check** the **Required context** table of every skill that will run against the prompt, any attached file or link, and what's already in `.monetization/{feature-slug}/`.
 2. **Infer** what's obvious and state each inference in one line, with its source ("Cohort: existing users — from 'credit depletion'"). An inference needs a source you can point to; "most likely" isn't one.
-3. **Ask every real gap in one message** — `AskUserQuestion`, at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred. Follow up only when an answer opens a new gap.
+3. **Ask every real gap in one message** — the question tool (see Tool names below), at most 4 questions, each with the recommended answer first. A gap is real only if it would change the output; never ask what the prompt already answered or what can be inferred. Follow up only when an answer opens a new gap. More than 4 real gaps: ask the 4 that change the output most, then the rest in one follow-up message — never fill the remainder in.
 4. **Run.** If nothing is missing, ask nothing.
+
+**Tool names by environment.** The skills name tools by role; use whichever your environment has:
+
+| Role | Claude Code | Cursor | Neither available |
+|------|-------------|--------|-------------------|
+| Question tool | `AskUserQuestion` | `AskQuestion` | One message with numbered questions and options, recommended first ("reply e.g. 1a / 2b") |
+| Subagent tool (independent review) | `Agent` | `Task` | Inline review, labelled self-graded (Growth PM → Independent review) |
+
+A subagent can't ask the user anything. A gap it hits goes into its artifact as a Pending row or back to the Growth PM in its return line — never answered by the subagent itself.
 
 **Who runs it:**
 
 - **Standalone:** the skill runs intake against its own Required context table.
 - **Growth PM chain:** the Growth PM runs intake once, up front, for the whole chain — every field every announced skill needs, in one round (see "Step 1b — Required-context intake" in [skills/monetization-growth-pm/SKILL.md](skills/monetization-growth-pm/SKILL.md)). Skills inside the chain don't re-ask what it covered.
-- **Mid-chain:** a skill that hits a gap intake didn't cover, and that would change its output, stops and asks — one `AskUserQuestion`, then the chain resumes. It never picks an answer and writes it down as an assumption.
+- **Mid-chain:** a skill that hits a gap intake didn't cover, and that would change its output, stops and asks — one question-tool call, then the chain resumes. It never picks an answer and writes it down as an assumption.
 
 **Where the answers go.** A confirmed input goes into the artifact's header as `confirmed with user: {field: value; …}` and an inference as `inferred: {field — from {source}}` ([templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md)). A fact nobody in the conversation can answer yet — a legal policy, an unpublished price, an engineering constraint — is an Open item with an owner. That is the only thing that stays open.
 
@@ -85,7 +94,7 @@ Counts, rates and baselines about monday's own users come from monday's internal
 
 **Connected:** `data-expert-agent` (with `check-query-status`) for numbers, and a BigBrain brain for monday facts. `run-sql` alone doesn't count for a new business question; it needs the agent's curated metric definitions. Researchio is never needed.
 
-**Missing — push to connect, then ask once.** Before writing any artifact, name each missing MCP, say what it unlocks, link the setup, and ask with `AskUserQuestion`:
+**Missing — push to connect, then ask once.** Before writing any artifact, name each missing MCP, say what it unlocks, link the setup, and ask with the question tool:
 
 ```
 **Internal data isn't connected — the numbers in this run would be unmeasured.**

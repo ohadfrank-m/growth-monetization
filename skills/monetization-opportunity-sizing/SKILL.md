@@ -37,7 +37,7 @@ This skill is all data, so connecting both sources matters most here. It runs th
 | Kramer MCP | `data-expert-agent`, `kramer` (e.g. `kramer-mcp-v1`) | Reach, conversion, conversion lag, the ceiling segment, past experiment lifts, converter plan mix and seats | Every input and the whole model are `[Not measured]`; verdict `Not sized — no data` |
 | BigBrain AI Brains | `AI Brain`, `ai-brain`, `bigbrain` (e.g. `AI Brain - Payments`) | List prices per seat and per credit package for the plan the conversion lands on | Prices from `monday-context.md`, marked `[Unverified — …]` |
 
-With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with `AskUserQuestion`: **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
+With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with the question tool ([CLAUDE.md](../../CLAUDE.md) → Tool names): **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
 
 **Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (CLAUDE.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
 
@@ -73,7 +73,7 @@ With the baseline and weekly reach, compute the sample per arm and the runtime f
 
 One line, from the table in [references/sizing-model.md](references/sizing-model.md#go--no-go): **Go — test**, **Go — ship + holdout**, **Re-scope**, **No-go**, or **Not sized — no data**, with the base-case ARR against the bar and the runtime against the longest test.
 
-**In a Growth PM chain:** on a Go or Not sized — no data, continue without pausing (the user already chose to continue without data at the gate). On Re-scope or No-go, stop and ask once — `AskUserQuestion`: continue as scoped / re-scope ({the specific re-scope the table names}) / stop — recommended answer first. It changes everything downstream, so it's a real blocker, not an optional offer.
+**In a Growth PM chain:** on a Go or Not sized — no data, continue without pausing (the user already chose to continue without data at the gate). On Re-scope or No-go, stop and ask once with the question tool: continue as scoped / re-scope ({the specific re-scope the table names}) / stop — recommended answer first. It changes everything downstream, so it's a real blocker, not an optional offer.
 
 ---
 
