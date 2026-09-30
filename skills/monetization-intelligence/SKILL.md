@@ -85,7 +85,7 @@ Verify connectivity before any workflow: `get_status()`. If it fails entirely (n
 | `get_company_history(slug)` | **1 credit/diff** | Full pricing change history |
 | `get_diff_highlight(slug, period, query)` | **1 credit** | Visual before/after screenshot |
 | `add_to_watchlist(slugs=[...])` | Free | Add companies to monitoring |
-| `remove_from_watchlist(slugs=[...])` | Free (unverified — MCP unreachable 2026-09-27) | Remove companies from monitoring |
+| `remove_from_watchlist(slugs=[...])` | Free | Remove companies from monitoring |
 | `get_watchlist()` | Free | List monitored companies |
 | `get_pricing_news()` | Free | Recent changes across tracked companies |
 | `fetch_diffs(scope, period, period_type)` | **2 credits** | Detailed change data |
