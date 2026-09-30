@@ -368,51 +368,66 @@ Read the **latest version** of each numbered artifact — per the ledger — in 
 
 Open with the header block from [templates/ARTIFACT_HEADER.md](../../templates/ARTIFACT_HEADER.md) (`skill: monetization-growth-pm`, `status: review`).
 
+**Section order is non-negotiable.** The reader is an engineer or AI coding agent picking this up cold. Order follows their workflow: scope → task list → implementation spec and strings → status (blocked / done) → instrumentation → out of scope.
+
 ```markdown
 # Requirements: {surface name}
 
 **Surface:** {type} · **Cohort:** {new / existing} · **Current score:** {X}/100{ (self-graded)} · **Projected score:** {Y}/100 if 🔴 + 🟠 ship · **Depth:** {Quick | Standard | Thorough}, {N} fix passes
 **Opportunity:** {verdict} · base case {ARR at stake}/yr — from 00-sizing.md (internal) — or `Not sized — no data` with the unmeasured marks
 **Ledger:** {final ledger line}
-{**Build target:** latest 03-wireframe version — omit when no wireframe was built} · **Built from:** {every artifact version read}
+**Build target:** {latest 03-wireframe version — omit when no wireframe was built} · **Built from:** {every artifact version read}
 
-## Final copy
+## What we're building
 
-| Element | Final string | Replaces | Reason it activates | Source |
-|---------|-------------|----------|---------------------|--------|
-| Headline | "..." | "Your Pro trial has ended" | Fear of losing capability | R1.1 |
+2–4 sentences: what this surface is, when it appears, who it's for, and what it must do. Include:
+- **States:** bullet list of every distinct state (e.g. A — one-click reactivation, B — payment required, C — offer applied, success)
+- **Flow:** one sentence per main path, naming where the user comes from and where each action lands
+- **Build artifacts:** wireframe file and its states (e.g. `03-wireframe.html`, states A / B / C / success)
 
-## Design changes
-
-| # | Priority | Component | Change | Spec | Acceptance criteria | Source |
-|---|----------|-----------|--------|------|---------------------|--------|
-| D1 | 🔴 | Pro CTA | ... | {placement, size, style, state behavior — tokens only if confirmed} | {pass condition — e.g. "visible without scrolling at a true 375px"} | R1.5 |
-
-## Resolved before handoff
-
-Fix-loop chains only — rows already fixed in the build target, so dev knows they're done, not missing.
-
-| Source | What was wrong | Fixed in |
-|--------|----------------|----------|
-| R1.4 | Differentiator overclaimed for some templates | 02-copy-v2.md, 03-wireframe-v2.html |
-
-## Open items
-
-Anything the review couldn't assess or that needs a human input before build — pending mobile screenshot, unconfirmed close button, an unpublished policy. Never an unmeasured number: those carry `[Not measured]` in place (Data gate) and are not Open items.
-
-| # | Owner | What's needed | Blocks | Source |
-|---|-------|---------------|--------|--------|
-| O1 | Design — name TBD | 375px screenshot to confirm CTA stays above fold | D1 on mobile | R1.9 |
-
-## Measurement plan
-
-{The block from references/experiment-design.md §9, filled — decision (test / ship + holdout / ship, no test), hypothesis, primary · secondary · guardrail metrics, design, holdout, threats, ship table}
+This section must stand alone — an engineer who reads only this should know exactly what they're implementing before reading anything else.
 
 ## Build order
 
 | # | Priority | Owner | Task | Covers | Acceptance criteria | Effort |
 |---|----------|-------|------|--------|---------------------|--------|
-| 1 | 🔴 | Eng — name TBD | ... | Final copy rows 1–2, D1 | {how QA knows it's done} | S |
+| 1 | 🔴 | Eng — name TBD | ... | Design changes D1, D2 | {how QA knows it's done} | S |
+
+Sorted 🔴 → 🟠 → 🟡, then by effort (S → M → L) within each priority. Each row maps to one or more Design change IDs so the engineer knows exactly what spec rows a task implements.
+
+## Design changes
+
+| # | Priority | Component | Change | Acceptance criteria | Source |
+|---|----------|-----------|--------|---------------------|--------|
+| D1 | 🔴 | {component} | {specific change — placement, behavior, state logic; tokens only if confirmed} | {pass condition — e.g. "visible without scrolling at a true 375px"} | R1.5 |
+
+## Final copy
+
+Reference strings for the elements above — look these up when implementing a specific component. Every string is the ★ recommended option from the copy artifact, verbatim.
+
+| Element | Final string | Notes | Source |
+|---------|-------------|-------|--------|
+| Headline | "..." | {dynamic slots, fallbacks, conditions} | R1.1 |
+
+## Open items
+
+Anything that needs a human input before build — an unconfirmed policy, a pending sign-off, an owner not yet assigned. Never an unmeasured number: those carry `[Not measured]` in place (Data gate) and are not Open items.
+
+| # | Owner | What's needed | Blocks | Source |
+|---|-------|---------------|--------|--------|
+| O1 | Design — name TBD | 375px screenshot to confirm CTA stays above fold | D1 on mobile | R1.9 |
+
+## Resolved before handoff
+
+Fix-loop chains only — rows already fixed in the build target. Paired with Open items so the full status picture is in one place: open = still blocked, resolved = already done.
+
+| Source | What was wrong | Fixed in |
+|--------|----------------|----------|
+| R1.4 | Differentiator overclaimed for some templates | 02-copy-v2.md, 03-wireframe-v2.html |
+
+## Measurement plan
+
+{The block from references/experiment-design.md §9, filled — decision (test / ship + holdout / ship, no test), hypothesis, primary · secondary · guardrail metrics, design, holdout, threats, ship table}
 
 ## Deferred to design
 
@@ -425,21 +440,24 @@ Optional — choices left open on purpose, so nobody mistakes them for gaps.
 
 ### Self-check before delivering
 
-1. Every row of every review version appears at least once, with its Source reference.
-2. Every Final copy string matches the ★ recommended option verbatim.
-3. No Vibe token or component name appears that wasn't confirmed — unconfirmed ones say "TBD".
-4. No price, limit, or credit figure appears that isn't in a BigBrain answer from Step 1c, `monday-context.md` where BigBrain agreed, or — without BigBrain — `monday-context.md` marked `[Unverified — …]`. Every Context drift line has an Open item for the context file's owner.
-5. Every factual promise in the copy (policy, retention, guarantee) not in `monday-context.md` has an Open item and is listed as a ship blocker.
-6. Every reviewer row asserting a fact or contradiction was re-derived from the input; any that didn't hold says so in its Open item.
-7. No row is direction-only.
-8. Every Design change and Build-order row has acceptance criteria; no vague word from the list survives outside the copy strings.
-9. Every owner is a named person or "{role} — name TBD"; none says "the team".
-10. If a research doc with Suggested playbook updates exists, its Open item is present.
-11. Build order is sorted 🔴 → 🟠 → 🟡, and by effort (S → M → L) within each severity.
-12. Measurement plan present, with one primary metric per account, a baseline, MDE and runtime from real data or marked `[Not measured]` (never estimated), and a filled ship table; instrumentation rows are in Build order.
-13. With a journey map: every scenario has an acceptance criterion and a frequency from data or marked `[Not measured]`.
-14. No `Assumptions`, `Flagged assumptions` or "confirm or correct" section, here or in any input artifact. Every input is in the header as `confirmed with user` or `inferred` (with its source), or is an Open item with an owner. A failure here is a hard fail: ask the user, then rewrite.
-15. Without data (the user chose to continue): the header says `data: not measured`, the body opens with the one-line notice, and every unmeasured figure carries its mark. No "Analyst data request" section, query list or data Open item — here or in any input artifact.
+1. **What we're building** section is present: states are listed as bullets, each main flow path is named, and the build artifact (wireframe file + states) is identified. An engineer reading only this section should know what to implement.
+2. Section order is: What we're building → Build order → Design changes → Final copy → Open items → Resolved before handoff → Measurement plan → Deferred to design.
+3. Every Design change row (D#) is referenced by at least one Build-order row.
+4. Every row of every review version appears at least once — in Final copy, Design changes, Open items, or Resolved before handoff — with its Source reference.
+5. Every Final copy string matches the ★ recommended option verbatim.
+6. No Vibe token or component name appears that wasn't confirmed — unconfirmed ones say "TBD".
+7. No price, limit, or credit figure appears that isn't in a BigBrain answer from Step 1c, `monday-context.md` where BigBrain agreed, or — without BigBrain — `monday-context.md` marked `[Unverified — …]`. Every Context drift line has an Open item for the context file's owner.
+8. Every factual promise in the copy (policy, retention, guarantee) not in `monday-context.md` has an Open item and is listed as a ship blocker.
+9. Every reviewer row asserting a fact or contradiction was re-derived from the input; any that didn't hold says so in its Open item.
+10. No row is direction-only.
+11. Every Design change and Build-order row has acceptance criteria; no vague word from the list survives outside the copy strings.
+12. Every owner is a named person or "{role} — name TBD"; none says "the team".
+13. If a research doc with Suggested playbook updates exists, its Open item is present.
+14. Build order is sorted 🔴 → 🟠 → 🟡, then by effort (S → M → L) within each priority.
+15. Measurement plan present, with one primary metric per account, a baseline, MDE and runtime from real data or marked `[Not measured]` (never estimated), and a filled ship table; instrumentation rows are in Build order.
+16. With a journey map: every scenario has an acceptance criterion and a frequency from data or marked `[Not measured]`.
+17. No `Assumptions`, `Flagged assumptions` or "confirm or correct" section, here or in any input artifact. Every input is in the header as `confirmed with user` or `inferred` (with its source), or is an Open item with an owner. A failure here is a hard fail: ask the user, then rewrite.
+18. Without data (the user chose to continue): the header says `data: not measured`, the body opens with the one-line notice, and every unmeasured figure carries its mark. No "Analyst data request" section, query list or data Open item — here or in any input artifact.
 
 After delivering, one line only — existing-design chains: offer to build a wireframe of the fixed version via `monetization-surface-spec`, using the Final copy and Design changes as input. Fix-loop chains: no offer; the build target is already the fixed wireframe.
 
