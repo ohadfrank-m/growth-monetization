@@ -1,3 +1,6 @@
 .DS_Store
 .monetization/
 *.local.md
+*.local.json
+__pycache__/
+*.pyc

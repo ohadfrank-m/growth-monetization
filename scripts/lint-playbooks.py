@@ -152,23 +152,31 @@ def check_dates(path, text):
                 err(path, i, f"invalid date '{d}'")
                 continue
             if age > STALE_DAYS:
-                warn(path, i, f"source checked {d} ({age} days ago) — re-verify")
+                err(path, i, f"source checked {d} ({age} days ago) — re-verify before using in an artifact")
 
 
 def check_banned():
-    files = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT, capture_output=True, text=True).stdout.split()
-    for f in files:
+    proc = subprocess.run(["git", "ls-files", "*.md"], cwd=ROOT, capture_output=True, text=True)
+    if proc.returncode != 0:
+        warn(ROOT / "scripts/lint-playbooks.py", 0, "git ls-files failed — banned-claim scan skipped")
+        return
+    for f in proc.stdout.split():
         p = ROOT / f
         if not p.exists():
             continue
-        for i, line in enumerate(p.read_text().splitlines(), 1):
+        for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
             for pattern, why in BANNED:
-                if re.search(pattern, line) and not ALLOW_MENTION.search(line):
+                m = re.search(pattern, line)
+                if m and not ALLOW_MENTION.search(line[: m.start()]):
                     err(p, i, why)
 
 
 def main():
-    case_ids = set(re.findall(r"^## ([\w-]+)$", (PLAYBOOKS / "cases.md").read_text(), re.M))
+    try:
+        case_ids = set(re.findall(r"^## ([\w-]+)$", (PLAYBOOKS / "cases.md").read_text(encoding="utf-8"), re.M))
+    except OSError:
+        case_ids = set()
+        err(PLAYBOOKS / "cases.md", 0, "cases.md missing — case-id links cannot be validated")
     for path in sorted(PLAYBOOKS.glob("*.md")):
         text = path.read_text()
         check_tags(path, text)
