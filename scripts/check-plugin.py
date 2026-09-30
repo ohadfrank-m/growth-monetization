@@ -26,6 +26,14 @@ def load_json(path):
         return None
 
 
+def read_text(path):
+    try:
+        return open(path, encoding="utf-8").read()
+    except OSError as e:
+        err(f"cannot read {path}: {e}")
+        return None
+
+
 # Manifests: valid JSON, same name and version everywhere.
 claude_plugin = load_json(".claude-plugin/plugin.json")
 claude_market = load_json(".claude-plugin/marketplace.json")
@@ -42,13 +50,15 @@ if cursor_plugin:
 for path, market in ((".claude-plugin/marketplace.json", claude_market), (".cursor-plugin/marketplace.json", cursor_market)):
     if not market:
         continue
-    for entry in market.get("plugins", []):
+    for i, entry in enumerate(market.get("plugins", [])):
         versions[f"{path} → {entry.get('name')}"] = entry.get("version")
-        names[f"{path} → plugins[]"] = entry.get("name")
+        names[f"{path} → plugins[{i}]"] = entry.get("name")
     meta_version = market.get("metadata", {}).get("version")
     if meta_version:
         versions[f"{path} → metadata"] = meta_version
-if len(set(versions.values())) > 1:
+if versions and all(v is None for v in versions.values()):
+    err("no version found in any manifest")
+elif len(set(versions.values())) > 1:
     err("version mismatch: " + ", ".join(f"{k}={v}" for k, v in versions.items()))
 if len(set(names.values())) > 1:
     err("plugin name mismatch: " + ", ".join(f"{k}={v}" for k, v in names.items()))
@@ -57,7 +67,9 @@ if len(set(names.values())) > 1:
 skills = sorted(os.path.basename(os.path.dirname(p)) for p in glob.glob("skills/*/SKILL.md"))
 for skill in skills:
     path = f"skills/{skill}/SKILL.md"
-    text = open(path, encoding="utf-8").read()
+    text = read_text(path)
+    if text is None:
+        continue
     fm = re.match(r"^---\n(.*?)\n---\n", text, re.S)
     if not fm:
         err(f"{path}: no frontmatter")
@@ -77,17 +89,20 @@ if os.path.exists("CLAUDE.md"):
 # Every skill is named where the plugin lists its skills.
 listing_files = ["README.md", "plugin-rules.md", "skills/monetization-growth-pm/SKILL.md", "docs/flow.svg"]
 for f in listing_files:
-    text = open(f, encoding="utf-8").read()
+    text = read_text(f)
+    if text is None:
+        continue
     for skill in skills:
         if skill == "monetization-growth-pm" and f == "skills/monetization-growth-pm/SKILL.md":
             continue
         if skill not in text:
             err(f"{f}: doesn't mention skill {skill}")
 
-readme = open("README.md", encoding="utf-8").read()
-badge = re.search(r"skills-(\d+)-", readme)
-if badge and int(badge.group(1)) != len(skills):
-    err(f"README.md: skills badge says {badge.group(1)}, repo has {len(skills)}")
+readme = read_text("README.md")
+if readme is not None:
+    badge = re.search(r"skills-(\d+)-", readme)
+    if badge and int(badge.group(1)) != len(skills):
+        err(f"README.md: skills badge says {badge.group(1)}, repo has {len(skills)}")
 
 
 # Relative links and anchors in Markdown.
@@ -103,7 +118,13 @@ anchor_cache = {}
 def anchors(path):
     if path not in anchor_cache:
         found, seen, in_code = set(), {}, False
-        for line in open(path, encoding="utf-8"):
+        try:
+            lines = open(path, encoding="utf-8").readlines()
+        except OSError as e:
+            err(f"cannot read {path}: {e}")
+            anchor_cache[path] = set()
+            return anchor_cache[path]
+        for line in lines:
             if line.startswith("```"):
                 in_code = not in_code
                 continue
@@ -121,7 +142,10 @@ def anchors(path):
 
 
 for md in glob.glob("**/*.md", recursive=True):
-    text = re.sub(r"```.*?```", "", open(md, encoding="utf-8").read(), flags=re.S)
+    raw = read_text(md)
+    if raw is None:
+        continue
+    text = re.sub(r"```.*?```", "", raw, flags=re.S)
     text = re.sub(r"`[^`\n]*`", "", text)
     for target in re.findall(r"\]\(([^)\s]+)\)", text):
         if target.startswith(("http://", "https://", "mailto:")) or "{" in target:

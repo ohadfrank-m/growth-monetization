@@ -59,7 +59,7 @@ Credits need their own explanation, with task translation at the tier level — 
 - **Publish the rates.** HubSpot publishes included credits per tier (Starter 500, Professional 3,000, Enterprise 5,000) and a rate sheet (50 credits per resolved Customer Agent conversation, 10 per AI workflow action) [Verified — [HubSpot catalog](https://legal.hubspot.com/hubspot-product-and-services-catalog)]. A worked example built from those rates — e.g. 40 resolutions (2,000) + 50 workflow actions (500) — is this playbook's construction, not HubSpot's.
 - **Show credits per seat or tier on the page.** Figma's pricing page now lists AI credits per seat type [Verified — [Figma pricing](https://www.figma.com/pricing/)], after confusion around the March 18, 2026 enforcement [Reported — [Vibe Coding Academy](https://www.vibecodingacademy.ai/blog/figma-ai-credits-everything-you-need-to-know)].
 - **Translate into real tasks.** Notion publishes per-run cost ranges for Custom Agents in its help center [Verified — [Notion help](https://www.notion.com/help/buy-and-track-notion-credits-for-custom-agents)].
-- **For monday:** use the context file's official translation (1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries, hundreds of workflow updates). "1 credit ≈ 1 AI action" is retired — the rate card contradicts it.
+- **For monday:** use the context file's official translation (1,000 credits ≈ 50 resume screenings, 5 hours of meeting summaries, hundreds of workflow updates). The retired phrase "1 credit ≈ 1 AI action" contradicts the rate card — don't use it.
 
 ### Bundling AI into a higher tier
 
