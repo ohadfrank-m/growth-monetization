@@ -1,7 +1,7 @@
 ---
 name: monetization-opportunity-sizing
 description: This skill should be used when the user wants to "size this opportunity", "how much ARR is at stake", "is this worth building", "how many accounts hit this", "what's the baseline conversion", "sample size for this test", "go / no-go on this surface", or before any monetization surface is designed and nobody has put a number on it yet. Produces 00-sizing.md — reach × current conversion × addressable lift × ARPA → ARR at stake, in low / base / high cases, every input from a Kramer query or a BigBrain answer shown in the file (or marked not measured when you continue without them), plus testability and a go / no-go line. Runs first in every Growth PM chain that designs or reviews a surface.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # Monetization Opportunity Sizing
@@ -45,7 +45,24 @@ This skill is all data, so connecting both sources matters most here. It runs th
 
 With either missing, push to connect: print the gate's connect block — the missing MCP, what it unlocks here (the opportunity size, the baselines, verified prices), the link to [mcp-setup.md](../../mcp-setup.md) — and ask with the question tool ([plugin-rules.md](../../plugin-rules.md) → Tool names): **Connect now (recommended)** · **Continue without data**. Inside a Growth PM chain, the Growth PM already asked (Step 1c); follow its answer and don't ask again.
 
-**Continuing without Kramer** still writes `00-sizing.md`, just not a sized one: the one-line notice at the top (plugin-rules.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
+**Continuing without Kramer, called directly** still writes `00-sizing.md` — you asked for it — just not a sized one: the one-line notice at the top (plugin-rules.md, Data gate), the population definition, the model with every input and result marked `[Not measured]`, prices (from BigBrain, or `[Unverified — …]`), and the verdict **Not sized — no data**. Nothing in it is estimated. No query list, analyst request or data Open item — the marks are the only trace.
+
+### Without Kramer inside a Growth PM chain — no file
+
+A file of `[Not measured]` cells adds a step and nothing a later skill can use. So in a chain that continued without Kramer, don't write `00-sizing.md`. Write this **Population and prices block** at the top of the chain's next artifact that has room for it — `00-journey.md` when the chain maps the journey, otherwise `01-spec.md`; in an existing-design chain with neither, it goes on the review brief's `Context:` line and into `05-requirements.md`:
+
+```markdown
+## Population and prices — not sized (Kramer not connected)
+- **Population:** {trigger event} · unit: account · tiers: {…} · window: {last 90 full days} — {each later step of a multi-step trigger, named}
+- **Prices:** {plan / package: price per seat, billing period} [Brain — {name}, {date}] or [Unverified — monday-context.md, verified-against {date}]
+- **Verdict:** Not sized — no data · longest test, ARR bar: {value, or "not asked — not sized"}
+```
+
+That's all: no model, no Segments or Testability tables, no Open item for the missing numbers. The ledger names the file that carries the block.
+
+### Re-sizing — when the case changes
+
+Sizing measures one trigger, cohort and objective. When a later step changes one of them (the Growth PM's "Re-size when the case changes" rule), write `00-sizing-v{N}.md` in the same Kramer session, with `revises: 00-sizing.md — {what changed}` in the header, re-running only the queries whose definition changed, and a fresh verdict. The file says in one line what moved and by how much. Without Kramer, update the Population and prices block in place instead.
 
 A query that fails or times out is retried once in the same session; a second failure marks that input `[Not measured — query failed]`, is told to the user, and the run continues. Never an unmarked `{slot}`, never an estimate.
 
