@@ -86,17 +86,32 @@ for skill in skills:
 if os.path.exists("CLAUDE.md"):
     err("CLAUDE.md at the plugin root isn't loaded by Claude Code or Cursor — keep plugin rules in plugin-rules.md")
 
+ROUTER_SKILL = "monetization-growth-pm"
+
 # Every skill is named where the plugin lists its skills.
-listing_files = ["README.md", "plugin-rules.md", "skills/monetization-growth-pm/SKILL.md", "docs/flow.svg"]
+listing_files = ["README.md", "plugin-rules.md", f"skills/{ROUTER_SKILL}/SKILL.md", "docs/flow.svg"]
 for f in listing_files:
     text = read_text(f)
     if text is None:
         continue
     for skill in skills:
-        if skill == "monetization-growth-pm" and f == "skills/monetization-growth-pm/SKILL.md":
+        if skill == ROUTER_SKILL and f == f"skills/{ROUTER_SKILL}/SKILL.md":
             continue
         if skill not in text:
             err(f"{f}: doesn't mention skill {skill}")
+
+# Smoke test: skill invocations in the router SKILL.md frontmatter description must resolve to actual skill folders.
+# The description field lists all directly-callable skills as /skill-name — no file paths appear there.
+router_skill_path = f"skills/{ROUTER_SKILL}/SKILL.md"
+router_text = read_text(router_skill_path)
+if router_text is not None:
+    fm = re.match(r"^---\n(.*?)\n---\n", router_text, re.S)
+    if fm:
+        desc_m = re.search(r"^description:\s*(.+)$", fm.group(1), re.M)
+        if desc_m:
+            for ref in set(re.findall(r"/([a-z][a-z0-9-]+)", desc_m.group(1))):
+                if ref != ROUTER_SKILL and ref not in skills:
+                    err(f"{router_skill_path}: description references /{ref} but skills/{ref}/ has no SKILL.md")
 
 readme = read_text("README.md")
 if readme is not None:
