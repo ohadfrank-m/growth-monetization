@@ -2,7 +2,7 @@
 
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-000?style=flat-square)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-plugin-000?style=flat-square)](https://cursor.com/docs/plugins)
-[![Skills](https://img.shields.io/badge/skills-8-333?style=flat-square)](#the-skills)
+[![Skills](https://img.shields.io/badge/skills-7-333?style=flat-square)](#the-skills)
 [![monday.com](https://img.shields.io/badge/built_for-monday.com-ff3366?style=flat-square)](https://monday.com)
 
 A monetization copilot for growth product squads. Hand the **Monetization Growth PM** a surface and it does the full product work — asks for every missing input up front, sizes the opportunity on monday's own data (Kramer and the BigBrain AI Brains), then competitor research, a journey map of who hits the surface and every step around it, spec, conversion copy, wireframe, an independent CRO review that loops until the fixes land, and one requirements doc design and engineering can build from. Or call any single skill on its own when you only need one piece.
@@ -21,7 +21,6 @@ Built for: pricing pages · paywalls · promotions · upgrade flows · credit/co
 |----------|---------|--------------|
 | **The full product work** — from an idea (or a live page) to an implementation-ready requirements doc | `/monetization-growth-pm` + describe the surface, or share a screenshot / Figma link | The Growth PM works out how far and how deep to go, asks for anything missing in at most two short rounds before it starts, runs every step without re-prompting, and delivers `05-requirements.md`. You can also stop it early: "spec and copy for…", "wireframe a…" |
 | **One piece of the work** — you know exactly what you need | Call the skill directly: `/monetization-opportunity-sizing`, `/monetization-intelligence`, `/monetization-journey-map`, `/monetization-surface-spec`, `/improve-conversion-surfaces-copy`, `/monetization-design-reviewer` | Just that skill. It first checks it has what a top-tier output needs and asks for anything missing in one message (with the data question, when a data MCP is missing), then produces its artifact, ending with a `→ Next step` prompt if you want to keep going |
-| **Post-ship experiment results** — reading what actually happened after a test ships | `/monetization-experiment-analyzer` | SRM check, z-test, guardrail checks, ARR impact, and a ship / kill / iterate verdict in `06-results.md` |
 
 You never have to use the Growth PM, and you never have to use every skill. Every skill reads what's already in the feature folder and picks up from there.
 
@@ -68,7 +67,6 @@ In the order they run:
 | `monetization-surface-spec` | What to build: trigger, cohort, the screen-by-screen flow with its friction points, layout, edge cases — then the low-fi HTML wireframe of every state, and revisions of both when a review sends fixes back | `01-spec.md`, `03-wireframe.html` | Write final copy — it names the reason and hands off |
 | `improve-conversion-surfaces-copy` | Every word the user reads: 2–3 options per element, one ★ recommended, grounded in a real reason people buy | `02-copy.md` | Layout, hierarchy, or scoring |
 | `monetization-design-reviewer` | Scoring against an 8-dimension CRO rubric, a ranked fix list with a **Fix path** per row, and verifying fixes on re-review | `04-review.md` | Write the fix — it routes it to the skill that owns it |
-| `monetization-experiment-analyzer` | Post-ship only: reading a completed A/B test — SRM check, z-test, guardrail checks, ARR impact, and a ship / kill / iterate verdict | `06-results.md` | Design anything or run before an experiment ships |
 
 Copy runs *before* the wireframe, not after the review — so the wireframe you look at, and the review that scores it, both reflect real language, never bracketed placeholder text.
 
@@ -85,7 +83,7 @@ Claude Code and Cursor install the same repo as a plugin: skills load from `skil
 /plugin install growth-monetization@growth-monetization
 ```
 
-Skills load automatically. Run `/growth-monetization:monetization-growth-pm` for the full flow (type `/growth-monetization` to see all eight), or just describe the job and the matching skill triggers.
+Skills load automatically. Run `/growth-monetization:monetization-growth-pm` for the full flow (type `/growth-monetization` to see all seven), or just describe the job and the matching skill triggers.
 
 Try it locally before installing: `claude --plugin-dir /path/to/growth-monetization`. Update: `/plugin update growth-monetization@growth-monetization`.
 
@@ -102,7 +100,7 @@ The repo carries a Cursor Plugin manifest (`.cursor-plugin/`), so it installs li
 
   Then run **Developer: Reload Window**. Clone into that folder directly: Cursor skips a symlink that points outside it. On Enterprise, local plugins are off unless an admin enables **Allow Local Plugin Imports** — use the team marketplace instead. Update with `git -C ~/.cursor/plugins/local/growth-monetization pull` and a reload.
 
-Check it under **Customize → Skills** (all eight should be listed), then run `/monetization-growth-pm` in the agent chat. MCP servers for Cursor: [mcp-setup.md](mcp-setup.md#cursor-config-snippet).
+Check it under **Customize → Skills** (all seven should be listed), then run `/monetization-growth-pm` in the agent chat. MCP servers for Cursor: [mcp-setup.md](mcp-setup.md#cursor-config-snippet).
 
 ### Check the install (either host)
 
@@ -342,8 +340,7 @@ growth-monetization/
 │   ├── monetization-journey-map/      ← scenarios, journey steps, scenario sizing, journey board
 │   ├── monetization-surface-spec/
 │   ├── improve-conversion-surfaces-copy/
-│   ├── monetization-design-reviewer/
-│   └── monetization-experiment-analyzer/ ← post-ship: SRM, z-test, guardrails, ARR impact, ship/kill verdict
+│   └── monetization-design-reviewer/
 └── mcp-setup.md
 ```
 

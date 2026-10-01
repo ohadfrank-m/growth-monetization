@@ -44,7 +44,6 @@ monday's internal **BigBrain AI Brains** are the source of truth for plans, pric
 | `monetization-surface-spec` | Speccing a surface (1st call) or building its wireframe (2nd call, after copy) | `01-spec.md`, then `03-wireframe.html` |
 | `improve-conversion-surfaces-copy` | First pass after a spec, first pass after a review of an existing design, or revising a line a review flagged | `02-copy.md`, then `02-copy-v2.md` if revised |
 | `monetization-design-reviewer` | Scoring a design — continues into the Growth PM's chain unless "review only" is asked. Also runs the re-review inside the fix loop | `04-review.md` — scored rubric, projected score, ranked fix list with a Fix path per row; `04-review-v2.md` on re-review |
-| `monetization-experiment-analyzer` | **Post-ship only.** Reads a completed A/B experiment: trust checks (SRM, runtime), z-test, guardrail checks, ARR impact, and a ship / kill / iterate verdict | `06-results.md` |
 
 ---
 
@@ -86,7 +85,7 @@ Skills cite reference files (`references/`, `playbooks/`, templates). If one isn
 
 Counts, rates and baselines about monday's own users come from monday's internal data. When that data isn't connected, the run doesn't block: it pushes the user to connect it, asks once, and if they continue, every number it couldn't measure is marked as not measured. Never a guess, never an estimate, never an unmarked `{slot}`.
 
-**Who it applies to:** the Growth PM (any chain that includes sizing, journey, spec, review or synthesis), `monetization-opportunity-sizing`, `monetization-journey-map`, `monetization-surface-spec` (its Success metrics), `monetization-design-reviewer` when it scores a live surface, `monetization-experiment-analyzer` (for experiment counts and ARR sizing), and the Growth PM's synthesis. Research (`monetization-intelligence`), copy (`improve-conversion-surfaces-copy`) and pure competitor work skip it — they make no claims about monday's numbers.
+**Who it applies to:** the Growth PM (any chain that includes sizing, journey, spec, review or synthesis), `monetization-opportunity-sizing`, `monetization-journey-map`, `monetization-surface-spec` (its Success metrics), `monetization-design-reviewer` when it scores a live surface, and the Growth PM's synthesis. Research (`monetization-intelligence`), copy (`improve-conversion-surfaces-copy`) and pure competitor work skip it — they make no claims about monday's numbers.
 
 **Detect the tools.** Search the available tools, don't assume names — they vary by environment:
 
@@ -173,8 +172,7 @@ Use [templates/ARTIFACT_HEADER.md](templates/ARTIFACT_HEADER.md).
 │   ├── 04-review.md        ← monetization-design-reviewer (independent; every row tagged with a Fix path)
 │   ├── 04-review-v2.md     ← monetization-design-reviewer (re-review: verifies each fix, exits or loops)
 │   ├── renders/            ← every wireframe state, desktop + true 375px, for the reviewer
-│   ├── 05-requirements.md  ← monetization-growth-pm synthesis (final requirements for dev/designer)
-│   └── 06-results.md       ← monetization-experiment-analyzer (post-ship: trust checks, z-test, guardrail checks, ARR impact, verdict)
+│   └── 05-requirements.md  ← monetization-growth-pm synthesis (final requirements for dev/designer)
 └── research/
     ├── {surface}-benchmark-{YYYY-MM}.md      ← monetization-intelligence (how competitors run a surface)
     └── {topic-slug}-{YYYY-MM}.md             ← monetization-intelligence (teardowns, landscapes, benchmarks)

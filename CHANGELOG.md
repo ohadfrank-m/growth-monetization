@@ -7,11 +7,8 @@ All notable changes to this plugin are recorded here. Format: `[version] — YYY
 ## [Unreleased]
 
 ### Added
-- `monetization-experiment-analyzer` skill — post-ship A/B results analysis: SRM check, two-proportion z-test, guardrail checks, ARR impact sizing on Kramer + BigBrain data, and a ship / kill / iterate verdict written to `06-results.md`
 - `CHANGELOG.md` (this file)
 - `CONTRIBUTING.md` — guide for adding skills, playbooks, and context updates
-- `06-results.md` added to the output folder convention in `plugin-rules.md`
-- `monetization-experiment-analyzer` added to the standalone strip in `docs/flow.svg`
 
 ### Fixed
 - `skills/monetization-intelligence/SKILL.md`: removed stale `(unverified — MCP unreachable 2026-09-27)` comment from `remove_from_watchlist` row

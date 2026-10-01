@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1588 640" width="1588" height="640" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1588 600" width="1588" height="600" role="img" aria-labelledby="t d">
   <title id="t">How the growth-monetization plugin works</title>
   <desc id="d">The Monetization Growth PM asks every missing input once and checks monday's internal data (Kramer and BigBrain) is connected, pushing you to connect it or continue with unmeasured numbers marked. Then it runs eight steps left to right: opportunity sizing, research, journey map, spec, copy, wireframe with the journey board, review, requirements. A fix loop sends review findings back to spec, copy and wireframe. Every skill can also be used on its own.</desc>
   <defs>
@@ -165,7 +165,7 @@
   </g>
 
   <!-- standalone strip -->
-  <rect x="28" y="476" width="1532" height="132" rx="12" fill="#f4f4f5"/>
+  <rect x="28" y="476" width="1532" height="96" rx="12" fill="#f4f4f5"/>
   <text x="48" y="504" class="strip">Just need one piece? Call a skill directly</text>
   <text x="358" y="504" class="note">It asks for anything your prompt is missing, then does only that job.</text>
 
@@ -181,8 +181,4 @@
   <text x="1078" y="542" class="skill" text-anchor="middle">/improve-conversion-surfaces-copy</text>
   <rect x="1218" y="520" width="220" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
   <text x="1328" y="542" class="skill" text-anchor="middle">/monetization-design-reviewer</text>
-
-  <text x="48" y="574" class="note">Post-ship analysis:</text>
-  <rect x="178" y="558" width="310" height="34" rx="8" fill="#fff" stroke="#d4d4d8"/>
-  <text x="333" y="580" class="skill" text-anchor="middle">/monetization-experiment-analyzer</text>
 </svg>
